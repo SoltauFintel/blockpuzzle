@@ -1,13 +1,27 @@
 <resources>
-    <string name="app_name">Block Puzzle</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Block Puzzle</string>
+    <string name="nav_header_subtitle"></string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_home">Game</string>
+    <string name="menu_gallery">Highscore</string>
+    <string name="menu_slideshow">Settings</string>
+
+
+    <string name="app_name"><font size="20"><b>Block Puzzle</b></font></string>
+    <string name="neuesSpiel">Neues Spiel</string>
+    <string name="gehtNicht">Geht nicht!</string>
+    <string name="drehenAus">Drehmodus aus</string>
+    <string name="drehenAn">Drehmodus an</string>
+    <plurals name="punkte">
+        <item quantity="one">%d Punkt</item>
+        <item quantity="other">%d Punkte</item>
+    </plurals>
+    <plurals name="punkteGameOver">
+        <item quantity="one">Game over! (%d Punkt)</item>
+        <item quantity="other">Game over! (%d Punkte)</item>
+    </plurals>
 </resources>

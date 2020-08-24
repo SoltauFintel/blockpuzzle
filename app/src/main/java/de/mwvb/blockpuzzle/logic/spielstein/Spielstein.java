@@ -1,6 +1,9 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-public abstract class Spielstein {
+/**
+ * Teil Basisklasse und leeres Teil
+ */
+public class Spielstein {
     /** Breite und Höhe */
     public static final int max = 5;
     /** 1: x (nach rechts), 2: y (nach unten) */
