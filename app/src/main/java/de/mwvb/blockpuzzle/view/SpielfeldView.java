@@ -16,10 +16,14 @@ import de.mwvb.blockpuzzle.musik.Musik;
 
 /**
  * Quadrat 10x10
- * Im Quadrat werden die Teile abgelegt.
+ * Im Quadrat werden die Spielsteine abgelegt.
  * Ein Kästchen hat die Belegung 0=leer, 1=Block. Angedacht sind weitere Belegungen für Boni.
+ *
+ * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
+ * funktioniert.
  */
 public class SpielfeldView extends View {
+    public static final int w = 300; // dp
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
     private final Paint box0 = new Paint();
@@ -31,8 +35,6 @@ public class SpielfeldView extends View {
     private final Paint p_mark = new Paint();
     private final Musik musik = new Musik();
     private Game game;
-    private int w;
-    private int h;
     private FilledRows filledRows;
     private int mode = 0;
 
@@ -83,14 +85,6 @@ public class SpielfeldView extends View {
         this.game = game;
     }
 
-    /** just for getting size */
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        this.w = w; // 600px
-        this.h = h - 1 - 120; // 120 für Drag-Drop-Bereich am unteren Rand, da Drop-Cursor 120 tiefer
-    }
-
     public void draw() {
         invalidate();
         requestLayout();
@@ -104,19 +98,23 @@ public class SpielfeldView extends View {
     }
 
     private void drawSpielfeld(Canvas canvas) {
+        final float f = getResources().getDisplayMetrics().density;
+        System.out.println("f=" + f); // Handy klein = 2.0, groß = 3.5
         // Rahmen
-        canvas.drawRect(1, 1, w, h, rectborder);
+        canvas.drawRect(1 * f, 1 * f, w * f, w * f, rectborder);
 
         // Gitterlinien
-        final int br = w / Game.blocks; // 60px
+        final int br = w / Game.blocks; // 60px, auf Handy groß = 36
+        System.out.println("br="+br);
         for (int i = 1; i < Game.blocks; i++) {
             float t = i * br;
-            canvas.drawLine(t, 0,t, h, rectline);
-            canvas.drawLine(1, t, w, t, rectline);
+            canvas.drawLine(t * f, 0, t * f, w * f, rectline);
+            canvas.drawLine(1 * f, t * f, w * f, t * f, rectline);
         }
     }
 
     private void drawKaestchen(Canvas canvas) {
+        final float f = getResources().getDisplayMetrics().density;
         final int br = w / Game.blocks; // 60px
         final float p = br * 0.1f;
         final MatrixGet m = getMatrixGet();
@@ -124,8 +122,8 @@ public class SpielfeldView extends View {
             for (int y = 0; y < Game.blocks; y++) {
                 float tx = x * br;
                 float ty = y * br;
-                canvas.drawRect(tx + p, ty + p,
-                        tx + br - p, ty + br - p,
+                canvas.drawRect((tx + p) * f, (ty + p) * f,
+                        (tx + br - p) * f, (ty + br - p) * f,
                         m.get(x, y));
             }
         }

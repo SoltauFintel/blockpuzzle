@@ -6,6 +6,7 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.*;
+import de.mwvb.blockpuzzle.view.SpielfeldView;
 
 public class Game {
     public static final int blocks = 10;
@@ -85,7 +86,8 @@ public class Game {
         if (targetIsParking) {
             ret = parke(index, teil);
         } else {
-            ret = platziere(index, teil, x, y);
+            System.out.println("dispatch(2) x="+((int)x)+", y="+((int)y )+ " jux");
+            ret = platziere(index, teil, (int) x, (int) y);
         }
         if (ret) {
             if (view.getTeil(1) == null && view.getTeil(2) == null && view.getTeil(3) == null) {
@@ -111,9 +113,8 @@ public class Game {
      * Drop Aktion für Spielfeld
      * @return true wenn Teil platziert wurde, false wenn dies nicht möglich ist
      */
-    private boolean platziere(int index, Spielstein teil, float x, float y) {
-        final int br = 60;
-        QPosition pos = new QPosition((int) x / br, (int) y / br - 2 - (teil.getMaxY() - teil.getMinY()));
+    private boolean platziere(int index, Spielstein teil, int x, int y) {
+        QPosition pos = new QPosition(x, y);
         boolean ret = spielfeld.match(teil, pos);
         if (ret) {
             spielfeld.platziere(teil, pos);

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 import de.mwvb.blockpuzzle.logic.spielstein.*;
 
@@ -16,7 +17,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.*;
  */
 public class TeilView extends View {
     private final boolean parking;
-    private Paint p_normal = new Paint();
+    private Paint p_normal = new Paint(); // TODO final
     private Paint p_grey = new Paint();
     private Paint p_drehmodus = new Paint();
     private Paint p_parking = new Paint();
@@ -29,6 +30,7 @@ public class TeilView extends View {
     public TeilView(Context context, boolean parking) {
         super(context);
         this.parking = parking;
+        // TODO Farben nach colors.xml
         p_normal.setColor(Color.parseColor("#a65726"));
         p_grey.setColor(Color.parseColor("#888888"));
         p_drehmodus.setColor(Color.parseColor("#009900"));
@@ -58,10 +60,12 @@ public class TeilView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        int br = dragMode ? 60 : 30;
+        final float f = getResources().getDisplayMetrics().density;
+        int br = SpielfeldView.w / Game.blocks; // 60px, auf Handy groß = 36
+        if (!dragMode) br /= 2;
         float p = br * 0.1f;
         if (parking && !dragMode) {
-            canvas.drawRect(0, 0, br * Spielstein.max, br * Spielstein.max, p_parking);
+            canvas.drawRect(0, 0, br * Spielstein.max * f, br * Spielstein.max * f, p_parking);
         }
         Spielstein dasteil = teil == null ? new Spielstein() : teil;
         Paint fuellung;
@@ -72,12 +76,13 @@ public class TeilView extends View {
         } else {
             fuellung = p_normal;
         }
+        // TODO Ist das doppelter Code zu SpielfeldView?
         for (int x = 0; x < Spielstein.max; x++) {
             for (int y = 0; y < Spielstein.max; y++) {
                 if (dasteil.filled(x, y)) {
                     float tx = x * br, ty = y * br;
-                    canvas.drawRect(tx + p, ty + p,
-                            tx + br - p, ty + br - p, fuellung);
+                    canvas.drawRect((tx + p) * f, (ty + p) * f,
+                            (tx + br - p) * f, (ty + br - p) * f, fuellung);
                 }
             }
         }

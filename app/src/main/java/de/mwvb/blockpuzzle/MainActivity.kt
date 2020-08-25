@@ -6,18 +6,13 @@ import android.content.ClipDescription
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import de.mwvb.blockpuzzle.logic.*
-import de.mwvb.blockpuzzle.logic.spielstein.*
+import androidx.navigation.ui.AppBarConfiguration
+import de.mwvb.blockpuzzle.logic.FilledRows
+import de.mwvb.blockpuzzle.logic.Game
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
+import de.mwvb.blockpuzzle.view.SpielfeldView
 import de.mwvb.blockpuzzle.view.TeilView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -103,8 +98,7 @@ class MainActivity : AppCompatActivity() {
             val tv = it as TeilView
             if (!game.isGameOver) {
                 tv.startDragMode()
-                val dragShadowBuilder =
-                    MyDragShadowBuilder(tv)
+                val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                 it.startDragAndDrop(data, dragShadowBuilder, it, 0)
             }
             true
@@ -133,7 +127,18 @@ class MainActivity : AppCompatActivity() {
                 DragEvent.ACTION_DROP -> {
                     val item = event.clipData.getItemAt(0)
                     val index: Int = item.text.toString().toInt()
-                    game.dispatch(targetIsParking, index, getTeil(index), event.x, event.y)
+                    val spielstein = getTeil(index)
+
+                    // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
+                    val f = resources.displayMetrics.density
+                    var x = event.x / f // px -> dp
+                    var y = event.y / f
+                    // jetzt in Spielfeld Koordinaten umrechnen
+                    val br = SpielfeldView.w / Game.blocks
+                    x /= br
+                    y = y / br - 2 - (spielstein!!.maxY - spielstein!!.minY)
+
+                    game.dispatch(targetIsParking, index, spielstein, x, y)
                     true
                 }
                 DragEvent.ACTION_DRAG_ENTERED -> true

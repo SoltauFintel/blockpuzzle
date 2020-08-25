@@ -27,6 +27,11 @@ public class Spielfeld {
                 set(x, y, 0);
             }
         }
+        // TODO Demo
+        set(0, 0, 1);
+        set(0, blocks - 1, 1);
+        set(blocks - 1, 0, 1);
+        set(blocks - 1, blocks - 1, 1);
     }
 
     public boolean match(Spielstein teil, QPosition pos) {
