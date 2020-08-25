@@ -1,24 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:orientation="vertical"
+    tools:context="de.mwvb.blockpuzzle.MainActivity">
 
-    <include
-        layout="@layout/app_bar_main"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPink">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:text="@string/app_name"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/neuesSpiel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="27dp"
+            android:text="@string/neuesSpiel"
+            android:textAllCaps="false"/>
+    </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+    <de.mwvb.blockpuzzle.view.SpielfeldView
+        android:id="@+id/spielfeld"
+        android:layout_width="match_parent"
+        android:layout_height="720px"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        tools:ignore="PxUsage"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/placeholder1"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:layout_marginStart="10dp"
+            tools:ignore="PxUsage" />
+        <RelativeLayout
+            android:id="@+id/placeholder2"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:layout_marginStart="10dp"
+            tools:ignore="PxUsage" />
+        <RelativeLayout
+            android:id="@+id/placeholder3"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:layout_marginStart="10dp"
+            tools:ignore="PxUsage" />
+        <RelativeLayout
+            android:id="@+id/parking"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:layout_marginStart="10dp"
+            tools:ignore="PxUsage" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/drehmodus"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
-</androidx.drawerlayout.widget.DrawerLayout>
+        android:layout_height="wrap_content"
+        android:text = "@string/drehenAus"
+        android:layout_marginEnd="30dp"
+        android:layout_gravity="end"
+        android:textAllCaps="false"/>
+</LinearLayout>

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.*;
-import de.mwvb.blockpuzzle.ui.home.HomeFragment;
 
 public class Game {
     public static final int blocks = 10;
