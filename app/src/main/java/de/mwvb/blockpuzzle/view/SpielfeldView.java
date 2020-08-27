@@ -215,4 +215,8 @@ public class SpielfeldView extends View {
             }
         }, 450);
     }
+
+    public void playCrunchSound() {
+        musik.playCrunchSound();
+    }
 }

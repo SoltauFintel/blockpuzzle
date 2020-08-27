@@ -185,4 +185,13 @@ class MainActivity : AppCompatActivity() {
     fun gehtNicht() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
     }
+
+    override fun onBackPressed() {
+        // do nothing
+        // Vorher war es so, dass dann der Spielstand verloren geht. Das will ich so erstmal verhindern.
+
+        // Wir spielen ein Sound ab, damit der User wenigstens merkt, dass die Taste nicht kaputt ist.
+        // Man könnte aber auch die Anwendung minimieren.
+        spielfeld.playCrunchSound()
+    }
 }
