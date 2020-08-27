@@ -28,25 +28,66 @@ public class Game {
     public Game(MainActivity activity) {
         view = activity;
 
+        // Jede Spielsteinart standardmäßig 4x dabei.
+
         teile.add(new Teil1());
+        teile.add(new Teil1());
+        teile.add(new Teil1());
+        teile.add(new Teil1());
+
         teile.add(new Teil2());
         teile.add(new Teil2().rotateToRight());
+        teile.add(new Teil2());
+        teile.add(new Teil2().rotateToRight());
+
         teile.add(new Teil3());
         teile.add(new Teil3().rotateToRight());
+        teile.add(new Teil3());
+        teile.add(new Teil3().rotateToRight());
+
         teile.add(new Teil4());
         teile.add(new Teil4().rotateToRight());
+        teile.add(new Teil4());
+        teile.add(new Teil4().rotateToRight());
+
         teile.add(new Teil5());
         teile.add(new Teil5().rotateToRight());
+        teile.add(new Teil5());
+        teile.add(new Teil5().rotateToRight());
+
         teile.add(new TeilEcke2());
         teile.add(new TeilEcke2().rotateToRight());
         teile.add(new TeilEcke2().rotateToRight().rotateToRight());
         teile.add(new TeilEcke2().rotateToLeft());
+
         teile.add(new TeilEcke3());
         teile.add(new TeilEcke3().rotateToRight());
         teile.add(new TeilEcke3().rotateToRight().rotateToRight());
         teile.add(new TeilEcke3().rotateToLeft());
+
+        // Bonus-Stein, seltener
+        teile.add(new SpielsteinLangeEcke());
+        teile.add(new SpielsteinLangeEcke().rotateToRight());
+//        teile.add(new SpielsteinLangeEcke().rotateToRight().rotateToRight());
+//        teile.add(new SpielsteinLangeEcke().rotateToLeft());
+
+        // schwieriger Stein, seltener
         teile.add(new Teil2x2());
+        teile.add(new Teil2x2());
+//        teile.add(new Teil2x2());
+//        teile.add(new Teil2x2());
+
+        // schwieriger Stein, Bonus Stein, seltener
+        teile.add(new Spielstein2x3());
+//        teile.add(new Spielstein2x3().rotateToRight());
+//        teile.add(new Spielstein2x3());
+//        teile.add(new Spielstein2x3().rotateToRight());
+
+        // extrem schwieriger Stein, seltener
         teile.add(new Teil3x3());
+//        teile.add(new Teil3x3());
+//        teile.add(new Teil3x3());
+//        teile.add(new Teil3x3());
     }
 
     // Neues Spiel ----
