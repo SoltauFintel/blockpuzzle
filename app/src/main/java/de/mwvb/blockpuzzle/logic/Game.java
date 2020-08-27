@@ -127,7 +127,7 @@ public class Game {
         if (targetIsParking) {
             ret = parke(index, teil);
         } else {
-            System.out.println("dispatch(2) x="+((int)x)+", y="+((int)y )+ " jux");
+            debug("dispatch(2) x="+((int)x)+", y="+((int)y )+ " jux");
             ret = platziere(index, teil, (int) x, (int) y);
         }
         if (ret) {
