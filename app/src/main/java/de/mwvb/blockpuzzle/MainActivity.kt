@@ -28,30 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         spielfeld.setGame(game)
 
-        (placeholder1 as ViewGroup).addView(
-            TeilView(
-                baseContext,
-                false
-            )
-        )
-        (placeholder2 as ViewGroup).addView(
-            TeilView(
-                baseContext,
-                false
-            )
-        )
-        (placeholder3 as ViewGroup).addView(
-            TeilView(
-                baseContext,
-                false
-            )
-        )
-        (parking as ViewGroup).addView(
-            TeilView(
-                baseContext,
-                true
-            )
-        )
+        (placeholder1 as ViewGroup).addView(TeilView(baseContext, false))
+        (placeholder2 as ViewGroup).addView(TeilView(baseContext, false))
+        (placeholder3 as ViewGroup).addView(TeilView(baseContext, false))
+        (parking as ViewGroup).addView(TeilView(baseContext, true))
 
         initDragAndDrop()
         neuesSpiel.setOnClickListener {
