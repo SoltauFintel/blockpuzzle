@@ -147,6 +147,11 @@ public class Spielstein {
         return ret;
     }
 
+    /* Der Spieler muss mindestens diese Punktzahl haben, damit der Spielstein verfügbar wird. */
+    public int getMindestpunktzahl() {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName();

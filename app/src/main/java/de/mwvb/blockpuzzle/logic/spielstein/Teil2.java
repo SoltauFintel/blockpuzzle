@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
+/** Twix */
 public class Teil2 extends Spielstein {
 
     public Teil2() {

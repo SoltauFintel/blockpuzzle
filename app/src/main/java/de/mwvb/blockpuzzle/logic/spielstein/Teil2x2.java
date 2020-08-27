@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Block 2x2 */
+/** Block 2x2 - Block */
 public class Teil2x2 extends Spielstein {
 
     public Teil2x2() {

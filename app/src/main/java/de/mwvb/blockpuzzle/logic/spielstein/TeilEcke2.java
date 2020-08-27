@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
+/** Tetris style O */
 public class TeilEcke2 extends Spielstein {
 
     public TeilEcke2() {

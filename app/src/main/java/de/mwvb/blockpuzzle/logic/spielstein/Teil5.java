@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
+/** Long John */
 public class Teil5 extends Spielstein {
 
     public Teil5() {

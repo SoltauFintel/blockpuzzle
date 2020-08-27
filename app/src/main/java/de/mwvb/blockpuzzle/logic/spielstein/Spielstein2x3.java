@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
+/** Long beard */
 public class Spielstein2x3 extends Spielstein {
 
     public Spielstein2x3() {

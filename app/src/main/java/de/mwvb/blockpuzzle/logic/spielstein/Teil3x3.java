@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Block 3x3 */
+/** Block 3x3 - Killer */
 public class Teil3x3 extends Spielstein {
 
     public Teil3x3() {

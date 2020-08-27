@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Tetris style */
+/** Tetris style J */
+// TODO Den auch als L machen!
 public class SpielsteinLangeEcke extends Spielstein {
 
     public SpielsteinLangeEcke() {
@@ -8,5 +9,10 @@ public class SpielsteinLangeEcke extends Spielstein {
         fill(1, 2);
         fill(2, 2);
         fill(3, 2);
+    }
+
+    @Override
+    public int getMindestpunktzahl() {
+        return 2000;
     }
 }

@@ -29,6 +29,9 @@ public class Game {
         view = activity;
 
         // Jede Spielsteinart standardmäßig 4x dabei.
+        // Je nach Schwierigkeitsgrad wird das zum Teil abhängig von der Punktzahl variiert.
+
+        // TODO Das mit der Mindestpunktzahl ist nicht so gut lesbar. Denkbar wäre auch noch eine Maximalpunktzahl.
 
         teile.add(new Teil1());
         teile.add(new Teil1());
@@ -73,28 +76,95 @@ public class Game {
 
         // schwieriger Stein, seltener
         teile.add(new Teil2x2());
-        teile.add(new Teil2x2());
+        teile.add(new Teil2x2() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 3500;
+            }
+        });
 //        teile.add(new Teil2x2());
 //        teile.add(new Teil2x2());
 
-        // schwieriger Stein, Bonus Stein, seltener
-        teile.add(new Spielstein2x3());
-//        teile.add(new Spielstein2x3().rotateToRight());
+        // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
+        teile.add(new Spielstein2x3() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 3000;
+            }
+        });
+        teile.add(new Spielstein2x3() { // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+            @Override
+            public int getMindestpunktzahl() {
+                return 6000;
+            }
+        }.rotateToRight());
 //        teile.add(new Spielstein2x3());
 //        teile.add(new Spielstein2x3().rotateToRight());
 
-        // extrem schwieriger Stein, seltener
+        // schwieriger Stein, seltener
         teile.add(new Teil3x3());
+        teile.add(new Teil3x3() { // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+            @Override
+            public int getMindestpunktzahl() {
+                return 5000;
+            }
+        });
+        teile.add(new Teil3x3() { // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+            @Override
+            public int getMindestpunktzahl() {
+                return 7000;
+            }
+        });
 //        teile.add(new Teil3x3());
-//        teile.add(new Teil3x3());
-//        teile.add(new Teil3x3());
+
+        // Tetris S ab 4000 P.
+        teile.add(new SpielsteinS() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 4000;
+            }
+        });
+        teile.add(new SpielsteinS() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 4000;
+            }
+        }.rotateToRight());
+//        teile.add(new SpielsteinS().rotateToRight().rotateToRight());
+//        teile.add(new SpielsteinS().rotateToLeft());
+
+        // Bonus Spielstein Mr. T ab 8000 P.
+        teile.add(new SpielsteinT() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 8000;
+            }
+        });
+        teile.add(new SpielsteinT() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 8000;
+            }
+        }.rotateToRight());
+        teile.add(new SpielsteinT() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 8000;
+            }
+        }.rotateToRight().rotateToRight());
+        teile.add(new SpielsteinT() {
+            @Override
+            public int getMindestpunktzahl() {
+                return 8000;
+            }
+        }.rotateToLeft());
     }
 
     // Neues Spiel ----
 
     public void newGame() {
         gameOver = false;
-        punkte = 0;
+        punkte = 9000;
         spielfeld.clear();
 
         view.updatePunkte();
@@ -112,8 +182,17 @@ public class Game {
     }
 
     private Spielstein createZufallsteil(List<Spielstein> teile) {
+        int loop = 0;
         int index = rand.nextInt(teile.size());
-        return teile.get(index);
+        Spielstein spielstein = teile.get(index);
+        while (punkte < spielstein.getMindestpunktzahl()) {
+            if (++loop > 1000) { // Notausgang
+                return teile.get(0);
+            }
+            index = rand.nextInt(teile.size());
+            spielstein = teile.get(index);
+        }
+        return spielstein;
     }
 
     // Spielaktionen ----

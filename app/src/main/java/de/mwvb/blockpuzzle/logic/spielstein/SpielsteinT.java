@@ -1,11 +1,12 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Uboot */
-public class Teil3 extends Spielstein {
+/** Tetris style T */
+public class SpielsteinT extends Spielstein {
 
-    public Teil3() {
+    public SpielsteinT() {
         fill(1, 2);
         fill(2, 2);
+        fill(2, 3);
         fill(3, 2);
     }
 }
