@@ -164,7 +164,7 @@ public class Game {
 
     public void newGame() {
         gameOver = false;
-        punkte = 9000;
+        punkte = 0;
         spielfeld.clear();
 
         view.updatePunkte();
@@ -246,12 +246,45 @@ public class Game {
 
             // Punktzahl erhöhen
             punkte += teil.getPunkte() + 10 * f.getTreffer();
+            rowsAdditionalBonus(f.getTreffer());
             view.updatePunkte();
 
             view.clearRows(f); // Wird erst wenige Millisekunden später fertig!
             spielfeld.clearRows(f);
+            if (f.getTreffer() > 0) {
+                wenigeSpielsteineAufSpielfeld();
+            }
         }
         return ret;
+    }
+
+    private void rowsAdditionalBonus(int rows) {
+        switch (rows) {
+            case 0:
+            case 1: break; // 0-1 kein Bonus
+            // Bonuspunkte wenn mehr als 2 Rows gleichzeitig abgeräumt werden.
+            // Fällt mir etwas schwer zu entscheiden wieviel Punkte das jeweils wert ist.
+            case 2: punkte += 12; break;
+            case 3: punkte += 15; break;
+            default: /* >= 4 */ punkte += 22; break;
+        }
+    }
+
+    private void wenigeSpielsteineAufSpielfeld() {
+        // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine
+        // auf dem Spielfeld sind. 1-2 ist nicht einfach, 0 fast unmöglich.
+        int bonus = 0;
+        switch (spielfeld.getGefuellte()) {
+            case 0: bonus = 444; break; // Wahnsinn!
+            case 1: bonus = 111; break;
+            case 2: bonus = 30; break;
+            case 3: bonus = 15; break;
+            case 4: bonus = 4; break;
+        }
+        if (bonus > 0) {
+            punkte += bonus;
+            view.updatePunkte();
+        }
     }
 
     private void checkGame() {

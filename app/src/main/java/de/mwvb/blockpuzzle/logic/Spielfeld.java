@@ -27,11 +27,6 @@ public class Spielfeld {
                 set(x, y, 0);
             }
         }
-        // TODO Demo
-//        set(0, 0, 1);
-//        set(0, blocks - 1, 1);
-//        set(blocks - 1, 0, 1);
-//        set(blocks - 1, blocks - 1, 1);
     }
 
     public boolean match(Spielstein teil, QPosition pos) {
@@ -116,6 +111,17 @@ public class Spielfeld {
                 set(x, y, 0);
             }
         }
+    }
+
+    public int getGefuellte() {
+        int ret = 0;
+        for (int x = 0; x < blocks; x++) {
+            for (int y = 0; y < blocks; y++) {
+                int value = get(x, y);
+                if (value > 0 && value < 30) ret++;
+            }
+        }
+        return ret;
     }
 
     private void debug(String msg) {
