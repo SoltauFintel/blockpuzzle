@@ -12,10 +12,10 @@ class MyDragShadowBuilder(view: TeilView, private val f: Float) : View.DragShado
         val tv = this.view as TeilView
         if (tv.teil == null) return // Programmschutz
 
-        outShadowSize?.set((tv.width * 2).toInt(), (tv.height * 2).toInt()) // normale Größe
+        outShadowSize?.set(tv.width * 2, tv.height * 2) // normale Größe
 
-        val ax = (tv.teil.minX * br + brh) * f
-        val ay = (tv.teil.maxY * br + brh + br + br) * f
+        val ax = f * (tv.teil.minX * br + brh)
+        val ay = f * (tv.teil.maxY * br + brh + br + br)
         outShadowTouchPoint?.set(ax.toInt(), ay.toInt())
     }
 }
