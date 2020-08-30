@@ -7,7 +7,7 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinLangeEcke;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinJ;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinS;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinT;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein1;
@@ -81,8 +81,8 @@ public class Game {
         teile.add(new SpielsteinEcke3().rotateToLeft());
 
         // Bonus-Stein, seltener
-        teile.add(new SpielsteinLangeEcke().withMindestpunktzahl(3000));
-        teile.add(new SpielsteinLangeEcke().withMindestpunktzahl(3000).rotateToRight());
+        teile.add(new SpielsteinJ().withMindestpunktzahl(3000));
+        teile.add(new SpielsteinJ().withMindestpunktzahl(3000).rotateToRight());
 
         // schwieriger Stein, seltener
         teile.add(new Spielstein2x2());
