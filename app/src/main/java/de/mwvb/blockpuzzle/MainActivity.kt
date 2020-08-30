@@ -39,19 +39,20 @@ class MainActivity : AppCompatActivity() {
             game.newGame()
         }
         drehmodus.setOnClickListener {
-            if (game.isGameOver) {
-            } else if (game.toggleDrehmodus()) {
-                drehmodus.text = resources.getText(R.string.drehenAn)
-                initClickListener(1)
-                initClickListener(2)
-                initClickListener(3)
-                initClickListener(-1)
-            } else {
-                drehmodus.text = resources.getText(R.string.drehenAus)
-                initTouchListener(1)
-                initTouchListener(2)
-                initTouchListener(3)
-                initTouchListener(-1)
+            if (!game.isGameOver) {
+                if (game.toggleDrehmodus()) {
+                    drehmodus.text = resources.getText(R.string.drehenAn)
+                    initClickListener(1)
+                    initClickListener(2)
+                    initClickListener(3)
+                    initClickListener(-1)
+                } else {
+                    drehmodus.text = resources.getText(R.string.drehenAus)
+                    initTouchListener(1)
+                    initTouchListener(2)
+                    initTouchListener(3)
+                    initTouchListener(-1)
+                }
             }
         }
 
