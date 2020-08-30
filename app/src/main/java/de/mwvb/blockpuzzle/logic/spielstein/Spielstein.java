@@ -23,9 +23,7 @@ public class Spielstein {
     public Spielstein copy() {
         Spielstein n = new Spielstein();
         for (int x = 0; x < max; x++) {
-            for (int y = 0; y < max; y++) {
-                n.matrix[x][y] = matrix[x][y];
-            }
+            System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
         }
         return n;
     }
@@ -95,9 +93,7 @@ public class Spielstein {
         transfer(2, 2, 2, 2);
         // Zurückübertragen
         for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                matrix[x][y] = neu[x][y];
-            }
+            System.arraycopy(neu[x], 0, matrix[x], 0, 5);
         }
         return this;
     }
