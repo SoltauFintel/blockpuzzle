@@ -50,13 +50,13 @@ class MainActivity : AppCompatActivity() {
         drehmodus.setOnClickListener {
             if (!game.isGameOver) {
                 if (game.toggleDrehmodus()) {
-                    drehmodus.text = resources.getText(R.string.drehenAn)
+                    drehmodus.isChecked = true
                     initClickListener(1)
                     initClickListener(2)
                     initClickListener(3)
                     initClickListener(-1)
                 } else {
-                    drehmodus.text = resources.getText(R.string.drehenAus)
+                    drehmodus.isChecked = false
                     initTouchListener(1)
                     initTouchListener(2)
                     initTouchListener(3)

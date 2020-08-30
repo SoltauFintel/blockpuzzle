@@ -33,14 +33,16 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
+
         <Button
             android:id="@+id/neuesSpiel"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="27dp"
+            android:background="#ED9898"
             android:text="@string/neuesSpiel"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
     </LinearLayout>
 
     <RelativeLayout
@@ -81,12 +83,20 @@
             android:layout_marginStart="10dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/drehmodus"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "@string/drehenAus"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:layout_gravity="end"
-        android:textAllCaps="false"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drehmodus "/>
+        <Switch
+            android:id="@+id/drehmodus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </LinearLayout>
