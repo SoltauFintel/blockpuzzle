@@ -127,15 +127,15 @@ public class Game {
         view.updatePunkte();
         view.drawSpielfeld();
         vorschlag();
-        view.setTeil(-1, null);
+        view.setSpielstein(-1, null);
         // TODO Drehmodus deaktivieren
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
     private void vorschlag() {
-        view.setTeil(1, createZufallsteil(teile));
-        view.setTeil(2, createZufallsteil(teile));
-        view.setTeil(3, createZufallsteil(teile));
+        view.setSpielstein(1, createZufallsteil(teile));
+        view.setSpielstein(2, createZufallsteil(teile));
+        view.setSpielstein(3, createZufallsteil(teile));
     }
 
     private Spielstein createZufallsteil(List<Spielstein> teile) {
@@ -166,7 +166,7 @@ public class Game {
             ret = platziere(index, teil, (int) x, (int) y);
         }
         if (ret) {
-            if (view.getTeil(1) == null && view.getTeil(2) == null && view.getTeil(3) == null) {
+            if (view.getSpielstein(1) == null && view.getSpielstein(2) == null && view.getSpielstein(3) == null) {
                 vorschlag();
             }
             checkGame();
@@ -177,9 +177,9 @@ public class Game {
 
     /** Drop Aktion für Parking Area */
     private boolean parke(int index, Spielstein teil) {
-        if (index != -1 && view.getTeil(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
-            view.setTeil(-1, view.getTeil(index)); // Parking belegen
-            view.setTeil(index, null); // Source leeren
+        if (index != -1 && view.getSpielstein(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
+            view.setSpielstein(-1, view.getSpielstein(index)); // Parking belegen
+            view.setSpielstein(index, null); // Source leeren
             return true;
         }
         return false;
@@ -195,7 +195,7 @@ public class Game {
         if (ret) {
             spielfeld.platziere(teil, pos);
             view.drawSpielfeld();
-            view.setTeil(index, null);
+            view.setSpielstein(index, null);
 
             // Gibt es gefüllte Rows?
             FilledRows f = spielfeld.getFilledRows();
@@ -249,7 +249,7 @@ public class Game {
         boolean b = moveImpossible(2);
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
-        if (a && b && c && d && view.getTeil(-1) != null) {
+        if (a && b && c && d && view.getSpielstein(-1) != null) {
             gameOver = true;
             view.updatePunkte();
             view.drawSpielfeld(); // wenn parke die letzte Aktion war
@@ -257,7 +257,7 @@ public class Game {
     }
 
     public boolean moveImpossible(int index) {
-        Spielstein teil = view.getTeil(index);
+        Spielstein teil = view.getSpielstein(index);
         if (teil == null) {
             return true; // TeilView ist leer
         }

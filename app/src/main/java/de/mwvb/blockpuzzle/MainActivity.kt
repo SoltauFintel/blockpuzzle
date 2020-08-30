@@ -68,10 +68,11 @@ class MainActivity : AppCompatActivity() {
         parking.setOnDragListener(createDragListener(true))
     }
 
+    /** Spielsteinbewegung starten */
     @SuppressLint("ClickableViewAccessibility") // click geht nicht, wir brauchen onTouch
     private fun initTouchListener(index: Int) {
-        getTeilView(index).setOnClickListener(null)
-        getTeilView(index).setOnTouchListener { it, _ ->
+        getSpielsteinView(index).setOnClickListener(null)
+        getSpielsteinView(index).setOnTouchListener { it, _ ->
             try {
                 val data = ClipData.newPlainText("index", index.toString())
                 val tv = it as TeilView
@@ -86,12 +87,13 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        getTeilView(index).setDrehmodus(false)
+        getSpielsteinView(index).setDrehmodus(false)
     }
 
+    /** Spielstein drehen */
     private fun initClickListener(index: Int) {
-        getTeilView(index).setOnTouchListener(null)
-        getTeilView(index).setOnClickListener {
+        getSpielsteinView(index).setOnTouchListener(null)
+        getSpielsteinView(index).setOnClickListener {
             try {
                 val tv = it as TeilView
                 if (!game.isGameOver) {
@@ -102,9 +104,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
             }
         }
-        getTeilView(index).setDrehmodus(true)
+        getSpielsteinView(index).setDrehmodus(true)
     }
 
+    /** Spielstein droppen */
     private fun createDragListener(targetIsParking: Boolean): View.OnDragListener {
         return View.OnDragListener { _, event ->
             when (event.action) {
@@ -116,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val item = event.clipData.getItemAt(0)
                         val index: Int = item.text.toString().toInt()
-                        val spielstein = getTeil(index)
+                        val spielstein = getSpielstein(index)
 
                         // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
                         wo = "F2: "
@@ -141,10 +144,10 @@ class MainActivity : AppCompatActivity() {
                 DragEvent.ACTION_DRAG_ENDED -> {
                     try {
                         // Da ich nicht weiß, welcher ausgeblent ist, blende ich einfach alle ein.
-                        getTeilView(1).endDragMode()
-                        getTeilView(2).endDragMode()
-                        getTeilView(3).endDragMode()
-                        getTeilView(-1).endDragMode()
+                        getSpielsteinView(1).endDragMode()
+                        getSpielsteinView(2).endDragMode()
+                        getSpielsteinView(3).endDragMode()
+                        getSpielsteinView(-1).endDragMode()
                     } catch (e: Exception) {
                         Toast.makeText(this, "F/dragEnd: " + e.message, Toast.LENGTH_LONG).show()
                     }
@@ -173,24 +176,24 @@ class MainActivity : AppCompatActivity() {
         spielfeld.clearRows(filledRows)
     }
 
-    fun setTeil(index: Int, teil: Spielstein?) {
-        val tv = getTeilView(index)
+    fun setSpielstein(index: Int, teil: Spielstein?) {
+        val tv = getSpielsteinView(index)
         tv.endDragMode()
         tv.isGrey = false
         tv.spielstein = teil // macht draw()
     }
 
-    fun getTeil(index: Int): Spielstein? {
-        return getTeilView(index).spielstein
+    fun getSpielstein(index: Int): Spielstein? {
+        return getSpielsteinView(index).spielstein
     }
 
     fun grey(index: Int, grey: Boolean) {
-        val tv = getTeilView(index)
+        val tv = getSpielsteinView(index)
         tv.isGrey = grey
         tv.draw()
     }
 
-    private fun getTeilView(index: Int): TeilView {
+    private fun getSpielsteinView(index: Int): TeilView {
         return when (index) {
              1 -> (placeholder1 as ViewGroup).getChildAt(0) as TeilView
              2 -> (placeholder2 as ViewGroup).getChildAt(0) as TeilView
