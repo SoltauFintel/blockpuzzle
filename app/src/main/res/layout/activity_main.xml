@@ -51,8 +51,7 @@
             android:id="@+id/spielfeld"
             android:layout_width="300dp"
             android:layout_height="360dp"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"/>
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
     <LinearLayout

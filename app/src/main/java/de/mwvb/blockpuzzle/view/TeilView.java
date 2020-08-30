@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
  * Aus der TeilView erfolgt die DragNDrop Operation.
  * Die 4. TeilView ist das Parking Area zum vorübergehenden Ablegen eines Teil.
  */
+@SuppressLint("ViewConstructor")
 public class TeilView extends View {
     private final boolean parking;
     private final Paint p_normal = new Paint(); // TODO final
