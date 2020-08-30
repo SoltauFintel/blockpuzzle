@@ -8,7 +8,6 @@ import android.view.View;
 
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
-import de.mwvb.blockpuzzle.logic.spielstein.*;
 
 /**
  * Im unteren Bereich die View Komponente, die ein Teil (oder ein leeres Teil) enthält.
@@ -17,10 +16,10 @@ import de.mwvb.blockpuzzle.logic.spielstein.*;
  */
 public class TeilView extends View {
     private final boolean parking;
-    private Paint p_normal = new Paint(); // TODO final
-    private Paint p_grey = new Paint();
-    private Paint p_drehmodus = new Paint();
-    private Paint p_parking = new Paint();
+    private final Paint p_normal = new Paint(); // TODO final
+    private final Paint p_grey = new Paint();
+    private final Paint p_drehmodus = new Paint();
+    private final Paint p_parking = new Paint();
     private Spielstein teil = null;
     /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
     private boolean grey = false;

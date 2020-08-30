@@ -5,8 +5,20 @@ import java.util.List;
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
-import de.mwvb.blockpuzzle.logic.spielstein.*;
-import de.mwvb.blockpuzzle.view.SpielfeldView;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinLangeEcke;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinS;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinT;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil1;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil2;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil2x2;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil3;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil3x3;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil4;
+import de.mwvb.blockpuzzle.logic.spielstein.Teil5;
+import de.mwvb.blockpuzzle.logic.spielstein.TeilEcke2;
+import de.mwvb.blockpuzzle.logic.spielstein.TeilEcke3;
 
 public class Game {
     public static final int blocks = 10;

@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.musik.Musik;
