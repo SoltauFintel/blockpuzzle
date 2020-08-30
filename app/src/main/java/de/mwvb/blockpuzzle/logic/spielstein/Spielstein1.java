@@ -1,9 +1,9 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
 /** Mini */
-public class Teil1 extends Spielstein {
+public class Spielstein1 extends Spielstein {
 
-    public Teil1() {
+    public Spielstein1() {
         fill(2, 2);
     }
 }

@@ -1,13 +1,12 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Long John */
-public class Teil5 extends Spielstein {
+/** 4er Kette */
+public class Spielstein4 extends Spielstein {
 
-    public Teil5() {
+    public Spielstein4() {
         fill(0, 2);
         fill(1, 2);
         fill(2, 2);
         fill(3, 2);
-        fill(4, 2);
     }
 }

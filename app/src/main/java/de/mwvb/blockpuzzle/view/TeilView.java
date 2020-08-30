@@ -11,9 +11,10 @@ import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 
 /**
- * Im unteren Bereich die View Komponente, die ein Teil (oder ein leeres Teil) enthält.
- * Aus der TeilView erfolgt die DragNDrop Operation.
+ * Im unteren Bereich die View Komponente, die ein Spielstein (oder einen leeren Spielstein) enthält.
+ * Aus der TeilView erfolgt die Drag-and-Drop Operation.
  * Die 4. TeilView ist das Parking Area zum vorübergehenden Ablegen eines Teil.
+ * Teil ist der alte Name für Spielstein; daher TeilView.
  */
 @SuppressLint("ViewConstructor")
 public class TeilView extends View {

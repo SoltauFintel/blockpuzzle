@@ -1,8 +1,8 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-public class TeilEcke3 extends Spielstein {
+public class SpielsteinEcke3 extends Spielstein {
 
-    public TeilEcke3() {
+    public SpielsteinEcke3() {
         fill(1, 1);
         fill(1, 2);
         fill(1, 3);

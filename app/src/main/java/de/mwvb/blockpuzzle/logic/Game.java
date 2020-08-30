@@ -10,15 +10,15 @@ import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinLangeEcke;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinS;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinT;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil1;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil2;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil2x2;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil3;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil3x3;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil4;
-import de.mwvb.blockpuzzle.logic.spielstein.Teil5;
-import de.mwvb.blockpuzzle.logic.spielstein.TeilEcke2;
-import de.mwvb.blockpuzzle.logic.spielstein.TeilEcke3;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein1;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x2;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein3;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein3x3;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein4;
+import de.mwvb.blockpuzzle.logic.spielstein.Spielstein5;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke2;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke3;
 
 public class Game {
     public static final int blocks = 10;
@@ -45,40 +45,40 @@ public class Game {
 
         // TODO Das mit der Mindestpunktzahl ist nicht so gut lesbar. Denkbar wäre auch noch eine Maximalpunktzahl.
 
-        teile.add(new Teil1());
-        teile.add(new Teil1());
-        teile.add(new Teil1());
-        teile.add(new Teil1());
+        teile.add(new Spielstein1());
+        teile.add(new Spielstein1());
+        teile.add(new Spielstein1());
+        teile.add(new Spielstein1());
 
-        teile.add(new Teil2());
-        teile.add(new Teil2().rotateToRight());
-        teile.add(new Teil2());
-        teile.add(new Teil2().rotateToRight());
+        teile.add(new Spielstein2());
+        teile.add(new Spielstein2().rotateToRight());
+        teile.add(new Spielstein2());
+        teile.add(new Spielstein2().rotateToRight());
 
-        teile.add(new Teil3());
-        teile.add(new Teil3().rotateToRight());
-        teile.add(new Teil3());
-        teile.add(new Teil3().rotateToRight());
+        teile.add(new Spielstein3());
+        teile.add(new Spielstein3().rotateToRight());
+        teile.add(new Spielstein3());
+        teile.add(new Spielstein3().rotateToRight());
 
-        teile.add(new Teil4());
-        teile.add(new Teil4().rotateToRight());
-        teile.add(new Teil4());
-        teile.add(new Teil4().rotateToRight());
+        teile.add(new Spielstein4());
+        teile.add(new Spielstein4().rotateToRight());
+        teile.add(new Spielstein4());
+        teile.add(new Spielstein4().rotateToRight());
 
-        teile.add(new Teil5());
-        teile.add(new Teil5().rotateToRight());
-        teile.add(new Teil5());
-        teile.add(new Teil5().rotateToRight());
+        teile.add(new Spielstein5());
+        teile.add(new Spielstein5().rotateToRight());
+        teile.add(new Spielstein5());
+        teile.add(new Spielstein5().rotateToRight());
 
-        teile.add(new TeilEcke2());
-        teile.add(new TeilEcke2().rotateToRight());
-        teile.add(new TeilEcke2().rotateToRight().rotateToRight());
-        teile.add(new TeilEcke2().rotateToLeft());
+        teile.add(new SpielsteinEcke2());
+        teile.add(new SpielsteinEcke2().rotateToRight());
+        teile.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
+        teile.add(new SpielsteinEcke2().rotateToLeft());
 
-        teile.add(new TeilEcke3());
-        teile.add(new TeilEcke3().rotateToRight());
-        teile.add(new TeilEcke3().rotateToRight().rotateToRight());
-        teile.add(new TeilEcke3().rotateToLeft());
+        teile.add(new SpielsteinEcke3());
+        teile.add(new SpielsteinEcke3().rotateToRight());
+        teile.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
+        teile.add(new SpielsteinEcke3().rotateToLeft());
 
         // Bonus-Stein, seltener
         teile.add(new SpielsteinLangeEcke());
@@ -87,10 +87,10 @@ public class Game {
 //        teile.add(new SpielsteinLangeEcke().rotateToLeft());
 
         // schwieriger Stein, seltener
-        teile.add(new Teil2x2());
-        teile.add(new Teil2x2().withMindestpunktzahl(3500));
-//        teile.add(new Teil2x2());
-//        teile.add(new Teil2x2());
+        teile.add(new Spielstein2x2());
+        teile.add(new Spielstein2x2().withMindestpunktzahl(3500));
+//        teile.add(new Spielstein2x2());
+//        teile.add(new Spielstein2x2());
 
         // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
         teile.add(new Spielstein2x3().withMindestpunktzahl(3000));
@@ -99,10 +99,10 @@ public class Game {
 //        teile.add(new Spielstein2x3().rotateToRight());
 
         // schwieriger Stein, seltener
-        teile.add(new Teil3x3());
-        teile.add(new Teil3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-        teile.add(new Teil3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//        teile.add(new Teil3x3());
+        teile.add(new Spielstein3x3());
+        teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+        teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+//        teile.add(new Spielstein3x3());
 
         // Tetris S ab 4000 P.
         teile.add(new SpielsteinS().withMindestpunktzahl(4000));
@@ -187,7 +187,7 @@ public class Game {
 
     /**
      * Drop Aktion für Spielfeld
-     * @return true wenn Teil platziert wurde, false wenn dies nicht möglich ist
+     * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
     private boolean platziere(int index, Spielstein teil, int x, int y) {
         QPosition pos = new QPosition(x, y);
@@ -244,7 +244,7 @@ public class Game {
     }
 
     private void checkGame() {
-        // es muss ein Teil noch rein gehen
+        // es muss ein Spielstein noch rein gehen
         boolean a = moveImpossible(1);
         boolean b = moveImpossible(2);
         boolean c = moveImpossible(3);
@@ -259,18 +259,18 @@ public class Game {
     public boolean moveImpossible(int index) {
         Spielstein teil = view.getTeil(index);
         if (teil == null) {
-            return true; // Teil ist leer
+            return true; // TeilView ist leer
         }
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 if (spielfeld.match(teil, new QPosition(x, y))) {
                     view.grey(index, false);
-                    return false; // Teil passt rein
+                    return false; // Spielstein passt rein
                 }
             }
         }
         view.grey(index, true);
-        return true; // Teil passt nirgendwo rein
+        return true; // Spielstein passt nirgendwo rein
     }
 
     public int getPunkte() {
