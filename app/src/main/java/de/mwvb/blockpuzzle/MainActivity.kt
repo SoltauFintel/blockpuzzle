@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 dialog.show()
             }
         }
-        drehmodus.setOnClickListener {
+        drehmodus.setOnCheckedChangeListener { _, _ ->
             if (!game.isGameOver) {
                 if (game.toggleDrehmodus()) {
                     drehmodus.isChecked = true
