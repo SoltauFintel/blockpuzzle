@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.ui.AppBarConfiguration
 import de.mwvb.blockpuzzle.logic.FilledRows
 import de.mwvb.blockpuzzle.logic.Game
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
@@ -17,7 +16,6 @@ import de.mwvb.blockpuzzle.view.TeilView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private val game = Game(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -112,4 +112,10 @@ public class TeilView extends View {
         teil.rotateToRight();
         draw();
     }
+
+    @Override
+    public boolean performClick() {
+        // wegen Warning in MainActivity.initClickListener()
+        return super.performClick();
+    }
 }
