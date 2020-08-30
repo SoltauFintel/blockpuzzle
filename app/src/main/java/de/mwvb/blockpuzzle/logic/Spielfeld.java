@@ -36,21 +36,15 @@ public class Spielfeld {
                     int ax = pos.getX() + x - teil.getMinX();
                     int ay = pos.getY() + y - teil.getMinY();
                     if (ax < 0 || ax >= blocks || ay < 0 || ay >= blocks) {
-                        debug("match false wegen out of bounds / " + teil);
                         return false;
                     }
                     int v = get(ax, ay);
                     if (v > 0 && v < 30) {
-                        debug("match false / " + v + " / " + teil
-                                + " / " + pos.getX() + "x" + pos.getY() + " / x="+x
-                                + " (min=" + teil.getMinX() + "), y="+y
-                                + " (min=" + teil.getMinY() + ")");
                         return false;
                     }
                 }
             }
         }
-        debug("match TRUE / " + teil);
         return true;
     }
 
@@ -122,9 +116,5 @@ public class Spielfeld {
             }
         }
         return ret;
-    }
-
-    private void debug(String msg) {
-        System.out.println(msg);
     }
 }

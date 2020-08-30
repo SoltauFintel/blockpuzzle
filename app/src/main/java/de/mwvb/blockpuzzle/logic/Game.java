@@ -163,7 +163,6 @@ public class Game {
         if (targetIsParking) {
             ret = parke(index, teil);
         } else {
-            debug("dispatch(2) x="+((int)x)+", y="+((int)y )+ " jux");
             ret = platziere(index, teil, (int) x, (int) y);
         }
         if (ret) {
@@ -250,7 +249,6 @@ public class Game {
         boolean b = moveImpossible(2);
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
-        debug("checkGame: " + a + ", " + b + ", " + c + "; " + d);
         if (a && b && c && d && view.getTeil(-1) != null) {
             gameOver = true;
             view.updatePunkte();
@@ -261,20 +259,17 @@ public class Game {
     public boolean moveImpossible(int index) {
         Spielstein teil = view.getTeil(index);
         if (teil == null) {
-            debug("moveImpossible("+index+") -> true weil Teil ist leer");
             return true; // Teil ist leer
         }
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 if (spielfeld.match(teil, new QPosition(x, y))) {
                     view.grey(index, false);
-                    debug("moveImpossible("+index+") -> false, d.h. Move ist möglich");
                     return false; // Teil passt rein
                 }
             }
         }
         view.grey(index, true);
-        debug("moveImpossible("+index+") -> true, d.h. Teil passt nicht rein");
         return true; // Teil passt nirgendwo rein
     }
 
@@ -293,9 +288,5 @@ public class Game {
     public boolean toggleDrehmodus() {
         drehen = !drehen;
         return drehen;
-    }
-
-    private void debug(String msg) {
-        System.out.println(msg);
     }
 }
