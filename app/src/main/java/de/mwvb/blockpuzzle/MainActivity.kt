@@ -174,11 +174,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTeilView(index: Int): TeilView {
-        when (index) {
-            -1 -> return (parking as ViewGroup).getChildAt(0) as TeilView
-            1 -> return (placeholder1 as ViewGroup).getChildAt(0) as TeilView
-            2 -> return (placeholder2 as ViewGroup).getChildAt(0) as TeilView
-            3 -> return (placeholder3 as ViewGroup).getChildAt(0) as TeilView
+        return when (index) {
+             1 -> (placeholder1 as ViewGroup).getChildAt(0) as TeilView
+             2 -> (placeholder2 as ViewGroup).getChildAt(0) as TeilView
+             3 -> (placeholder3 as ViewGroup).getChildAt(0) as TeilView
+            -1 -> (parking      as ViewGroup).getChildAt(0) as TeilView
             else -> throw RuntimeException()
         }
     }
