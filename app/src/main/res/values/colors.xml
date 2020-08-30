@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="colorPink">#ccccff</color>
-    <color name="colorBlack">#000000</color>
+    <color name="colorHeadlineBackground">#ccccff</color>
+    <color name="colorHeadlineForeground">#000000</color>
+
+    <color name="colorNormal">#a65726</color>
+    <color name="colorGrey">#888888</color>
+    <color name="colorDrehmodus">#009900</color>
+    <color name="colorParking">#ccccff</color>
 </resources>

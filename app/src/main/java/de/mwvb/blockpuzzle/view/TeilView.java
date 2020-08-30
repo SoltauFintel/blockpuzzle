@@ -3,10 +3,10 @@ package de.mwvb.blockpuzzle.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 
@@ -23,29 +23,29 @@ public class TeilView extends View {
     private final Paint p_grey = new Paint();
     private final Paint p_drehmodus = new Paint();
     private final Paint p_parking = new Paint();
-    private Spielstein teil = null;
+    private Spielstein spielstein = null;
     /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
     private boolean grey = false;
-    private boolean dragMode = false;
     private boolean drehmodus = false;
+    private boolean dragMode = false;
 
     public TeilView(Context context, boolean parking) {
         super(context);
         this.parking = parking;
-        // TODO Farben nach colors.xml
-        p_normal.setColor(Color.parseColor("#a65726"));
-        p_grey.setColor(Color.parseColor("#888888"));
-        p_drehmodus.setColor(Color.parseColor("#009900"));
-        p_parking.setColor(Color.parseColor("#ccccff"));
+
+        p_normal.setColor(getResources().getColor(R.color.colorNormal));
+        p_grey.setColor(getResources().getColor(R.color.colorGrey));
+        p_drehmodus.setColor(getResources().getColor(R.color.colorDrehmodus));
+        p_parking.setColor(getResources().getColor(R.color.colorParking));
     }
 
-    public void setTeil(Spielstein v) {
-        teil = v;
+    public void setSpielstein(Spielstein v) {
+        spielstein = v;
         draw();
     }
 
-    public Spielstein getTeil() {
-        return teil;
+    public Spielstein getSpielstein() {
+        return spielstein;
     }
 
     // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
@@ -67,7 +67,7 @@ public class TeilView extends View {
         if (parking && !dragMode) {
             canvas.drawRect(0, 0, br * Spielstein.max * f, br * Spielstein.max * f, p_parking);
         }
-        if (teil != null) {
+        if (spielstein != null) {
             Paint fuellung;
             if (grey) {
                 fuellung = p_grey;
@@ -79,7 +79,7 @@ public class TeilView extends View {
             // TODO Ist das doppelter Code zu SpielfeldView?
             for (int x = 0; x < Spielstein.max; x++) {
                 for (int y = 0; y < Spielstein.max; y++) {
-                    if (teil.filled(x, y)) {
+                    if (spielstein.filled(x, y)) {
                         float tx = x * br, ty = y * br;
                         canvas.drawRect((tx + p) * f, (ty + p) * f,
                                 (tx + br - p) * f, (ty + br - p) * f, fuellung);
@@ -111,7 +111,7 @@ public class TeilView extends View {
     }
 
     public void rotate() {
-        teil.rotateToRight();
+        spielstein.rotateToRight();
         draw();
     }
 

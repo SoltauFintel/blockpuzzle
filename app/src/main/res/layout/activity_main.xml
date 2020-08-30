@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPink">
+        android:background="@color/colorHeadlineBackground">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="14dp"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorHeadlineForeground"
             android:text="@string/app_name"/>
     </LinearLayout>
     <LinearLayout

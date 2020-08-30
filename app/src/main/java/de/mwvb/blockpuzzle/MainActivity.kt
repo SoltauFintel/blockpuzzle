@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         getTeilView(index).setOnTouchListener { it, _ ->
             val data = ClipData.newPlainText("index", index.toString())
             val tv = it as TeilView
-            if (tv.teil != null && !game.isGameOver) {
+            if (tv.spielstein != null && !game.isGameOver) {
                 tv.startDragMode()
                 val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                 it.startDragAndDrop(data, dragShadowBuilder, it, 0)
@@ -158,11 +158,11 @@ class MainActivity : AppCompatActivity() {
         val tv = getTeilView(index)
         tv.endDragMode()
         tv.isGrey = false
-        tv.teil = teil // macht draw()
+        tv.spielstein = teil // macht draw()
     }
 
     fun getTeil(index: Int): Spielstein? {
-        return getTeilView(index).teil
+        return getTeilView(index).spielstein
     }
 
     fun grey(index: Int, grey: Boolean) {
