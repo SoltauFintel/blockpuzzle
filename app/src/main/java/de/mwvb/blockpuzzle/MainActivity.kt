@@ -72,12 +72,17 @@ class MainActivity : AppCompatActivity() {
     private fun initTouchListener(index: Int) {
         getTeilView(index).setOnClickListener(null)
         getTeilView(index).setOnTouchListener { it, _ ->
-            val data = ClipData.newPlainText("index", index.toString())
-            val tv = it as TeilView
-            if (tv.spielstein != null && !game.isGameOver) {
-                tv.startDragMode()
-                val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
-                it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+            try {
+                val data = ClipData.newPlainText("index", index.toString())
+                val tv = it as TeilView
+                if (tv.spielstein != null && !game.isGameOver) {
+                    tv.startDragMode()
+                    val dragShadowBuilder =
+                        MyDragShadowBuilder(tv, resources.displayMetrics.density)
+                    it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+                }
+            } catch(e: Exception) {
+                Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
             }
             true
         }
@@ -87,10 +92,14 @@ class MainActivity : AppCompatActivity() {
     private fun initClickListener(index: Int) {
         getTeilView(index).setOnTouchListener(null)
         getTeilView(index).setOnClickListener {
-            val tv = it as TeilView
-            if (!game.isGameOver) {
-                tv.rotate()
-                game.moveImpossible(index)
+            try {
+                val tv = it as TeilView
+                if (!game.isGameOver) {
+                    tv.rotate()
+                    game.moveImpossible(index)
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
             }
         }
         getTeilView(index).setDrehmodus(true)
@@ -103,31 +112,42 @@ class MainActivity : AppCompatActivity() {
                     event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
                 }
                 DragEvent.ACTION_DROP -> {
-                    val item = event.clipData.getItemAt(0)
-                    val index: Int = item.text.toString().toInt()
-                    val spielstein = getTeil(index)
+                    var wo = "F1: "
+                    try {
+                        val item = event.clipData.getItemAt(0)
+                        val index: Int = item.text.toString().toInt()
+                        val spielstein = getTeil(index)
 
-                    // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-                    val f = resources.displayMetrics.density
-                    var x = event.x / f // px -> dp
-                    var y = event.y / f
-                    // jetzt in Spielfeld Koordinaten umrechnen
-                    val br = SpielfeldView.w / Game.blocks
-                    x /= br
-                    y = y / br - 2 - (spielstein!!.maxY - spielstein.minY)
+                        // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
+                        wo = "F2: "
+                        val f = resources.displayMetrics.density
+                        var x = event.x / f // px -> dp
+                        var y = event.y / f
+                        // jetzt in Spielfeld Koordinaten umrechnen
+                        val br = SpielfeldView.w / Game.blocks
+                        x /= br
+                        y = y / br - 2 - (spielstein!!.maxY - spielstein.minY)
 
-                    game.dispatch(targetIsParking, index, spielstein, x, y)
+                        wo = "F3: "
+                        game.dispatch(targetIsParking, index, spielstein, x, y)
+                    } catch (e: Exception) {
+                        Toast.makeText(this, wo + e.message, Toast.LENGTH_LONG).show()
+                    }
                     true
                 }
                 DragEvent.ACTION_DRAG_ENTERED -> true
                 DragEvent.ACTION_DRAG_LOCATION -> true
                 DragEvent.ACTION_DRAG_EXITED -> true
                 DragEvent.ACTION_DRAG_ENDED -> {
-                    // Da ich nicht weiß, welcher ausgeblent ist, blende ich einfach alle ein.
-                    getTeilView(1).endDragMode()
-                    getTeilView(2).endDragMode()
-                    getTeilView(3).endDragMode()
-                    getTeilView(-1).endDragMode()
+                    try {
+                        // Da ich nicht weiß, welcher ausgeblent ist, blende ich einfach alle ein.
+                        getTeilView(1).endDragMode()
+                        getTeilView(2).endDragMode()
+                        getTeilView(3).endDragMode()
+                        getTeilView(-1).endDragMode()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "F/dragEnd: " + e.message, Toast.LENGTH_LONG).show()
+                    }
                     true
                 }
                 else -> false
