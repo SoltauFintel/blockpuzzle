@@ -18,7 +18,6 @@ import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
  */
 @SuppressLint("ViewConstructor")
 public class TeilView extends View {
-    private static final Spielstein EMPTY = new Spielstein();
     private final boolean parking;
     private final Paint p_normal = new Paint(); // TODO final
     private final Paint p_grey = new Paint();
@@ -49,14 +48,12 @@ public class TeilView extends View {
         return teil;
     }
 
-    public boolean isParking() {
-        return parking;
-    }
-
+    // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
     public void setGrey(boolean v) {
         grey = v;
     }
 
+    // Methode nicht löschen!
     public boolean isGrey() {
         return grey;
     }
@@ -70,22 +67,23 @@ public class TeilView extends View {
         if (parking && !dragMode) {
             canvas.drawRect(0, 0, br * Spielstein.max * f, br * Spielstein.max * f, p_parking);
         }
-        Spielstein dasteil = teil == null ? EMPTY : teil;
-        Paint fuellung;
-        if (grey) {
-            fuellung = p_grey;
-        } else if (drehmodus) {
-            fuellung = p_drehmodus;
-        } else {
-            fuellung = p_normal;
-        }
-        // TODO Ist das doppelter Code zu SpielfeldView?
-        for (int x = 0; x < Spielstein.max; x++) {
-            for (int y = 0; y < Spielstein.max; y++) {
-                if (dasteil.filled(x, y)) {
-                    float tx = x * br, ty = y * br;
-                    canvas.drawRect((tx + p) * f, (ty + p) * f,
-                            (tx + br - p) * f, (ty + br - p) * f, fuellung);
+        if (teil != null) {
+            Paint fuellung;
+            if (grey) {
+                fuellung = p_grey;
+            } else if (drehmodus) {
+                fuellung = p_drehmodus;
+            } else {
+                fuellung = p_normal;
+            }
+            // TODO Ist das doppelter Code zu SpielfeldView?
+            for (int x = 0; x < Spielstein.max; x++) {
+                for (int y = 0; y < Spielstein.max; y++) {
+                    if (teil.filled(x, y)) {
+                        float tx = x * br, ty = y * br;
+                        canvas.drawRect((tx + p) * f, (ty + p) * f,
+                                (tx + br - p) * f, (ty + br - p) * f, fuellung);
+                    }
                 }
             }
         }
