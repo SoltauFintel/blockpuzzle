@@ -14,8 +14,8 @@ import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.musik.Musik;
 
 /**
- * Quadrat 10x10
- * Im Quadrat werden die Spielsteine abgelegt.
+ * Das Spielfeld ist ein 10x10 großes Quadrat.
+ * Im Spielfeld werden die Spielsteine abgelegt.
  * Ein Kästchen hat die Belegung 0=leer, 1=Block. Angedacht sind weitere Belegungen für Boni.
  *
  * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
@@ -98,13 +98,11 @@ public class SpielfeldView extends View {
 
     private void drawSpielfeld(Canvas canvas) {
         final float f = getResources().getDisplayMetrics().density;
-        System.out.println("f=" + f); // Handy klein = 2.0, groß = 3.5
         // Rahmen
         canvas.drawRect(1 * f, 1 * f, w * f, w * f, rectborder);
 
         // Gitterlinien
         final int br = w / Game.blocks; // 60px, auf Handy groß = 36
-        System.out.println("br="+br);
         for (int i = 1; i < Game.blocks; i++) {
             float t = i * br;
             canvas.drawLine(t * f, 0, t * f, w * f, rectline);
