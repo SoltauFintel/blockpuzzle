@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                     // jetzt in Spielfeld Koordinaten umrechnen
                     val br = SpielfeldView.w / Game.blocks
                     x /= br
-                    y = y / br - 2 - (spielstein!!.maxY - spielstein!!.minY)
+                    y = y / br - 2 - (spielstein!!.maxY - spielstein.minY)
 
                     game.dispatch(targetIsParking, index, spielstein, x, y)
                     true

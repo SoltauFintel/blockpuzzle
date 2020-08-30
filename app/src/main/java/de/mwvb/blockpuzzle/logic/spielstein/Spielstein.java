@@ -1,5 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Teil Basisklasse und leeres Teil
  */
@@ -164,6 +166,7 @@ public class Spielstein {
         return mindestpunktzahl;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return getClass().getSimpleName();
