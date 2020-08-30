@@ -221,6 +221,6 @@ public class SpielfeldView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-//        musik.destroy();
+        musik.destroy();
     }
 }
