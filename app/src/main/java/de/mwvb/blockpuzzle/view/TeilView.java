@@ -18,6 +18,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
  */
 @SuppressLint("ViewConstructor")
 public class TeilView extends View {
+    private static final Spielstein EMPTY = new Spielstein();
     private final boolean parking;
     private final Paint p_normal = new Paint(); // TODO final
     private final Paint p_grey = new Paint();
@@ -69,7 +70,7 @@ public class TeilView extends View {
         if (parking && !dragMode) {
             canvas.drawRect(0, 0, br * Spielstein.max * f, br * Spielstein.max * f, p_parking);
         }
-        Spielstein dasteil = teil == null ? new Spielstein() : teil;
+        Spielstein dasteil = teil == null ? EMPTY : teil;
         Paint fuellung;
         if (grey) {
             fuellung = p_grey;
