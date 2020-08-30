@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         getTeilView(index).setOnTouchListener { it, _ ->
             val data = ClipData.newPlainText("index", index.toString())
             val tv = it as TeilView
-            if (!game.isGameOver) {
+            if (tv.teil != null && !game.isGameOver) {
                 tv.startDragMode()
                 val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                 it.startDragAndDrop(data, dragShadowBuilder, it, 0)
