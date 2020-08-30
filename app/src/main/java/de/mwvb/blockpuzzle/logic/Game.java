@@ -8,6 +8,7 @@ import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinJ;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinL;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinS;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinT;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein1;
@@ -19,6 +20,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.Spielstein4;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein5;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke2;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke3;
+import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinZ;
 
 public class Game {
     public static final int blocks = 10;
@@ -26,14 +28,12 @@ public class Game {
     private final MainActivity view;
     private final Spielfeld spielfeld = new Spielfeld(blocks);
     private final List<Spielstein> teile = new ArrayList<>();
-    private int punkte = 0;
+    private int punkte;
     private boolean gameOver = false;
     private boolean drehen = false;
     // TODO Bisher höchste Punktzahl persistieren.
-    // TODO Wenn eine Exception auf Handy auftritt, muss ich das irgendwie mitbekommen.
     // TODO Drag Schatten anzeigen
-    // TODO Sound: Game over
-    // TODO Anwendung wird "minimiert": Daten behalten
+    // TODO anderer Sound: Game over
 
     // Spielaufbau ----
 
@@ -48,12 +48,10 @@ public class Game {
         teile.add(new Spielstein1());
         teile.add(new Spielstein1());
         teile.add(new Spielstein1());
-//        teile.add(new Spielstein1());
 
         teile.add(new Spielstein2());
         teile.add(new Spielstein2().rotateToRight());
         teile.add(new Spielstein2());
-//        teile.add(new Spielstein2().rotateToRight());
 
         teile.add(new Spielstein3());
         teile.add(new Spielstein3().rotateToRight());
@@ -81,30 +79,26 @@ public class Game {
         teile.add(new SpielsteinEcke3().rotateToLeft());
 
         // Bonus-Stein, seltener
-        teile.add(new SpielsteinJ().withMindestpunktzahl(3000));
-        teile.add(new SpielsteinJ().withMindestpunktzahl(3000).rotateToRight());
+        teile.add(new SpielsteinJ().withMindestpunktzahl(1000));
+        // Bonus-Stein, seltener
+        teile.add(new SpielsteinL().withMindestpunktzahl(1000));
 
         // schwieriger Stein, seltener
         teile.add(new Spielstein2x2());
-        teile.add(new Spielstein2x2().withMindestpunktzahl(3500));
+        teile.add(new Spielstein2x2().withMindestpunktzahl(2000));
 
         // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
-        teile.add(new Spielstein2x3().withMindestpunktzahl(3000));
-        teile.add(new Spielstein2x3().withMindestpunktzahl(6000).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//        teile.add(new Spielstein2x3());
-//        teile.add(new Spielstein2x3().rotateToRight());
+        teile.add(new Spielstein2x3().withMindestpunktzahl(2500));
+        teile.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+
+        // Tetris S ab 4000 P.
+        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
+        teile.add(new SpielsteinZ().withMindestpunktzahl(4000));
 
         // schwieriger Stein, seltener
         teile.add(new Spielstein3x3());
         teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
         teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//        teile.add(new Spielstein3x3());
-
-        // Tetris S ab 4000 P.
-        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
-        teile.add(new SpielsteinS().withMindestpunktzahl(4000).rotateToRight());
-//        teile.add(new SpielsteinS().rotateToRight().rotateToRight());
-//        teile.add(new SpielsteinS().rotateToLeft());
 
         // Bonus Spielstein Mr. T ab 8000 P.
         teile.add(new SpielsteinT().withMindestpunktzahl(8000));

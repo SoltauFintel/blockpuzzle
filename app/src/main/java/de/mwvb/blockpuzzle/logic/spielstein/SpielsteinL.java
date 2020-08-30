@@ -1,11 +1,11 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
-/** Tetris style S */
-public class SpielsteinS extends Spielstein {
+/** Tetris style L */
+public class SpielsteinL extends Spielstein {
 
-    public SpielsteinS() {
+    public SpielsteinL() {
+        fill(1, 2);
         fill(1, 3);
-        fill(2, 3);
         fill(2, 2);
         fill(3, 2);
     }
