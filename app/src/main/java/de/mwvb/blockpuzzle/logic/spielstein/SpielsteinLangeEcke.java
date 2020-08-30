@@ -10,9 +10,4 @@ public class SpielsteinLangeEcke extends Spielstein {
         fill(2, 2);
         fill(3, 2);
     }
-
-    @Override
-    public int getMindestpunktzahl() {
-        return 2000;
-    }
 }

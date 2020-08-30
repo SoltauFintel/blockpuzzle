@@ -48,12 +48,12 @@ public class Game {
         teile.add(new Spielstein1());
         teile.add(new Spielstein1());
         teile.add(new Spielstein1());
-        teile.add(new Spielstein1());
+//        teile.add(new Spielstein1());
 
         teile.add(new Spielstein2());
         teile.add(new Spielstein2().rotateToRight());
         teile.add(new Spielstein2());
-        teile.add(new Spielstein2().rotateToRight());
+//        teile.add(new Spielstein2().rotateToRight());
 
         teile.add(new Spielstein3());
         teile.add(new Spielstein3().rotateToRight());
@@ -81,16 +81,12 @@ public class Game {
         teile.add(new SpielsteinEcke3().rotateToLeft());
 
         // Bonus-Stein, seltener
-        teile.add(new SpielsteinLangeEcke());
-        teile.add(new SpielsteinLangeEcke().rotateToRight());
-//        teile.add(new SpielsteinLangeEcke().rotateToRight().rotateToRight());
-//        teile.add(new SpielsteinLangeEcke().rotateToLeft());
+        teile.add(new SpielsteinLangeEcke().withMindestpunktzahl(3000));
+        teile.add(new SpielsteinLangeEcke().withMindestpunktzahl(3000).rotateToRight());
 
         // schwieriger Stein, seltener
         teile.add(new Spielstein2x2());
         teile.add(new Spielstein2x2().withMindestpunktzahl(3500));
-//        teile.add(new Spielstein2x2());
-//        teile.add(new Spielstein2x2());
 
         // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
         teile.add(new Spielstein2x3().withMindestpunktzahl(3000));
