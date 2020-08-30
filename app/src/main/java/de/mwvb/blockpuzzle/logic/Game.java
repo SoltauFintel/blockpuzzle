@@ -192,7 +192,7 @@ public class Game {
             index = rand.nextInt(teile.size());
             spielstein = teile.get(index);
         }
-        return spielstein;
+        return spielstein.copy();
     }
 
     // Spielaktionen ----

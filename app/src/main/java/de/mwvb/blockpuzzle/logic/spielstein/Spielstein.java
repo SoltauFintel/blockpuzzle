@@ -19,6 +19,16 @@ public class Spielstein {
         }
     }
 
+    public Spielstein copy() {
+        Spielstein n = new Spielstein();
+        for (int x = 0; x < max; x++) {
+            for (int y = 0; y < max; y++) {
+                n.matrix[x][y] = matrix[x][y];
+            }
+        }
+        return n;
+    }
+
     public boolean filled(int x, int y) {
         return matrix[x][y] != 0;
     }
