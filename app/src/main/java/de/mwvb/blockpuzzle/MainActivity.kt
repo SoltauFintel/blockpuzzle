@@ -1,10 +1,14 @@
 package de.mwvb.blockpuzzle
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
 import android.os.Bundle
-import android.view.*
+import android.view.DragEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.logic.FilledRows
@@ -14,6 +18,7 @@ import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.SpielfeldView
 import de.mwvb.blockpuzzle.view.TeilView
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     private val game = Game(this)
@@ -28,12 +33,19 @@ class MainActivity : AppCompatActivity() {
         (placeholder1 as ViewGroup).addView(TeilView(baseContext, false))
         (placeholder2 as ViewGroup).addView(TeilView(baseContext, false))
         (placeholder3 as ViewGroup).addView(TeilView(baseContext, false))
-        (parking as ViewGroup).addView(TeilView(baseContext, true))
+        (parking      as ViewGroup).addView(TeilView(baseContext, true))
 
         initDragAndDrop()
         neuesSpiel.setOnClickListener {
-            // TODO Sicherheitsabfrage wenn Punkte > 0
-            game.newGame()
+            if (game.isGameOver || game.punkte < 10) {
+                game.newGame()
+            } else {
+                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                dialog.setTitle("Neues Spiel starten?")
+                dialog.setPositiveButton("OK") { _, _ -> game.newGame() }
+                dialog.setNegativeButton("Cancel", null)
+                dialog.show()
+            }
         }
         drehmodus.setOnClickListener {
             if (!game.isGameOver) {
