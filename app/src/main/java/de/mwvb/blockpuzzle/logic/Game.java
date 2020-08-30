@@ -76,88 +76,33 @@ public class Game {
 
         // schwieriger Stein, seltener
         teile.add(new Teil2x2());
-        teile.add(new Teil2x2() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 3500;
-            }
-        });
+        teile.add(new Teil2x2().withMindestpunktzahl(3500));
 //        teile.add(new Teil2x2());
 //        teile.add(new Teil2x2());
 
         // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
-        teile.add(new Spielstein2x3() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 3000;
-            }
-        });
-        teile.add(new Spielstein2x3() { // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-            @Override
-            public int getMindestpunktzahl() {
-                return 6000;
-            }
-        }.rotateToRight());
+        teile.add(new Spielstein2x3().withMindestpunktzahl(3000));
+        teile.add(new Spielstein2x3().withMindestpunktzahl(6000).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
 //        teile.add(new Spielstein2x3());
 //        teile.add(new Spielstein2x3().rotateToRight());
 
         // schwieriger Stein, seltener
         teile.add(new Teil3x3());
-        teile.add(new Teil3x3() { // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-            @Override
-            public int getMindestpunktzahl() {
-                return 5000;
-            }
-        });
-        teile.add(new Teil3x3() { // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-            @Override
-            public int getMindestpunktzahl() {
-                return 7000;
-            }
-        });
+        teile.add(new Teil3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+        teile.add(new Teil3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
 //        teile.add(new Teil3x3());
 
         // Tetris S ab 4000 P.
-        teile.add(new SpielsteinS() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 4000;
-            }
-        });
-        teile.add(new SpielsteinS() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 4000;
-            }
-        }.rotateToRight());
+        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
+        teile.add(new SpielsteinS().withMindestpunktzahl(4000).rotateToRight());
 //        teile.add(new SpielsteinS().rotateToRight().rotateToRight());
 //        teile.add(new SpielsteinS().rotateToLeft());
 
         // Bonus Spielstein Mr. T ab 8000 P.
-        teile.add(new SpielsteinT() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 8000;
-            }
-        });
-        teile.add(new SpielsteinT() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 8000;
-            }
-        }.rotateToRight());
-        teile.add(new SpielsteinT() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 8000;
-            }
-        }.rotateToRight().rotateToRight());
-        teile.add(new SpielsteinT() {
-            @Override
-            public int getMindestpunktzahl() {
-                return 8000;
-            }
-        }.rotateToLeft());
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000));
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
     }
 
     // Neues Spiel ----

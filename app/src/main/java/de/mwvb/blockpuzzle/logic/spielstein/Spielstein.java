@@ -10,6 +10,7 @@ public class Spielstein {
     private int[][] matrix = new int[max][max];
     /** rotate temp matrix */
     private int[][] neu = new int[max][max];
+    private int mindestpunktzahl = 0;
 
     public Spielstein() {
         for (int x = 0; x < max; x++) {
@@ -27,6 +28,11 @@ public class Spielstein {
             }
         }
         return n;
+    }
+
+    public Spielstein withMindestpunktzahl(int minp) {
+        mindestpunktzahl = minp;
+        return this;
     }
 
     public boolean filled(int x, int y) {
@@ -159,7 +165,7 @@ public class Spielstein {
 
     /* Der Spieler muss mindestens diese Punktzahl haben, damit der Spielstein verfügbar wird. */
     public int getMindestpunktzahl() {
-        return 0;
+        return mindestpunktzahl;
     }
 
     @Override
