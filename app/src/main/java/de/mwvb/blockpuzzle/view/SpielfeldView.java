@@ -17,6 +17,7 @@ import de.mwvb.blockpuzzle.musik.Musik;
  * Das Spielfeld ist ein 10x10 großes Quadrat.
  * Im Spielfeld werden die Spielsteine abgelegt.
  * Ein Kästchen hat die Belegung 0=leer, 1=Block. Angedacht sind weitere Belegungen für Boni.
+ * Werte ab 30 haben eine Sonderrolle für die Darstellung.
  *
  * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
  * funktioniert.
@@ -31,7 +32,7 @@ public class SpielfeldView extends View {
     private final Paint box30 = new Paint();
     private final Paint box31 = new Paint();
     private final Paint box32 = new Paint();
-    private final Paint p_mark = new Paint();
+    private final Paint mark = new Paint();
     private final Musik musik = new Musik();
     private Game game;
     private FilledRows filledRows;
@@ -75,9 +76,9 @@ public class SpielfeldView extends View {
         box31.setColor(Color.parseColor("#ff0000"));
         box32.setColor(Color.parseColor("#bbbbbb"));
 
-        p_mark.setColor(Color.GRAY);
-        p_mark.setStrokeWidth(3);
-        p_mark.setStyle(Paint.Style.STROKE);
+        mark.setColor(Color.GRAY);
+        mark.setStrokeWidth(3);
+        mark.setStyle(Paint.Style.STROKE);
     }
 
     public void setGame(Game game) {
@@ -215,5 +216,11 @@ public class SpielfeldView extends View {
 
     public void playCrunchSound() {
         musik.playCrunchSound();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+//        musik.destroy();
     }
 }
