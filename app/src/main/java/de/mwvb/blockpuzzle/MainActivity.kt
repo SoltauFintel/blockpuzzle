@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
+import android.graphics.Color
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.View
@@ -50,13 +51,17 @@ class MainActivity : AppCompatActivity() {
         drehmodus.setOnClickListener {
             if (!game.isGameOver) {
                 if (game.toggleDrehmodus()) {
+                    // Drehen ist an
                     drehmodus.text = resources.getText(R.string.drehenAn)
+                    drehmodus.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
                     initClickListener(1)
                     initClickListener(2)
                     initClickListener(3)
                     initClickListener(-1)
                 } else {
+                    // Drehen ist aus
                     drehmodus.text = resources.getText(R.string.drehenAus)
+                    drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
                     initTouchListener(1)
                     initTouchListener(2)
                     initTouchListener(3)
