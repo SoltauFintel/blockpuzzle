@@ -11,4 +11,6 @@
     <color name="colorGrey">#888888</color>
     <color name="colorDrehmodus">#009900</color>
     <color name="colorParking">#ccccff</color>
+
+    <color name="neuesSpielBackgroundColor">#0398fc</color>
 </resources>

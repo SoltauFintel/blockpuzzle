@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="27dp"
-            android:background="#ED9898"
+            android:background="@color/neuesSpielBackgroundColor"
             android:text="@string/neuesSpiel"
             android:textAllCaps="false"/>
     </LinearLayout>
