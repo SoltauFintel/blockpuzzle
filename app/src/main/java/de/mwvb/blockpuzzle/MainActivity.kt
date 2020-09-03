@@ -61,17 +61,21 @@ class MainActivity : AppCompatActivity() {
                     initClickListener(-1)
                 } else {
                     // Drehen ist aus
-                    drehmodus.text = resources.getText(R.string.drehenAus)
-                    drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
-                    initTouchListener(1)
-                    initTouchListener(2)
-                    initTouchListener(3)
-                    initTouchListener(-1)
+                    drehmodusAus()
                 }
             }
         }
 
         game.newGame() // start first game
+    }
+
+    fun drehmodusAus() {
+        drehmodus.text = resources.getText(R.string.drehenAus)
+        drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
+        initTouchListener(1)
+        initTouchListener(2)
+        initTouchListener(3)
+        initTouchListener(-1)
     }
 
     private fun initDragAndDrop() {
@@ -228,9 +232,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setInfoanzeigeText(text: String) {
+    /*fun setInfoanzeigeText(text: String) {
         infoanzeige.text = text
-    }
+    }*/
 
     fun gehtNicht() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()

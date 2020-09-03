@@ -118,7 +118,10 @@ public class Game {
         view.drawSpielfeld();
         vorschlag();
         view.setSpielstein(-1, null);
-        // TODO Drehmodus deaktivieren
+
+        // Drehmodus deaktivieren
+        drehen = false;
+        view.drehmodusAus();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
