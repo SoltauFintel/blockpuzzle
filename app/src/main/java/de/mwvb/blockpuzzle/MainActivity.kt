@@ -47,16 +47,16 @@ class MainActivity : AppCompatActivity() {
                 dialog.show()
             }
         }
-        drehmodus.setOnCheckedChangeListener { _, _ ->
+        drehmodus.setOnClickListener {
             if (!game.isGameOver) {
                 if (game.toggleDrehmodus()) {
-                    drehmodus.isChecked = true
+                    drehmodus.text = resources.getText(R.string.drehenAn)
                     initClickListener(1)
                     initClickListener(2)
                     initClickListener(3)
                     initClickListener(-1)
                 } else {
-                    drehmodus.isChecked = false
+                    drehmodus.text = resources.getText(R.string.drehenAus)
                     initTouchListener(1)
                     initTouchListener(2)
                     initTouchListener(3)

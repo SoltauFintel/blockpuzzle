@@ -42,7 +42,7 @@
             android:layout_marginEnd="27dp"
             android:background="#ED9898"
             android:text="@string/neuesSpiel"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -80,23 +80,16 @@
             android:id="@+id/parking"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginStart="10dp" />
+            android:layout_marginStart="10dp"/>
     </LinearLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/drehmodus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:text="@string/drehenAus"
         android:layout_marginEnd="30dp"
         android:layout_gravity="end"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Drehmodus "/>
-        <Switch
-            android:id="@+id/drehmodus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:textAllCaps="false"/>
+
 </LinearLayout>
