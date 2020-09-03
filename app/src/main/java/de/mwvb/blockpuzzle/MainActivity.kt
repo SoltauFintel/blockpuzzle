@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.mwvb.blockpuzzle.logic.Action
 import de.mwvb.blockpuzzle.logic.FilledRows
 import de.mwvb.blockpuzzle.logic.Game
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
@@ -196,8 +197,8 @@ class MainActivity : AppCompatActivity() {
         spielfeld.draw()
     }
 
-    fun clearRows(filledRows: FilledRows) {
-        spielfeld.clearRows(filledRows)
+    fun clearRows(filledRows: FilledRows, action: Action) {
+        spielfeld.clearRows(filledRows, action)
     }
 
     fun setSpielstein(index: Int, teil: Spielstein?) {

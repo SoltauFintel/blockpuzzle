@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.musik.Musik;
@@ -167,7 +169,7 @@ public class SpielfeldView extends View {
         };
     }
 
-    public void clearRows(final FilledRows filledRows) {
+    public void clearRows(final FilledRows filledRows, Action action) {
         if (filledRows.getTreffer() == 0) {
             return;
         }
@@ -201,6 +203,7 @@ public class SpielfeldView extends View {
                 mode = 0;
                 draw();
                 SpielfeldView.this.filledRows = null;
+                action.execute();
             }
         }, 500);
     }

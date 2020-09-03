@@ -117,4 +117,15 @@ public class Spielfeld {
         }
         return ret;
     }
+
+    public void gravitation(int row) {
+        for (int y = row; y >= 1; y--) {
+            for (int x = 0; x < blocks; x++) {
+                matrix[x][y] = matrix[x][y - 1];
+            }
+        }
+        for (int x = 0; x < blocks; x++) {
+            matrix[x][0] = 0;
+        }
+    }
 }
