@@ -34,6 +34,7 @@ public class Game {
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
     // TODO anderer Sound: Game over
+    // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
 
     // Spielaufbau ----
 
@@ -43,68 +44,67 @@ public class Game {
         // Jede Spielsteinart standardmäßig 4x dabei.
         // Je nach Schwierigkeitsgrad wird das zum Teil abhängig von der Punktzahl variiert.
 
-        // TODO Das mit der Mindestpunktzahl ist nicht so gut lesbar. Denkbar wäre auch noch eine Maximalpunktzahl.
+        teile.add(new Spielstein1());
+        teile.add(new Spielstein1());
+        teile.add(new Spielstein1());
 
-//        teile.add(new Spielstein1());
-//        teile.add(new Spielstein1());
-//        teile.add(new Spielstein1());
-//
-//        teile.add(new Spielstein2());
-//        teile.add(new Spielstein2().rotateToRight());
-//        teile.add(new Spielstein2());
-//
-//        teile.add(new Spielstein3());
-//        teile.add(new Spielstein3().rotateToRight());
-//        teile.add(new Spielstein3());
-//        teile.add(new Spielstein3().rotateToRight());
-//
-//        teile.add(new Spielstein4());
-//        teile.add(new Spielstein4().rotateToRight());
-//        teile.add(new Spielstein4());
-//        teile.add(new Spielstein4().rotateToRight());
+        teile.add(new Spielstein2());
+        teile.add(new Spielstein2().rotateToRight());
+        teile.add(new Spielstein2());
+
+        teile.add(new Spielstein3());
+        teile.add(new Spielstein3().rotateToRight());
+        teile.add(new Spielstein3());
+        teile.add(new Spielstein3().rotateToRight());
+
+        teile.add(new Spielstein4());
+        teile.add(new Spielstein4().rotateToRight());
+        teile.add(new Spielstein4());
+        teile.add(new Spielstein4().rotateToRight());
 
         teile.add(new Spielstein5());
-//        teile.add(new Spielstein5().rotateToRight());
-//        teile.add(new Spielstein5());
-//        teile.add(new Spielstein5().rotateToRight());
-//
-//        teile.add(new SpielsteinEcke2());
-//        teile.add(new SpielsteinEcke2().rotateToRight());
-//        teile.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
-//        teile.add(new SpielsteinEcke2().rotateToLeft());
-//
-//        teile.add(new SpielsteinEcke3());
-//        teile.add(new SpielsteinEcke3().rotateToRight());
-//        teile.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
-//        teile.add(new SpielsteinEcke3().rotateToLeft());
-//
-//        // Bonus-Stein, seltener
-//        teile.add(new SpielsteinJ().withMindestpunktzahl(1000));
-//        // Bonus-Stein, seltener
-//        teile.add(new SpielsteinL().withMindestpunktzahl(1000));
-//
-//        // schwieriger Stein, seltener
-//        teile.add(new Spielstein2x2());
-//        teile.add(new Spielstein2x2().withMindestpunktzahl(2000));
-//
-//        // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
-//        teile.add(new Spielstein2x3().withMindestpunktzahl(2500));
-//        teile.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//
-//        // Tetris S ab 4000 P.
-//        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
-//        teile.add(new SpielsteinZ().withMindestpunktzahl(4000));
-//
-//        // schwieriger Stein, seltener
-//        teile.add(new Spielstein3x3());
-//        teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//        teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-//
-//        // Bonus Spielstein Mr. T ab 8000 P.
-//        teile.add(new SpielsteinT().withMindestpunktzahl(8000));
-//        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
-//        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
-//        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
+        teile.add(new Spielstein5().rotateToRight());
+        teile.add(new Spielstein5());
+        teile.add(new Spielstein5().rotateToRight());
+
+        teile.add(new SpielsteinEcke2());
+        teile.add(new SpielsteinEcke2().rotateToRight());
+        teile.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
+        teile.add(new SpielsteinEcke2().rotateToLeft());
+
+        teile.add(new SpielsteinEcke3());
+        teile.add(new SpielsteinEcke3().rotateToRight());
+        teile.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
+        teile.add(new SpielsteinEcke3().rotateToLeft());
+
+        // Bonus-Stein, seltener
+        teile.add(new SpielsteinJ().withMindestpunktzahl(1000));
+        // Bonus-Stein, seltener
+        teile.add(new SpielsteinL().withMindestpunktzahl(1000));
+
+        // schwieriger Stein, seltener
+        teile.add(new Spielstein2x2());
+        teile.add(new Spielstein2x2().withMindestpunktzahl(2000));
+
+        // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
+        teile.add(new Spielstein2x3().withMindestpunktzahl(2500));
+        teile.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+
+        // Tetris S ab 4000 P.
+        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
+        teile.add(new SpielsteinZ().withMindestpunktzahl(4000));
+
+        // schwieriger Stein, seltener
+        teile.add(new Spielstein3x3());
+        teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+        teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+        teile.add(new Spielstein3x3().withMindestpunktzahl(9000)); // ab 9000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+
+        // Bonus Spielstein Mr. T ab 8000 P.
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000));
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
+        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
     }
 
     // Neues Spiel ----
