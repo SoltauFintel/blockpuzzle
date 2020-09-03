@@ -114,7 +114,7 @@ public class Game {
         punkte = 0;
         spielfeld.clear();
 
-        view.updatePunkte();
+        view.updatePunkte(0);
         view.drawSpielfeld();
         vorschlag();
         view.setSpielstein(-1, null);
@@ -191,14 +191,16 @@ public class Game {
             FilledRows f = spielfeld.getFilledRows();
 
             // Punktzahl erhöhen
+            int vorher = punkte;
             punkte += teil.getPunkte() + 10 * f.getTreffer();
             rowsAdditionalBonus(f.getTreffer());
-            view.updatePunkte();
+            view.updatePunkte(punkte - vorher);
 
             view.clearRows(f); // Wird erst wenige Millisekunden später fertig!
             spielfeld.clearRows(f);
             if (f.getTreffer() > 0) {
                 wenigeSpielsteineAufSpielfeld();
+                view.updatePunkte(punkte - vorher);
             }
         }
         return ret;
@@ -229,7 +231,6 @@ public class Game {
         }
         if (bonus > 0) {
             punkte += bonus;
-            view.updatePunkte();
         }
     }
 
@@ -241,7 +242,7 @@ public class Game {
         boolean d = moveImpossible(-1);
         if (a && b && c && d && view.getSpielstein(-1) != null) {
             gameOver = true;
-            view.updatePunkte();
+            view.updatePunkte(0);
             view.drawSpielfeld(); // wenn parke die letzte Aktion war
         }
     }

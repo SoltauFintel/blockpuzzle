@@ -175,13 +175,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updatePunkte() {
+    fun updatePunkte(delta: Int) {
         if (game.isGameOver) {
-            info.text = resources.getQuantityString(R.plurals.punkteGameOver, game.punkte, game.punkte)
+            info.text =
+                resources.getQuantityString(R.plurals.punkteGameOver, game.punkte, game.punkte)
             spielfeld.playGameOverSound()
         } else {
             // Man muss bei Plurals die Anzahl 2x übergeben.
-            info.text = resources.getQuantityString(R.plurals.punkte, game.punkte, game.punkte)
+            var t = resources.getQuantityString(R.plurals.punkte, game.punkte, game.punkte)
+            if (delta > 0) {
+                t += " (+$delta)";
+            } else if (delta < 0) {
+                t += " ($delta)";
+            }
+            info.text = t
         }
     }
 
@@ -218,6 +225,10 @@ class MainActivity : AppCompatActivity() {
             -1 -> (parking      as ViewGroup).getChildAt(0) as TeilView
             else -> throw RuntimeException()
         }
+    }
+
+    fun setInfoanzeigeText(text: String) {
+        infoanzeige.text = text
     }
 
     fun gehtNicht() {
