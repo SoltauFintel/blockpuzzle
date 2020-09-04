@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         (placeholder3 as ViewGroup).addView(TeilView(baseContext, false))
         (parking      as ViewGroup).addView(TeilView(baseContext, true))
 
-        initDragAndDrop()
+        initTouchListeners() // Zum Auslösen des Drag&Drop Events
+        spielfeld.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
+        parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
+
         neuesSpiel.setOnClickListener {
             if (game.isGameOver || game.punkte < 10) {
                 game.newGame()
@@ -67,27 +70,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         game.newGame() // start first game
-    }
-
-    fun drehmodusAus() {
-        drehmodus.text = resources.getText(R.string.drehenAus)
-        drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
-        initTouchListener(1)
-        initTouchListener(2)
-        initTouchListener(3)
-        initTouchListener(-1)
-    }
-
-    private fun initDragAndDrop() {
-        // Zum Auslösen des Drag&Drop Events:
-        initTouchListener(1)
-        initTouchListener(2)
-        initTouchListener(3)
-        initTouchListener(-1)
-
-        // Drop Events:
-        spielfeld.setOnDragListener(createDragListener(false))
-        parking.setOnDragListener(createDragListener(true))
     }
 
     /** Spielsteinbewegung starten */
@@ -178,6 +160,19 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    fun drehmodusAus() {
+        drehmodus.text = resources.getText(R.string.drehenAus)
+        drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
+        initTouchListeners()
+    }
+
+    private fun initTouchListeners() {
+        initTouchListener(1)
+        initTouchListener(2)
+        initTouchListener(3)
+        initTouchListener(-1)
     }
 
     fun updatePunkte(delta: Int) {
