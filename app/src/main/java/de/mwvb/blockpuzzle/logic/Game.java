@@ -210,7 +210,7 @@ public class Game {
 
     private Action getGravityAction(FilledRows f) {
         return () -> {
-            for (int i = 4; i >= 1; i--) {
+            for (int i = 5; i >= 1; i--) {
                 if (f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
                     spielfeld.gravitation(blocks - i);
