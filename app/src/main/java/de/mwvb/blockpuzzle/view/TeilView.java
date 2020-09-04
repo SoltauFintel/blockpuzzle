@@ -111,8 +111,10 @@ public class TeilView extends View {
     }
 
     public void rotate() {
-        spielstein.rotateToRight();
-        draw();
+        if (spielstein != null) {
+            spielstein.rotateToRight();
+            draw();
+        }
     }
 
     @Override
