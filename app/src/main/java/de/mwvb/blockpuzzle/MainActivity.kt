@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity() {
                 val tv = it as TeilView
                 if (tv.spielstein != null && !game.isGameOver) {
                     tv.startDragMode()
-                    val dragShadowBuilder =
-                        MyDragShadowBuilder(tv, resources.displayMetrics.density)
+                    val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                     it.startDragAndDrop(data, dragShadowBuilder, it, 0)
                 }
             } catch(e: Exception) {
@@ -141,20 +140,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun drop(event: DragEvent, targetIsParking: Boolean): Boolean {
-        var wo = "F1: "
         try {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
             val spielstein = getSpielstein(index)!!
 
             // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-            wo = "F2: "
             val xy = calculateSpielfeldKoordinate(event, spielstein)
 
-            wo = "F3: "
             game.dispatch(targetIsParking, index, spielstein, xy)
         } catch (e: Exception) {
-            Toast.makeText(this, wo + e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
         return true
     }
