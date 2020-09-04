@@ -148,7 +148,7 @@ public class Game {
     // Spielaktionen ----
 
     /** Drop Aktion für Spielfeld oder Parking */
-    public void dispatch(boolean targetIsParking, int index, Spielstein teil, float x, float y) {
+    public void dispatch(boolean targetIsParking, int index, Spielstein teil, QPosition xy) {
         if (gameOver) {
             return;
         }
@@ -156,7 +156,7 @@ public class Game {
         if (targetIsParking) {
             ret = parke(index, teil);
         } else {
-            ret = platziere(index, teil, (int) x, (int) y);
+            ret = platziere(index, teil, xy);
         }
         if (ret) {
             if (view.getSpielstein(1) == null && view.getSpielstein(2) == null && view.getSpielstein(3) == null) {
@@ -182,9 +182,8 @@ public class Game {
      * Drop Aktion für Spielfeld
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
-    private boolean platziere(int index, Spielstein teil, int x, int y) {
+    private boolean platziere(int index, Spielstein teil, QPosition pos) {
         final int punkteVorher = punkte;
-        QPosition pos = new QPosition(x, y);
         boolean ret = spielfeld.match(teil, pos);
         if (ret) {
             spielfeld.platziere(teil, pos);

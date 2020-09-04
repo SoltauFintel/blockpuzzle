@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.logic.Action
 import de.mwvb.blockpuzzle.logic.FilledRows
 import de.mwvb.blockpuzzle.logic.Game
+import de.mwvb.blockpuzzle.logic.QPosition
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.SpielfeldView
@@ -118,30 +119,7 @@ class MainActivity : AppCompatActivity() {
                 DragEvent.ACTION_DRAG_STARTED -> {
                     event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
                 }
-                DragEvent.ACTION_DROP -> {
-                    var wo = "F1: "
-                    try {
-                        val item = event.clipData.getItemAt(0)
-                        val index: Int = item.text.toString().toInt()
-                        val spielstein = getSpielstein(index)
-
-                        // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-                        wo = "F2: "
-                        val f = resources.displayMetrics.density
-                        var x = event.x / f // px -> dp
-                        var y = event.y / f
-                        // jetzt in Spielfeld Koordinaten umrechnen
-                        val br = SpielfeldView.w / Game.blocks
-                        x /= br
-                        y = y / br - 2 - (spielstein!!.maxY - spielstein.minY)
-
-                        wo = "F3: "
-                        game.dispatch(targetIsParking, index, spielstein, x, y)
-                    } catch (e: Exception) {
-                        Toast.makeText(this, wo + e.message, Toast.LENGTH_LONG).show()
-                    }
-                    true
-                }
+                DragEvent.ACTION_DROP -> drop(event, targetIsParking)
                 DragEvent.ACTION_DRAG_ENTERED -> true
                 DragEvent.ACTION_DRAG_LOCATION -> true
                 DragEvent.ACTION_DRAG_EXITED -> true
@@ -160,6 +138,36 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun drop(event: DragEvent, targetIsParking: Boolean): Boolean {
+        var wo = "F1: "
+        try {
+            val item = event.clipData.getItemAt(0)
+            val index: Int = item.text.toString().toInt()
+            val spielstein = getSpielstein(index)!!
+
+            // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
+            wo = "F2: "
+            val xy = calculateSpielfeldKoordinate(event, spielstein)
+
+            wo = "F3: "
+            game.dispatch(targetIsParking, index, spielstein, xy)
+        } catch (e: Exception) {
+            Toast.makeText(this, wo + e.message, Toast.LENGTH_LONG).show()
+        }
+        return true
+    }
+
+    private fun calculateSpielfeldKoordinate(event: DragEvent, spielstein: Spielstein): QPosition {
+        val f = resources.displayMetrics.density
+        var x = event.x / f // px -> dp
+        var y = event.y / f
+        // jetzt in Spielfeld Koordinaten umrechnen
+        val br = SpielfeldView.w / Game.blocks
+        x /= br
+        y = y / br - 2 - (spielstein.maxY - spielstein.minY)
+        return QPosition(x.toInt(), y.toInt())
     }
 
     fun drehmodusAus() {

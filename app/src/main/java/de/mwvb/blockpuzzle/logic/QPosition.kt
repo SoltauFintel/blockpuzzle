@@ -1,4 +1,4 @@
 package de.mwvb.blockpuzzle.logic
 
-/** Position im Quadrat  */
+/** Spielfeld-Koordinate  */
 class QPosition(val x: Int, val y: Int)
