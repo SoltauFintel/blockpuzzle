@@ -65,11 +65,11 @@ public class Game {
         teile.add(new Spielstein4().rotateToRight());
         teile.add(new Spielstein4());
         teile.add(new Spielstein4().rotateToRight());
+        teile.add(new Spielstein4().withMindestpunktzahl(10000));
 
         teile.add(new Spielstein5());
         teile.add(new Spielstein5().rotateToRight());
         teile.add(new Spielstein5());
-        teile.add(new Spielstein5().rotateToRight());
 
         teile.add(new SpielsteinEcke2());
         teile.add(new SpielsteinEcke2().rotateToRight());
@@ -80,6 +80,8 @@ public class Game {
         teile.add(new SpielsteinEcke3().rotateToRight());
         teile.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
         teile.add(new SpielsteinEcke3().rotateToLeft());
+        teile.add(new SpielsteinEcke3().withMindestpunktzahl(11000));
+        teile.add(new SpielsteinEcke3().withMindestpunktzahl(25000).rotateToRight());
 
         // Bonus-Stein, seltener
         teile.add(new SpielsteinJ().withMindestpunktzahl(1000));
@@ -103,6 +105,7 @@ public class Game {
         teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
         teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
         teile.add(new Spielstein3x3().withMindestpunktzahl(9000)); // ab 9000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+        teile.add(new Spielstein3x3().withMindestpunktzahl(20000)); // ab 20k P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
 
         // Bonus Spielstein Mr. T ab 8000 P.
         teile.add(new SpielsteinT().withMindestpunktzahl(8000));
