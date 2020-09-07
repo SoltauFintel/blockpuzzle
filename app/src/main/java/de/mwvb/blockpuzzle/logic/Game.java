@@ -1,5 +1,8 @@
 package de.mwvb.blockpuzzle.logic;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +33,8 @@ public class Game {
     private final List<Spielstein> teile = new ArrayList<>();
     private int punkte;
     private boolean gameOver = false;
-    private boolean drehen = false;
+    private boolean drehen = false; // wird nicht persistiert
+    private SharedPreferences pref;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
     // TODO anderer Sound: Game over
@@ -107,28 +111,52 @@ public class Game {
         teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
     }
 
+    public void setStorage(SharedPreferences pref) {
+        this.pref = pref;
+        spielfeld.setStorage(pref);
+    }
+
     // Neues Spiel ----
 
-    public void newGame() {
-        gameOver = false;
-        punkte = 0;
-        spielfeld.clear();
-
-        view.updatePunkte(0);
-        view.drawSpielfeld();
-        vorschlag();
-        view.setSpielstein(-1, null);
+    public void initGame() {
+        view.setSpielstein(-1, null, false);
 
         // Drehmodus deaktivieren
         drehen = false;
         view.drehmodusAus();
+
+        // Gibt es einen Spielstand?
+        punkte = pref.getInt("punkte", -9999);
+        if (punkte < 0) { // Nein -> Neues Spiel starten!
+            newGame();
+            return;
+        }
+        // Es gibt einen Spielstand.
+        spielfeld.read();
+        view.updatePunkte(0);
+        view.drawSpielfeld();
+        view.restoreSpielsteinViews();
+        checkGame();
+    }
+
+    /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
+    public void newGame() {
+        spielfeld.clear(true);
+        gameOver = false;
+        punkte = 0;
+        savePunkte();
+        view.updatePunkte(0);
+
+        view.drawSpielfeld();
+        view.setSpielstein(-1, null, true);
+        vorschlag();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
     private void vorschlag() {
-        view.setSpielstein(1, createZufallsteil(teile));
-        view.setSpielstein(2, createZufallsteil(teile));
-        view.setSpielstein(3, createZufallsteil(teile));
+        view.setSpielstein(1, createZufallsteil(teile), true);
+        view.setSpielstein(2, createZufallsteil(teile), true);
+        view.setSpielstein(3, createZufallsteil(teile), true);
     }
 
     private Spielstein createZufallsteil(List<Spielstein> teile) {
@@ -171,8 +199,8 @@ public class Game {
     /** Drop Aktion für Parking Area */
     private boolean parke(int index, Spielstein teil) {
         if (index != -1 && view.getSpielstein(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
-            view.setSpielstein(-1, view.getSpielstein(index)); // Parking belegen
-            view.setSpielstein(index, null); // Source leeren
+            view.setSpielstein(-1, view.getSpielstein(index), true); // Parking belegen
+            view.setSpielstein(index, null, true); // Source leeren
             return true;
         }
         return false;
@@ -188,7 +216,7 @@ public class Game {
         if (ret) {
             spielfeld.platziere(teil, pos);
             view.drawSpielfeld();
-            view.setSpielstein(index, null);
+            view.setSpielstein(index, null, true);
 
             // Gibt es gefüllte Rows?
             FilledRows f = spielfeld.getFilledRows();
@@ -203,6 +231,7 @@ public class Game {
                 wenigeSpielsteineAufSpielfeld();
             }
             view.updatePunkte(punkte - punkteVorher);
+            savePunkte();
         }
         return ret;
     }
@@ -296,5 +325,15 @@ public class Game {
     public boolean toggleDrehmodus() {
         drehen = !drehen;
         return drehen;
+    }
+
+    private void savePunkte() {
+        if (pref != null) {
+            SharedPreferences.Editor edit = pref.edit();
+            edit.putInt("punkte", punkte);
+            edit.putString("version", "0.1");
+            edit.apply();
+            System.out.println("saved punkte: " + punkte);
+        }
     }
 }

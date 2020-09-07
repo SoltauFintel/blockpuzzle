@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
@@ -23,15 +24,19 @@ public class TeilView extends View {
     private final Paint p_grey = new Paint();
     private final Paint p_drehmodus = new Paint();
     private final Paint p_parking = new Paint();
+    private final int index;
+    private final SharedPreferences pref;
     private Spielstein spielstein = null;
     /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
-    private boolean grey = false;
-    private boolean drehmodus = false;
-    private boolean dragMode = false;
+    private boolean grey = false; // braucht nicht zu persistiert werden
+    private boolean drehmodus = false; // wird nicht persistiert
+    private boolean dragMode = false; // wird nicht persistiert
 
-    public TeilView(Context context, boolean parking) {
+    public TeilView(Context context, int index, boolean parking, SharedPreferences pref) {
         super(context);
+        this.index = index;
         this.parking = parking;
+        this.pref = pref;
 
         p_normal.setColor(getResources().getColor(R.color.colorNormal));
         p_grey.setColor(getResources().getColor(R.color.colorGrey));
@@ -114,6 +119,7 @@ public class TeilView extends View {
         if (spielstein != null) {
             spielstein.rotateToRight();
             draw();
+            write();
         }
     }
 
@@ -121,5 +127,39 @@ public class TeilView extends View {
     public boolean performClick() {
         // wegen Warning in MainActivity.initClickListener()
         return super.performClick();
+    }
+
+    public void write() {
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString(name(index, false), spielstein == null ? "null" : spielstein.getClass().getName());
+        edit.putInt(name(index, true), spielstein == null ? 0 : spielstein.getRotated());
+        edit.apply();
+    }
+
+    public void read() {
+        String cn = pref.getString(name(index, false), "null");
+        int rotated = pref.getInt(name(index, true), 0);
+
+        if (cn == null || cn.equals("null") || cn.isEmpty()) {
+            spielstein = null;
+        } else {
+            try {
+                spielstein = (Spielstein) Class.forName(cn).newInstance();
+            } catch (Throwable e) {
+                throw new RuntimeException(e); // TODO
+            }
+            if (rotated < 0 || rotated >= 4) {
+                throw new RuntimeException("Falscher Wert für rotated: " + rotated);
+            }
+            for (int i = 1; i <= rotated; i++) {
+                spielstein.rotateToRight();
+            }
+        }
+
+        draw();
+    }
+
+    private String name(int index, boolean rotated) {
+        return "SpielsteinView" + index + (rotated ? ".rotated" : ".class");
     }
 }

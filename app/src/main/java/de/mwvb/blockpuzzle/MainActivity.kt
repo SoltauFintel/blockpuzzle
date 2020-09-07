@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
-import android.graphics.Color
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.View
@@ -25,18 +26,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val game = Game(this)
+    private var pref: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        pref = getSharedPreferences("spielstand", Context.MODE_PRIVATE)
+        game.setStorage(pref)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
         spielfeld.setGame(game)
 
-        (placeholder1 as ViewGroup).addView(TeilView(baseContext, false))
-        (placeholder2 as ViewGroup).addView(TeilView(baseContext, false))
-        (placeholder3 as ViewGroup).addView(TeilView(baseContext, false))
-        (parking      as ViewGroup).addView(TeilView(baseContext, true))
+        (placeholder1 as ViewGroup).addView(TeilView(baseContext, 1, false, pref))
+        (placeholder2 as ViewGroup).addView(TeilView(baseContext, 2,false, pref))
+        (placeholder3 as ViewGroup).addView(TeilView(baseContext, 3,false, pref))
+        (parking      as ViewGroup).addView(TeilView(baseContext, -1,true, pref))
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         spielfeld.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
@@ -70,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        game.newGame() // start first game
+        game.initGame()
     }
 
     /** Spielsteinbewegung starten */
@@ -179,6 +183,7 @@ class MainActivity : AppCompatActivity() {
         initTouchListener(-1)
     }
 
+    // TODO delta auch persistieren und nach Programmneustart korrekt anzeigen
     fun updatePunkte(delta: Int) {
         if (game.isGameOver) {
             info.text =
@@ -204,11 +209,14 @@ class MainActivity : AppCompatActivity() {
         spielfeld.clearRows(filledRows, action)
     }
 
-    fun setSpielstein(index: Int, teil: Spielstein?) {
+    fun setSpielstein(index: Int, teil: Spielstein?, write: Boolean) {
         val tv = getSpielsteinView(index)
         tv.endDragMode()
         tv.isGrey = false
         tv.spielstein = teil // macht draw()
+        if (write) {
+            tv.write()
+        }
     }
 
     fun getSpielstein(index: Int): Spielstein? {
@@ -246,5 +254,13 @@ class MainActivity : AppCompatActivity() {
         // Wir spielen ein Sound ab, damit der User wenigstens merkt, dass die Taste nicht kaputt ist.
         // Man könnte aber auch die Anwendung minimieren.
         spielfeld.playCrunchSound()
+    }
+
+    fun restoreSpielsteinViews() {
+        // SpielsteinViews 1-3 und Parking restoren
+        getSpielsteinView(1).read();
+        getSpielsteinView(2).read();
+        getSpielsteinView(3).read();
+        getSpielsteinView(-1).read();
     }
 }

@@ -1,15 +1,22 @@
 package de.mwvb.blockpuzzle.logic;
 
+import android.content.SharedPreferences;
+
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 
 public class Spielfeld {
     private final int blocks;
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
+    private SharedPreferences pref;
 
     public Spielfeld(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
+    }
+
+    public void setStorage(SharedPreferences pref) {
+        this.pref = pref;
     }
 
     public int get(int x, int y) {
@@ -17,16 +24,17 @@ public class Spielfeld {
     }
 
     // Soll private bleiben, da nur die Game Engine die Matrix verändern darf.
-    public void set(int x, int y, int value) {
+    private void set(int x, int y, int value) {
         matrix[x][y] = value;
     }
 
-    public void clear() {
+    public void clear(boolean write) {
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 set(x, y, 0);
             }
         }
+        if (write) write();
     }
 
     public boolean match(Spielstein teil, QPosition pos) {
@@ -59,6 +67,7 @@ public class Spielfeld {
                 }
             }
         }
+        write();
     }
 
     public FilledRows getFilledRows() {
@@ -105,6 +114,7 @@ public class Spielfeld {
                 set(x, y, 0);
             }
         }
+        write();
     }
 
     public int getGefuellte() {
@@ -121,11 +131,41 @@ public class Spielfeld {
     public void gravitation(int row) {
         for (int y = row; y >= 1; y--) {
             for (int x = 0; x < blocks; x++) {
-                matrix[x][y] = matrix[x][y - 1];
+                set(x, y, get(x, y - 1));
             }
         }
         for (int x = 0; x < blocks; x++) {
-            matrix[x][0] = 0;
+            set(x, 0, 0);
         }
+        write();
+    }
+
+    public void read() {
+        String d = pref.getString("spielfeld", null);
+        if (d == null || d.isEmpty()) {
+            return;
+        }
+        String w[] = d.split(",");
+        int i = 0;
+        for (int x = 0; x < blocks; x++) {
+            for (int y = 0; y < blocks; y++) {
+                matrix[x][y] = Integer.parseInt(w[i++]);
+            }
+        }
+    }
+
+    private void write() {
+        StringBuilder d = new StringBuilder();
+        String k = "";
+        for (int x = 0; x < blocks; x++) {
+            for (int y = 0; y < blocks; y++) {
+                d.append(k);
+                k = ",";
+                d.append(matrix[x][y]);
+            }
+        }
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("spielfeld", d.toString());
+        edit.apply();
     }
 }

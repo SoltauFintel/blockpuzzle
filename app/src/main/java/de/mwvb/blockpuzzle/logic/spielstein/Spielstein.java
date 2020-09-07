@@ -12,7 +12,8 @@ public class Spielstein {
     private int[][] matrix = new int[max][max];
     /** rotate temp matrix */
     private int[][] neu = new int[max][max];
-    private int mindestpunktzahl = 0;
+    private int mindestpunktzahl = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
+    private int rotated = 0; // TODO Ich brauch hier die richtige Zahl.
 
     public Spielstein() {
         for (int x = 0; x < max; x++) {
@@ -23,11 +24,16 @@ public class Spielstein {
     }
 
     public Spielstein copy() {
-        Spielstein n = new Spielstein();
-        for (int x = 0; x < max; x++) {
-            System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
+        try {
+            Spielstein n = (Spielstein) Class.forName(this.getClass().getName()).newInstance();
+            for (int x = 0; x < max; x++) {
+                System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
+            }
+            n.rotated = rotated;
+            return n;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
-        return n;
     }
 
     public Spielstein withMindestpunktzahl(int minp) {
@@ -96,6 +102,11 @@ public class Spielstein {
         // Zurückübertragen
         for (int x = 0; x < 5; x++) {
             System.arraycopy(neu[x], 0, matrix[x], 0, 5);
+        }
+        // Anzahl der Drehungen merken
+        rotated++;
+        while (rotated >= 4) {
+            rotated -= 4;
         }
         return this;
     }
@@ -170,5 +181,9 @@ public class Spielstein {
     @Override
     public String toString() {
         return getClass().getSimpleName();
+    }
+
+    public int getRotated() {
+        return rotated;
     }
 }
