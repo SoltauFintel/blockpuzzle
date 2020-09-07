@@ -5,11 +5,11 @@
     <string name="drehenAus">Drehmodus aus</string>
     <string name="drehenAn">Drehmodus an</string>
     <plurals name="punkte">
-        <item quantity="one">%d Punkt</item>
-        <item quantity="other">%d Punkte</item>
+        <item quantity="one">%,d Punkt</item>
+        <item quantity="other">%,d Punkte</item>
     </plurals>
     <plurals name="punkteGameOver">
-        <item quantity="one">Game over! (%d Punkt)</item>
-        <item quantity="other">Game over! (%d Punkte)</item>
+        <item quantity="one">Game over! (%,d Punkt)</item>
+        <item quantity="other">Game over! (%,d Punkte)</item>
     </plurals>
 </resources>
