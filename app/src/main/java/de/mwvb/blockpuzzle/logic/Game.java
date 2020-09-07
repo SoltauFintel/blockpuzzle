@@ -271,8 +271,8 @@ public class Game {
         switch (spielfeld.getGefuellte()) {
             case 0: bonus = 444; break; // Wahnsinn!
             case 1: bonus = 111; break;
-            case 2: bonus = 30; break;
-            case 3: bonus = 15; break;
+            case 2: bonus = 60; break;
+            case 3: bonus = 30; break;
             case 4: bonus = 4; break;
         }
         if (bonus > 0) {
