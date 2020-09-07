@@ -216,6 +216,10 @@ public class Game {
                     view.drawSpielfeld();
                 }
             }
+            moveImpossible(1);
+            moveImpossible(2);
+            moveImpossible(3);
+            moveImpossible(-1);
         };
     }
 
