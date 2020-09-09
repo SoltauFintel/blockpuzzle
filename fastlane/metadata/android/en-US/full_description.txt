@@ -1,0 +1,2 @@
+Horizontal and vertical rows are removed when they are full. In the further course of the game
+more tokens are added.

@@ -1,0 +1,2 @@
+Waagrechte und senkrechte Reihen werden entfernt wenn sie voll sind. Im weiteren Spielverlauf
+werden weitere Spielsteine hinzugefügt.
