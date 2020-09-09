@@ -1,2 +1,20 @@
 Horizontal and vertical rows are removed when they are full. In the further course of the game
-more tokens are added.
+more tokens are added. In the lower area of the playing field takes place when clearing away
+gravity takes place in horizontal rows. The pieces from the upper playing field slide downwards.
+
+A token can be parked in the blue field.
+
+The game ends when you can't put any more pieces into the field. This is the case,
+if at least one gray tile is displayed in the lower area and also a gray one
+Game piece is parked. It is therefore always advisable to close parked game pieces as quickly as possible
+play.
+
+The game is designed for Android 7 devices in portrait mode.
+The game already works and is constantly being developed.
+
+The game is open source and should be permanently free and ad-free. No in-app purchases.
+It is my first Android app and is used to learn Android programming
+including Android Studio and Kotlin. The game is addicting.
+
+
+Sorry guys, game language is German.

@@ -1,2 +1,17 @@
 Waagrechte und senkrechte Reihen werden entfernt wenn sie voll sind. Im weiteren Spielverlauf
-werden weitere Spielsteine hinzugefügt.
+werden weitere Spielsteine hinzugefügt. Im unteren Spielfeldbereich findet beim Wegräumen von
+waagrechten Reihen eine Gravitation statt. Die Spielsteine vom oberen Spielfeld rutschen nach unten.
+
+Ein Spielstein kann in das blaue Feld geparkt werden.
+
+Das Spiel endet wenn man keinen Spielstein mehr ins Spielfeld setzen kann. Das ist der Fall,
+wenn im unteren Bereich mindestens ein grauer Spielstein angezeigt wird und ebenfalls ein grauer
+Spielstein geparkt ist. Daher ist es stets ratsam geparkte Spielsteine möglichst schnell zu
+spielen.
+
+Das Spiel ist für Android 7 Smartphones im Portraitmodus ausgelegt.
+Das Spiel funktioniert bereits und wird ständig weiter entwickelt.
+
+Das Spiel ist Open-Source und soll dauerhaft kostenlos und werbefrei sein. Auch In-App-Käufe wird
+es nicht geben. Es ist meine erste Android App und dient mir zum Erlernen der Android Programmierung
+inkl. Android Studio und Kotlin. Das Spiel macht süchtig.
