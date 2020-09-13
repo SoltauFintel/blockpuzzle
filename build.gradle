@@ -14,12 +14,7 @@ buildscript {
     }
 }
 
-android {
-    defaultConfig {
-        versionName "1.0"
-        versionCode 10
-    }
-}
+// versionCode and versionName are in the other build.gradle !
 
 allprojects {
     repositories {
