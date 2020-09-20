@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="5dp">
         <TextView
             android:id="@+id/info"
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         <Button
             android:id="@+id/neuesSpiel"
             android:layout_width="120dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_gravity="end"
             android:layout_marginEnd="27dp"
             android:textColor="@android:color/white"
@@ -109,9 +109,9 @@
                 android:textColor="@android:color/white"
                 android:background="@color/colorNormal"
                 android:layout_width="160dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="@string/drehenAus"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_gravity="end"
                 android:textAllCaps="false"
                 android:shadowColor="@android:color/darker_gray"/>
