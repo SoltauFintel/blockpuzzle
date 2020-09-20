@@ -6,6 +6,7 @@ import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.View
@@ -88,7 +89,11 @@ class MainActivity : AppCompatActivity() {
                 if (tv.spielstein != null && !game.isGameOver) {
                     tv.startDragMode()
                     val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
-                    it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
+                        it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+                    } else { // for API level 19 (4.4. Kitkat)
+                        it.startDrag(data, dragShadowBuilder, it, 0)
+                    }
                 }
             } catch(e: Exception) {
                 Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
