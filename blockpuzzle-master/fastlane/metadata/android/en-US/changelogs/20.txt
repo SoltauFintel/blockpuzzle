@@ -1,0 +1,2 @@
+- Android version 4.4 or higher is now supported.
+- The playing field layout has been optimized for a resolution of 1280x720.

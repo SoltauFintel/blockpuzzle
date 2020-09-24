@@ -1,0 +1,2 @@
+- Ab sofort wird Android ab Version 4.4 unterstützt.
+- Das Spielfeldlayout wurde für die Auflösung 1280x720 optimiert.
