@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
+
+    <string name="neuesSpiel">New game</string>
+    <string name="gehtNicht">It does not work!</string>
+    <string name="drehenAus">Turning mode off</string>
+    <string name="drehenAn">Turning mode on</string>
+    <string name="select_language" tools:ignore="MissingTranslation">Select Language</string>
+    <string name="german" tools:ignore="MissingTranslation">German</string>
+    <string name="english" tools:ignore="MissingTranslation">English</string>
+    <plurals name="punkte">
+        <item quantity="one">%,d Point</item>
+        <item quantity="other">%,d Points</item>
+    </plurals>
+    <plurals name="punkteGameOver">
+        <item quantity="one">Game over! (%,d Point)</item>
+        <item quantity="other">Game over! (%,d Points)</item>
+    </plurals>
+</resources>
