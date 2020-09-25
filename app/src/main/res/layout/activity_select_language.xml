@@ -31,6 +31,7 @@
         android:id="@+id/english"
         android:layout_marginTop="25dp"
         android:text="@string/english"/>
+<<<<<<< HEAD
 
     <Button
     android:layout_width="250dp"
@@ -38,5 +39,7 @@
     android:id="@+id/greek"
     android:layout_marginTop="25dp"
     android:text="@string/greek"/>
+=======
+>>>>>>> ef5b411824affd9f776ec739ab362193ccd36197
     
 </LinearLayout>
