@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
 /** 4er Kette */
-public class Spielstein4 extends Spielstein {
+public class Spielstein4 extends GamePiece {
 
     public Spielstein4() {
         fill(0, 2);

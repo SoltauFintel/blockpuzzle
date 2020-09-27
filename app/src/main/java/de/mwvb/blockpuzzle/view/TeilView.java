@@ -9,7 +9,7 @@ import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Game;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 /**
  * Im unteren Bereich die View Komponente, die ein Spielstein (oder einen leeren Spielstein) enthält.
@@ -26,7 +26,7 @@ public class TeilView extends View {
     private final Paint p_parking = new Paint();
     private final int index;
     private final SharedPreferences pref;
-    private Spielstein spielstein = null;
+    private GamePiece gamePiece = null;
     /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
     private boolean grey = false; // braucht nicht zu persistiert werden
     private boolean drehmodus = false; // wird nicht persistiert
@@ -44,13 +44,13 @@ public class TeilView extends View {
         p_parking.setColor(getResources().getColor(R.color.colorParking));
     }
 
-    public void setSpielstein(Spielstein v) {
-        spielstein = v;
+    public void setGamePiece(GamePiece v) {
+        gamePiece = v;
         draw();
     }
 
-    public Spielstein getSpielstein() {
-        return spielstein;
+    public GamePiece getGamePiece() {
+        return gamePiece;
     }
 
     // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
@@ -70,9 +70,9 @@ public class TeilView extends View {
         if (!dragMode) br /= 2;
         float p = br * 0.1f;
         if (parking && !dragMode) {
-            canvas.drawRect(0, 0, br * Spielstein.max * f, br * Spielstein.max * f, p_parking);
+            canvas.drawRect(0, 0, br * GamePiece.max * f, br * GamePiece.max * f, p_parking);
         }
-        if (spielstein != null) {
+        if (gamePiece != null) {
             Paint fuellung;
             if (grey) {
                 fuellung = p_grey;
@@ -82,9 +82,9 @@ public class TeilView extends View {
                 fuellung = p_normal;
             }
             // TODO Ist das doppelter Code zu SpielfeldView?
-            for (int x = 0; x < Spielstein.max; x++) {
-                for (int y = 0; y < Spielstein.max; y++) {
-                    if (spielstein.filled(x, y)) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                for (int y = 0; y < GamePiece.max; y++) {
+                    if (gamePiece.filled(x, y)) {
                         float tx = x * br, ty = y * br;
                         canvas.drawRect((tx + p) * f, (ty + p) * f,
                                 (tx + br - p) * f, (ty + br - p) * f, fuellung);
@@ -116,8 +116,8 @@ public class TeilView extends View {
     }
 
     public void rotate() {
-        if (spielstein != null) {
-            spielstein.rotateToRight();
+        if (gamePiece != null) {
+            gamePiece.rotateToRight();
             draw();
             write();
         }
@@ -131,8 +131,8 @@ public class TeilView extends View {
 
     public void write() {
         SharedPreferences.Editor edit = pref.edit();
-        edit.putString(name(index, false), spielstein == null ? "null" : spielstein.getClass().getName());
-        edit.putInt(name(index, true), spielstein == null ? 0 : spielstein.getRotated());
+        edit.putString(name(index, false), gamePiece == null ? "null" : gamePiece.getClass().getName());
+        edit.putInt(name(index, true), gamePiece == null ? 0 : gamePiece.getRotated());
         edit.apply();
     }
 
@@ -141,10 +141,10 @@ public class TeilView extends View {
         int rotated = pref.getInt(name(index, true), 0);
 
         if (cn == null || cn.equals("null") || cn.isEmpty()) {
-            spielstein = null;
+            gamePiece = null;
         } else {
             try {
-                spielstein = (Spielstein) Class.forName(cn).newInstance();
+                gamePiece = (GamePiece) Class.forName(cn).newInstance();
             } catch (Throwable e) {
                 throw new RuntimeException(e); // TODO
             }
@@ -152,7 +152,7 @@ public class TeilView extends View {
                 throw new RuntimeException("Falscher Wert für rotated: " + rotated);
             }
             for (int i = 1; i <= rotated; i++) {
-                spielstein.rotateToRight();
+                gamePiece.rotateToRight();
             }
         }
 

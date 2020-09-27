@@ -2,7 +2,7 @@ package de.mwvb.blockpuzzle.logic;
 
 import android.content.SharedPreferences;
 
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 public class PlayingField {
     private final int blocks;
@@ -37,7 +37,7 @@ public class PlayingField {
         if (write) write();
     }
 
-    public boolean match(Spielstein teil, QPosition pos) {
+    public boolean match(GamePiece teil, QPosition pos) {
         for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
             for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
                 if (teil.filled(x, y)) {
@@ -57,7 +57,7 @@ public class PlayingField {
     }
 
     /** Male Teil ins Spielfeld! */
-    public void platziere(Spielstein teil, QPosition pos) {
+    public void platziere(GamePiece teil, QPosition pos) {
         for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
             for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
                 if (teil.filled(x, y)) {

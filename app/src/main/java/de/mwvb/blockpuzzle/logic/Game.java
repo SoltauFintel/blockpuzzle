@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinJ;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinL;
@@ -29,7 +29,7 @@ public class Game {
     private static final Random rand = new Random(System.currentTimeMillis());
     private final MainActivity view;
     private final PlayingField playingField = new PlayingField(blocks);
-    private final List<Spielstein> teile = new ArrayList<>();
+    private final List<GamePiece> teile = new ArrayList<>();
     private int punkte;
     private boolean gameOver = false;
     private boolean drehen = false; // wird nicht persistiert
@@ -121,7 +121,7 @@ public class Game {
     // Neues Spiel ----
 
     public void initGame() {
-        view.setSpielstein(-1, null, false);
+        view.setGamePiece(-1, null, false);
 
         // Drehmodus deaktivieren
         drehen = false;
@@ -137,7 +137,7 @@ public class Game {
         playingField.read();
         view.updatePunkte(0);
         view.drawPlayingField();
-        view.restoreSpielsteinViews();
+        view.restoreGamePieceViews();
         checkGame();
     }
 
@@ -150,35 +150,35 @@ public class Game {
         view.updatePunkte(0);
 
         view.drawPlayingField();
-        view.setSpielstein(-1, null, true);
+        view.setGamePiece(-1, null, true);
         vorschlag();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
     private void vorschlag() {
-        view.setSpielstein(1, createZufallsteil(teile), true);
-        view.setSpielstein(2, createZufallsteil(teile), true);
-        view.setSpielstein(3, createZufallsteil(teile), true);
+        view.setGamePiece(1, createZufallsteil(teile), true);
+        view.setGamePiece(2, createZufallsteil(teile), true);
+        view.setGamePiece(3, createZufallsteil(teile), true);
     }
 
-    private Spielstein createZufallsteil(List<Spielstein> teile) {
+    private GamePiece createZufallsteil(List<GamePiece> teile) {
         int loop = 0;
         int index = rand.nextInt(teile.size());
-        Spielstein spielstein = teile.get(index);
-        while (punkte < spielstein.getMindestpunktzahl()) {
+        GamePiece gamePiece = teile.get(index);
+        while (punkte < gamePiece.getMindestpunktzahl()) {
             if (++loop > 1000) { // Notausgang
                 return teile.get(0);
             }
             index = rand.nextInt(teile.size());
-            spielstein = teile.get(index);
+            gamePiece = teile.get(index);
         }
-        return spielstein.copy();
+        return gamePiece.copy();
     }
 
     // Spielaktionen ----
 
     /** Drop Aktion für Spielfeld oder Parking */
-    public void dispatch(boolean targetIsParking, int index, Spielstein teil, QPosition xy) {
+    public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
         if (gameOver) {
             return;
         }
@@ -189,20 +189,20 @@ public class Game {
             ret = platziere(index, teil, xy);
         }
         if (ret) {
-            if (view.getSpielstein(1) == null && view.getSpielstein(2) == null && view.getSpielstein(3) == null) {
+            if (view.getGamePiece(1) == null && view.getGamePiece(2) == null && view.getGamePiece(3) == null) {
                 vorschlag();
             }
             checkGame();
         } else {
-            view.gehtNicht();
+            view.doesNotWork();
         }
     }
 
     /** Drop Aktion für Parking Area */
-    private boolean parke(int index, Spielstein teil) {
-        if (index != -1 && view.getSpielstein(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
-            view.setSpielstein(-1, view.getSpielstein(index), true); // Parking belegen
-            view.setSpielstein(index, null, true); // Source leeren
+    private boolean parke(int index, GamePiece teil) {
+        if (index != -1 && view.getGamePiece(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
+            view.setGamePiece(-1, view.getGamePiece(index), true); // Parking belegen
+            view.setGamePiece(index, null, true); // Source leeren
             return true;
         }
         return false;
@@ -212,13 +212,13 @@ public class Game {
      * Drop Aktion für Spielfeld
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
-    private boolean platziere(int index, Spielstein teil, QPosition pos) {
+    private boolean platziere(int index, GamePiece teil, QPosition pos) {
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
             playingField.platziere(teil, pos);
             view.drawPlayingField();
-            view.setSpielstein(index, null, true);
+            view.setGamePiece(index, null, true);
 
             // Gibt es gefüllte Rows?
             FilledRows f = playingField.getFilledRows();
@@ -288,7 +288,7 @@ public class Game {
         boolean b = moveImpossible(2);
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
-        if (a && b && c && d && view.getSpielstein(-1) != null) {
+        if (a && b && c && d && view.getGamePiece(-1) != null) {
             gameOver = true;
             view.updatePunkte(0);
             view.drawPlayingField(); // wenn parke die letzte Aktion war
@@ -296,7 +296,7 @@ public class Game {
     }
 
     public boolean moveImpossible(int index) {
-        Spielstein teil = view.getSpielstein(index);
+        GamePiece teil = view.getGamePiece(index);
         if (teil == null) {
             return true; // TeilView ist leer
         }

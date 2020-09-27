@@ -18,7 +18,7 @@ import de.mwvb.blockpuzzle.logic.Action
 import de.mwvb.blockpuzzle.logic.FilledRows
 import de.mwvb.blockpuzzle.logic.Game
 import de.mwvb.blockpuzzle.logic.QPosition
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.PlayingFieldView
 import de.mwvb.blockpuzzle.view.TeilView
@@ -81,12 +81,12 @@ class MainActivity : AppCompatActivity() {
     /** Spielsteinbewegung starten */
     @SuppressLint("ClickableViewAccessibility") // click geht nicht, wir brauchen onTouch
     private fun initTouchListener(index: Int) {
-        getSpielsteinView(index).setOnClickListener(null)
-        getSpielsteinView(index).setOnTouchListener { it, _ ->
+        getGamePieceView(index).setOnClickListener(null)
+        getGamePieceView(index).setOnTouchListener { it, _ ->
             try {
                 val data = ClipData.newPlainText("index", index.toString())
                 val tv = it as TeilView
-                if (tv.spielstein != null && !game.isGameOver) {
+                if (tv.gamePiece != null && !game.isGameOver) {
                     tv.startDragMode()
                     val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
@@ -100,13 +100,13 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        getSpielsteinView(index).setDrehmodus(false)
+        getGamePieceView(index).setDrehmodus(false)
     }
 
     /** Spielstein drehen */
     private fun initClickListener(index: Int) {
-        getSpielsteinView(index).setOnTouchListener(null)
-        getSpielsteinView(index).setOnClickListener {
+        getGamePieceView(index).setOnTouchListener(null)
+        getGamePieceView(index).setOnClickListener {
             try {
                 val tv = it as TeilView
                 if (!game.isGameOver) {
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
             }
         }
-        getSpielsteinView(index).setDrehmodus(true)
+        getGamePieceView(index).setDrehmodus(true)
     }
 
     /** Spielstein droppen */
@@ -134,10 +134,10 @@ class MainActivity : AppCompatActivity() {
                 DragEvent.ACTION_DRAG_ENDED -> {
                     try {
                         // Da ich nicht weiß, welcher ausgeblent ist, blende ich einfach alle ein.
-                        getSpielsteinView(1).endDragMode()
-                        getSpielsteinView(2).endDragMode()
-                        getSpielsteinView(3).endDragMode()
-                        getSpielsteinView(-1).endDragMode()
+                        getGamePieceView(1).endDragMode()
+                        getGamePieceView(2).endDragMode()
+                        getGamePieceView(3).endDragMode()
+                        getGamePieceView(-1).endDragMode()
                     } catch (e: Exception) {
                         Toast.makeText(this, "F/dragEnd: " + e.message, Toast.LENGTH_LONG).show()
                     }
@@ -152,26 +152,26 @@ class MainActivity : AppCompatActivity() {
         try {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
-            val spielstein = getSpielstein(index)!!
+            val gamePiece = getGamePiece(index)!!
 
             // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-            val xy = calculatePlayingFieldCoordinates(event, spielstein)
+            val xy = calculatePlayingFieldCoordinates(event, gamePiece)
 
-            game.dispatch(targetIsParking, index, spielstein, xy)
+            game.dispatch(targetIsParking, index, gamePiece, xy)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
         return true
     }
 
-    private fun calculatePlayingFieldCoordinates(event: DragEvent, spielstein: Spielstein): QPosition {
+    private fun calculatePlayingFieldCoordinates(event: DragEvent, gamePiece: GamePiece): QPosition {
         val f = resources.displayMetrics.density
         var x = event.x / f // px -> dp
         var y = event.y / f
         // jetzt in Spielfeld Koordinaten umrechnen
         val br = PlayingFieldView.w / Game.blocks
         x /= br
-        y = y / br - 2 - (spielstein.maxY - spielstein.minY)
+        y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
     }
 
@@ -214,27 +214,27 @@ class MainActivity : AppCompatActivity() {
         playingField.clearRows(filledRows, action)
     }
 
-    fun setSpielstein(index: Int, teil: Spielstein?, write: Boolean) {
-        val tv = getSpielsteinView(index)
+    fun setGamePiece(index: Int, teil: GamePiece?, write: Boolean) {
+        val tv = getGamePieceView(index)
         tv.endDragMode()
         tv.isGrey = false
-        tv.spielstein = teil // macht draw()
+        tv.gamePiece = teil // macht draw()
         if (write) {
             tv.write()
         }
     }
 
-    fun getSpielstein(index: Int): Spielstein? {
-        return getSpielsteinView(index).spielstein
+    fun getGamePiece(index: Int): GamePiece? {
+        return getGamePieceView(index).gamePiece
     }
 
     fun grey(index: Int, grey: Boolean) {
-        val tv = getSpielsteinView(index)
+        val tv = getGamePieceView(index)
         tv.isGrey = grey
         tv.draw()
     }
 
-    private fun getSpielsteinView(index: Int): TeilView {
+    private fun getGamePieceView(index: Int): TeilView {
         return when (index) {
              1 -> (placeholder1 as ViewGroup).getChildAt(0) as TeilView
              2 -> (placeholder2 as ViewGroup).getChildAt(0) as TeilView
@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         infoanzeige.text = text
     }*/
 
-    fun gehtNicht() {
+    fun doesNotWork() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
     }
 
@@ -261,11 +261,11 @@ class MainActivity : AppCompatActivity() {
         playingField.playCrunchSound()
     }
 
-    fun restoreSpielsteinViews() {
-        // SpielsteinViews 1-3 und Parking restoren
-        getSpielsteinView(1).read();
-        getSpielsteinView(2).read();
-        getSpielsteinView(3).read();
-        getSpielsteinView(-1).read();
+    fun restoreGamePieceViews() {
+        // restore GamePieceViews 1-3 und Parking area
+        getGamePieceView(1).read();
+        getGamePieceView(2).read();
+        getGamePieceView(3).read();
+        getGamePieceView(-1).read();
     }
 }

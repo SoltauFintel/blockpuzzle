@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
 /** Long John */
-public class Spielstein5 extends Spielstein {
+public class Spielstein5 extends GamePiece {
 
     public Spielstein5() {
         fill(0, 2);

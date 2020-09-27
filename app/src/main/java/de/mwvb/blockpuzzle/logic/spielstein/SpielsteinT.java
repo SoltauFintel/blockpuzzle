@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
 /** Tetris style T */
-public class SpielsteinT extends Spielstein {
+public class SpielsteinT extends GamePiece {
 
     public SpielsteinT() {
         fill(1, 2);

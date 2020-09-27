@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Teil Basisklasse und leeres Teil
  */
-public class Spielstein {
+public class GamePiece {
     /** Breite und Höhe */
     public static final int max = 5;
     /** 1: x (nach rechts), 2: y (nach unten) */
@@ -15,7 +15,7 @@ public class Spielstein {
     private int mindestpunktzahl = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
     private int rotated = 0; // TODO Ich brauch hier die richtige Zahl.
 
-    public Spielstein() {
+    public GamePiece() {
         for (int x = 0; x < max; x++) {
             for (int y = 0; y < max; y++) {
                 matrix[x][y] = 0;
@@ -23,9 +23,9 @@ public class Spielstein {
         }
     }
 
-    public Spielstein copy() {
+    public GamePiece copy() {
         try {
-            Spielstein n = (Spielstein) Class.forName(this.getClass().getName()).newInstance();
+            GamePiece n = (GamePiece) Class.forName(this.getClass().getName()).newInstance();
             for (int x = 0; x < max; x++) {
                 System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
             }
@@ -36,7 +36,7 @@ public class Spielstein {
         }
     }
 
-    public Spielstein withMindestpunktzahl(int minp) {
+    public GamePiece withMindestpunktzahl(int minp) {
         mindestpunktzahl = minp;
         return this;
     }
@@ -62,14 +62,14 @@ public class Spielstein {
         matrix[x][y] = value;
     }
 
-    public Spielstein rotateToLeft() {
+    public GamePiece rotateToLeft() {
         rotateToRight();
         rotateToRight();
         rotateToRight();
         return this;
     }
 
-    public Spielstein rotateToRight() {
+    public GamePiece rotateToRight() {
         // Kein Bock einen Algo zu programmieren. Ist immer eine 5x5 Matrix.
         // inneres Quadrat drehen
         transfer(1, 1, 3, 1);

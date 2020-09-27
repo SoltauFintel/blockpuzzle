@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein;
 
 /** Tetris style J, alter Name: SpielsteinLangeEcke */
-public class SpielsteinJ extends Spielstein {
+public class SpielsteinJ extends GamePiece {
 
     public SpielsteinJ() {
         fill(1, 1);
