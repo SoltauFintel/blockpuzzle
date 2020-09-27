@@ -8,7 +8,7 @@ Cooperation and suggestions are welcome!
 
 # Download
 
-http://mwvb.de/store/blockpuzzle.apk
+[blockpuzzle.apk](http://mwvb.de/store/blockpuzzle.apk)
 
 The app doesn't need any rights. The app is not on Google Play. The app is registered for publication in the F-Droid App Store.
 
