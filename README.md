@@ -2,7 +2,7 @@
 
 Block Puzzle is an Android game. Game language: German
 
-Game description see https://github.com/SoltauFintel/blockpuzzle/blob/master/fastlane/metadata/android/en-US/full_description.txt
+See [Game description](https://github.com/SoltauFintel/blockpuzzle/blob/master/fastlane/metadata/android/en-US/full_description.txt)
 
 Suggestions from players are welcome!
 
