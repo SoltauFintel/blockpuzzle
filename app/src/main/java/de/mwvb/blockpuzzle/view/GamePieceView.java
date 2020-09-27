@@ -18,7 +18,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
  * Teil ist der alte Name für Spielstein; daher TeilView.
  */
 @SuppressLint("ViewConstructor")
-public class TeilView extends View {
+public class GamePieceView extends View {
     private final boolean parking;
     private final Paint p_normal = new Paint(); // TODO final
     private final Paint p_grey = new Paint();
@@ -32,7 +32,7 @@ public class TeilView extends View {
     private boolean drehmodus = false; // wird nicht persistiert
     private boolean dragMode = false; // wird nicht persistiert
 
-    public TeilView(Context context, int index, boolean parking, SharedPreferences pref) {
+    public GamePieceView(Context context, int index, boolean parking, SharedPreferences pref) {
         super(context);
         this.index = index;
         this.parking = parking;

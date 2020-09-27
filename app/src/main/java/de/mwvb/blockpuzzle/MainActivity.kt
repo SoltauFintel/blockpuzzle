@@ -21,7 +21,7 @@ import de.mwvb.blockpuzzle.logic.QPosition
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.PlayingFieldView
-import de.mwvb.blockpuzzle.view.TeilView
+import de.mwvb.blockpuzzle.view.GamePieceView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
 
         playingField.setGame(game)
 
-        (placeholder1 as ViewGroup).addView(TeilView(baseContext, 1, false, pref))
-        (placeholder2 as ViewGroup).addView(TeilView(baseContext, 2,false, pref))
-        (placeholder3 as ViewGroup).addView(TeilView(baseContext, 3,false, pref))
-        (parking      as ViewGroup).addView(TeilView(baseContext, -1,true, pref))
+        (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false, pref))
+        (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2,false, pref))
+        (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3,false, pref))
+        (parking      as ViewGroup).addView(GamePieceView(baseContext, -1,true, pref))
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         getGamePieceView(index).setOnTouchListener { it, _ ->
             try {
                 val data = ClipData.newPlainText("index", index.toString())
-                val tv = it as TeilView
+                val tv = it as GamePieceView
                 if (tv.gamePiece != null && !game.isGameOver) {
                     tv.startDragMode()
                     val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         getGamePieceView(index).setOnTouchListener(null)
         getGamePieceView(index).setOnClickListener {
             try {
-                val tv = it as TeilView
+                val tv = it as GamePieceView
                 if (!game.isGameOver) {
                     tv.rotate()
                     game.moveImpossible(index)
@@ -234,12 +234,12 @@ class MainActivity : AppCompatActivity() {
         tv.draw()
     }
 
-    private fun getGamePieceView(index: Int): TeilView {
+    private fun getGamePieceView(index: Int): GamePieceView {
         return when (index) {
-             1 -> (placeholder1 as ViewGroup).getChildAt(0) as TeilView
-             2 -> (placeholder2 as ViewGroup).getChildAt(0) as TeilView
-             3 -> (placeholder3 as ViewGroup).getChildAt(0) as TeilView
-            -1 -> (parking      as ViewGroup).getChildAt(0) as TeilView
+             1 -> (placeholder1 as ViewGroup).getChildAt(0) as GamePieceView
+             2 -> (placeholder2 as ViewGroup).getChildAt(0) as GamePieceView
+             3 -> (placeholder3 as ViewGroup).getChildAt(0) as GamePieceView
+            -1 -> (parking      as ViewGroup).getChildAt(0) as GamePieceView
             else -> throw RuntimeException()
         }
     }
