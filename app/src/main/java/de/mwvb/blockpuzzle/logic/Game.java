@@ -216,7 +216,7 @@ public class Game {
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
-            playingField.platziere(teil, pos);
+            playingField.place(teil, pos);
             view.drawPlayingField();
             view.setGamePiece(index, null, true);
 
@@ -224,12 +224,12 @@ public class Game {
             FilledRows f = playingField.getFilledRows();
 
             // Punktzahl erhöhen
-            punkte += teil.getPunkte() + 10 * f.getTreffer();
-            rowsAdditionalBonus(f.getTreffer());
+            punkte += teil.getPunkte() + 10 * f.getHits();
+            rowsAdditionalBonus(f.getHits());
 
             view.clearRows(f, getGravityAction(f)); // Wird erst wenige Millisekunden später fertig!
             playingField.clearRows(f);
-            if (f.getTreffer() > 0) {
+            if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
             }
             view.updatePunkte(punkte - punkteVorher);
@@ -270,7 +270,7 @@ public class Game {
         // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine
         // auf dem Spielfeld sind. 1-2 ist nicht einfach, 0 fast unmöglich.
         int bonus = 0;
-        switch (playingField.getGefuellte()) {
+        switch (playingField.getFilled()) {
             case 0: bonus = 444; break; // Wahnsinn!
             case 1: bonus = 111; break;
             case 2: bonus = 60; break;

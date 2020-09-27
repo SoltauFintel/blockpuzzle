@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
-import de.mwvb.blockpuzzle.musik.Musik;
+import de.mwvb.blockpuzzle.music.Music;
 
 /**
  * Das Spielfeld ist ein 10x10 großes Quadrat.
@@ -35,7 +35,7 @@ public class PlayingFieldView extends View {
     private final Paint box31 = new Paint();
     private final Paint box32 = new Paint();
     private final Paint mark = new Paint();
-    private final Musik musik = new Musik();
+    private final Music music = new Music();
     private Game game;
     private FilledRows filledRows;
     private int mode = 0;
@@ -62,7 +62,7 @@ public class PlayingFieldView extends View {
     }*/
 
     private void init(Context context) {
-        musik.init(context);
+        music.init(context);
 
         rectborder.setStrokeWidth(3);
         rectborder.setColor(Color.parseColor("#a65726"));
@@ -143,7 +143,7 @@ public class PlayingFieldView extends View {
             return new MatrixGet() {
                 @Override
                 public Paint get(int x, int y) {
-                    if (filledRows.enthaltenX(x) || filledRows.enthaltenY(y)) {
+                    if (filledRows.containsX(x) || filledRows.containsY(y)) {
                         switch (mode) {
                             case 30: return box30;
                             case 31: return box31;
@@ -172,7 +172,7 @@ public class PlayingFieldView extends View {
 
     // TODO vielleicht eine Klasse daraus machen, evtl. kann man's auch kompakter schreiben
     public void clearRows(final FilledRows filledRows, Action action) {
-        if (filledRows.getTreffer() == 0) {
+        if (filledRows.getHits() == 0) {
             return;
         }
         this.filledRows = filledRows;
@@ -182,7 +182,7 @@ public class PlayingFieldView extends View {
             public void run() {
                 mode = 30;
                 draw();
-                musik.playCrunchSound();
+                music.playCrunchSound();
             }
         }, 50);
 
@@ -211,21 +211,21 @@ public class PlayingFieldView extends View {
     }
 
     public void playGameOverSound() {
-        musik.playCrunchSound();
+        music.playCrunchSound();
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                musik.playCrunchSound();
+                music.playCrunchSound();
             }
         }, 450);
     }
 
     public void playCrunchSound() {
-        musik.playCrunchSound();
+        music.playCrunchSound();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        musik.destroy();
+        music.destroy();
     }
 }

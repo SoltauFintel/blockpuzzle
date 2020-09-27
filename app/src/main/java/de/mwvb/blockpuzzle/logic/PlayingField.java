@@ -57,7 +57,7 @@ public class PlayingField {
     }
 
     /** Male Teil ins Spielfeld! */
-    public void platziere(GamePiece teil, QPosition pos) {
+    public void place(GamePiece teil, QPosition pos) { // old German method name: platziere
         for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
             for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
                 if (teil.filled(x, y)) {
@@ -73,19 +73,19 @@ public class PlayingField {
     public FilledRows getFilledRows() {
         FilledRows ret = new FilledRows();
         for (int y = 0; y < blocks; y++) {
-            if (x_gefuellt(y)) {
+            if (x_filled(y)) {
                 ret.getYlist().add(y);
             }
         }
         for (int x = 0; x < blocks; x++) {
-            if (y_gefuellt(x)) {
+            if (y_filled(x)) {
                 ret.getXlist().add(x);
             }
         }
         return ret;
     }
 
-    private boolean x_gefuellt(int y) {
+    private boolean x_filled(int y) {
         for (int x = 0; x < blocks; x++) {
             if (get(x, y) == 0) {
                 return false;
@@ -94,7 +94,7 @@ public class PlayingField {
         return true;
     }
 
-    private boolean y_gefuellt(int x) {
+    private boolean y_filled(int x) {
         for (int y = 0; y < blocks; y++) {
             if (get(x, y) == 0) {
                 return false;
@@ -117,7 +117,7 @@ public class PlayingField {
         write();
     }
 
-    public int getGefuellte() {
+    public int getFilled() {
         int ret = 0;
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {

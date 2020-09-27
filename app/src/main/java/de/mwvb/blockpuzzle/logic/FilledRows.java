@@ -15,15 +15,15 @@ public class FilledRows {
         return xlist;
     }
 
-    public int getTreffer() {
+    public int getHits() {
         return ylist.size() + xlist.size();
     }
 
-    public boolean enthaltenX(Integer x) {
+    public boolean containsX(Integer x) {
         return xlist.contains(x);
     }
 
-    public boolean enthaltenY(Integer y) {
+    public boolean containsY(Integer y) {
         return ylist.contains(y);
     }
 }

@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.musik;
+package de.mwvb.blockpuzzle.music;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import de.mwvb.blockpuzzle.R;
 
-public class Musik {
+public class Music {
     private SoundPool soundPool;
     private int crunchSoundId;
 
