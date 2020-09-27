@@ -186,7 +186,7 @@ public class Game {
         if (targetIsParking) {
             ret = parke(index, teil);
         } else {
-            ret = platziere(index, teil, xy);
+            ret = place(index, teil, xy);
         }
         if (ret) {
             if (view.getGamePiece(1) == null && view.getGamePiece(2) == null && view.getGamePiece(3) == null) {
@@ -212,7 +212,7 @@ public class Game {
      * Drop Aktion für Spielfeld
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
-    private boolean platziere(int index, GamePiece teil, QPosition pos) {
+    private boolean place(int index, GamePiece teil, QPosition pos) {
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
