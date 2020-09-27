@@ -125,7 +125,7 @@ public class Game {
 
         // Drehmodus deaktivieren
         drehen = false;
-        view.drehmodusAus();
+        view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
         punkte = pref.getInt("punkte", -9999);
@@ -135,7 +135,7 @@ public class Game {
         }
         // Es gibt einen Spielstand.
         playingField.read();
-        view.updatePunkte(0);
+        view.updateScore(0);
         view.drawPlayingField();
         view.restoreGamePieceViews();
         checkGame();
@@ -147,7 +147,7 @@ public class Game {
         gameOver = false;
         punkte = 0;
         savePunkte();
-        view.updatePunkte(0);
+        view.updateScore(0);
 
         view.drawPlayingField();
         view.setGamePiece(-1, null, true);
@@ -232,7 +232,7 @@ public class Game {
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
             }
-            view.updatePunkte(punkte - punkteVorher);
+            view.updateScore(punkte - punkteVorher);
             savePunkte();
         }
         return ret;
@@ -290,7 +290,7 @@ public class Game {
         boolean d = moveImpossible(-1);
         if (a && b && c && d && view.getGamePiece(-1) != null) {
             gameOver = true;
-            view.updatePunkte(0);
+            view.updateScore(0);
             view.drawPlayingField(); // wenn parke die letzte Aktion war
         }
     }

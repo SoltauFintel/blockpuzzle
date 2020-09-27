@@ -96,7 +96,7 @@ public class PlayingFieldView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         drawPlayingField(canvas);
-        drawKaestchen(canvas);
+        drawBlocks(canvas);
         super.onDraw(canvas);
     }
 
@@ -114,7 +114,7 @@ public class PlayingFieldView extends View {
         }
     }
 
-    private void drawKaestchen(Canvas canvas) {
+    private void drawBlocks(Canvas canvas) {
         final float f = getResources().getDisplayMetrics().density;
         final int br = w / Game.blocks; // 60px
         final float p = br * 0.1f;

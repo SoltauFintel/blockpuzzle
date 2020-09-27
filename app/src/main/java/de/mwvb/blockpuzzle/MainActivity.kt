@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                     initClickListener(-1)
                 } else {
                     // Drehen ist aus
-                    drehmodusAus()
+                    rotatingModeOff()
                 }
             }
         }
@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         return QPosition(x.toInt(), y.toInt())
     }
 
-    fun drehmodusAus() {
+    fun rotatingModeOff() {
         drehmodus.text = resources.getText(R.string.drehenAus)
         drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
         initTouchListeners()
@@ -189,7 +189,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // TODO delta auch persistieren und nach Programmneustart korrekt anzeigen
-    fun updatePunkte(delta: Int) {
+    fun updateScore(delta: Int) {
         if (game.isGameOver) {
             info.text =
                 resources.getQuantityString(R.plurals.punkteGameOver, game.punkte, game.punkte)
