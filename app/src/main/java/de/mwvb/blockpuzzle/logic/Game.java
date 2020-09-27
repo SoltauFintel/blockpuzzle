@@ -136,7 +136,7 @@ public class Game {
         // Es gibt einen Spielstand.
         playingField.read();
         view.updatePunkte(0);
-        view.drawSpielfeld();
+        view.drawPlayingField();
         view.restoreSpielsteinViews();
         checkGame();
     }
@@ -149,7 +149,7 @@ public class Game {
         savePunkte();
         view.updatePunkte(0);
 
-        view.drawSpielfeld();
+        view.drawPlayingField();
         view.setSpielstein(-1, null, true);
         vorschlag();
     }
@@ -217,7 +217,7 @@ public class Game {
         boolean ret = playingField.match(teil, pos);
         if (ret) {
             playingField.platziere(teil, pos);
-            view.drawSpielfeld();
+            view.drawPlayingField();
             view.setSpielstein(index, null, true);
 
             // Gibt es gefüllte Rows?
@@ -230,7 +230,7 @@ public class Game {
             view.clearRows(f, getGravityAction(f)); // Wird erst wenige Millisekunden später fertig!
             playingField.clearRows(f);
             if (f.getTreffer() > 0) {
-                wenigeSpielsteineAufSpielfeld();
+                fewGamePiecesOnThePlayingField();
             }
             view.updatePunkte(punkte - punkteVorher);
             savePunkte();
@@ -244,7 +244,7 @@ public class Game {
                 if (f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
                     playingField.gravitation(blocks - i);
-                    view.drawSpielfeld();
+                    view.drawPlayingField();
                 }
             }
             moveImpossible(1);
@@ -266,7 +266,7 @@ public class Game {
         }
     }
 
-    private void wenigeSpielsteineAufSpielfeld() {
+    private void fewGamePiecesOnThePlayingField() {
         // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine
         // auf dem Spielfeld sind. 1-2 ist nicht einfach, 0 fast unmöglich.
         int bonus = 0;
@@ -291,7 +291,7 @@ public class Game {
         if (a && b && c && d && view.getSpielstein(-1) != null) {
             gameOver = true;
             view.updatePunkte(0);
-            view.drawSpielfeld(); // wenn parke die letzte Aktion war
+            view.drawPlayingField(); // wenn parke die letzte Aktion war
         }
     }
 

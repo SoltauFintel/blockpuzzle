@@ -66,7 +66,7 @@ public class TeilView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         final float f = getResources().getDisplayMetrics().density;
-        int br = SpielfeldView.w / Game.blocks; // 60px, auf Handy groß = 36
+        int br = PlayingFieldView.w / Game.blocks; // 60px, auf Handy groß = 36
         if (!dragMode) br /= 2;
         float p = br * 0.1f;
         if (parking && !dragMode) {

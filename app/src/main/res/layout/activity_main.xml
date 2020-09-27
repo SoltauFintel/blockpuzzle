@@ -51,8 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
-        <de.mwvb.blockpuzzle.view.SpielfeldView
-            android:id="@+id/spielfeld"
+        <de.mwvb.blockpuzzle.view.PlayingFieldView
+            android:id="@+id/playingField"
             android:layout_width="300dp"
             android:layout_height="360dp"
             android:layout_centerInParent="true"/>

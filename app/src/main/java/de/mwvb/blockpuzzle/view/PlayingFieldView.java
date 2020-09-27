@@ -24,7 +24,7 @@ import de.mwvb.blockpuzzle.musik.Musik;
  * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
  * funktioniert.
  */
-public class SpielfeldView extends View {
+public class PlayingFieldView extends View {
     public static final int w = 300; // dp
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
@@ -40,25 +40,26 @@ public class SpielfeldView extends View {
     private FilledRows filledRows;
     private int mode = 0;
 
-    public SpielfeldView(Context context) {
+    public PlayingFieldView(Context context) {
         super(context);
         init(context);
     }
 
-    public SpielfeldView(Context context, @Nullable AttributeSet attrs) {
+    public PlayingFieldView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public SpielfeldView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PlayingFieldView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
+    /* ??? - API level problem
     public SpielfeldView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
-    }
+    }*/
 
     private void init(Context context) {
         musik.init(context);
@@ -94,12 +95,12 @@ public class SpielfeldView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawSpielfeld(canvas);
+        drawPlayingField(canvas);
         drawKaestchen(canvas);
         super.onDraw(canvas);
     }
 
-    private void drawSpielfeld(Canvas canvas) {
+    private void drawPlayingField(Canvas canvas) {
         final float f = getResources().getDisplayMetrics().density;
         // Rahmen
         canvas.drawRect(1 * f, 1 * f, w * f, w * f, rectborder);
@@ -169,6 +170,7 @@ public class SpielfeldView extends View {
         };
     }
 
+    // TODO vielleicht eine Klasse daraus machen, evtl. kann man's auch kompakter schreiben
     public void clearRows(final FilledRows filledRows, Action action) {
         if (filledRows.getTreffer() == 0) {
             return;
@@ -202,7 +204,7 @@ public class SpielfeldView extends View {
             public void run() {
                 mode = 0;
                 draw();
-                SpielfeldView.this.filledRows = null;
+                PlayingFieldView.this.filledRows = null;
                 action.execute();
             }
         }, 500);

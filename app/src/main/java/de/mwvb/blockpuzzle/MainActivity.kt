@@ -20,7 +20,7 @@ import de.mwvb.blockpuzzle.logic.Game
 import de.mwvb.blockpuzzle.logic.QPosition
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
-import de.mwvb.blockpuzzle.view.SpielfeldView
+import de.mwvb.blockpuzzle.view.PlayingFieldView
 import de.mwvb.blockpuzzle.view.TeilView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
-        spielfeld.setGame(game)
+        playingField.setGame(game)
 
         (placeholder1 as ViewGroup).addView(TeilView(baseContext, 1, false, pref))
         (placeholder2 as ViewGroup).addView(TeilView(baseContext, 2,false, pref))
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         (parking      as ViewGroup).addView(TeilView(baseContext, -1,true, pref))
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
-        spielfeld.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
+        playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
 
         neuesSpiel.setOnClickListener {
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
             val spielstein = getSpielstein(index)!!
 
             // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-            val xy = calculateSpielfeldKoordinate(event, spielstein)
+            val xy = calculatePlayingFieldCoordinates(event, spielstein)
 
             game.dispatch(targetIsParking, index, spielstein, xy)
         } catch (e: Exception) {
@@ -164,12 +164,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun calculateSpielfeldKoordinate(event: DragEvent, spielstein: Spielstein): QPosition {
+    private fun calculatePlayingFieldCoordinates(event: DragEvent, spielstein: Spielstein): QPosition {
         val f = resources.displayMetrics.density
         var x = event.x / f // px -> dp
         var y = event.y / f
         // jetzt in Spielfeld Koordinaten umrechnen
-        val br = SpielfeldView.w / Game.blocks
+        val br = PlayingFieldView.w / Game.blocks
         x /= br
         y = y / br - 2 - (spielstein.maxY - spielstein.minY)
         return QPosition(x.toInt(), y.toInt())
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         if (game.isGameOver) {
             info.text =
                 resources.getQuantityString(R.plurals.punkteGameOver, game.punkte, game.punkte)
-            spielfeld.playGameOverSound()
+            playingField.playGameOverSound()
         } else {
             // Man muss bei Plurals die Anzahl 2x übergeben.
             var t = resources.getQuantityString(R.plurals.punkte, game.punkte, game.punkte)
@@ -206,12 +206,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun drawSpielfeld() {
-        spielfeld.draw()
+    fun drawPlayingField() {
+        playingField.draw()
     }
 
     fun clearRows(filledRows: FilledRows, action: Action) {
-        spielfeld.clearRows(filledRows, action)
+        playingField.clearRows(filledRows, action)
     }
 
     fun setSpielstein(index: Int, teil: Spielstein?, write: Boolean) {
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity() {
 
         // Wir spielen ein Sound ab, damit der User wenigstens merkt, dass die Taste nicht kaputt ist.
         // Man könnte aber auch die Anwendung minimieren.
-        spielfeld.playCrunchSound()
+        playingField.playCrunchSound()
     }
 
     fun restoreSpielsteinViews() {
