@@ -14,6 +14,7 @@ public class GamePiece {
     private int[][] neu = new int[max][max];
     private int mindestpunktzahl = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
     private int rotated = 0; // TODO Ich brauch hier die richtige Zahl.
+    private String name;
 
     public GamePiece() {
         for (int x = 0; x < max; x++) {
@@ -34,6 +35,14 @@ public class GamePiece {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getName() {
+        return name == null ? this.getClass().getSimpleName() : name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public GamePiece withMindestpunktzahl(int minp) {
