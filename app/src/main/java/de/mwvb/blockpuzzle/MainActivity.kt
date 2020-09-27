@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
 
-        neuesSpiel.setOnClickListener {
+        newGame.setOnClickListener {
             if (game.isGameOver || game.punkte < 10) {
                 game.newGame()
             } else {
@@ -58,12 +58,12 @@ class MainActivity : AppCompatActivity() {
                 dialog.show()
             }
         }
-        drehmodus.setOnClickListener {
+        rotatingMode.setOnClickListener {
             if (!game.isGameOver) {
                 if (game.toggleDrehmodus()) {
                     // Drehen ist an
-                    drehmodus.text = resources.getText(R.string.drehenAn)
-                    drehmodus.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
+                    rotatingMode.text = resources.getText(R.string.drehenAn)
+                    rotatingMode.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
                     initClickListener(1)
                     initClickListener(2)
                     initClickListener(3)
@@ -176,8 +176,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun rotatingModeOff() {
-        drehmodus.text = resources.getText(R.string.drehenAus)
-        drehmodus.setBackgroundColor(resources.getColor(R.color.colorNormal))
+        rotatingMode.text = resources.getText(R.string.drehenAus)
+        rotatingMode.setBackgroundColor(resources.getColor(R.color.colorNormal))
         initTouchListeners()
     }
 
