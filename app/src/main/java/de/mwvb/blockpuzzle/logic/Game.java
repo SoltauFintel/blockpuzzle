@@ -1,7 +1,6 @@
 package de.mwvb.blockpuzzle.logic;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class Game {
     public static final int blocks = 10;
     private static final Random rand = new Random(System.currentTimeMillis());
     private final MainActivity view;
-    private final Spielfeld spielfeld = new Spielfeld(blocks);
+    private final PlayingField playingField = new PlayingField(blocks);
     private final List<Spielstein> teile = new ArrayList<>();
     private int punkte;
     private boolean gameOver = false;
@@ -116,7 +115,7 @@ public class Game {
 
     public void setStorage(SharedPreferences pref) {
         this.pref = pref;
-        spielfeld.setStorage(pref);
+        playingField.setStorage(pref);
     }
 
     // Neues Spiel ----
@@ -135,7 +134,7 @@ public class Game {
             return;
         }
         // Es gibt einen Spielstand.
-        spielfeld.read();
+        playingField.read();
         view.updatePunkte(0);
         view.drawSpielfeld();
         view.restoreSpielsteinViews();
@@ -144,7 +143,7 @@ public class Game {
 
     /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
     public void newGame() {
-        spielfeld.clear(true);
+        playingField.clear(true);
         gameOver = false;
         punkte = 0;
         savePunkte();
@@ -215,21 +214,21 @@ public class Game {
      */
     private boolean platziere(int index, Spielstein teil, QPosition pos) {
         final int punkteVorher = punkte;
-        boolean ret = spielfeld.match(teil, pos);
+        boolean ret = playingField.match(teil, pos);
         if (ret) {
-            spielfeld.platziere(teil, pos);
+            playingField.platziere(teil, pos);
             view.drawSpielfeld();
             view.setSpielstein(index, null, true);
 
             // Gibt es gefüllte Rows?
-            FilledRows f = spielfeld.getFilledRows();
+            FilledRows f = playingField.getFilledRows();
 
             // Punktzahl erhöhen
             punkte += teil.getPunkte() + 10 * f.getTreffer();
             rowsAdditionalBonus(f.getTreffer());
 
             view.clearRows(f, getGravityAction(f)); // Wird erst wenige Millisekunden später fertig!
-            spielfeld.clearRows(f);
+            playingField.clearRows(f);
             if (f.getTreffer() > 0) {
                 wenigeSpielsteineAufSpielfeld();
             }
@@ -244,7 +243,7 @@ public class Game {
             for (int i = 5; i >= 1; i--) {
                 if (f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
-                    spielfeld.gravitation(blocks - i);
+                    playingField.gravitation(blocks - i);
                     view.drawSpielfeld();
                 }
             }
@@ -271,7 +270,7 @@ public class Game {
         // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine
         // auf dem Spielfeld sind. 1-2 ist nicht einfach, 0 fast unmöglich.
         int bonus = 0;
-        switch (spielfeld.getGefuellte()) {
+        switch (playingField.getGefuellte()) {
             case 0: bonus = 444; break; // Wahnsinn!
             case 1: bonus = 111; break;
             case 2: bonus = 60; break;
@@ -303,7 +302,7 @@ public class Game {
         }
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
-                if (spielfeld.match(teil, new QPosition(x, y))) {
+                if (playingField.match(teil, new QPosition(x, y))) {
                     view.grey(index, false);
                     return false; // Spielstein passt rein
                 }
@@ -322,7 +321,7 @@ public class Game {
     }
 
     public int get(int x, int y) {
-        return spielfeld.get(x, y);
+        return playingField.get(x, y);
     }
 
     public boolean toggleDrehmodus() {

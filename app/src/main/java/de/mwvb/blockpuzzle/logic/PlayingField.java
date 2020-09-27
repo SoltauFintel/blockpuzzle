@@ -4,13 +4,13 @@ import android.content.SharedPreferences;
 
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein;
 
-public class Spielfeld {
+public class PlayingField {
     private final int blocks;
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
     private SharedPreferences pref;
 
-    public Spielfeld(int blocks) {
+    public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
     }
