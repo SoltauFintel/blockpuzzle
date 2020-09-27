@@ -29,10 +29,10 @@ public class Game {
     private static final Random rand = new Random(System.currentTimeMillis());
     private final MainActivity view;
     private final PlayingField playingField = new PlayingField(blocks);
-    private final List<GamePiece> teile = new ArrayList<>();
+    private final List<GamePiece> gamePieces = new ArrayList<>();
     private int punkte;
     private boolean gameOver = false;
-    private boolean drehen = false; // wird nicht persistiert
+    private boolean rotatingMode = false; // wird nicht persistiert
     private SharedPreferences pref;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
@@ -47,70 +47,70 @@ public class Game {
         // Jede Spielsteinart standardmäßig 4x dabei.
         // Je nach Schwierigkeitsgrad wird das zum Teil abhängig von der Punktzahl variiert.
 
-        teile.add(new Spielstein1());
-        teile.add(new Spielstein1());
-        teile.add(new Spielstein1());
+        gamePieces.add(new Spielstein1());
+        gamePieces.add(new Spielstein1());
+        gamePieces.add(new Spielstein1());
 
-        teile.add(new Spielstein2());
-        teile.add(new Spielstein2().rotateToRight());
-        teile.add(new Spielstein2());
+        gamePieces.add(new Spielstein2());
+        gamePieces.add(new Spielstein2().rotateToRight());
+        gamePieces.add(new Spielstein2());
 
-        teile.add(new Spielstein3());
-        teile.add(new Spielstein3().rotateToRight());
-        teile.add(new Spielstein3());
-        teile.add(new Spielstein3().rotateToRight());
+        gamePieces.add(new Spielstein3());
+        gamePieces.add(new Spielstein3().rotateToRight());
+        gamePieces.add(new Spielstein3());
+        gamePieces.add(new Spielstein3().rotateToRight());
 
-        teile.add(new Spielstein4());
-        teile.add(new Spielstein4().rotateToRight());
-        teile.add(new Spielstein4());
-        teile.add(new Spielstein4().rotateToRight());
-        teile.add(new Spielstein4().withMindestpunktzahl(10000));
+        gamePieces.add(new Spielstein4());
+        gamePieces.add(new Spielstein4().rotateToRight());
+        gamePieces.add(new Spielstein4());
+        gamePieces.add(new Spielstein4().rotateToRight());
+        gamePieces.add(new Spielstein4().withMindestpunktzahl(10000));
 
-        teile.add(new Spielstein5());
-        teile.add(new Spielstein5().rotateToRight());
-        teile.add(new Spielstein5());
+        gamePieces.add(new Spielstein5());
+        gamePieces.add(new Spielstein5().rotateToRight());
+        gamePieces.add(new Spielstein5());
 
-        teile.add(new SpielsteinEcke2());
-        teile.add(new SpielsteinEcke2().rotateToRight());
-        teile.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
-        teile.add(new SpielsteinEcke2().rotateToLeft());
+        gamePieces.add(new SpielsteinEcke2());
+        gamePieces.add(new SpielsteinEcke2().rotateToRight());
+        gamePieces.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
+        gamePieces.add(new SpielsteinEcke2().rotateToLeft());
 
-        teile.add(new SpielsteinEcke3());
-        teile.add(new SpielsteinEcke3().rotateToRight());
-        teile.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
-        teile.add(new SpielsteinEcke3().rotateToLeft());
-        teile.add(new SpielsteinEcke3().withMindestpunktzahl(11000));
-        teile.add(new SpielsteinEcke3().withMindestpunktzahl(25000).rotateToRight());
+        gamePieces.add(new SpielsteinEcke3());
+        gamePieces.add(new SpielsteinEcke3().rotateToRight());
+        gamePieces.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
+        gamePieces.add(new SpielsteinEcke3().rotateToLeft());
+        gamePieces.add(new SpielsteinEcke3().withMindestpunktzahl(11000));
+        gamePieces.add(new SpielsteinEcke3().withMindestpunktzahl(25000).rotateToRight());
 
         // Bonus-Stein, seltener
-        teile.add(new SpielsteinJ().withMindestpunktzahl(1000));
+        gamePieces.add(new SpielsteinJ().withMindestpunktzahl(1000));
         // Bonus-Stein, seltener
-        teile.add(new SpielsteinL().withMindestpunktzahl(1000));
+        gamePieces.add(new SpielsteinL().withMindestpunktzahl(1000));
 
         // schwieriger Stein, seltener
-        teile.add(new Spielstein2x2());
-        teile.add(new Spielstein2x2().withMindestpunktzahl(2000));
+        gamePieces.add(new Spielstein2x2());
+        gamePieces.add(new Spielstein2x2().withMindestpunktzahl(2000));
 
         // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
-        teile.add(new Spielstein2x3().withMindestpunktzahl(2500));
-        teile.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+        gamePieces.add(new Spielstein2x3().withMindestpunktzahl(2500));
+        gamePieces.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
 
         // Tetris S ab 4000 P.
-        teile.add(new SpielsteinS().withMindestpunktzahl(4000));
-        teile.add(new SpielsteinZ().withMindestpunktzahl(4000));
+        gamePieces.add(new SpielsteinS().withMindestpunktzahl(4000));
+        gamePieces.add(new SpielsteinZ().withMindestpunktzahl(4000));
 
         // schwieriger Stein, seltener
-        teile.add(new Spielstein3x3());
-        teile.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-        teile.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
-        teile.add(new Spielstein3x3().withMindestpunktzahl(9000)); // ab 9000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
-        teile.add(new Spielstein3x3().withMindestpunktzahl(20000)); // ab 20k P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+        gamePieces.add(new Spielstein3x3());
+        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
+        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(9000)); // ab 9000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
+        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(20000)); // ab 20k P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
 
         // Bonus Spielstein Mr. T ab 8000 P.
-        teile.add(new SpielsteinT().withMindestpunktzahl(8000));
-        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
-        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
-        teile.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
+        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000));
+        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
+        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
+        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
     }
 
     public void setStorage(SharedPreferences pref) {
@@ -124,7 +124,7 @@ public class Game {
         view.setGamePiece(-1, null, false);
 
         // Drehmodus deaktivieren
-        drehen = false;
+        rotatingMode = false;
         view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
@@ -146,22 +146,22 @@ public class Game {
         playingField.clear(true);
         gameOver = false;
         punkte = 0;
-        savePunkte();
+        saveScore();
         view.updateScore(0);
 
         view.drawPlayingField();
         view.setGamePiece(-1, null, true);
-        vorschlag();
+        offer();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
-    private void vorschlag() {
-        view.setGamePiece(1, createZufallsteil(teile), true);
-        view.setGamePiece(2, createZufallsteil(teile), true);
-        view.setGamePiece(3, createZufallsteil(teile), true);
+    private void offer() { // old German method name: vorschlag
+        view.setGamePiece(1, createRandomGamePiece(gamePieces), true);
+        view.setGamePiece(2, createRandomGamePiece(gamePieces), true);
+        view.setGamePiece(3, createRandomGamePiece(gamePieces), true);
     }
 
-    private GamePiece createZufallsteil(List<GamePiece> teile) {
+    private GamePiece createRandomGamePiece(List<GamePiece> teile) {
         int loop = 0;
         int index = rand.nextInt(teile.size());
         GamePiece gamePiece = teile.get(index);
@@ -184,13 +184,13 @@ public class Game {
         }
         boolean ret;
         if (targetIsParking) {
-            ret = parke(index, teil);
+            ret = park(index, teil);
         } else {
             ret = place(index, teil, xy);
         }
         if (ret) {
             if (view.getGamePiece(1) == null && view.getGamePiece(2) == null && view.getGamePiece(3) == null) {
-                vorschlag();
+                offer();
             }
             checkGame();
         } else {
@@ -199,7 +199,7 @@ public class Game {
     }
 
     /** Drop Aktion für Parking Area */
-    private boolean parke(int index, GamePiece teil) {
+    private boolean park(int index, GamePiece teil) {
         if (index != -1 && view.getGamePiece(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
             view.setGamePiece(-1, view.getGamePiece(index), true); // Parking belegen
             view.setGamePiece(index, null, true); // Source leeren
@@ -212,7 +212,7 @@ public class Game {
      * Drop Aktion für Spielfeld
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
-    private boolean place(int index, GamePiece teil, QPosition pos) {
+    private boolean place(int index, GamePiece teil, QPosition pos) { // old German name: platziere
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
@@ -233,7 +233,7 @@ public class Game {
                 fewGamePiecesOnThePlayingField();
             }
             view.updateScore(punkte - punkteVorher);
-            savePunkte();
+            saveScore();
         }
         return ret;
     }
@@ -312,7 +312,7 @@ public class Game {
         return true; // Spielstein passt nirgendwo rein
     }
 
-    public int getPunkte() {
+    public int getScore() {
         return punkte;
     }
 
@@ -324,12 +324,12 @@ public class Game {
         return playingField.get(x, y);
     }
 
-    public boolean toggleDrehmodus() {
-        drehen = !drehen;
-        return drehen;
+    public boolean toggleRotatingMode() {
+        rotatingMode = !rotatingMode;
+        return rotatingMode;
     }
 
-    private void savePunkte() {
+    private void saveScore() {
         if (pref != null) {
             SharedPreferences.Editor edit = pref.edit();
             edit.putInt("punkte", punkte);

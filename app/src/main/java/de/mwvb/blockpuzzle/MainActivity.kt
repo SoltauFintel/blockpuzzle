@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
 
         newGame.setOnClickListener {
-            if (game.isGameOver || game.punkte < 10) {
+            if (game.isGameOver || game.score < 10) {
                 game.newGame()
             } else {
                 val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
         rotatingMode.setOnClickListener {
             if (!game.isGameOver) {
-                if (game.toggleDrehmodus()) {
+                if (game.toggleRotatingMode()) {
                     // Drehen ist an
                     rotatingMode.text = resources.getText(R.string.drehenAn)
                     rotatingMode.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
@@ -192,11 +192,11 @@ class MainActivity : AppCompatActivity() {
     fun updateScore(delta: Int) {
         if (game.isGameOver) {
             info.text =
-                resources.getQuantityString(R.plurals.punkteGameOver, game.punkte, game.punkte)
+                resources.getQuantityString(R.plurals.punkteGameOver, game.score, game.score)
             playingField.playGameOverSound()
         } else {
             // Man muss bei Plurals die Anzahl 2x übergeben.
-            var t = resources.getQuantityString(R.plurals.punkte, game.punkte, game.punkte)
+            var t = resources.getQuantityString(R.plurals.punkte, game.score, game.score)
             if (delta > 0) {
                 t += " (+$delta)";
             } else if (delta < 0) {
