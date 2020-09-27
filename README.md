@@ -2,18 +2,19 @@
 
 Block Puzzle is an Android game. Game language: German
 
-Mithilfe ist willkommen!
+Game description see https://github.com/SoltauFintel/blockpuzzle/blob/master/fastlane/metadata/android/en-US/full_description.txt
+
+Cooperation and suggestions are welcome!
 
 # Download
 
 http://mwvb.de/store/blockpuzzle.apk
 
-Die App braucht keine Rechte. Die App ist nicht auf Google Play.
-Ich versuche es im alternativen AppStore "F-Droid.org" hochzuladen.
+The app doesn't need any rights. The app is not on Google Play. The app is registered for publication in the F-Droid App Store.
 
-![screenshot with highscore 7000](http://mwvb.de/7000.png "old screenshot")
+<img src="http://mwvb.de/7000.png" height="500">
 
-# Versionierung
+# Versionierung (DE)
 
 versionName: Major Version + "." + Bugfix Version
 
@@ -41,6 +42,6 @@ Beispiel: versionName = 12.0, versionCode: 120, changelog: 120.txt
 10. commit and push your changes to the new branch to your repository
 11. go to https://github.com/SoltauFintel/blockpuzzle -> There should be a button to create the Pull Request.
 
-# Lizenz
+# License
 
 MIT
