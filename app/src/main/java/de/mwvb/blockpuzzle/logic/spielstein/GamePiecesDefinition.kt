@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.logic.spielstein
 
 // Kotlin supports multi line strings
-class GamePieces {
+class GamePiecesDefinition {
     val gamePieces =
 """
 
@@ -16,6 +16,7 @@ class GamePieces {
 .....
 
 #2
+// nick name: Twix
 .....
 .....
 .11..

@@ -182,7 +182,7 @@ public class GamePiece {
     }
 
     /* Der Spieler muss mindestens diese Punktzahl haben, damit der Spielstein verfügbar wird. */
-    public int getMindestpunktzahl() {
+    public int getMindestpunktzahl() { // TODO English
         return mindestpunktzahl;
     }
 
@@ -194,5 +194,20 @@ public class GamePiece {
 
     public int getRotated() {
         return rotated;
+    }
+
+    public String getStringPresentation() {
+        String ret = "";
+        for (int y = 0; y < max; y++) {
+            for (int x = 0; x < max; x++) {
+                switch (getBlockType(x, y)) {
+                    case 0: ret += "."; break;
+                    case 1: ret += "1"; break;
+                    default: throw new RuntimeException("Unknown block type: " + getBlockType(x, y));
+                }
+            }
+            ret += "\n";
+        }
+        return ret;
     }
 }
