@@ -31,6 +31,7 @@ public class GamePiece {
                 System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
             }
             n.rotated = rotated;
+            n.mindestpunktzahl = mindestpunktzahl;
             return n;
         } catch (Throwable e) {
             throw new RuntimeException(e);

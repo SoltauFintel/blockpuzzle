@@ -8,6 +8,7 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
 import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinJ;
 import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinL;
@@ -43,74 +44,7 @@ public class Game {
 
     public Game(MainActivity activity) {
         view = activity;
-
-        // Jede Spielsteinart standardmäßig 4x dabei.
-        // Je nach Schwierigkeitsgrad wird das zum Teil abhängig von der Punktzahl variiert.
-
-        gamePieces.add(new Spielstein1());
-        gamePieces.add(new Spielstein1());
-        gamePieces.add(new Spielstein1());
-
-        gamePieces.add(new Spielstein2());
-        gamePieces.add(new Spielstein2().rotateToRight());
-        gamePieces.add(new Spielstein2());
-
-        gamePieces.add(new Spielstein3());
-        gamePieces.add(new Spielstein3().rotateToRight());
-        gamePieces.add(new Spielstein3());
-        gamePieces.add(new Spielstein3().rotateToRight());
-
-        gamePieces.add(new Spielstein4());
-        gamePieces.add(new Spielstein4().rotateToRight());
-        gamePieces.add(new Spielstein4());
-        gamePieces.add(new Spielstein4().rotateToRight());
-        gamePieces.add(new Spielstein4().withMindestpunktzahl(10000));
-
-        gamePieces.add(new Spielstein5());
-        gamePieces.add(new Spielstein5().rotateToRight());
-        gamePieces.add(new Spielstein5());
-
-        gamePieces.add(new SpielsteinEcke2());
-        gamePieces.add(new SpielsteinEcke2().rotateToRight());
-        gamePieces.add(new SpielsteinEcke2().rotateToRight().rotateToRight());
-        gamePieces.add(new SpielsteinEcke2().rotateToLeft());
-
-        gamePieces.add(new SpielsteinEcke3());
-        gamePieces.add(new SpielsteinEcke3().rotateToRight());
-        gamePieces.add(new SpielsteinEcke3().rotateToRight().rotateToRight());
-        gamePieces.add(new SpielsteinEcke3().rotateToLeft());
-        gamePieces.add(new SpielsteinEcke3().withMindestpunktzahl(11000));
-        gamePieces.add(new SpielsteinEcke3().withMindestpunktzahl(25000).rotateToRight());
-
-        // Bonus-Stein, seltener
-        gamePieces.add(new SpielsteinJ().withMindestpunktzahl(1000));
-        // Bonus-Stein, seltener
-        gamePieces.add(new SpielsteinL().withMindestpunktzahl(1000));
-
-        // schwieriger Stein, seltener
-        gamePieces.add(new Spielstein2x2());
-        gamePieces.add(new Spielstein2x2().withMindestpunktzahl(2000));
-
-        // schwieriger Stein, Bonus Stein, seltener, erst ab 3000 P.
-        gamePieces.add(new Spielstein2x3().withMindestpunktzahl(2500));
-        gamePieces.add(new Spielstein2x3().withMindestpunktzahl(3500).rotateToRight()); // ab 6000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-
-        // Tetris S ab 4000 P.
-        gamePieces.add(new SpielsteinS().withMindestpunktzahl(4000));
-        gamePieces.add(new SpielsteinZ().withMindestpunktzahl(4000));
-
-        // schwieriger Stein, seltener
-        gamePieces.add(new Spielstein3x3());
-        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(5000)); // ab 5000 P. kommt der Spielstein doppelt so oft => höherer Schwierigkeitsgrad
-        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(7000)); // ab 7000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
-        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(9000)); // ab 9000 P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
-        gamePieces.add(new Spielstein3x3().withMindestpunktzahl(20000)); // ab 20k P. kommt der Spielstein öfter => höherer Schwierigkeitsgrad
-
-        // Bonus Spielstein Mr. T ab 8000 P.
-        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000));
-        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight());
-        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToRight().rotateToRight());
-        gamePieces.add(new SpielsteinT().withMindestpunktzahl(8000).rotateToLeft());
+        gamePieces.addAll(GamePieces.get());
     }
 
     public void setStorage(SharedPreferences pref) {
