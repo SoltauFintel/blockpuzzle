@@ -141,7 +141,7 @@ public class PlayingField {
     }
 
     public void read() {
-        String d = pref.getString("spielfeld", null);
+        String d = pref.getString("playingField", null);
         if (d == null || d.isEmpty()) {
             return;
         }
@@ -165,7 +165,7 @@ public class PlayingField {
             }
         }
         SharedPreferences.Editor edit = pref.edit();
-        edit.putString("spielfeld", d.toString());
+        edit.putString("playingField", d.toString());
         edit.apply();
     }
 }

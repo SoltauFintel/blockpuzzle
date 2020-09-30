@@ -160,6 +160,6 @@ public class GamePieceView extends View {
     }
 
     private String name(int index, boolean rotated) {
-        return "SpielsteinView" + index + (rotated ? ".rotated" : ".class");
+        return "GamePieceView" + index + (rotated ? ".rotated" : ".class");
     }
 }

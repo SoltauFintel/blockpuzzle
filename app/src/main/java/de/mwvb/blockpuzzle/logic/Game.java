@@ -47,7 +47,7 @@ public class Game {
         view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
-        punkte = pref.getInt("punkte", -9999);
+        punkte = pref.getInt("score", -9999);
         if (punkte < 0) { // Nein -> Neues Spiel starten!
             newGame();
             return;
@@ -251,8 +251,8 @@ public class Game {
     private void saveScore() {
         if (pref != null) {
             SharedPreferences.Editor edit = pref.edit();
-            edit.putInt("punkte", punkte);
-            edit.putString("version", "0.1");
+            edit.putInt("score", punkte);
+            edit.putString("version", "1.0");
             edit.apply();
             System.out.println("saved punkte: " + punkte);
         }
