@@ -8,12 +8,18 @@ import java.util.List;
  */
 public class GPParseData {
     public final List<GamePiece> allGamePieces = new ArrayList<>();
+    /** false if comment active */
     public boolean read = true;
     public GamePiece current = null;
+    /** row */
     public int y;
+    /** save game piece n times (default 1) */
     public int n;
+    /** copy right-rotated GP n times */
     public int r;
+    /** copy twice right-rotated GP n times */
     public int rr;
+    /** copy left-rotated GP n times */
     public int l;
 
     public GPParseData() {

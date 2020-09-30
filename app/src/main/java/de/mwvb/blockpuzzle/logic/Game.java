@@ -9,21 +9,6 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x3;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinJ;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinL;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinS;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinT;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein1;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein2x2;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein3;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein3x3;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein4;
-import de.mwvb.blockpuzzle.logic.spielstein.Spielstein5;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke2;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinEcke3;
-import de.mwvb.blockpuzzle.logic.spielstein.SpielsteinZ;
 
 public class Game {
     public static final int blocks = 10;
