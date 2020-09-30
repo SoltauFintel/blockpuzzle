@@ -144,6 +144,7 @@ public class GamePieceView extends View {
             gamePiece = null;
         } else {
             try {
+// TODO Baustelle   .class -> so geht das nicht mehr!  Ich muss die GamePiece-Matrix speichern!
                 gamePiece = (GamePiece) Class.forName(cn).newInstance();
             } catch (Throwable e) {
                 throw new RuntimeException(e); // TODO

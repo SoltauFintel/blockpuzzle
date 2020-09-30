@@ -20,6 +20,7 @@ public class Game {
     private boolean gameOver = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private SharedPreferences pref;
+    // TODO zu viele sysout
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
     // TODO anderer Sound: Game over
@@ -64,7 +65,7 @@ public class Game {
     public void newGame() {
         playingField.clear(true);
         gameOver = false;
-        punkte = 50000;
+        punkte = 0;
         saveScore();
         view.updateScore(0);
 
