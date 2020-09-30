@@ -177,4 +177,13 @@ public class GamePieceParserTest {
         Assert.assertEquals(def1, list.get(0).getStringPresentation());
         Assert.assertEquals(defL, list.get(1).getStringPresentation());
     }
+
+    /** 3x3_Bonus1 is defined as "3x3_Bonus1:3x3", so it uses the layout from 3x3 */
+    @Test
+    public void defineOnlyOnce() {
+        GamePiece a = GamePieces.find("3x3");
+        GamePiece b = GamePieces.find("3x3_Bonus1");
+
+        Assert.assertEquals(a.getStringPresentation(), b.getStringPresentation());
+    }
 }

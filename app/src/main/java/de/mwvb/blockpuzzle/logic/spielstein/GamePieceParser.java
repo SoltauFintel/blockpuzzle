@@ -31,8 +31,7 @@ public class GamePieceParser {
             data.read = false;
         } else if (line.startsWith("#")) { // name
             check(data);
-            data.current = addNewGamePiece(line, data.allGamePieces);
-            data.reset();
+            addNewGamePiece(line, data);
         } else {
             if (data.current == null) {
                 throw new RuntimeException("Wrong game piece definition!\n" +
@@ -97,11 +96,35 @@ public class GamePieceParser {
         }
     }
 
-    private GamePiece addNewGamePiece(String line, List<GamePiece> allGamePieces) {
+    private void addNewGamePiece(String line, GPParseData data) {
+        data.reset();
         GamePiece gamePiece = new GamePiece();
-        gamePiece.setName(line.substring(1));
-        allGamePieces.add(gamePiece);
-        return gamePiece;
+
+        String title = line.substring(1);
+        int o = title.indexOf(":");
+        if (o >= 0) {
+            String copyFrom = title.substring(o + 1).trim();
+            for (GamePiece p : data.allGamePieces) {
+                if (p.getName().equals(copyFrom)) {
+                    copyMatrix(p, gamePiece);
+                    data.y = 4;
+                    break;
+                }
+            }
+            title = title.substring(0, o).trim();
+        }
+        gamePiece.setName(title);
+
+        data.allGamePieces.add(gamePiece);
+        data.current = gamePiece;
+    }
+
+    private void copyMatrix(GamePiece from, GamePiece to) {
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                to.setBlockType(x, y, from.getBlockType(x, y));
+            }
+        }
     }
 
     private void fill(final String definition, final int y, final GamePiece gamePiece) {

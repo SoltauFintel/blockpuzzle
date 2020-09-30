@@ -37,7 +37,7 @@ public class Game {
         playingField.setStorage(pref);
     }
 
-    // Neues Spiel ----
+    // New Game ----
 
     public void initGame() {
         view.setGamePiece(-1, null, false);
@@ -64,7 +64,7 @@ public class Game {
     public void newGame() {
         playingField.clear(true);
         gameOver = false;
-        punkte = 0;
+        punkte = 50000;
         saveScore();
         view.updateScore(0);
 
