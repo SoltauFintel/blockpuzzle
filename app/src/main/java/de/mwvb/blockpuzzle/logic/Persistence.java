@@ -10,14 +10,15 @@ import de.mwvb.blockpuzzle.view.GamePieceView;
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
 public class Persistence {
+    private static final String NAME = "GAMEDATA_1";
     private static final String GAMEPIECEVIEW = "gamePieceView";
     private static final String PLAYINGFIELD = "playingField";
     private static final String SCORE = "score";
     private final SharedPreferences pref;
-    // TODO zu testen: GAMEDATA laden nach Game over (also wenn das Spielfeld/TeilView grau ist)
+    // TODO wenn beim Laden etwas schief geht, muss ich gescheit reagieren. Das Spiel darf dann nicht bei jedem AppStart abkacken.
 
     public Persistence(ContextWrapper owner) {
-        pref = owner.getSharedPreferences("GAMEDATA_1", Context.MODE_PRIVATE);
+        pref = owner.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
     /**
