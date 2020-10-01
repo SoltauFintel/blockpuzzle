@@ -1,22 +1,20 @@
 package de.mwvb.blockpuzzle.logic;
 
-import android.content.SharedPreferences;
-
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 public class PlayingField {
     private final int blocks;
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
-    private SharedPreferences pref;
+    private Persistence persistence;
 
     public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
     }
 
-    public void setStorage(SharedPreferences pref) {
-        this.pref = pref;
+    public void setPersistence(Persistence persistence) {
+        this.persistence = persistence;
     }
 
     public int get(int x, int y) {
@@ -24,7 +22,8 @@ public class PlayingField {
     }
 
     // Soll private bleiben, da nur die Game Engine die Matrix verändern darf.
-    private void set(int x, int y, int value) {
+    // -> Hab ich jetzt aber public machen müssen, damit Persistence darauf zugreifen kann.
+    public void set(int x, int y, int value) {
         matrix[x][y] = value;
     }
 
@@ -141,31 +140,14 @@ public class PlayingField {
     }
 
     public void read() {
-        String d = pref.getString("playingField", null);
-        if (d == null || d.isEmpty()) {
-            return;
-        }
-        String w[] = d.split(",");
-        int i = 0;
-        for (int x = 0; x < blocks; x++) {
-            for (int y = 0; y < blocks; y++) {
-                matrix[x][y] = Integer.parseInt(w[i++]);
-            }
-        }
+        persistence.load(this);
     }
 
     private void write() {
-        StringBuilder d = new StringBuilder();
-        String k = "";
-        for (int x = 0; x < blocks; x++) {
-            for (int y = 0; y < blocks; y++) {
-                d.append(k);
-                k = ",";
-                d.append(matrix[x][y]);
-            }
-        }
-        SharedPreferences.Editor edit = pref.edit();
-        edit.putString("playingField", d.toString());
-        edit.apply();
+        persistence.save(this);
+    }
+
+    public int getBlocks() {
+        return blocks;
     }
 }

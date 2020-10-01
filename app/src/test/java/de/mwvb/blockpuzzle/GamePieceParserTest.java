@@ -127,8 +127,8 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(2, list.size());
-        Assert.assertEquals(def1, list.get(0).getStringPresentation());
-        Assert.assertEquals(defR, list.get(1).getStringPresentation());
+        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
+        Assert.assertEquals(defR, getStringPresentation(list.get(1)));
     }
 
     @Test
@@ -150,9 +150,9 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(1 + m, list.size());
-        Assert.assertEquals(def1, list.get(0).getStringPresentation());
+        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
         for (int i = 1; i < m; i++) {
-            Assert.assertEquals("Error #" + i, defRR, list.get(i).getStringPresentation());
+            Assert.assertEquals("Error #" + i, defRR, getStringPresentation(list.get(i)));
         }
     }
 
@@ -174,8 +174,8 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(2, list.size());
-        Assert.assertEquals(def1, list.get(0).getStringPresentation());
-        Assert.assertEquals(defL, list.get(1).getStringPresentation());
+        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
+        Assert.assertEquals(defL, getStringPresentation(list.get(1)));
     }
 
     /** 3x3_Bonus1 is defined as "3x3_Bonus1:3x3", so it uses the layout from 3x3 */
@@ -184,6 +184,23 @@ public class GamePieceParserTest {
         GamePiece a = GamePieces.find("3x3");
         GamePiece b = GamePieces.find("3x3_Bonus1");
 
-        Assert.assertEquals(a.getStringPresentation(), b.getStringPresentation());
+        Assert.assertEquals(getStringPresentation(a), getStringPresentation(b));
+    }
+
+    // only for test, not for Persistence
+    public String getStringPresentation(GamePiece p) {
+        StringBuilder ret = new StringBuilder();
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                final int blockType = p.getBlockType(x, y);
+                switch (blockType) {
+                    case 0: ret.append("."); break;
+                    case 1: ret.append("1"); break;
+                    default: throw new RuntimeException("Unknown block type: " + blockType);
+                }
+            }
+            ret.append("\n");
+        }
+        return ret.toString();
     }
 }

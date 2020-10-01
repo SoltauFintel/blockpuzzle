@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
@@ -14,34 +12,32 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.mwvb.blockpuzzle.logic.Action
-import de.mwvb.blockpuzzle.logic.FilledRows
-import de.mwvb.blockpuzzle.logic.Game
-import de.mwvb.blockpuzzle.logic.QPosition
+import de.mwvb.blockpuzzle.logic.*
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.PlayingFieldView
 import de.mwvb.blockpuzzle.view.GamePieceView
 import kotlinx.android.synthetic.main.activity_main.*
+import de.mwvb.blockpuzzle.logic.Persistence as Persistence
 
 
 class MainActivity : AppCompatActivity() {
     private val game = Game(this)
-    private var pref: SharedPreferences? = null
+    private var persistence: Persistence? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pref = getSharedPreferences("spielstand", Context.MODE_PRIVATE)
-        game.setStorage(pref)
+        persistence = Persistence(this)
+        game.setPersistence(persistence)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
         playingField.setGame(game)
 
-        (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false, pref))
-        (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2,false, pref))
-        (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3,false, pref))
-        (parking      as ViewGroup).addView(GamePieceView(baseContext, -1,true, pref))
+        (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false, persistence))
+        (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2,false, persistence))
+        (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3,false, persistence))
+        (parking      as ViewGroup).addView(GamePieceView(baseContext, -1,true, persistence))
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld

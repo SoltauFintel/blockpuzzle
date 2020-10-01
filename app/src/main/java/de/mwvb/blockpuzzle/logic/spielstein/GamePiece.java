@@ -13,8 +13,7 @@ public class GamePiece {
     /** rotate temp matrix */
     private int[][] neu = new int[max][max];
     private int mindestpunktzahl = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
-    private int rotated = 0; // TODO Ich brauch hier die richtige Zahl.
-    private String name;
+    private String name; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
 
     public GamePiece() {
         for (int x = 0; x < max; x++) {
@@ -30,8 +29,8 @@ public class GamePiece {
             for (int x = 0; x < max; x++) {
                 System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
             }
-            n.rotated = rotated;
             n.mindestpunktzahl = mindestpunktzahl;
+            n.name = name;
             return n;
         } catch (Throwable e) {
             throw new RuntimeException(e);
@@ -113,11 +112,6 @@ public class GamePiece {
         for (int x = 0; x < 5; x++) {
             System.arraycopy(neu[x], 0, matrix[x], 0, 5);
         }
-        // Anzahl der Drehungen merken
-        rotated++;
-        while (rotated >= 4) {
-            rotated -= 4;
-        }
         return this;
     }
 
@@ -191,24 +185,5 @@ public class GamePiece {
     @Override
     public String toString() {
         return getClass().getSimpleName();
-    }
-
-    public int getRotated() {
-        return rotated;
-    }
-
-    public String getStringPresentation() {
-        String ret = "";
-        for (int y = 0; y < max; y++) {
-            for (int x = 0; x < max; x++) {
-                switch (getBlockType(x, y)) {
-                    case 0: ret += "."; break;
-                    case 1: ret += "1"; break;
-                    default: throw new RuntimeException("Unknown block type: " + getBlockType(x, y));
-                }
-            }
-            ret += "\n";
-        }
-        return ret;
     }
 }

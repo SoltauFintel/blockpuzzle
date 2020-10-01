@@ -1,7 +1,5 @@
 package de.mwvb.blockpuzzle.logic;
 
-import android.content.SharedPreferences;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,12 +17,10 @@ public class Game {
     private int punkte;
     private boolean gameOver = false;
     private boolean rotatingMode = false; // wird nicht persistiert
-    private SharedPreferences pref;
-    // TODO zu viele sysout
+    private Persistence persistence;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
     // TODO anderer Sound: Game over
-    // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
 
     // Spielaufbau ----
 
@@ -33,9 +29,9 @@ public class Game {
         gamePieces.addAll(GamePieces.get());
     }
 
-    public void setStorage(SharedPreferences pref) {
-        this.pref = pref;
-        playingField.setStorage(pref);
+    public void setPersistence(Persistence persistence) {
+        this.persistence = persistence;
+        playingField.setPersistence(persistence);
     }
 
     // New Game ----
@@ -48,7 +44,7 @@ public class Game {
         view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
-        punkte = pref.getInt("score", -9999);
+        punkte = persistence.loadScore();
         if (punkte < 0) { // Nein -> Neues Spiel starten!
             newGame();
             return;
@@ -250,12 +246,6 @@ public class Game {
     }
 
     private void saveScore() {
-        if (pref != null) {
-            SharedPreferences.Editor edit = pref.edit();
-            edit.putInt("score", punkte);
-            edit.putString("version", "1.0");
-            edit.apply();
-            System.out.println("saved punkte: " + punkte);
-        }
+        persistence.saveScore(punkte);
     }
 }

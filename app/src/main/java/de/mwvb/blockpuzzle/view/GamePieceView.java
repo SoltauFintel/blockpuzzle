@@ -2,13 +2,13 @@ package de.mwvb.blockpuzzle.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Game;
+import de.mwvb.blockpuzzle.logic.Persistence;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 /**
@@ -20,23 +20,25 @@ import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 @SuppressLint("ViewConstructor")
 public class GamePieceView extends View {
     private final boolean parking;
-    private final Paint p_normal = new Paint(); // TODO final
+    private final Paint p_normal = new Paint();
     private final Paint p_grey = new Paint();
     private final Paint p_drehmodus = new Paint();
     private final Paint p_parking = new Paint();
     private final int index;
-    private final SharedPreferences pref;
+    private final Persistence persistence;
     private GamePiece gamePiece = null;
-    /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
+    /**
+     * grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist
+     */
     private boolean grey = false; // braucht nicht zu persistiert werden
     private boolean drehmodus = false; // wird nicht persistiert
     private boolean dragMode = false; // wird nicht persistiert
 
-    public GamePieceView(Context context, int index, boolean parking, SharedPreferences pref) {
+    public GamePieceView(Context context, int index, boolean parking, Persistence persistence) {
         super(context);
         this.index = index;
         this.parking = parking;
-        this.pref = pref;
+        this.persistence = persistence;
 
         p_normal.setColor(getResources().getColor(R.color.colorNormal));
         p_grey.setColor(getResources().getColor(R.color.colorGrey));
@@ -51,6 +53,10 @@ public class GamePieceView extends View {
 
     public GamePiece getGamePiece() {
         return gamePiece;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
@@ -130,37 +136,11 @@ public class GamePieceView extends View {
     }
 
     public void write() {
-        SharedPreferences.Editor edit = pref.edit();
-        edit.putString(name(index, false), gamePiece == null ? "null" : gamePiece.getClass().getName());
-        edit.putInt(name(index, true), gamePiece == null ? 0 : gamePiece.getRotated());
-        edit.apply();
+        persistence.save(this);
     }
 
     public void read() {
-        String cn = pref.getString(name(index, false), "null");
-        int rotated = pref.getInt(name(index, true), 0);
-
-        if (cn == null || cn.equals("null") || cn.isEmpty()) {
-            gamePiece = null;
-        } else {
-            try {
-// TODO Baustelle   .class -> so geht das nicht mehr!  Ich muss die GamePiece-Matrix speichern!
-                gamePiece = (GamePiece) Class.forName(cn).newInstance();
-            } catch (Throwable e) {
-                throw new RuntimeException(e); // TODO
-            }
-            if (rotated < 0 || rotated >= 4) {
-                throw new RuntimeException("Falscher Wert für rotated: " + rotated);
-            }
-            for (int i = 1; i <= rotated; i++) {
-                gamePiece.rotateToRight();
-            }
-        }
-
+        persistence.load(this);
         draw();
-    }
-
-    private String name(int index, boolean rotated) {
-        return "GamePieceView" + index + (rotated ? ".rotated" : ".class");
     }
 }

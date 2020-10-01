@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GamePieceParser {
+    // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
 
     public List<GamePiece> parse(String definition) {
         final GPParseData data = new GPParseData();
