@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
@@ -28,17 +29,17 @@ public class PlayingFieldView extends View {
     public static final int w = 300; // dp
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
-    private final Paint box0 = new Paint();
-    private final Paint box1 = new Paint();
-    private final Paint box1dead = new Paint();
-    private final Paint box30 = new Paint();
-    private final Paint box31 = new Paint();
-    private final Paint box32 = new Paint();
     private final Paint mark = new Paint();
     private final Music music = new Music();
     private Game game;
     private FilledRows filledRows;
     private int mode = 0;
+    private final IBlockDrawer empty = new EmptyBlockDrawer();
+    private IBlockDrawer grey;
+    private IBlockDrawer bd30;
+    private IBlockDrawer bd31;
+    private IBlockDrawer bd32;
+    private BlockTypes blockTypes = new BlockTypes(this);
 
     public PlayingFieldView(Context context) {
         super(context);
@@ -71,13 +72,10 @@ public class PlayingFieldView extends View {
         rectline.setStrokeWidth(1);
         rectline.setColor(rectborder.getColor());
 
-        box0.setColor(Color.WHITE);
-        box1.setColor(Color.parseColor("#a65726"));
-        box1dead.setColor(Color.parseColor("#888888"));
-
-        box30.setColor(Color.parseColor("#ffdd00"));
-        box31.setColor(Color.parseColor("#ff0000"));
-        box32.setColor(Color.parseColor("#bbbbbb"));
+        grey = ColorBlockDrawer.byRColor(this, R.color.colorGrey);
+        bd30 = new ColorBlockDrawer(this, Color.parseColor("#ffdd00")); // TODO R.color verwenden
+        bd31 = new ColorBlockDrawer(this, Color.parseColor("#ff0000"));
+        bd32 = new ColorBlockDrawer(this, Color.parseColor("#bbbbbb"));
 
         mark.setColor(Color.GRAY);
         mark.setStrokeWidth(3);
@@ -121,52 +119,38 @@ public class PlayingFieldView extends View {
         final MatrixGet m = getMatrixGet();
         for (int x = 0; x < Game.blocks; x++) {
             for (int y = 0; y < Game.blocks; y++) {
-                float tx = x * br;
-                float ty = y * br;
-                canvas.drawRect((tx + p) * f, (ty + p) * f,
-                        (tx + br - p) * f, (ty + br - p) * f,
-                        m.get(x, y));
+                m.get(x, y).draw(canvas, x * br, y * br, p, br, f);
             }
         }
     }
 
     private MatrixGet getMatrixGet() {
         if (game.isGameOver()) {
-            return new MatrixGet() {
-                @Override
-                public Paint get(int x, int y) {
-                    return game.get(x, y) == 1 ? box1dead : box0;
-                }
-            };
-        } else if (filledRows != null) { // row ausblenden Modus
-            final MatrixGet std = getStdMatrixGet();
-            return new MatrixGet() {
-                @Override
-                public Paint get(int x, int y) {
-                    if (filledRows.containsX(x) || filledRows.containsY(y)) {
-                        switch (mode) {
-                            case 30: return box30;
-                            case 31: return box31;
-                            case 32: return box32;
-                            default: return box0;
-                        }
-                    } else {
-                        return std.get(x, y);
+            return (x, y) -> game.get(x, y) > 0 ? grey : empty;
+        }
+        final MatrixGet std = getStdMatrixGet();
+        if (filledRows != null) { // row ausblenden Modus
+            return (x, y) -> {
+                if (filledRows.containsX(x) || filledRows.containsY(y)) {
+                    switch (mode) { // TODO statt mit mode, könnte ich doch direkt mitm IBlockDrawer arbeiten
+                        case 30: return bd30;
+                        case 31: return bd31;
+                        case 32: return bd32;
+                        default: return empty;
                     }
+                } else {
+                    return std.get(x, y);
                 }
             };
         } else {
-            return getStdMatrixGet();
+            return std;
         }
     }
 
     private MatrixGet getStdMatrixGet() {
-        return new MatrixGet() {
-            @Override
-            public Paint get(int x, int y) {
-                // später werden hier noch weitere Typen unterstützt
-                return game.get(x, y) == 1 ? box1 : box0;
-            }
+        return (x, y) -> {
+            int b = game.get(x, y);
+            return b >= 1 ? blockTypes.getBlockDrawer(b) : empty;
         };
     }
 

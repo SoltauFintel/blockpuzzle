@@ -8,7 +8,7 @@ import android.graphics.Paint;
 public interface MatrixGet { // TODO nicht der beste Name
 
     /**
-     * @return Füllung für ein nicht leeres Kästchen
+     * @return IBlockDrawer für ein nicht leeres Kästchen
      */
-    Paint get(int x, int y);
+    IBlockDrawer get(int x, int y);
 }

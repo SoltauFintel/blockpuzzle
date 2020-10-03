@@ -19,13 +19,13 @@ import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
  */
 @SuppressLint("ViewConstructor")
 public class GamePieceView extends View {
-    private final boolean parking;
-    private final Paint p_normal = new Paint();
-    private final Paint p_grey = new Paint();
-    private final Paint p_drehmodus = new Paint();
-    private final Paint p_parking = new Paint();
     private final int index;
+    private final boolean parking;
     private final Persistence persistence;
+    private final Paint p_parking = new Paint();
+    private final BlockTypes blockTypes;
+    private final IBlockDrawer greyBD;
+    private final IBlockDrawer drehmodusBD;
     private GamePiece gamePiece = null;
     /**
      * grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist
@@ -40,10 +40,11 @@ public class GamePieceView extends View {
         this.parking = parking;
         this.persistence = persistence;
 
-        p_normal.setColor(getResources().getColor(R.color.colorNormal));
-        p_grey.setColor(getResources().getColor(R.color.colorGrey));
-        p_drehmodus.setColor(getResources().getColor(R.color.colorDrehmodus));
         p_parking.setColor(getResources().getColor(R.color.colorParking));
+
+        blockTypes = new BlockTypes(this);
+        greyBD = ColorBlockDrawer.byRColor(this, R.color.colorGrey);
+        drehmodusBD = ColorBlockDrawer.byRColor(this, R.color.colorDrehmodus);
     }
 
     public void setGamePiece(GamePiece v) {
@@ -73,27 +74,28 @@ public class GamePieceView extends View {
     protected void onDraw(Canvas canvas) {
         final float f = getResources().getDisplayMetrics().density;
         int br = PlayingFieldView.w / Game.blocks; // 60px, auf Handy groß = 36
-        if (!dragMode) br /= 2;
+        if (!dragMode) {
+            br /= 2;
+        }
         float p = br * 0.1f;
         if (parking && !dragMode) {
             canvas.drawRect(0, 0, br * GamePiece.max * f, br * GamePiece.max * f, p_parking);
         }
         if (gamePiece != null) {
-            Paint fuellung;
-            if (grey) {
-                fuellung = p_grey;
-            } else if (drehmodus) {
-                fuellung = p_drehmodus;
-            } else {
-                fuellung = p_normal;
-            }
             // TODO Ist das doppelter Code zu SpielfeldView?
             for (int x = 0; x < GamePiece.max; x++) {
                 for (int y = 0; y < GamePiece.max; y++) {
-                    if (gamePiece.filled(x, y)) {
-                        float tx = x * br, ty = y * br;
-                        canvas.drawRect((tx + p) * f, (ty + p) * f,
-                                (tx + br - p) * f, (ty + br - p) * f, fuellung);
+                    int blockType = gamePiece.getBlockType(x, y);
+                    if (blockType >= 1) {
+                        IBlockDrawer blockDrawer;
+                        if (grey) {
+                            blockDrawer = greyBD;
+                        } else if (drehmodus) {
+                            blockDrawer = drehmodusBD;
+                        } else {
+                            blockDrawer = blockTypes.getBlockDrawer(blockType);
+                        }
+                        blockDrawer.draw(canvas, x * br, y * br, p, br, f);
                     }
                 }
             }

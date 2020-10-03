@@ -3,7 +3,10 @@ package de.mwvb.blockpuzzle.logic.spielstein;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.view.BlockTypes;
+
 public class GamePieceParser {
+    private final BlockTypes blockTypes = new BlockTypes(null);
     // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
 
     public List<GamePiece> parse(String definition) {
@@ -131,13 +134,11 @@ public class GamePieceParser {
     private void fill(final String definition, final int y, final GamePiece gamePiece) {
         for (int x = 0; x < GamePiece.max; x++) {
             char c = definition.charAt(x);
-            switch (c) {
-                case '1': gamePiece.setBlockType(x, y, 1); break;
-                case '.': gamePiece.setBlockType(x, y, 0); break;
-                default:
-                    throw new RuntimeException("Wrong game piece definition!\n" +
-                            "Unsupported char: " + c + "\nline: " + definition);
+            int v = 0;
+            if (c != '.') {
+                v = blockTypes.toBlockType(c, definition);
             }
+            gamePiece.setBlockType(x, y, v);
         }
     }
 }
