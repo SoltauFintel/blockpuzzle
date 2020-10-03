@@ -14,11 +14,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.logic.*
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
+import de.mwvb.blockpuzzle.view.GamePieceView
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.PlayingFieldView
-import de.mwvb.blockpuzzle.view.GamePieceView
 import kotlinx.android.synthetic.main.activity_main.*
-import de.mwvb.blockpuzzle.logic.Persistence as Persistence
+import java.text.DecimalFormat
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity() {
                 game.newGame()
             } else {
                 val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                dialog.setTitle("Neues Spiel starten?")
-                dialog.setPositiveButton("OK") { _, _ -> game.newGame() }
-                dialog.setNegativeButton("Cancel", null)
+                dialog.setTitle(resources.getString(R.string.startNewGame))
+                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> game.newGame() }
+                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
                 dialog.show()
             }
         }
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch(e: Exception) {
+                e.printStackTrace()
                 Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
             }
             true
@@ -110,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                     game.moveImpossible(index)
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
             }
         }
@@ -135,6 +137,7 @@ class MainActivity : AppCompatActivity() {
                         getGamePieceView(3).endDragMode()
                         getGamePieceView(-1).endDragMode()
                     } catch (e: Exception) {
+                        e.printStackTrace()
                         Toast.makeText(this, "F/dragEnd: " + e.message, Toast.LENGTH_LONG).show()
                     }
                     true
@@ -155,7 +158,8 @@ class MainActivity : AppCompatActivity() {
 
             game.dispatch(targetIsParking, index, gamePiece, xy)
         } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+            Toast.makeText(this, "MA:" + e.message, Toast.LENGTH_LONG).show()
         }
         return true
     }
@@ -186,20 +190,36 @@ class MainActivity : AppCompatActivity() {
 
     // TODO delta auch persistieren und nach Programmneustart korrekt anzeigen
     fun updateScore(delta: Int) {
+        var text = getScoreText(game.score, game.isGameOver)
         if (game.isGameOver) {
-            info.text =
-                resources.getQuantityString(R.plurals.punkteGameOver, game.score, game.score)
             playingField.playGameOverSound()
         } else {
             // Man muss bei Plurals die Anzahl 2x übergeben.
-            var t = resources.getQuantityString(R.plurals.punkte, game.score, game.score)
             if (delta > 0) {
-                t += " (+$delta)";
+                text += " (+$delta)";
             } else if (delta < 0) {
-                t += " ($delta)";
+                text += " ($delta)";
             }
-            info.text = t
         }
+        info.text = text
+    }
+
+    private fun getScoreText(score: Int, gameOver: Boolean): String {
+        val ret: String
+        if (gameOver) {
+            if (score == 1) {
+                ret = resources.getString(R.string.gameOverScore1)
+            } else {
+                ret = resources.getString(R.string.gameOverScore2)
+            }
+        } else {
+            if (score == 1) {
+                ret = resources.getString(R.string.score1)
+            } else {
+                ret = resources.getString(R.string.score2)
+            }
+        }
+        return ret.replace("XX", DecimalFormat("#,##0").format(score))
     }
 
     fun drawPlayingField() {
