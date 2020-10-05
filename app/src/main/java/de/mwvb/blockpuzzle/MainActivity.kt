@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
 
         newGame.setOnClickListener {
-            if (game.isGameOver || game.score < 10) {
+            if (game.isGameOver || game.lessScore()) {
                 game.newGame()
             } else {
                 val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -283,5 +283,17 @@ class MainActivity : AppCompatActivity() {
         getGamePieceView(2).read();
         getGamePieceView(3).read();
         getGamePieceView(-1).read();
+    }
+
+    fun showMoves(moves: Int) {
+        val text: String
+        if (moves == 0) {
+            text = ""
+        } else if (moves == 1) {
+            text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.move)
+        } else {
+            text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
+        }
+        infoDisplay.setText(text)
     }
 }

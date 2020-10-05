@@ -150,4 +150,14 @@ public class PlayingField {
     public int getBlocks() {
         return blocks;
     }
+
+    public void makeOldColor() {
+        for (int x = 0; x < blocks; x++) {
+            for (int y = 0; y < blocks; y++) {
+                if (matrix[x][y] == 10) {
+                    matrix[x][y] = 11;
+                }
+            }
+        }
+    }
 }

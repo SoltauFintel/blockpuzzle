@@ -10,4 +10,6 @@
     <string name="score2">Score: XX</string>
     <string name="gameOverScore1">Game over! Score: XX</string>
     <string name="gameOverScore2">Game over! Score: XX</string>
+    <string name="move">move</string>
+    <string name="moves">moves</string>
 </resources>

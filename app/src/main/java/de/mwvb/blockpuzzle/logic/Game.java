@@ -15,6 +15,7 @@ public class Game {
     private final PlayingField playingField = new PlayingField(blocks);
     private final List<GamePiece> gamePieces = new ArrayList<>();
     private int punkte;
+    private int moves;
     private boolean gameOver = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private Persistence persistence;
@@ -49,9 +50,11 @@ public class Game {
             newGame();
             return;
         }
+        moves = persistence.loadMoves();
         // Es gibt einen Spielstand.
         playingField.read();
         view.updateScore(0);
+        view.showMoves(moves);
         view.drawPlayingField();
         view.restoreGamePieceViews();
         checkGame();
@@ -62,8 +65,11 @@ public class Game {
         playingField.clear(true);
         gameOver = false;
         punkte = 0;
+        moves = 0;
         saveScore();
-        view.updateScore(0);
+        persistence.saveMoves(moves);
+        view.updateScore(punkte);
+        view.showMoves(moves);
 
         view.drawPlayingField();
         view.setGamePiece(-1, null, true);
@@ -136,6 +142,8 @@ public class Game {
             view.drawPlayingField();
             view.setGamePiece(index, null, true);
 
+            detectOneColorArea();
+
             // Gibt es gefüllte Rows?
             FilledRows f = playingField.getFilledRows();
 
@@ -150,8 +158,20 @@ public class Game {
             }
             view.updateScore(punkte - punkteVorher);
             saveScore();
+            view.showMoves(++moves);
+            persistence.saveMoves(moves);
         }
         return ret;
+    }
+
+    private void detectOneColorArea() {
+        List<QPosition> r = new OneColorAreaDetector(playingField, 10).getOneColorArea();
+        if (r == null) return;
+        playingField.makeOldColor(); // 10 -> 11
+        for (QPosition k : r) {
+            playingField.set(k.getX(), k.getY(), 10);
+        }
+        punkte += r.size() * 5;
     }
 
     private Action getGravityAction(FilledRows f) {
@@ -230,6 +250,10 @@ public class Game {
 
     public int getScore() {
         return punkte;
+    }
+
+    public boolean lessScore() {
+        return punkte < 10;
     }
 
     public boolean isGameOver() {

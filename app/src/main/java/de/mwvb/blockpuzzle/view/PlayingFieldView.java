@@ -40,6 +40,7 @@ public class PlayingFieldView extends View {
     private IBlockDrawer bd31;
     private IBlockDrawer bd32;
     private BlockTypes blockTypes = new BlockTypes(this);
+    // TODO Der öußere Rand muss außerhalb der 10x10 Blockmatrix sein.
 
     public PlayingFieldView(Context context) {
         super(context);
