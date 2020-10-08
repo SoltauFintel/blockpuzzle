@@ -14,7 +14,7 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
-import de.mwvb.blockpuzzle.music.Music;
+import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
  * Das Spielfeld ist ein 10x10 großes Quadrat.
@@ -30,7 +30,7 @@ public class PlayingFieldView extends View {
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
     private final Paint mark = new Paint();
-    private final Music music = new Music();
+    private final SoundService soundService = new SoundService();
     private Game game;
     private FilledRows filledRows;
     private int mode = 0;
@@ -64,7 +64,7 @@ public class PlayingFieldView extends View {
     }*/
 
     private void init(Context context) {
-        music.init(context);
+        soundService.init(context);
 
         rectborder.setStrokeWidth(3);
         rectborder.setColor(Color.parseColor("#a65726"));
@@ -81,6 +81,10 @@ public class PlayingFieldView extends View {
         mark.setColor(Color.GRAY);
         mark.setStrokeWidth(3);
         mark.setStyle(Paint.Style.STROKE);
+    }
+
+    public SoundService getSoundService() {
+        return soundService;
     }
 
     public void setGame(Game game) {
@@ -167,7 +171,7 @@ public class PlayingFieldView extends View {
             public void run() {
                 mode = 30;
                 draw();
-                music.playCrunchSound();
+                soundService.clear(filledRows.getHits() >= 3);
             }
         }, 50);
 
@@ -195,22 +199,9 @@ public class PlayingFieldView extends View {
         }, 500);
     }
 
-    public void playGameOverSound() {
-        music.playCrunchSound();
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                music.playCrunchSound();
-            }
-        }, 450);
-    }
-
-    public void playCrunchSound() {
-        music.playCrunchSound();
-    }
-
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        music.destroy();
+        soundService.destroy();
     }
 }

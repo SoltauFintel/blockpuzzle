@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        game.setSoundService(playingField.soundService)
         game.initGame()
     }
 
@@ -192,7 +193,7 @@ class MainActivity : AppCompatActivity() {
     fun updateScore(delta: Int) {
         var text = getScoreText(game.score, game.isGameOver)
         if (game.isGameOver) {
-            playingField.playGameOverSound()
+            playingField.soundService.gameOver()
         } else {
             // Man muss bei Plurals die Anzahl 2x übergeben.
             if (delta > 0) {
@@ -266,6 +267,7 @@ class MainActivity : AppCompatActivity() {
 
     fun doesNotWork() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
+        playingField.soundService.doesNotWork()
     }
 
     override fun onBackPressed() {
@@ -274,7 +276,7 @@ class MainActivity : AppCompatActivity() {
 
         // Wir spielen ein Sound ab, damit der User wenigstens merkt, dass die Taste nicht kaputt ist.
         // Man könnte aber auch die Anwendung minimieren.
-        playingField.playCrunchSound()
+        playingField.soundService.backPressed(game.isGameOver)
     }
 
     fun restoreGamePieceViews() {

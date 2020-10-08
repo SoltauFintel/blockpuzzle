@@ -1,0 +1,5 @@
+- crunch.wav = unknown
+- explosion.wav = https://freesound.org/people/V-ktor/sounds/482993/
+- jeqa.wav (Japan Earthquake alert) = https://freesound.org/people/gorkem.yilmaz/sounds/518087/
+- laughter.wav = https://freesound.org/people/martysonic/sounds/383326/
+- money.wav = https://freesound.org/people/rolandseer/sounds/443334/

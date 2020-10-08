@@ -7,6 +7,7 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
+import de.mwvb.blockpuzzle.sound.SoundService;
 
 public class Game {
     public static final int blocks = 10;
@@ -19,6 +20,8 @@ public class Game {
     private boolean gameOver = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private Persistence persistence;
+    private SoundService soundService;
+    private boolean firstGravitationPlayed = false;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
     // TODO anderer Sound: Game over
@@ -33,6 +36,10 @@ public class Game {
     public void setPersistence(Persistence persistence) {
         this.persistence = persistence;
         playingField.setPersistence(persistence);
+    }
+
+    public void setSoundService(SoundService soundService) {
+        this.soundService = soundService;
     }
 
     // New Game ----
@@ -51,6 +58,7 @@ public class Game {
             return;
         }
         moves = persistence.loadMoves();
+        firstGravitationPlayed = false; // TODO laden
         // Es gibt einen Spielstand.
         playingField.read();
         view.updateScore(0);
@@ -70,6 +78,7 @@ public class Game {
         persistence.saveMoves(moves);
         view.updateScore(punkte);
         view.showMoves(moves);
+        firstGravitationPlayed = false;
 
         view.drawPlayingField();
         view.setGamePiece(-1, null, true);
@@ -165,13 +174,16 @@ public class Game {
     }
 
     private void detectOneColorArea() {
-        List<QPosition> r = new OneColorAreaDetector(playingField, 10).getOneColorArea();
+        List<QPosition> r = new OneColorAreaDetector(playingField, 18).getOneColorArea();
         if (r == null) return;
         playingField.makeOldColor(); // 10 -> 11
         for (QPosition k : r) {
             playingField.set(k.getX(), k.getY(), 10);
         }
-        punkte += r.size() * 5;
+        int bonus = r.size() * 5;
+        if (bonus < 100) bonus = 100;
+        punkte += bonus;
+        soundService.oneColor();
     }
 
     private Action getGravityAction(FilledRows f) {
@@ -179,6 +191,10 @@ public class Game {
             for (int i = 5; i >= 1; i--) {
                 if (f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
+                    if (!firstGravitationPlayed) {
+                        firstGravitationPlayed = true;
+                        soundService.firstGravitation();
+                    }
                     playingField.gravitation(blocks - i);
                     view.drawPlayingField();
                 }
