@@ -24,7 +24,6 @@ public class Game {
     private boolean firstGravitationPlayed = false;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
-    // TODO anderer Sound: Game over
 
     // Spielaufbau ----
 
