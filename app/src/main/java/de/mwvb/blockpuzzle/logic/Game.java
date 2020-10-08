@@ -249,18 +249,27 @@ public class Game {
     public boolean moveImpossible(int index) {
         GamePiece teil = view.getGamePiece(index);
         if (teil == null) {
-            return true; // TeilView ist leer
+            return true; // GamePieceView is empty
         }
-        for (int x = 0; x < blocks; x++) {
-            for (int y = 0; y < blocks; y++) {
-                if (playingField.match(teil, new QPosition(x, y))) {
-                    view.grey(index, false);
-                    return false; // Spielstein passt rein
+        for (int ro = 1; ro <= 4; ro++) { // try all 4 rotations
+            for (int x = 0; x < blocks; x++) {
+                for (int y = 0; y < blocks; y++) {
+                    if (playingField.match(teil, new QPosition(x, y))) {
+                        // GamePiece fits into playing field.
+                        // original rotation (ro=1): not grey
+                        // rotated (ro>1): grey, because with original rotation it doesn't fit
+                        // and therefore I want to inform the player that he must rotate until
+                        // it's not grey (or it's game over but there's a game over sound
+                        // and he cannot rotate any more).
+                        view.grey(index, ro > 1);
+                        return false; // Spielstein passt rein
+                    }
                 }
             }
+            teil = teil.copy().rotateToRight();
         }
         view.grey(index, true);
-        return true; // Spielstein passt nirgendwo rein
+        return true; // There's no space for the game piece in the playing field.
     }
 
     public int getScore() {
