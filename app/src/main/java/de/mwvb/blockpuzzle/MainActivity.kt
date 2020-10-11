@@ -4,6 +4,11 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
@@ -24,6 +29,14 @@ import java.text.DecimalFormat
 class MainActivity : AppCompatActivity() {
     private val game = Game(this)
     private var persistence: Persistence? = null
+
+    /* put this into your activity class */
+    private var mSensorManager: SensorManager? = null
+    private var mAccel = 0f // acceleration apart from gravity
+    private var mAccelCurrent = 0f// current acceleration including gravity
+    private var mAccelLast = 0f // last acceleration including gravity
+    /** Feature toggle. false: auto-gravity, true: player has to shake his phone to start gravity */
+    val withGravity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +84,60 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        initShakeDetection()
+
         game.setSoundService(playingField.soundService)
         game.initGame()
+    }
+
+    private fun initShakeDetection() {
+        if (withGravity) {
+            mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager?;
+            mSensorManager!!.registerListener(
+                mSensorListener,
+                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+            );
+            mAccel = 0.00f;
+            mAccelCurrent = SensorManager.GRAVITY_EARTH;
+            mAccelLast = SensorManager.GRAVITY_EARTH;
+        }
+    }
+
+    private val mSensorListener: SensorEventListener = object : SensorEventListener { // https://stackoverflow.com/a/2318356/3478021
+        override fun onSensorChanged(se: SensorEvent) {
+            val x = se.values[0]
+            val y = se.values[1]
+            val z = se.values[2]
+            mAccelLast = mAccelCurrent
+            mAccelCurrent = Math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            val delta = mAccelCurrent - mAccelLast
+            mAccel = mAccel * 0.9f + delta // perform low-cut filter
+            if (mAccel > 14) game.shaked() // value is how hard you have to shake
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { //
+        }
+    }
+
+    // Activity goes sleeping
+    override fun onPause() {
+        if (withGravity) {
+            mSensorManager!!.unregisterListener(mSensorListener)
+        }
+        super.onPause()
+    }
+
+    // Activity reactivated
+    override fun onResume() {
+        super.onResume()
+        if (withGravity) {
+            mSensorManager!!.registerListener(
+                mSensorListener,
+                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
     }
 
     /** Spielsteinbewegung starten */
@@ -227,7 +292,7 @@ class MainActivity : AppCompatActivity() {
         playingField.draw()
     }
 
-    fun clearRows(filledRows: FilledRows, action: Action) {
+    fun clearRows(filledRows: FilledRows, action: Action?) {
         playingField.clearRows(filledRows, action)
     }
 

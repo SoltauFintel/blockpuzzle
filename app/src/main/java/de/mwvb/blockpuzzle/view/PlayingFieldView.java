@@ -160,7 +160,7 @@ public class PlayingFieldView extends View {
     }
 
     // TODO vielleicht eine Klasse daraus machen, evtl. kann man's auch kompakter schreiben
-    public void clearRows(final FilledRows filledRows, Action action) {
+    public void clearRows(final FilledRows filledRows, final Action action) {
         if (filledRows.getHits() == 0) {
             return;
         }
@@ -194,7 +194,9 @@ public class PlayingFieldView extends View {
                 mode = 0;
                 draw();
                 PlayingFieldView.this.filledRows = null;
-                action.execute();
+                if (action != null) {
+                    action.execute();
+                }
             }
         }, 500);
     }

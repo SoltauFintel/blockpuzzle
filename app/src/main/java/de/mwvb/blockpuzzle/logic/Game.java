@@ -21,6 +21,7 @@ public class Game {
     private boolean rotatingMode = false; // wird nicht persistiert
     private Persistence persistence;
     private SoundService soundService;
+    private Action gravity = null;
     private boolean firstGravitationPlayed = false;
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
@@ -44,6 +45,7 @@ public class Game {
     // New Game ----
 
     public void initGame() {
+        gravity = null;
         view.setGamePiece(-1, null, false);
 
         // Drehmodus deaktivieren
@@ -143,6 +145,8 @@ public class Game {
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
     private boolean place(int index, GamePiece teil, QPosition pos) { // old German name: platziere
+        gravity = null; // delete previous gravity action
+        Action lGravity = null;
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
@@ -159,7 +163,12 @@ public class Game {
             punkte += teil.getPunkte() + 10 * f.getHits();
             rowsAdditionalBonus(f.getHits());
 
-            view.clearRows(f, getGravityAction(f)); // Wird erst wenige Millisekunden später fertig!
+            lGravity = getGravityAction(f);
+            if (view.getWithGravity()) { // gravity needs phone shaking
+                view.clearRows(f, null);
+            } else { // auto-gravity
+                view.clearRows(f, lGravity); // Action wird erst wenige Millisekunden später fertig!
+            }
             playingField.clearRows(f);
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
@@ -168,6 +177,9 @@ public class Game {
             saveScore();
             view.showMoves(++moves);
             persistence.saveMoves(moves);
+        }
+        if (view.getWithGravity()) { // gravity needs phone shaking
+            gravity = lGravity; // activate gravity
         }
         return ret;
     }
@@ -203,6 +215,16 @@ public class Game {
             moveImpossible(3);
             moveImpossible(-1);
         };
+    }
+
+    /** Player has shaked smartphone */
+    public void shaked() {
+        if (gravity != null) {
+            Action lGravity = gravity;
+            gravity = null;
+            lGravity.execute();
+            // TODO Ein kurzer Sound als Bestätigung wäre gut.
+        }
     }
 
     private void rowsAdditionalBonus(int rows) {
