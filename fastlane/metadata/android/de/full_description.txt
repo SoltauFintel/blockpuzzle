@@ -1,24 +1,15 @@
-Block Puzzle. Dieser Spieleklassiker ist eigentlich nur ein kleiner Zeitvertreib,
-aber ein süchtig machender!
+Block Puzzle. Dieser Spieleklassiker ist eigentlich nur ein kleiner Zeitvertreib, aber ein süchtig machender!
 Es geht nicht um Geschwindigkeit und der Schwierigkeitsgrad soll im Rahmen bleiben.
 Unser Programm ist und bleibt kostenlos und werbefrei. In-App-Käufe wird es nicht geben.
 Anregungen sind stets willkommen.
 
-Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen.
-Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind.
-Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt.
-Welche Highscore wirst Du schaffen?
+Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen. Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind. Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt. Welche Highscore wirst Du schaffen?
 
-Parken: Ein Spielstein kann im blauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein
-Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over!
-Also spiele möglichst schnell den geparkten Spielstein! Zum Parken muss man den Finger beim
-Drag & Drop aufs blaue Feld führen.
+Parken: Ein Spielstein kann im blauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over! Also spiele möglichst schnell den geparkten Spielstein! Zum Parken muss man den Finger beim Drag & Drop aufs blaue Feld führen.
 
-Drehmodus: Aktiviere jederzeit den Drehmodus, um Spielsteine vor dem Einfügen in 90 Grad Schritten
-zu drehen. Im Drehmodus sind die zu spielenden Spielsteine grün.
+Drehmodus: Aktiviere jederzeit den Drehmodus, um Spielsteine vor dem Einfügen in 90 Grad Schritten zu drehen. Im Drehmodus sind die zu spielenden Spielsteine grün.
 
-Gravitation: Werden im unteren Spielfeld waagrechte Reihen abgeräumt, so rutscht der obere
-Teil nach unten.
+Gravitation: Werden im unteren Spielfeld waagrechte Reihen abgeräumt, so rutscht der obere Teil nach unten.
 
 Punktesystem:
  - Einfügen: Anzahl Blöcke des Spielsteins

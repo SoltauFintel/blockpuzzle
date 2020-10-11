@@ -3,21 +3,13 @@ It's not about speed and the level of difficulty should stay within limits.
 Our program is and will remain free and ad-free. There will be no in-app purchases.
 Suggestions are always welcome.
 
-Different game pieces are to be inserted into a 10 x 10 large playing field.
-Horizontal rows or vertical columns are removed as soon as they are full.
-As the game progresses, more tile shapes are added again and again.
-What high score will you achieve?
+Different game pieces are to be inserted into a 10 x 10 large playing field. Horizontal rows or vertical columns are removed as soon as they are full. As the game progresses, more tile shapes are added again and again. What high score will you achieve?
 
-Parking: A token can be parked in the blue field. But be careful! As soon as no
-If more pieces can be inserted in the playing field or in the parking space, game over!
-So play the parked token as quickly as possible! Hint: To park you have to put your finger while
-dragging onto the blue field.
+Parking: A token can be parked in the blue field. But be careful! As soon as no If more pieces can be inserted in the playing field or in the parking space, game over! So play the parked token as quickly as possible! Hint: To park you have to put your finger while dragging onto the blue field.
 
-Rotation mode: Activate the rotation mode at any time to move tiles in 90 degree steps before inserting them
-to turn. In spin mode, the pieces to be played are green.
+Rotation mode: Activate the rotation mode at any time to move tiles in 90 degree steps before inserting them to turn. In spin mode, the pieces to be played are green.
 
-Gravitation: If horizontal rows are cleared in the lower playing field, the upper one slips
-Part down.
+Gravitation: If horizontal rows are cleared in the lower playing field, the upper one slips part down.
 
 Points system:
  - Insert: number of blocks of the game piece
@@ -28,6 +20,3 @@ Points system:
 
 The game requires Android 4.4 or higher and is designed for smartphones in portrait mode.
 The game is constantly being developed, but it already works fine.
-
-
-Sorry guys, game language is German.
