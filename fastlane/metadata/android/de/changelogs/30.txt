@@ -1,0 +1,9 @@
+- farbige Spielsteine
+- neuer Bonus: 20 zusammenhängende Spielsteine einer Farbe
+- neue Sounds
+- Game-Sprachen: deutsch, englisch
+- nun verfügbar im F-Droid App Store
+- angenehmer initial gedrehte Spielsteine
+- Game Over Erkennung: prüft ob gedrehte Spielstene passen würden
+- App Icon neu
+- intere Änderungen (z.B. englischer Source Code, neue Art der Spielstendefinition, Persistenz)

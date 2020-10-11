@@ -1,0 +1,9 @@
+- colored game pieces
+- new bonus: one color area
+- new sounds
+- game languages: German, English
+- available in the F-Droid app store
+- more pleasant initial turning of the game piece
+- game over detection: checks whether rotated game pieces would fit in
+- new app icon
+- internal changes (e.g. English source code, new style of game piece definition, persistence)

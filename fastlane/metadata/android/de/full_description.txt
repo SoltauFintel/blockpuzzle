@@ -4,14 +4,15 @@ Es geht nicht um Geschwindigkeit und der Schwierigkeitsgrad soll im Rahmen bleib
 Unser Programm ist und bleibt kostenlos und werbefrei. In-App-Käufe wird es nicht geben.
 Anregungen sind stets willkommen.
 
-Unterschiedliche Spielsteine sind in ein 10 x 10 großes Spielfeld einzufügen.
+Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen.
 Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind.
 Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt.
 Welche Highscore wirst Du schaffen?
 
 Parken: Ein Spielstein kann im blauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein
 Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over!
-Also spiele möglichst schnell den geparkten Spielstein!
+Also spiele möglichst schnell den geparkten Spielstein! Zum Parken muss man den Finger beim
+Drag & Drop aufs blaue Feld führen.
 
 Drehmodus: Aktiviere jederzeit den Drehmodus, um Spielsteine vor dem Einfügen in 90 Grad Schritten
 zu drehen. Im Drehmodus sind die zu spielenden Spielsteine grün.
@@ -24,6 +25,7 @@ Punktesystem:
  - Reihe wegräumen: 10 Punkte
  - mehrere Reihen auf einmal wegräumen: Bonuspunkte
  - Spielfeld hat nur noch sehr wenige Blöcke oder ist leer: Extrabonus!
+ - 20 zusammenhängende Spielsteine einer Farbe ergeben einen weiteren Extrabonus.
 
-Das Spiel ist für Android 7 Smartphones im Portraitmodus ausgelegt.
+Das Spiel benötigt Android ab Version 4.4 und ist für Smartphones im Portraitmodus ausgelegt.
 Das Spiel wird laufend weiter entwickelt, aber es funktioniert bereits prima.

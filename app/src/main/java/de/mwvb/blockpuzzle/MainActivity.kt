@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         if (game.isGameOver) {
             playingField.soundService.gameOver()
         } else {
-            // Man muss bei Plurals die Anzahl 2x übergeben.
+            // TODO Tausenderpunkt für delta
             if (delta > 0) {
                 text += " (+$delta)";
             } else if (delta < 0) {

@@ -10,7 +10,8 @@ What high score will you achieve?
 
 Parking: A token can be parked in the blue field. But be careful! As soon as no
 If more pieces can be inserted in the playing field or in the parking space, game over!
-So play the parked token as quickly as possible!
+So play the parked token as quickly as possible! Hint: To park you have to put your finger while
+dragging onto the blue field.
 
 Rotation mode: Activate the rotation mode at any time to move tiles in 90 degree steps before inserting them
 to turn. In spin mode, the pieces to be played are green.
@@ -23,8 +24,9 @@ Points system:
  - Clear row: 10 points
  - clear away several rows at once: bonus points
  - The playing field only has a few blocks left or is empty: extra bonus!
+ - 20 connected game pieces of one color result in a further extra bonus.
 
-The game is designed for Android 7 smartphones in portrait mode.
+The game requires Android 4.4 or higher and is designed for smartphones in portrait mode.
 The game is constantly being developed, but it already works fine.
 
 

@@ -173,7 +173,7 @@ public class Game {
     }
 
     private void detectOneColorArea() {
-        List<QPosition> r = new OneColorAreaDetector(playingField, 18).getOneColorArea();
+        List<QPosition> r = new OneColorAreaDetector(playingField, 20).getOneColorArea();
         if (r == null) return;
         playingField.makeOldColor(); // 10 -> 11
         for (QPosition k : r) {
