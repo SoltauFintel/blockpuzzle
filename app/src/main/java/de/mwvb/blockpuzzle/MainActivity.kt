@@ -55,89 +55,12 @@ class MainActivity : AppCompatActivity() {
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-
-        newGame.setOnClickListener {
-            if (game.isGameOver || game.lessScore()) {
-                game.newGame()
-            } else {
-                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                dialog.setTitle(resources.getString(R.string.startNewGame))
-                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> game.newGame() }
-                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-                dialog.show()
-            }
-        }
-        rotatingMode.setOnClickListener {
-            if (!game.isGameOver) {
-                if (game.toggleRotatingMode()) {
-                    // Drehen ist an
-                    rotatingMode.text = resources.getText(R.string.drehenAn)
-                    rotatingMode.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
-                    initClickListener(1)
-                    initClickListener(2)
-                    initClickListener(3)
-                    initClickListener(-1)
-                } else {
-                    // Drehen ist aus
-                    rotatingModeOff()
-                }
-            }
-        }
-
+        newGame.setOnClickListener(onNewGame())
+        rotatingMode.setOnClickListener(onRotatingMode())
         initShakeDetection()
 
         game.setSoundService(playingField.soundService)
         game.initGame()
-    }
-
-    private fun initShakeDetection() {
-        if (withGravity) {
-            mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager?;
-            mSensorManager!!.registerListener(
-                mSensorListener,
-                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL
-            );
-            mAccel = 0.00f;
-            mAccelCurrent = SensorManager.GRAVITY_EARTH;
-            mAccelLast = SensorManager.GRAVITY_EARTH;
-        }
-    }
-
-    private val mSensorListener: SensorEventListener = object : SensorEventListener { // https://stackoverflow.com/a/2318356/3478021
-        override fun onSensorChanged(se: SensorEvent) {
-            val x = se.values[0]
-            val y = se.values[1]
-            val z = se.values[2]
-            mAccelLast = mAccelCurrent
-            mAccelCurrent = Math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
-            val delta = mAccelCurrent - mAccelLast
-            mAccel = mAccel * 0.9f + delta // perform low-cut filter
-            if (mAccel > 14) game.shaked() // value is how hard you have to shake
-        }
-
-        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { //
-        }
-    }
-
-    // Activity goes sleeping
-    override fun onPause() {
-        if (withGravity) {
-            mSensorManager!!.unregisterListener(mSensorListener)
-        }
-        super.onPause()
-    }
-
-    // Activity reactivated
-    override fun onResume() {
-        super.onResume()
-        if (withGravity) {
-            mSensorManager!!.registerListener(
-                mSensorListener,
-                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
     }
 
     /** Spielsteinbewegung starten */
@@ -164,24 +87,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
         getGamePieceView(index).setDrehmodus(false)
-    }
-
-    /** Spielstein drehen */
-    private fun initClickListener(index: Int) {
-        getGamePieceView(index).setOnTouchListener(null)
-        getGamePieceView(index).setOnClickListener {
-            try {
-                val tv = it as GamePieceView
-                if (!game.isGameOver) {
-                    tv.rotate()
-                    game.moveImpossible(index)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
-            }
-        }
-        getGamePieceView(index).setDrehmodus(true)
     }
 
     /** Spielstein droppen */
@@ -239,6 +144,109 @@ class MainActivity : AppCompatActivity() {
         x /= br
         y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
+    }
+
+    /** Start new game */
+    private fun onNewGame(): (View) -> Unit {
+        return {
+            if (game.isGameOver || game.lessScore()) {
+                game.newGame()
+            } else {
+                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                dialog.setTitle(resources.getString(R.string.startNewGame))
+                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> game.newGame() }
+                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+                dialog.show()
+            }
+        }
+    }
+
+    /** Turn rotating mode on/off */
+    private fun onRotatingMode(): (View) -> Unit {
+        return {
+            if (!game.isGameOver) {
+                if (game.toggleRotatingMode()) {
+                    // Drehen ist an
+                    rotatingMode.text = resources.getText(R.string.drehenAn)
+                    rotatingMode.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
+                    initClickListener(1)
+                    initClickListener(2)
+                    initClickListener(3)
+                    initClickListener(-1)
+                } else {
+                    // Drehen ist aus
+                    rotatingModeOff()
+                }
+            }
+        }
+    }
+
+    /** Spielstein drehen */
+    private fun initClickListener(index: Int) {
+        getGamePieceView(index).setOnTouchListener(null)
+        getGamePieceView(index).setOnClickListener {
+            try {
+                val tv = it as GamePieceView
+                if (!game.isGameOver) {
+                    tv.rotate()
+                    game.moveImpossible(index)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+        getGamePieceView(index).setDrehmodus(true)
+    }
+
+    private fun initShakeDetection() {
+        if (withGravity) {
+            mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager?;
+            mSensorManager!!.registerListener(
+                mSensorListener,
+                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+            );
+            mAccel = 0.00f;
+            mAccelCurrent = SensorManager.GRAVITY_EARTH;
+            mAccelLast = SensorManager.GRAVITY_EARTH;
+        }
+    }
+
+    private val mSensorListener: SensorEventListener = object : SensorEventListener { // https://stackoverflow.com/a/2318356/3478021
+        override fun onSensorChanged(se: SensorEvent) {
+            val x = se.values[0]
+            val y = se.values[1]
+            val z = se.values[2]
+            mAccelLast = mAccelCurrent
+            mAccelCurrent = Math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            val delta = mAccelCurrent - mAccelLast
+            mAccel = mAccel * 0.9f + delta // perform low-cut filter
+            if (mAccel > 14) game.shaked() // value is how hard you have to shake
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { //
+        }
+    }
+
+    // Activity goes sleeping
+    override fun onPause() {
+        if (withGravity) {
+            mSensorManager!!.unregisterListener(mSensorListener)
+        }
+        super.onPause()
+    }
+
+    // Activity reactivated
+    override fun onResume() {
+        super.onResume()
+        if (withGravity) {
+            mSensorManager!!.registerListener(
+                mSensorListener,
+                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
     }
 
     fun rotatingModeOff() {
@@ -325,10 +333,6 @@ class MainActivity : AppCompatActivity() {
             else -> throw RuntimeException()
         }
     }
-
-    /*fun setInfoanzeigeText(text: String) {
-        infoanzeige.text = text
-    }*/
 
     fun doesNotWork() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
