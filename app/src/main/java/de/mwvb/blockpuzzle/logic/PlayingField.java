@@ -6,6 +6,7 @@ public class PlayingField {
     private final int blocks;
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
+    // TODO Idee: Jeder Block sollte ein Objekt sein, welches Eigenschaften (z.B. Farbe) und Verhalten (z.B. LockBlock) hat.
     private Persistence persistence;
 
     public PlayingField(int blocks) {
@@ -105,12 +106,16 @@ public class PlayingField {
     public void clearRows(FilledRows f) {
         for (int x : f.getXlist()) {
             for (int y = 0; y < blocks; y++) {
-                set(x, y, 0);
+                if (!f.getExclusions().contains(new QPosition(x, y))) {
+                    set(x, y, 0);
+                }
             }
         }
         for (int y : f.getYlist()) {
             for (int x = 0; x < blocks; x++) {
-                set(x, y, 0);
+                if (!f.getExclusions().contains(new QPosition(x, y))) {
+                    set(x, y, 0);
+                }
             }
         }
         write();

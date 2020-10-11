@@ -17,6 +17,8 @@
     <color name="yellow">#FF9900</color>
     <color name="oneColor">#00CCFF</color>
     <color name="oneColorOld">#0D5E9E</color>
+    <color name="lockBlock">#000000</color>
+    <color name="starBlock">#FFFF00</color>
 
     <color name="colorDrehmodus">#009900</color>
 

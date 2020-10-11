@@ -7,13 +7,17 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
+import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.logic.spielstein.special.LockBlock;
 import de.mwvb.blockpuzzle.sound.SoundService;
+import de.mwvb.blockpuzzle.view.BlockTypes;
 
 public class Game {
     public static final int blocks = 10;
     private static final Random rand = new Random(System.currentTimeMillis());
     private final MainActivity view;
     private final PlayingField playingField = new PlayingField(blocks);
+    private final BlockTypes blockTypes = new BlockTypes(null);
     private final List<GamePiece> gamePieces = new ArrayList<>();
     private int punkte;
     private int moves;
@@ -91,6 +95,7 @@ public class Game {
         view.setGamePiece(1, createRandomGamePiece(gamePieces), true);
         view.setGamePiece(2, createRandomGamePiece(gamePieces), true);
         view.setGamePiece(3, createRandomGamePiece(gamePieces), true);
+        // TODO avoid two/three 3x3 ?
     }
 
     private GamePiece createRandomGamePiece(List<GamePiece> teile) {
@@ -104,7 +109,14 @@ public class Game {
             index = rand.nextInt(teile.size());
             gamePiece = teile.get(index);
         }
-        return gamePiece.copy();
+        gamePiece = gamePiece.copy();
+        // Insert a special block type randomly
+        for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+            if (s.isRelevant(gamePiece) && s.process(gamePiece)) {
+                break;
+            }
+        }
+        return gamePiece;
     }
 
     // Spielaktionen ----
@@ -145,11 +157,13 @@ public class Game {
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
     private boolean place(int index, GamePiece teil, QPosition pos) { // old German name: platziere
+        System.out.println("place " + pos.getX() + ", " + pos.getY());
         gravity = null; // delete previous gravity action
         Action lGravity = null;
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
+            sendPlacedEvent(teil, pos);
             playingField.place(teil, pos);
             view.drawPlayingField();
             view.setGamePiece(index, null, true);
@@ -162,6 +176,8 @@ public class Game {
             // Punktzahl erhöhen
             punkte += teil.getPunkte() + 10 * f.getHits();
             rowsAdditionalBonus(f.getHits());
+
+            punkte += processSpecialBlockTypes(f);
 
             lGravity = getGravityAction(f);
             if (view.getWithGravity()) { // gravity needs phone shaking
@@ -184,6 +200,21 @@ public class Game {
         return ret;
     }
 
+    private void sendPlacedEvent(GamePiece teil, QPosition pos) {
+        for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
+            for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
+                if (teil.filled(x, y)) {
+                    int bt = teil.getBlockType(x, y);
+                    for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                        if (s.getBlockType() == bt) {
+                            s.placed(teil, pos, new QPosition(x, y));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void detectOneColorArea() {
         List<QPosition> r = new OneColorAreaDetector(playingField, 20).getOneColorArea();
         if (r == null) return;
@@ -197,10 +228,57 @@ public class Game {
         soundService.oneColor();
     }
 
+    private int processSpecialBlockTypes(FilledRows f) {
+        int punkte = 0;
+
+        // Rows ----
+        for (int y : f.getYlist()) {
+            for (int x = 0; x < blocks; x++) {
+                int bt = playingField.get(x, y);
+                for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                    if (s.getBlockType() == bt) {
+                        int r = s.cleared(playingField, new QPosition(x, y));
+                        if (r > ISpecialBlock.CLEAR_MAX_MODE) {
+                            punkte += r;
+                        } else if (r == 1) {
+                            f.getExclusions().add(new QPosition(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Columns ----
+        for (int x : f.getXlist()) {
+            for (int y = 0; y < blocks; y++) {
+                int bt = playingField.get(x, y);
+                for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                    if (s.getBlockType() == bt) {
+                        int r = s.cleared(playingField, new QPosition(x, y));
+                        if (r > ISpecialBlock.CLEAR_MAX_MODE) {
+                            punkte += r;
+                        } else if (r == 1) {
+                            f.getExclusions().add(new QPosition(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        return punkte;
+    }
+
     private Action getGravityAction(FilledRows f) {
         return () -> {
             for (int i = 5; i >= 1; i--) {
-                if (f.getYlist().contains(blocks - i)) {
+                boolean doRemove = true;
+                for (QPosition k : f.getExclusions()) {
+                    if (k.getY() == blocks - i) {
+                        doRemove = false;
+                        break;
+                    }
+                }
+                if (doRemove && f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
                     if (!firstGravitationPlayed) {
                         firstGravitationPlayed = true;

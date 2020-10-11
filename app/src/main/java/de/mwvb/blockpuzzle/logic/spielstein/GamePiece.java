@@ -2,6 +2,11 @@ package de.mwvb.blockpuzzle.logic.spielstein;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.mwvb.blockpuzzle.logic.QPosition;
+
 /**
  * Teil Basisklasse und leeres Teil
  */
@@ -131,6 +136,7 @@ public class GamePiece {
         return -1;
     }
 
+    /** use <= */
     public int getMaxX() {
         for (int x = max - 1; x >= 0; x--) {
             for (int y = 0; y < max; y++) {
@@ -153,6 +159,7 @@ public class GamePiece {
         return -1;
     }
 
+    /** use <= */
     public int getMaxY() {
         for (int y = max - 1; y >= 0; y--) {
             for (int x = 0; x < max; x++) {
@@ -179,6 +186,25 @@ public class GamePiece {
     /* Der Spieler muss mindestens diese Punktzahl haben, damit der Spielstein verfügbar wird. */
     public int getMindestpunktzahl() { // TODO English
         return mindestpunktzahl;
+    }
+
+    @NotNull
+    public List<QPosition> getAllFilledBlocks() {
+        List<QPosition> filledBlocks = new ArrayList<>();
+        final int minX = getMinX();
+        final int maxX = getMaxX();
+        final int minY = getMinY();
+        final int maxY = getMaxY();
+        if (minX > -1 && maxX > -1 && minY > -1 && maxY > -1) {
+            for (int x = minX; x <= maxX; x++) {
+                for (int y = minY; y <= maxY; y++) {
+                    if (filled(x, y)) {
+                        filledBlocks.add(new QPosition(x, y));
+                    }
+                }
+            }
+        }
+        return filledBlocks;
     }
 
     @NotNull

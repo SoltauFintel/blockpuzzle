@@ -1,0 +1,2 @@
+- star block: 200 bonus score
+- lock block: becomes normal block after row clear

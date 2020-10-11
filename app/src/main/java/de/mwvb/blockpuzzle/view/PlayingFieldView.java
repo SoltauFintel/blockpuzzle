@@ -14,6 +14,7 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
+import de.mwvb.blockpuzzle.logic.QPosition;
 import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
@@ -136,7 +137,7 @@ public class PlayingFieldView extends View {
         final MatrixGet std = getStdMatrixGet();
         if (filledRows != null) { // row ausblenden Modus
             return (x, y) -> {
-                if (filledRows.containsX(x) || filledRows.containsY(y)) {
+                if (!filledRows.getExclusions().contains(new QPosition(x, y)) && (filledRows.containsX(x) || filledRows.containsY(y))) {
                     switch (mode) { // TODO statt mit mode, könnte ich doch direkt mitm IBlockDrawer arbeiten
                         case 30: return bd30;
                         case 31: return bd31;

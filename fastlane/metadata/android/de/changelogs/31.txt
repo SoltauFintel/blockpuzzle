@@ -1,0 +1,2 @@
+- Sternblock: 200 Bonuspunkte
+- Sperrblock: wird zum normalen Block nach dem Leeren der Reihe
