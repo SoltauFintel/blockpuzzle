@@ -18,7 +18,7 @@ public class StarBlock extends SpecialBock {
 
     @Override
     protected int getRandomMax() {
-        return 25;
+        return 250;
     }
 
     @Override

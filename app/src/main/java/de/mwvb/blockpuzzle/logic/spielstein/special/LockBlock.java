@@ -21,7 +21,7 @@ public class LockBlock extends SpecialBock {
 
     @Override
     public boolean isRelevant(GamePiece p) {
-        final int n = 20;
+        final int n = 100;
         if (++c > n) {
             c = 0;
         }
