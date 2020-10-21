@@ -1,7 +1,27 @@
 package de.mwvb.blockpuzzle.logic.spielstein
 
 // Kotlin supports multi line strings
-class GamePiecesDefinition {
+object GamePiecesDefinition {
+    private var allGamePieces: List<GamePiece>? = null
+
+    @Synchronized
+    fun get(): List<GamePiece>? {
+        if (allGamePieces == null) {
+            allGamePieces = GamePieceParser().parse(gamePieces)
+        }
+        return allGamePieces
+    }
+
+    fun find(name: String): GamePiece? {
+        val ret = get()
+        for (p in ret!!) {
+            if (p.name == name) {
+                return p
+            }
+        }
+        throw RuntimeException("Game piece '$name' doesn't exist!")
+    }
+
     val gamePieces =
 """
 // Jede Spielsteinart standardmäßig 4x dabei.

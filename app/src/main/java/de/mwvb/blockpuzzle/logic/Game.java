@@ -6,9 +6,8 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.logic.spielstein.special.LockBlock;
 import de.mwvb.blockpuzzle.sound.SoundService;
 import de.mwvb.blockpuzzle.view.BlockTypes;
 
@@ -34,7 +33,7 @@ public class Game {
 
     public Game(MainActivity activity) {
         view = activity;
-        gamePieces.addAll(GamePieces.get());
+        gamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
     }
 
     public void setPersistence(Persistence persistence) {

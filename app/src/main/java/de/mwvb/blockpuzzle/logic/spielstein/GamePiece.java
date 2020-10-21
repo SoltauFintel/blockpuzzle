@@ -8,12 +8,12 @@ import java.util.List;
 import de.mwvb.blockpuzzle.logic.QPosition;
 
 /**
- * Teil Basisklasse und leeres Teil
+ * Game pieces can have different shapes with maximum size to 5x5 blocks and minimum size of 1x1.
  */
 public class GamePiece {
-    /** Breite und Höhe */
+    /** maximum width and height */
     public static final int max = 5;
-    /** 1: x (nach rechts), 2: y (nach unten) */
+    /** 1: x (to right), 2: y (to bottom) */
     private int[][] matrix = new int[max][max];
     /** rotate temp matrix */
     private int[][] neu = new int[max][max];
@@ -50,9 +50,8 @@ public class GamePiece {
         this.name = name;
     }
 
-    public GamePiece withMindestpunktzahl(int minp) {
+    public void setMindestpunktzahl(int minp) {
         mindestpunktzahl = minp;
-        return this;
     }
 
     public boolean filled(int x, int y) {

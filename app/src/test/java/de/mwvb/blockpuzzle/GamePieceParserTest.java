@@ -2,7 +2,7 @@ package de.mwvb.blockpuzzle;
 
 import de.mwvb.blockpuzzle.logic.spielstein.GamePieceParser;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePieces;
+import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class GamePieceParserTest {
     @Test
     public void testDefine() {
         // Test
-        GamePiece p = GamePieces.find("2");
+        GamePiece p = GamePiecesDefinition.INSTANCE.find("2");
 
         // Verify
         Assert.assertFalse(p.filled(0, 0));
@@ -181,8 +181,8 @@ public class GamePieceParserTest {
     /** 3x3_Bonus1 is defined as "3x3_Bonus1:3x3", so it uses the layout from 3x3 */
     @Test
     public void defineOnlyOnce() {
-        GamePiece a = GamePieces.find("3x3");
-        GamePiece b = GamePieces.find("3x3_Bonus1");
+        GamePiece a = GamePiecesDefinition.INSTANCE.find("3x3");
+        GamePiece b = GamePiecesDefinition.INSTANCE.find("3x3_Bonus1");
 
         Assert.assertEquals(getStringPresentation(a), getStringPresentation(b));
     }
@@ -196,6 +196,7 @@ public class GamePieceParserTest {
                 switch (blockType) {
                     case 0: ret.append("."); break;
                     case 1: ret.append("1"); break;
+                    case 3: ret.append("3"); break;
                     default: throw new RuntimeException("Unknown block type: " + blockType);
                 }
             }

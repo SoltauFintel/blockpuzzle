@@ -57,7 +57,7 @@ public class GamePieceParser {
     private void parseParameters(String line, GPParseData data) {
         if (line.toLowerCase().startsWith("min=")) { // Mindestpunktzahl
             int min = Integer.parseInt(line.substring("min=".length()).trim());
-            data.current.withMindestpunktzahl(min);
+            data.current.setMindestpunktzahl(min);
 
         } else if (line.toLowerCase().startsWith("n=")) { // produce number of game pieces
             data.n = Integer.parseInt(line.substring("n=".length()).trim());
@@ -139,6 +139,38 @@ public class GamePieceParser {
                 v = blockTypes.toBlockType(c, definition);
             }
             gamePiece.setBlockType(x, y, v);
+        }
+    }
+
+    /**
+     * Game Piece Parse Data
+     */
+    static class GPParseData {
+        public final List<GamePiece> allGamePieces = new ArrayList<>();
+        /** false if comment active */
+        public boolean read = true;
+        public GamePiece current = null;
+        /** row */
+        public int y;
+        /** save game piece n times (default 1) */
+        public int n;
+        /** copy right-rotated GP n times */
+        public int r;
+        /** copy twice right-rotated GP n times */
+        public int rr;
+        /** copy left-rotated GP n times */
+        public int l;
+
+        GPParseData() {
+            reset();
+        }
+
+        public void reset() {
+            y = -1;
+            n = 1;
+            r = 0;
+            rr = 0;
+            l = 0;
         }
     }
 }
