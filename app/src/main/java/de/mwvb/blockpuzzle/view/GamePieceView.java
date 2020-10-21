@@ -9,6 +9,7 @@ import android.view.View;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.Persistence;
+import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 /**

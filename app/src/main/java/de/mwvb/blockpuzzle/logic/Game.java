@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.mwvb.blockpuzzle.MainActivity;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.sound.SoundService;
-import de.mwvb.blockpuzzle.view.BlockTypes;
+import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
+import de.mwvb.blockpuzzle.view.IGameView;
 
 public class Game {
     public static final int blocks = 10;
     private static final Random rand = new Random(System.currentTimeMillis());
-    private final MainActivity view;
+    private final IGameView view;
     private final PlayingField playingField = new PlayingField(blocks);
     private final BlockTypes blockTypes = new BlockTypes(null);
     private final List<GamePiece> gamePieces = new ArrayList<>();
@@ -31,8 +31,8 @@ public class Game {
 
     // Spielaufbau ----
 
-    public Game(MainActivity activity) {
-        view = activity;
+    public Game(IGameView view) {
+        this.view = view;
         gamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
     }
 
@@ -179,7 +179,7 @@ public class Game {
             punkte += processSpecialBlockTypes(f);
 
             lGravity = getGravityAction(f);
-            if (view.getWithGravity()) { // gravity needs phone shaking
+            if (view.getWithGravityOption()) { // gravity needs phone shaking
                 view.clearRows(f, null);
             } else { // auto-gravity
                 view.clearRows(f, lGravity); // Action wird erst wenige Millisekunden später fertig!
@@ -193,7 +193,7 @@ public class Game {
             view.showMoves(++moves);
             persistence.saveMoves(moves);
         }
-        if (view.getWithGravity()) { // gravity needs phone shaking
+        if (view.getWithGravityOption()) { // gravity needs phone shaking
             gravity = lGravity; // activate gravity
         }
         return ret;

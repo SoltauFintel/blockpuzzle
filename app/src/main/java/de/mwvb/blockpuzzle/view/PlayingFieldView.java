@@ -15,6 +15,7 @@ import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.QPosition;
+import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
 import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**

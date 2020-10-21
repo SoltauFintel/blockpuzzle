@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.view;
+package de.mwvb.blockpuzzle.logic.spielstein;
 
 import android.view.View;
 
@@ -11,6 +11,8 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.logic.spielstein.special.LockBlock;
 import de.mwvb.blockpuzzle.logic.spielstein.special.StarBlock;
+import de.mwvb.blockpuzzle.view.ColorBlockDrawer;
+import de.mwvb.blockpuzzle.view.IBlockDrawer;
 
 // TODO Move to spielstein package
 // Bauplan für alle Blöcke

@@ -5,11 +5,11 @@ object GamePiecesDefinition {
     private var allGamePieces: List<GamePiece>? = null
 
     @Synchronized
-    fun get(): List<GamePiece>? {
+    fun get(): List<GamePiece> {
         if (allGamePieces == null) {
             allGamePieces = GamePieceParser().parse(gamePieces)
         }
-        return allGamePieces
+        return allGamePieces!!
     }
 
     fun find(name: String): GamePiece? {

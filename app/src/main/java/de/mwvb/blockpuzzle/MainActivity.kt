@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.logic.*
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
 import de.mwvb.blockpuzzle.view.GamePieceView
+import de.mwvb.blockpuzzle.view.IGameView
 import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.view.PlayingFieldView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +32,7 @@ import java.text.DecimalFormat
  * It has still the name MainActivity because I'm not sure how to change the name
  * without destroying everything.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IGameView {
     private val game = Game(this)
     private var persistence: Persistence? = null
 
@@ -257,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun rotatingModeOff() {
+    override fun rotatingModeOff() {
         rotatingMode.text = resources.getText(R.string.drehenAus)
         rotatingMode.setBackgroundColor(resources.getColor(R.color.colorNormal))
         initTouchListeners()
@@ -271,7 +272,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // TODO delta auch persistieren und nach Programmneustart korrekt anzeigen
-    fun updateScore(delta: Int) {
+    override fun updateScore(delta: Int) {
         var text = getScoreText(game.score, game.isGameOver)
         if (game.isGameOver) {
             playingField.soundService.gameOver()
@@ -304,15 +305,15 @@ class MainActivity : AppCompatActivity() {
         return ret.replace("XX", DecimalFormat("#,##0").format(score))
     }
 
-    fun drawPlayingField() {
+    override fun drawPlayingField() {
         playingField.draw()
     }
 
-    fun clearRows(filledRows: FilledRows, action: Action?) {
+    override fun clearRows(filledRows: FilledRows, action: Action?) {
         playingField.clearRows(filledRows, action)
     }
 
-    fun setGamePiece(index: Int, teil: GamePiece?, write: Boolean) {
+    override fun setGamePiece(index: Int, teil: GamePiece?, write: Boolean) {
         val tv = getGamePieceView(index)
         tv.endDragMode()
         tv.isGrey = false
@@ -322,11 +323,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getGamePiece(index: Int): GamePiece? {
+    override fun getGamePiece(index: Int): GamePiece? {
         return getGamePieceView(index).gamePiece
     }
 
-    fun grey(index: Int, grey: Boolean) {
+    override fun grey(index: Int, grey: Boolean) {
         val tv = getGamePieceView(index)
         tv.isGrey = grey
         tv.draw()
@@ -342,7 +343,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun doesNotWork() {
+    override fun doesNotWork() {
         Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
         playingField.soundService.doesNotWork()
     }
@@ -358,7 +359,7 @@ class MainActivity : AppCompatActivity() {
     }
 */
 
-    fun restoreGamePieceViews() {
+    override fun restoreGamePieceViews() {
         // restore GamePieceViews 1-3 und Parking area
         getGamePieceView(1).read();
         getGamePieceView(2).read();
@@ -366,7 +367,7 @@ class MainActivity : AppCompatActivity() {
         getGamePieceView(-1).read();
     }
 
-    fun showMoves(moves: Int) {
+    override fun showMoves(moves: Int) {
         val text: String
         if (moves == 0) {
             text = ""
@@ -376,5 +377,9 @@ class MainActivity : AppCompatActivity() {
             text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
         }
         infoDisplay.setText(text)
+    }
+
+    override fun getWithGravityOption(): Boolean {
+        return withGravity
     }
 }

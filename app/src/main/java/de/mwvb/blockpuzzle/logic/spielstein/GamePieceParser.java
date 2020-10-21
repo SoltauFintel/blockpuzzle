@@ -3,8 +3,6 @@ package de.mwvb.blockpuzzle.logic.spielstein;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.view.BlockTypes;
-
 public class GamePieceParser {
     private final BlockTypes blockTypes = new BlockTypes(null);
     // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
