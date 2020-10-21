@@ -25,7 +25,12 @@ import de.mwvb.blockpuzzle.view.PlayingFieldView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 
-
+/**
+ * GameActivity
+ *
+ * It has still the name MainActivity because I'm not sure how to change the name
+ * without destroying everything.
+ */
 class MainActivity : AppCompatActivity() {
     private val game = Game(this)
     private var persistence: Persistence? = null
@@ -40,6 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        println("GAME MODE: " + intent.getStringExtra("gameMode"))
+
         persistence = Persistence(this)
         game.setPersistence(persistence)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -339,6 +347,7 @@ class MainActivity : AppCompatActivity() {
         playingField.soundService.doesNotWork()
     }
 
+/*
     override fun onBackPressed() {
         // do nothing
         // Vorher war es so, dass dann der Spielstand verloren geht. Das will ich so erstmal verhindern.
@@ -347,6 +356,7 @@ class MainActivity : AppCompatActivity() {
         // Man könnte aber auch die Anwendung minimieren.
         playingField.soundService.backPressed(game.isGameOver)
     }
+*/
 
     fun restoreGamePieceViews() {
         // restore GamePieceViews 1-3 und Parking area

@@ -12,4 +12,6 @@
     <string name="gameOverScore2">Game over! (XX Punkte)</string>
     <string name="move">Move</string>
     <string name="moves">Moves</string>
+    <string name="classicGame">Klassisches Spiel</string>
+    <string name="emptyPFGame">Freiräumen Spiel</string>
 </resources>
