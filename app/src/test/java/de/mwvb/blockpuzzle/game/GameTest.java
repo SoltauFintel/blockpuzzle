@@ -3,17 +3,13 @@ package de.mwvb.blockpuzzle.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
-import de.mwvb.blockpuzzle.gamepiece.TestGamePieces;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
-public class GameTest {
+public class GameTest extends AbstractBlockPuzzleTest {
 
     @Test
     public void newGame() {
-        Game game = TestGameBuilder.create();
         Assert.assertFalse("Game must not be over", game.isGameOver());
         Assert.assertEquals("Score must be 0 at game start", 0, game.getScore());
         Assert.assertEquals("Moves must be 0 at game start", 0, game.getMoves());
@@ -29,8 +25,6 @@ public class GameTest {
     /** Alle Spielecken mal ausloten */
     @Test
     public void fourCorners() {
-        Game game = TestGameBuilder.create();
-        GamePiece one = TestGamePieces.INSTANCE.getOne();
         game.dispatch(false, 1, one, new QPosition(0, 0));
         Assert.assertEquals(1, game.getScore());
         game.dispatch(false, 2, one, new QPosition(9, 0));
@@ -48,8 +42,6 @@ public class GameTest {
 
     @Test
     public void blockNotFree() {
-        Game game = TestGameBuilder.create();
-        GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(0, 0));
         try {
             game.dispatch(false, 2, five, new QPosition(0, 0));
@@ -60,8 +52,6 @@ public class GameTest {
 
     @Test
     public void blockOutside() {
-        Game game = TestGameBuilder.create();
-        GamePiece two = TestGamePieces.INSTANCE.getTwo();
         game.dispatch(false, 1, two, new QPosition(8, 0));
         try {
             game.dispatch(false, 1, two, new QPosition(9, 1));
@@ -72,8 +62,6 @@ public class GameTest {
 
     @Test
     public void fullRow() {
-        Game game = TestGameBuilder.create();
-        GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(0, 0));
         game.dispatch(false, 2, five, new QPosition(5, 0));
         game.dispatch(false, 3, five, new QPosition(0, 0)); // jetzt ist da wieder Platz
@@ -83,18 +71,14 @@ public class GameTest {
 
     @Test
     public void fullColumn() {
-        Game game = TestGameBuilder.create();
-        GamePiece five = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
-        game.dispatch(false, 1, five, new QPosition(0, 0));
-        game.dispatch(false, 2, five, new QPosition(0, 5));
-        game.dispatch(false, 3, five, new QPosition(0, 0)); // jetzt ist da wieder Platz
+        game.dispatch(false, 1, fiveR, new QPosition(0, 0));
+        game.dispatch(false, 2, fiveR, new QPosition(0, 5));
+        game.dispatch(false, 3, fiveR, new QPosition(0, 0)); // jetzt ist da wieder Platz
     }
 
     @Test
     public void doesNotfitIn() {
-        Game game = TestGameBuilder.create();
         // fill playing field (without full rows)
-        GamePiece x = TestGamePieces.INSTANCE.getX();
         game.dispatch(false, 1, x, new QPosition(0, 1));
         game.dispatch(false, 2, x, new QPosition(3, 1));
         game.dispatch(false, 3, x, new QPosition(6, 1));
@@ -105,12 +89,10 @@ public class GameTest {
         game.dispatch(false, 2, x, new QPosition(3, 7));
         Assert.assertEquals(0, game.moveImpossibleR(x));
         game.dispatch(false, 3, x, new QPosition(6, 7));
-        GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(1, 0));
         //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
 
         // Test
-        GamePiece ecke3 = TestGamePieces.INSTANCE.getEcke3();
         Assert.assertEquals(-1, game.moveImpossibleR(ecke3)); // -1: if you would rotate it would fit in -> it does not fit in
         try {
             game.dispatch(false, 2, ecke3, new QPosition(7, 0));
@@ -121,9 +103,7 @@ public class GameTest {
 
     @Test
     public void fitInIfRotated() {
-        Game game = TestGameBuilder.create();
         // fill playing field (without full rows)
-        GamePiece x = TestGamePieces.INSTANCE.getX();
         game.dispatch(false, 1, x, new QPosition(0, 1));
         game.dispatch(false, 2, x, new QPosition(3, 1));
         game.dispatch(false, 3, x, new QPosition(6, 1));
@@ -133,25 +113,20 @@ public class GameTest {
         game.dispatch(false, 1, x, new QPosition(0, 7));
         game.dispatch(false, 2, x, new QPosition(3, 7));
         game.dispatch(false, 3, x, new QPosition(6, 7));
-        GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(1, 0));
         //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
 
         // Test
-        GamePiece ecke3 = TestGamePieces.INSTANCE.getEcke3();
         Assert.assertEquals(-1, game.moveImpossibleR(ecke3)); // -1: if you would rotate it would fit in
-        ecke3 = ecke3.copy().rotateToRight().rotateToRight();
-        Assert.assertEquals(0, game.moveImpossibleR(ecke3)); // 0: fits in without rotation
-        game.dispatch(false, 2, ecke3, new QPosition(7, 0));
+        GamePiece ecke3R = ecke3.copy().rotateToRight().rotateToRight();
+        Assert.assertEquals(0, game.moveImpossibleR(ecke3R)); // 0: fits in without rotation
+        game.dispatch(false, 2, ecke3R, new QPosition(7, 0));
         //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
     }
 
     // extra bonus for 2 filled rows: 12
     @Test
     public void twoRowsFilled() {
-        Game game = TestGameBuilder.create();
-        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
-        GamePiece three = TestGamePieces.INSTANCE.getThree();
         game.dispatch(false, 1, block3, new QPosition(0, 0));
         game.dispatch(false, 2, block3, new QPosition(3, 0));
         game.dispatch(false, 3, three, new QPosition(6, 1));
@@ -160,7 +135,6 @@ public class GameTest {
         int oldScore = 3*3 * 2 + 3 * 2;
         Assert.assertEquals(oldScore, game.getScore());
 
-        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
         game.dispatch(false, 2, fiveR, new QPosition(9, 0));
         int bonus = 2 * 10 + 12;
         Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
@@ -169,9 +143,6 @@ public class GameTest {
     // extra bonus for 3 filled rows: 15
     @Test
     public void threeRowsFilled() {
-        Game game = TestGameBuilder.create();
-        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
-        GamePiece three = TestGamePieces.INSTANCE.getThree();
         game.dispatch(false, 1, block3, new QPosition(0, 0));
         game.dispatch(false, 2, block3, new QPosition(3, 0));
         game.dispatch(false, 3, three, new QPosition(6, 0));
@@ -182,7 +153,6 @@ public class GameTest {
         int oldScore = 3*3 * 3 + 3 * 3;
         Assert.assertEquals(oldScore, game.getScore());
 
-        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
         game.dispatch(false, 1, fiveR, new QPosition(9, 0));
         int bonus = 3 * 10 + 15;
         Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
@@ -191,9 +161,6 @@ public class GameTest {
     // extra bonus for 4+ rows: 22
     @Test
     public void fourRowsFilled() {
-        Game game = TestGameBuilder.create();
-        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
-        GamePiece three = TestGamePieces.INSTANCE.getThree();
         game.dispatch(false, 1, block3, new QPosition(0, 0));
         game.dispatch(false, 2, block3, new QPosition(3, 0));
         game.dispatch(false, 3, three, new QPosition(6, 0));
@@ -207,7 +174,6 @@ public class GameTest {
         int oldScore = 3*3 * 3 + 3 * 6;
         Assert.assertEquals(oldScore, game.getScore());
 
-        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
         game.dispatch(false, 1, fiveR, new QPosition(9, 0));
         int bonus = 4 * 10 + 22;
         Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
@@ -216,9 +182,6 @@ public class GameTest {
     // extra bonus for 3*7 blocks of same color: 105
     @Test
     public void oneColorDetect() {
-        Game game = TestGameBuilder.create();
-        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
-        GamePiece three = TestGamePieces.INSTANCE.getThree();
         game.dispatch(false, 1, block3, new QPosition(0, 0));
         game.dispatch(false, 2, three, new QPosition(6, 0));
         game.dispatch(false, 3, three, new QPosition(6, 1));
@@ -233,8 +196,6 @@ public class GameTest {
         //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
         Assert.assertEquals(3*3 + 3 * 7 + 105, game.getScore());
     }
-
-    // TODO Game over bug: Gravitation schafft doch noch Platz für GP
 
     // TODO Game over Situation
 
