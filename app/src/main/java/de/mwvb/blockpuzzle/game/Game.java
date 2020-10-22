@@ -18,6 +18,9 @@ import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.playingfield.OneColorAreaDetector;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
+/**
+ * Central game logic
+ */
 public class Game {
     // Stammdaten (read only)
     public static final int blocks = 10;

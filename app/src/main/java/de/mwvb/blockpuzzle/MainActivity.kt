@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(), IGameView {
 
         persistence = Persistence(this)
         game.setPersistence(persistence)
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
         (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false))
@@ -232,7 +231,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         if (gameOver) {
             playingField.soundService.gameOver()
         } else if (delta != 0) {
-            text += " (" + DecimalFormat("+#,##0").format(score) + ")";
+            text += " (" + DecimalFormat("+#,##0").format(delta) + ")";
         }
         info.text = text
     }
