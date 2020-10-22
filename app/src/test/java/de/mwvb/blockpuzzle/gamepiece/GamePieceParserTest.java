@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle;
+package de.mwvb.blockpuzzle.gamepiece;
 
 import de.mwvb.blockpuzzle.logic.spielstein.GamePieceParser;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;

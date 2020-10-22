@@ -1,12 +1,9 @@
-package de.mwvb.blockpuzzle.logic;
+package de.mwvb.blockpuzzle.logic.spielstein;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
 
 public class RandomGamePiece implements INextGamePiece {

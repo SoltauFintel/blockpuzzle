@@ -1,10 +1,9 @@
-package de.mwvb.blockpuzzle;
+package de.mwvb.blockpuzzle.logic;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.mwvb.blockpuzzle.logic.DoesNotWorkException;
-import de.mwvb.blockpuzzle.logic.Game;
+import de.mwvb.blockpuzzle.GamePiecesForTest;
 import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 

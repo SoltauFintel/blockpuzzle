@@ -4,6 +4,8 @@ import java.util.List;
 
 import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.spielstein.INextGamePiece;
+import de.mwvb.blockpuzzle.logic.spielstein.RandomGamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
 import de.mwvb.blockpuzzle.view.IGameView;
