@@ -20,4 +20,9 @@ public interface IPersistence {
 
     int loadMoves();
     void saveMoves(int moves);
+
+    int loadHighScore();
+    void saveHighScore(int punkte);
+    int loadHighScoreMoves();
+    void saveHighScoreMoves(int moves);
 }

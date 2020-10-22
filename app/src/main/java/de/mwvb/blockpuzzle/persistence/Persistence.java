@@ -17,10 +17,12 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
 public class Persistence implements IPersistence {
-    private static final String NAME = "GAMEDATA_3";
+    private static final String NAME = "GAMEDATA_2";
     private static final String GAMEPIECEVIEW = "gamePieceView";
     private static final String PLAYINGFIELD = "playingField";
     private static final String SCORE = "score";
+    private static final String HIGHSCORE = "highscore";
+    private static final String HIGHSCORE_MOVES = "highscoreMoves";
     private static final String MOVES = "moves";
     private static final String GRAVITATION_ROWS = "gravitationRows";
     private static final String GRAVITATION_EXCLUSIONS = "gravitationExclusions";
@@ -30,6 +32,7 @@ public class Persistence implements IPersistence {
     private SharedPreferences __pref; // only access by pref() !
 
     // TODO wenn beim Laden etwas schief geht, muss ich gescheit reagieren. Das Spiel darf dann nicht bei jedem AppStart abkacken.
+    // TODO Die Kommentare entfernen. Die sind mtlw. überholt. (22.10.20)
 
     public Persistence(ContextWrapper owner) {
         this.owner = owner;
@@ -146,6 +149,30 @@ public class Persistence implements IPersistence {
     public void saveScore(int punkte) {
         SharedPreferences.Editor edit = pref().edit();
         edit.putInt(SCORE, punkte);
+        edit.apply();
+    }
+
+    @Override
+    public int loadHighScore() {
+        return pref().getInt(HIGHSCORE, 0);
+    }
+
+    @Override
+    public void saveHighScore(int punkte) {
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putInt(HIGHSCORE, punkte);
+        edit.apply();
+    }
+
+    @Override
+    public int loadHighScoreMoves() {
+        return pref().getInt(HIGHSCORE_MOVES, 0);
+    }
+
+    @Override
+    public void saveHighScoreMoves(int moves) {
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putInt(HIGHSCORE_MOVES, moves);
         edit.apply();
     }
 

@@ -42,8 +42,6 @@ public class Game {
     private final IGameView view;
     private IPersistence persistence;
 
-    // TODO Bisher höchste Punktzahl persistieren.
-
     // Spielaufbau ----
 
     public Game(IGameView view) {
@@ -290,8 +288,22 @@ public class Game {
         boolean d = moveImpossible(-1);
         if (a && b && c && d && !holders.isParkingFree()) {
             gameOver = true;
+            updateHighScore();
             view.showScore(punkte,0, gameOver); // display game over text
             playingField.gameOver(); // wenn parke die letzte Aktion war
+        }
+    }
+
+    private void updateHighScore() {
+        int highscore = persistence.loadHighScore();
+        if (punkte > highscore || highscore <= 0) {
+            persistence.saveHighScore(punkte);
+            persistence.saveHighScoreMoves(moves);
+        } else if (punkte == highscore) {
+            int hMoves = persistence.loadHighScoreMoves();
+            if (moves < hMoves || hMoves <= 0) {
+                persistence.saveHighScoreMoves(moves);
+            }
         }
     }
 
