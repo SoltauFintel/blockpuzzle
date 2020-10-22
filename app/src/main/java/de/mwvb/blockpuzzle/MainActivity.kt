@@ -17,12 +17,16 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.mwvb.blockpuzzle.entity.QPosition
-import de.mwvb.blockpuzzle.logic.DoesNotWorkException
-import de.mwvb.blockpuzzle.logic.Game
-import de.mwvb.blockpuzzle.logic.Persistence
-import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece
-import de.mwvb.blockpuzzle.view.*
+import de.mwvb.blockpuzzle.playingfield.QPosition
+import de.mwvb.blockpuzzle.game.DoesNotWorkException
+import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.game.IGameView
+import de.mwvb.blockpuzzle.game.MyDragShadowBuilder
+import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.gamepiece.GamePiece
+import de.mwvb.blockpuzzle.gamepiece.GamePieceView
+import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
+import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 
@@ -57,10 +61,38 @@ class MainActivity : AppCompatActivity(), IGameView {
         setContentView(R.layout.activity_main)
 
         println("jux onCreate 3")
-        (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false, persistence))
-        (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2,false, persistence))
-        (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3,false, persistence))
-        (parking      as ViewGroup).addView(GamePieceView(baseContext, -1,true, persistence))
+        (placeholder1 as ViewGroup).addView(
+            GamePieceView(
+                baseContext,
+                1,
+                false,
+                persistence
+            )
+        )
+        (placeholder2 as ViewGroup).addView(
+            GamePieceView(
+                baseContext,
+                2,
+                false,
+                persistence
+            )
+        )
+        (placeholder3 as ViewGroup).addView(
+            GamePieceView(
+                baseContext,
+                3,
+                false,
+                persistence
+            )
+        )
+        (parking      as ViewGroup).addView(
+            GamePieceView(
+                baseContext,
+                -1,
+                true,
+                persistence
+            )
+        )
         println("jux onCreate 4")
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
@@ -83,7 +115,11 @@ class MainActivity : AppCompatActivity(), IGameView {
                 val tv = it as GamePieceView
                 if (tv.gamePiece != null && !game.isGameOver) {
                     tv.startDragMode()
-                    val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
+                    val dragShadowBuilder =
+                        MyDragShadowBuilder(
+                            tv,
+                            resources.displayMetrics.density
+                        )
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
                         it.startDragAndDrop(data, dragShadowBuilder, it, 0)
                     } else { // for API level 19 (4.4. Kitkat)
