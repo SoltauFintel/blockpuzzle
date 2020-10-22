@@ -1,17 +1,19 @@
 package de.mwvb.blockpuzzle.game;
 
+import android.content.ContextWrapper;
+
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
+import de.mwvb.blockpuzzle.persistence.Persistence;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
@@ -41,28 +43,28 @@ public class Game {
     private IPersistence persistence;
 
     // TODO Bisher höchste Punktzahl persistieren.
-    // TODO Drag Schatten anzeigen
 
     // Spielaufbau ----
 
     public Game(IGameView view) {
+        this(view, null);
+    }
+
+    public Game(IGameView view, IPersistence persistence) {
         this.view = view;
+        this.persistence = persistence == null ? new Persistence((ContextWrapper) view) : persistence;
+        playingField.setPersistence(this.persistence);
+        gravitation.setPersistence(this.persistence);
+        holders.setPersistence(this.persistence);
     }
 
     public void setNextGamePiece(INextGamePiece nextGamePiece) {
         this.nextGamePiece = nextGamePiece;
     }
 
-    public void setPersistence(IPersistence persistence) {
-        this.persistence = persistence;
-        playingField.setPersistence(persistence);
-        gravitation.setPersistence(persistence);
-        holders.setPersistence(persistence);
-    }
-
     // New Game ----
 
-    public void initGame() {
+    public void initGame(String gameMode) {
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
 
@@ -92,13 +94,11 @@ public class Game {
         gameOver = false;
         punkte = 0;
         gravitation.init();
-        saveScore();
         view.showScore(punkte, 0, gameOver);
 
         playingField.clear();
 
         moves = 0;
-        persistence.saveMoves(moves);
         view.showMoves(moves);
 
         holders.clearParking();
@@ -111,6 +111,8 @@ public class Game {
             holders.get(i).setGamePiece(nextGamePiece.next(punkte, blockTypes));
         }
         // TODO avoid two/three 3x3 ?
+
+        save();
     }
 
     // Spielaktionen ----
@@ -174,9 +176,7 @@ public class Game {
                 fewGamePiecesOnThePlayingField();
             }
             view.showScore(punkte,punkte - punkteVorher, gameOver);
-            saveScore();
             view.showMoves(++moves);
-            persistence.saveMoves(moves);
         }
         return ret;
     }
@@ -363,10 +363,6 @@ public class Game {
         return rotatingMode;
     }
 
-    private void saveScore() {
-        persistence.saveScore(punkte);
-    }
-
     public int getMoves() {
         return moves;
     }
@@ -376,5 +372,12 @@ public class Game {
             holders.get(index).rotate();
             moveImpossible(index);
         }
+    }
+
+    public void save() {
+        persistence.saveScore(punkte);
+        playingField.save();
+        persistence.saveMoves(moves);
+        holders.save();
     }
 }

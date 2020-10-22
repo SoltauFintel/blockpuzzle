@@ -39,16 +39,10 @@ import java.text.DecimalFormat
  */
 class MainActivity : AppCompatActivity(), IGameView {
     private val game = Game(this)
-    private var persistence: Persistence? = null
     private val shakeService = ShakeService(game)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        println("GAME MODE: " + intent.getStringExtra("gameMode")) // TODO ...
-
-        persistence = Persistence(this)
-        game.setPersistence(persistence)
         setContentView(R.layout.activity_main)
 
         (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false))
@@ -62,8 +56,25 @@ class MainActivity : AppCompatActivity(), IGameView {
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())
         shakeService.initShakeDetection(this)
+    }
 
-        game.initGame()
+    // Activity reactivated
+    override fun onResume() {
+        super.onResume()
+
+        shakeService.setActive(true)
+
+        val gameMode = intent.getStringExtra("gameMode")
+        game.initGame(gameMode)
+    }
+
+    // Activity goes sleeping
+    override fun onPause() {
+        game.save();
+
+        shakeService.setActive(false)
+
+        super.onPause()
     }
 
     /** Spielsteinbewegung starten */
@@ -201,18 +212,6 @@ class MainActivity : AppCompatActivity(), IGameView {
             }
         }
         getGamePieceView(index).setDrehmodus(true)
-    }
-
-    // Activity goes sleeping
-    override fun onPause() {
-        shakeService.onPause()
-        super.onPause()
-    }
-
-    // Activity reactivated
-    override fun onResume() {
-        super.onResume()
-        shakeService.onResume()
     }
 
     override fun rotatingModeOff() {

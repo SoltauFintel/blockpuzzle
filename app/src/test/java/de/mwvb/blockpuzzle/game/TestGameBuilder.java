@@ -15,9 +15,8 @@ import de.mwvb.blockpuzzle.sound.SoundService;
 public class TestGameBuilder {
 
     public static Game create() {
-        Game game = new Game(getGameView());
-        game.setPersistence(getPersistence());
-        game.initGame();
+        Game game = new Game(getGameView(), getPersistence());
+        game.initGame("classic");
         return game;
     }
 

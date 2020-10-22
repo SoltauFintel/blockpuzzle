@@ -48,19 +48,17 @@ class ShakeService(game: Game) {
         }
     }
 
-    fun onPause() {
+    fun setActive(active: Boolean) {
         if (Features.shakeForGravitation) {
-            mSensorManager!!.unregisterListener(mSensorListener)
-        }
-    }
-
-    fun onResume() {
-        if (Features.shakeForGravitation) {
-            mSensorManager!!.registerListener(
-                mSensorListener,
-                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
+            if (active) {
+                mSensorManager!!.registerListener(
+                    mSensorListener,
+                    mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL
+                )
+            } else {
+                mSensorManager!!.unregisterListener(mSensorListener)
+            }
         }
     }
 }

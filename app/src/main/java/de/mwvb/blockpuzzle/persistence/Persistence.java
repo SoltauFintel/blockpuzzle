@@ -15,13 +15,24 @@ public class Persistence implements IPersistence {
     private static final String PLAYINGFIELD = "playingField";
     private static final String SCORE = "score";
     private static final String MOVES = "moves";
-    private final SharedPreferences pref;
+
+    private final ContextWrapper owner;
+    private SharedPreferences __pref; // only access by pref() !
+
     // TODO wenn beim Laden etwas schief geht, muss ich gescheit reagieren. Das Spiel darf dann nicht bei jedem AppStart abkacken.
 
     public Persistence(ContextWrapper owner) {
-        pref = owner.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        this.owner = owner;
+        // Ich kann hier nicht sofort auf getSharedPreferences() zugreifen.
     }
 
+    private SharedPreferences pref() {
+        if (__pref == null) {
+            __pref = owner.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        }
+        return __pref;
+    }
+    
     /**
      * Es wird gespeichert wenn:
      * neues Spiel (empty parking), offer (set), place (empty), parken (move)
@@ -49,7 +60,7 @@ public class Persistence implements IPersistence {
     @Override
     public GamePiece load(int index) {
         GamePiece p = null;
-        String d = pref.getString(GAMEPIECEVIEW + index, null);
+        String d = pref().getString(GAMEPIECEVIEW + index, null);
         if (d != null && !d.isEmpty()) {
             p = new GamePiece();
             String[] w = d.split(",");
@@ -88,7 +99,7 @@ public class Persistence implements IPersistence {
      */
     @Override
     public void load(PlayingField f) {
-        String d = pref.getString(PLAYINGFIELD, null);
+        String d = pref().getString(PLAYINGFIELD, null);
         final int blocks = f.getBlocks();
         if (d == null || d.isEmpty()) {
             for (int x = 0; x < blocks; x++) {
@@ -114,7 +125,7 @@ public class Persistence implements IPersistence {
      */
     @Override
     public int loadScore() {
-        return pref.getInt(SCORE, -9999);
+        return pref().getInt(SCORE, -9999);
     }
 
     /**
@@ -123,29 +134,25 @@ public class Persistence implements IPersistence {
      */
     @Override
     public void saveScore(int punkte) {
-        if (pref != null) {
-            SharedPreferences.Editor edit = pref.edit();
-            edit.putInt(SCORE, punkte);
-            edit.apply();
-        }
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putInt(SCORE, punkte);
+        edit.apply();
     }
 
     @Override
     public int loadMoves() {
-        return pref.getInt(MOVES, 0);
+        return pref().getInt(MOVES, 0);
     }
 
     @Override
     public void saveMoves(int moves) {
-        if (pref != null) {
-            SharedPreferences.Editor edit = pref.edit();
-            edit.putInt(MOVES, moves);
-            edit.apply();
-        }
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putInt(MOVES, moves);
+        edit.apply();
     }
 
     private void save(String name, StringBuilder s) {
-        SharedPreferences.Editor edit = pref.edit();
+        SharedPreferences.Editor edit = pref().edit();
         edit.putString(name, s.toString());
         edit.apply();
     }

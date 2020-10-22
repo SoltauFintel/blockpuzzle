@@ -36,10 +36,13 @@ public class GamePieceHolder {
         view.setGamePiece(gamePiece);
     }
 
+    public void save() {
+        persistence.save(index, gamePiece);
+    }
+
     public void setGamePiece(GamePiece gamePiece) {
         this.gamePiece = gamePiece;
         view.setGamePiece(gamePiece);
-        persistence.save(index, gamePiece);
     }
 
     public GamePiece getGamePiece() {
@@ -54,7 +57,6 @@ public class GamePieceHolder {
         if (gamePiece != null) {
             gamePiece.rotateToRight();
             view.draw();
-            persistence.save(index, gamePiece);
         }
     }
 }

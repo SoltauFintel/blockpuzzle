@@ -5,19 +5,15 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public interface IPersistence {
 
-    void save(int index, GamePiece p);
-
-    GamePiece load(int index);
-
-    void save(PlayingField f);
-
-    void load(PlayingField f);
-
     int loadScore();
-
     void saveScore(int punkte);
 
-    int loadMoves();
+    void load(PlayingField f);
+    void save(PlayingField f);
 
+    GamePiece load(int index);
+    void save(int index, GamePiece p);
+
+    int loadMoves();
     void saveMoves(int moves);
 }

@@ -50,7 +50,6 @@ public class PlayingField {
             }
         }
         view.draw();
-        write();
     }
 
     public boolean match(GamePiece teil, QPosition pos) {
@@ -84,7 +83,6 @@ public class PlayingField {
             }
         }
         view.draw();
-        write();
     }
 
     public FilledRows getFilledRows() {
@@ -136,7 +134,6 @@ public class PlayingField {
             }
         }
         view.clearRows(f, action);
-        write();
     }
 
     public int getFilled() {
@@ -163,7 +160,6 @@ public class PlayingField {
         if (playSound) { // Sound must not be played always.
             view.gravitation();
         }
-        write();
     }
 
     public void gameOver() {
@@ -180,7 +176,7 @@ public class PlayingField {
         view.draw();
     }
 
-    private void write() {
+    public void save() {
         persistence.save(this);
     }
 

@@ -30,6 +30,10 @@ class Holders {
         holders.values.forEach { it.load() }
     }
 
+    fun save() {
+        holders.values.forEach { it.save() }
+    }
+
     fun is123Empty(): Boolean {
         return get(1).gamePiece == null && get(2).gamePiece == null && get(3).gamePiece == null;
     }
