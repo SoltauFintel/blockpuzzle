@@ -1,17 +1,10 @@
 package de.mwvb.blockpuzzle.logic;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import de.mwvb.blockpuzzle.logic.Action;
-import de.mwvb.blockpuzzle.logic.FilledRows;
-import de.mwvb.blockpuzzle.logic.Game;
-import de.mwvb.blockpuzzle.logic.IPersistence;
-import de.mwvb.blockpuzzle.logic.PlayingField;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.sound.ISoundService;
 import de.mwvb.blockpuzzle.sound.SoundService;
-import de.mwvb.blockpuzzle.view.GamePieceView;
 import de.mwvb.blockpuzzle.view.IGamePieceView;
 import de.mwvb.blockpuzzle.view.IGameView;
 import de.mwvb.blockpuzzle.view.IPlayingFieldView;

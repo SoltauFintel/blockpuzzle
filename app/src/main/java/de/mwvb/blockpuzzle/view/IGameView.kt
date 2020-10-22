@@ -1,9 +1,5 @@
 package de.mwvb.blockpuzzle.view
 
-import de.mwvb.blockpuzzle.logic.Action
-import de.mwvb.blockpuzzle.logic.FilledRows
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
-
 /**
  * Alle Zugriffe vom Game (Controller) auf die View Schicht
  */

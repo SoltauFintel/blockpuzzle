@@ -9,8 +9,8 @@ import android.view.View;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.Persistence;
-import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.BlockTypes;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 
 /**
  * Im unteren Bereich die View Komponente, die ein Spielstein (oder einen leeren Spielstein) enthält.

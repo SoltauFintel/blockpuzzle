@@ -1,10 +1,10 @@
-package de.mwvb.blockpuzzle.logic.spielstein;
+package de.mwvb.blockpuzzle.logic.gamepiece;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.logic.gamepiece.special.ISpecialBlock;
 
 public class RandomGamePiece implements INextGamePiece {
     private final Random rand = new Random(System.currentTimeMillis());

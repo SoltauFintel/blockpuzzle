@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein.special;
+package de.mwvb.blockpuzzle.logic.gamepiece.special;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -7,23 +7,39 @@ import android.view.View;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.entity.QPosition;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.view.IBlockDrawer;
 
-public class StarBlock extends SpecialBock {
-    public static final int TYPE = 20;
+public class LockBlock extends SpecialBock {
+    public static final int TYPE = 21;
+    private int c = 0;
 
-    public StarBlock() {
+    public LockBlock() {
         super(TYPE);
     }
 
     @Override
+    public boolean isRelevant(GamePiece p) {
+        final int n = 100;
+        if (++c > n) {
+            c = 0;
+        }
+        return c == n;
+    }
+
+    @Override
     protected int getRandomMax() {
-        return 250;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public char getBlockTypeChar() {
-        return 'S';
+        return 'L';
+    }
+
+    @Override
+    public int getColor() {
+        return R.color.lockBlock;
     }
 
     @Override
@@ -31,8 +47,8 @@ public class StarBlock extends SpecialBock {
         final Paint boxPaint = new Paint();
         final Paint linePaint = new Paint();
         linePaint.setStrokeWidth(16);
-        linePaint.setColor(view.getResources().getColor(android.R.color.holo_red_dark)); // TODO Farbe definieren!
-        boxPaint.setColor(view.getResources().getColor(R.color.starBlock));
+        linePaint.setColor(view.getResources().getColor(R.color.lockBlock));
+        boxPaint.setColor(view.getResources().getColor(android.R.color.white)); // TODO Farbe definieren!
         return new IBlockDrawer() {
             @Override
             public void draw(Canvas canvas, float tx, float ty, float p, int br, float f) {
@@ -44,19 +60,15 @@ public class StarBlock extends SpecialBock {
                 final float yLine = top + (bottom - top) / 2;
 
                 canvas.drawRect(left, top, right, bottom, boxPaint);
-                canvas.drawLine(left, yLine, right, yLine, linePaint);
-                canvas.drawLine(xLine, top, xLine, bottom, linePaint);
+                canvas.drawLine(left, top, right, bottom, linePaint);
+                canvas.drawLine(left, bottom, right, top, linePaint);
             }
         };
     }
 
     @Override
-    public int getColor() {
-        return R.color.starBlock;
-    }
-
-    @Override
     public int cleared(PlayingField playingField, QPosition k) {
-        return 200; // bonus score
+        playingField.set(k.getX(), k.getY(), 1);
+        return 1;
     }
 }

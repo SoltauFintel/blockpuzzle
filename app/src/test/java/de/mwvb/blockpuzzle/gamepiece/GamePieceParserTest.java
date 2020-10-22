@@ -1,8 +1,8 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
-import de.mwvb.blockpuzzle.logic.spielstein.GamePieceParser;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePieceParser;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiecesDefinition;
 
 import org.junit.Assert;
 import org.junit.Test;

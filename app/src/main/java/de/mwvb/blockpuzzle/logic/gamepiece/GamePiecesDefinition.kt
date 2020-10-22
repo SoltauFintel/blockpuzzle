@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein
+package de.mwvb.blockpuzzle.logic.gamepiece
 
 // Kotlin supports multi line strings
 object GamePiecesDefinition {

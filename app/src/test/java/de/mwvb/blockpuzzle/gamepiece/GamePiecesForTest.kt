@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.gamepiece
 
-import de.mwvb.blockpuzzle.logic.spielstein.GamePieceParser
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePieceParser
 
 object GamePiecesForTest {
 

@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.view.GamePieceView;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml

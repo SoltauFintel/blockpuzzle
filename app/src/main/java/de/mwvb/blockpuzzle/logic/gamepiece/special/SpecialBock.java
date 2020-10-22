@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein.special;
+package de.mwvb.blockpuzzle.logic.gamepiece.special;
 
 import android.view.View;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.entity.QPosition;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.view.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.view.IBlockDrawer;
 

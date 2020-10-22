@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein;
+package de.mwvb.blockpuzzle.logic.gamepiece;
 
 import org.jetbrains.annotations.NotNull;
 

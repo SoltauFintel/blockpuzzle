@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.view;
 
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 
 public interface IGamePieceView {
 

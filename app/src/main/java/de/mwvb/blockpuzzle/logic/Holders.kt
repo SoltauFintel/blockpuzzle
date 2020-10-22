@@ -2,6 +2,9 @@ package de.mwvb.blockpuzzle.logic
 
 import de.mwvb.blockpuzzle.view.IGameView
 
+/**
+ * 4 GamePieceHolder objects
+ */
 class Holders {
     private val holders = mapOf(1 to GamePieceHolder(1), 2 to GamePieceHolder(2), 3 to GamePieceHolder(3), -1 to GamePieceHolder(-1))
 

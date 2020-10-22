@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein;
+package de.mwvb.blockpuzzle.logic.gamepiece;
 
 import java.util.ArrayList;
 import java.util.List;

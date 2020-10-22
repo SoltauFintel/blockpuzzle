@@ -1,7 +1,6 @@
 package de.mwvb.blockpuzzle.logic;
 
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.view.GamePieceView;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 
 public interface IPersistence {
 

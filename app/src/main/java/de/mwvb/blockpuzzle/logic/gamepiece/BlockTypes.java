@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic.spielstein;
+package de.mwvb.blockpuzzle.logic.gamepiece;
 
 import android.view.View;
 
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.logic.spielstein.special.LockBlock;
-import de.mwvb.blockpuzzle.logic.spielstein.special.StarBlock;
+import de.mwvb.blockpuzzle.logic.gamepiece.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.logic.gamepiece.special.LockBlock;
+import de.mwvb.blockpuzzle.logic.gamepiece.special.StarBlock;
 import de.mwvb.blockpuzzle.view.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.view.IBlockDrawer;
 
