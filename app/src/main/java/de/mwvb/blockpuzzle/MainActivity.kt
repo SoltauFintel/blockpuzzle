@@ -19,10 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.logic.*
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
-import de.mwvb.blockpuzzle.view.GamePieceView
-import de.mwvb.blockpuzzle.view.IGameView
-import de.mwvb.blockpuzzle.view.MyDragShadowBuilder
-import de.mwvb.blockpuzzle.view.PlayingFieldView
+import de.mwvb.blockpuzzle.view.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 
@@ -47,7 +44,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        println("GAME MODE: " + intent.getStringExtra("gameMode"))
+        println("GAME MODE: " + intent.getStringExtra("gameMode")) // TODO ...
 
         persistence = Persistence(this)
         game.setPersistence(persistence)
@@ -131,7 +128,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         try {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
-            val gamePiece = getGamePiece(index)!!
+            val gamePiece = getGamePieceView(index).gamePiece
 
             // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
             val xy = calculatePlayingFieldCoordinates(event, gamePiece)
@@ -271,18 +268,12 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
     }
 
-    // TODO delta auch persistieren und nach Programmneustart korrekt anzeigen
-    override fun updateScore(delta: Int) {
-        var text = getScoreText(game.score, game.isGameOver)
-        if (game.isGameOver) {
+    override fun updateScore(score: Int, delta: Int, gameOver: Boolean) {
+        var text = getScoreText(score, gameOver)
+        if (gameOver) {
             playingField.soundService.gameOver()
-        } else {
-            // TODO Tausenderpunkt für delta
-            if (delta > 0) {
-                text += " (+$delta)";
-            } else if (delta < 0) {
-                text += " ($delta)";
-            }
+        } else if (delta != 0) {
+            text += " (" + DecimalFormat("+#,##0").format(score) + ")";
         }
         info.text = text
     }
@@ -313,27 +304,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         playingField.clearRows(filledRows, action)
     }
 
-    override fun setGamePiece(index: Int, teil: GamePiece?, write: Boolean) {
-        val tv = getGamePieceView(index)
-        tv.endDragMode()
-        tv.isGrey = false
-        tv.gamePiece = teil // macht draw()
-        if (write) {
-            tv.write()
-        }
-    }
-
-    override fun getGamePiece(index: Int): GamePiece? {
-        return getGamePieceView(index).gamePiece
-    }
-
-    override fun grey(index: Int, grey: Boolean) {
-        val tv = getGamePieceView(index)
-        tv.isGrey = grey
-        tv.draw()
-    }
-
-    private fun getGamePieceView(index: Int): GamePieceView {
+    override fun getGamePieceView(index: Int): GamePieceView {
         return when (index) {
              1 -> (placeholder1 as ViewGroup).getChildAt(0) as GamePieceView
              2 -> (placeholder2 as ViewGroup).getChildAt(0) as GamePieceView
@@ -358,14 +329,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         playingField.soundService.backPressed(game.isGameOver)
     }
 */
-
-    override fun restoreGamePieceViews() {
-        // restore GamePieceViews 1-3 und Parking area
-        getGamePieceView(1).read();
-        getGamePieceView(2).read();
-        getGamePieceView(3).read();
-        getGamePieceView(-1).read();
-    }
 
     override fun showMoves(moves: Int) {
         val text: String

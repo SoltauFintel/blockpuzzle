@@ -19,7 +19,7 @@ import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
  * Teil ist der alte Name für Spielstein; daher TeilView.
  */
 @SuppressLint("ViewConstructor")
-public class GamePieceView extends View {
+public class GamePieceView extends View implements IGamePieceView {
     private final int index;
     private final boolean parking;
     private final Persistence persistence;
@@ -48,28 +48,35 @@ public class GamePieceView extends View {
         drehmodusBD = ColorBlockDrawer.byRColor(this, R.color.colorDrehmodus);
     }
 
+    @Override
     public void setGamePiece(GamePiece v) {
+        endDragMode();
+        grey = false;
         gamePiece = v;
         draw();
     }
 
+    @Override
     public GamePiece getGamePiece() {
         return gamePiece;
     }
 
+    @Override
     public int getIndex() {
         return index;
     }
 
-    // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
+    @Override
     public void setGrey(boolean v) {
         grey = v;
+        draw();
     }
 
-    // Methode nicht löschen!
-    public boolean isGrey() {
-        return grey;
-    }
+//    // Methode nicht löschen!
+//    @Override
+//    public boolean isGrey() {
+//        return grey;
+//    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -104,26 +111,31 @@ public class GamePieceView extends View {
         super.onDraw(canvas);
     }
 
+    @Override
     public void draw() {
         invalidate();
         requestLayout();
     }
 
+    @Override
     public void startDragMode() {
         dragMode = true;
         setVisibility(View.INVISIBLE);
     }
 
+    @Override
     public void endDragMode() {
         dragMode = false;
         setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void setDrehmodus(boolean d) {
         drehmodus = d;
         draw();
     }
 
+    @Override
     public void rotate() {
         if (gamePiece != null) {
             gamePiece.rotateToRight();
@@ -138,12 +150,13 @@ public class GamePieceView extends View {
         return super.performClick();
     }
 
+    @Override
     public void write() {
-        persistence.save(this);
+        persistence.save(index, gamePiece);
     }
 
+    @Override
     public void read() {
-        persistence.load(this);
-        draw();
+        setGamePiece(persistence.load(index));
     }
 }

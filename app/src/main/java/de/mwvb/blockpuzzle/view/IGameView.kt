@@ -9,25 +9,19 @@ import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
  */
 interface IGameView {
 
-    fun setGamePiece(index: Int, gamePiece: GamePiece?, write: Boolean)
-
-    fun getGamePiece(index: Int): GamePiece?
-
-    fun rotatingModeOff()
-
-
-    fun drawPlayingField()
-
-    fun restoreGamePieceViews()
-
-    fun updateScore(score: Int)
-    fun showMoves(moves: Int)
-
-    fun doesNotWork()
-
     fun getWithGravityOption(): Boolean
+
+    fun updateScore(score: Int, delta: Int, gameOver: Boolean)
+
+    fun showMoves(moves: Int)
 
     fun clearRows(filledRows: FilledRows, action: Action?)
 
-    fun grey(index: Int, grey: Boolean)
+    fun rotatingModeOff()
+
+    fun drawPlayingField()
+
+    fun doesNotWork()
+
+    fun getGamePieceView(index: Int): IGamePieceView;
 }

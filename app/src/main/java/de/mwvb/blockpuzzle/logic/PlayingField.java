@@ -3,18 +3,25 @@ package de.mwvb.blockpuzzle.logic;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 public class PlayingField {
+    // Stammdaten
     private final int blocks;
+
+    // Zustand
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
+
+    // Services
+    private IPersistence persistence;
+    // TODO Der könnte noch eine IPlayingFieldView haben.
+
     // TODO Idee: Jeder Block sollte ein Objekt sein, welches Eigenschaften (z.B. Farbe) und Verhalten (z.B. LockBlock) hat.
-    private Persistence persistence;
 
     public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
     }
 
-    public void setPersistence(Persistence persistence) {
+    public void setPersistence(IPersistence persistence) {
         this.persistence = persistence;
     }
 
@@ -144,8 +151,9 @@ public class PlayingField {
         write();
     }
 
-    public void read() {
+    public void load() {
         persistence.load(this);
+        // TODO view.draw();
     }
 
     private void write() {

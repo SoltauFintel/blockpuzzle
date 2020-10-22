@@ -7,25 +7,31 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.sound.SoundService;
+import de.mwvb.blockpuzzle.sound.ISoundService;
 import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
 import de.mwvb.blockpuzzle.view.IGameView;
 
 public class Game {
+    // Stammdaten (read only)
     public static final int blocks = 10;
-    private static final Random rand = new Random(System.currentTimeMillis());
-    private final IGameView view;
-    private final PlayingField playingField = new PlayingField(blocks);
     private final BlockTypes blockTypes = new BlockTypes(null);
-    private final List<GamePiece> gamePieces = new ArrayList<>();
+
+    // Zustand
+    private final PlayingField playingField = new PlayingField(blocks);
+    private final Holders holders = new Holders();
     private int punkte;
     private int moves;
     private boolean gameOver = false;
     private boolean rotatingMode = false; // wird nicht persistiert
-    private Persistence persistence;
-    private SoundService soundService;
-    private Action gravity = null;
     private boolean firstGravitationPlayed = false;
+    private Action gravity = null; // ist ein Zustand weil es auch aussagt, ob eine Gravitation möglich ist oder nicht
+
+    // Services
+    private INextGamePiece nextGamePiece = new RandomGamePiece();
+    private final IGameView view;
+    private IPersistence persistence;
+    private ISoundService soundService;
+
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
 
@@ -33,15 +39,20 @@ public class Game {
 
     public Game(IGameView view) {
         this.view = view;
-        gamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
+        holders.setView(view);
     }
 
-    public void setPersistence(Persistence persistence) {
+    public void setNextGamePiece(INextGamePiece nextGamePiece) {
+        this.nextGamePiece = nextGamePiece;
+    }
+
+    public void setPersistence(IPersistence persistence) {
         this.persistence = persistence;
         playingField.setPersistence(persistence);
+        holders.setPersistence(persistence);
     }
 
-    public void setSoundService(SoundService soundService) {
+    public void setSoundService(ISoundService soundService) {
         this.soundService = soundService;
     }
 
@@ -49,7 +60,6 @@ public class Game {
 
     public void initGame() {
         gravity = null;
-        view.setGamePiece(-1, null, false);
 
         // Drehmodus deaktivieren
         rotatingMode = false;
@@ -61,14 +71,15 @@ public class Game {
             newGame();
             return;
         }
+
+        // Spielstand laden
+        view.updateScore(punkte,0, gameOver); // TODO delta laden
         moves = persistence.loadMoves();
-        firstGravitationPlayed = false; // TODO laden
-        // Es gibt einen Spielstand.
-        playingField.read();
-        view.updateScore(0);
         view.showMoves(moves);
+        firstGravitationPlayed = false; // TODO laden
+        playingField.load();
         view.drawPlayingField();
-        view.restoreGamePieceViews();
+        holders.load();
         checkGame();
     }
 
@@ -80,42 +91,21 @@ public class Game {
         moves = 0;
         saveScore();
         persistence.saveMoves(moves);
-        view.updateScore(punkte);
+        view.updateScore(punkte, 0, gameOver);
         view.showMoves(moves);
         firstGravitationPlayed = false;
 
         view.drawPlayingField();
-        view.setGamePiece(-1, null, true);
+        holders.clearParking();
         offer();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
     private void offer() { // old German method name: vorschlag
-        view.setGamePiece(1, createRandomGamePiece(gamePieces), true);
-        view.setGamePiece(2, createRandomGamePiece(gamePieces), true);
-        view.setGamePiece(3, createRandomGamePiece(gamePieces), true);
+        for (int i = 1; i <= 3; i++) {
+            holders.get(i).setGamePiece(nextGamePiece.next(punkte, blockTypes));
+        }
         // TODO avoid two/three 3x3 ?
-    }
-
-    private GamePiece createRandomGamePiece(List<GamePiece> teile) {
-        int loop = 0;
-        int index = rand.nextInt(teile.size());
-        GamePiece gamePiece = teile.get(index);
-        while (punkte < gamePiece.getMindestpunktzahl()) {
-            if (++loop > 1000) { // Notausgang
-                return teile.get(0);
-            }
-            index = rand.nextInt(teile.size());
-            gamePiece = teile.get(index);
-        }
-        gamePiece = gamePiece.copy();
-        // Insert a special block type randomly
-        for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
-            if (s.isRelevant(gamePiece) && s.process(gamePiece)) {
-                break;
-            }
-        }
-        return gamePiece;
     }
 
     // Spielaktionen ----
@@ -127,12 +117,12 @@ public class Game {
         }
         boolean ret;
         if (targetIsParking) {
-            ret = park(index, teil);
+            ret = holders.park(index); // Drop Aktion für Parking Area
         } else {
             ret = place(index, teil, xy);
         }
         if (ret) {
-            if (view.getGamePiece(1) == null && view.getGamePiece(2) == null && view.getGamePiece(3) == null) {
+            if (holders.is123Empty()) {
                 offer();
             }
             checkGame();
@@ -141,22 +131,11 @@ public class Game {
         }
     }
 
-    /** Drop Aktion für Parking Area */
-    private boolean park(int index, GamePiece teil) {
-        if (index != -1 && view.getGamePiece(-1) == null) { // es geht wenn Source 1,2,3 und Parking frei
-            view.setGamePiece(-1, view.getGamePiece(index), true); // Parking belegen
-            view.setGamePiece(index, null, true); // Source leeren
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Drop Aktion für Spielfeld
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
     private boolean place(int index, GamePiece teil, QPosition pos) { // old German name: platziere
-        System.out.println("place " + pos.getX() + ", " + pos.getY());
         gravity = null; // delete previous gravity action
         Action lGravity = null;
         final int punkteVorher = punkte;
@@ -165,7 +144,7 @@ public class Game {
             sendPlacedEvent(teil, pos);
             playingField.place(teil, pos);
             view.drawPlayingField();
-            view.setGamePiece(index, null, true);
+            holders.get(index).setGamePiece(null);
 
             detectOneColorArea();
 
@@ -188,7 +167,7 @@ public class Game {
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
             }
-            view.updateScore(punkte - punkteVorher);
+            view.updateScore(punkte,punkte - punkteVorher, gameOver);
             saveScore();
             view.showMoves(++moves);
             persistence.saveMoves(moves);
@@ -338,17 +317,32 @@ public class Game {
         boolean b = moveImpossible(2);
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
-        if (a && b && c && d && view.getGamePiece(-1) != null) {
+        if (a && b && c && d && !holders.isParkingFree()) {
             gameOver = true;
-            view.updateScore(0);
+            view.updateScore(punkte,0, gameOver); // display game over text
             view.drawPlayingField(); // wenn parke die letzte Aktion war
         }
     }
 
     public boolean moveImpossible(int index) {
-        GamePiece teil = view.getGamePiece(index);
+        GamePiece teil = holders.get(index).getGamePiece();
+        int result = moveImpossibleR(teil);
+        if (result != 2) {
+            holders.get(index).grey(result == 1 || result == -1);
+        }
+        return result > 0;
+    }
+
+    /**
+     * @param teil game piece
+     * @return 2: game piece view is empty, 1: game piece does not fit in (grey true!),
+     * 0: game piece fits in (ro is 1, grey false!),
+     * -1: game piece fits in (ro is > 1, grey true!).
+     * >0: return true (move is impossible), else return false (move is possible).
+     */
+    public int moveImpossibleR(GamePiece teil) {
         if (teil == null) {
-            return true; // GamePieceView is empty
+            return 2; // GamePieceView is empty
         }
         for (int ro = 1; ro <= 4; ro++) { // try all 4 rotations
             for (int x = 0; x < blocks; x++) {
@@ -360,15 +354,13 @@ public class Game {
                         // and therefore I want to inform the player that he must rotate until
                         // it's not grey (or it's game over but there's a game over sound
                         // and he cannot rotate any more).
-                        view.grey(index, ro > 1);
-                        return false; // Spielstein passt rein
+                        return ro > 1 ? -1 : 0; // Spielstein passt rein
                     }
                 }
             }
             teil = teil.copy().rotateToRight();
         }
-        view.grey(index, true);
-        return true; // There's no space for the game piece in the playing field.
+        return 1; // There's no space for the game piece in the playing field.
     }
 
     public int getScore() {
@@ -394,5 +386,9 @@ public class Game {
 
     private void saveScore() {
         persistence.saveScore(punkte);
+    }
+
+    public int getMoves() {
+        return moves;
     }
 }

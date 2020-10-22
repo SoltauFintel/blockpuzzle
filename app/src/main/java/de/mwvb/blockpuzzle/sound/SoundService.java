@@ -11,7 +11,7 @@ import android.os.Handler;
 
 import de.mwvb.blockpuzzle.R;
 
-public class SoundService {
+public class SoundService implements ISoundService {
     private Context context;
     private SoundPool soundPool;
     private int crunch;
@@ -54,18 +54,22 @@ public class SoundService {
         soundPool.play(soundId, 1, 1, 0, 0, 1f);
     }
 
+    @Override
     public void clear(boolean big) {
         play(big ? explosion : crunch);
     }
 
+    @Override
     public void firstGravitation() {
         jeqa.start();
     }
 
+    @Override
     public void gameOver() {
         laughter.start();
     }
 
+    @Override
     public void backPressed(boolean gameOver) {
         if (gameOver) {
             gameOver();
@@ -74,10 +78,12 @@ public class SoundService {
         }
     }
 
+    @Override
     public void oneColor() {
         play(money);
     }
 
+    @Override
     public void doesNotWork() {
         // TODO
     }

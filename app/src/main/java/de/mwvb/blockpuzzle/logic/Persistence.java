@@ -9,7 +9,7 @@ import de.mwvb.blockpuzzle.view.GamePieceView;
 
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
-public class Persistence {
+public class Persistence implements IPersistence {
     private static final String NAME = "GAMEDATA_2";
     private static final String GAMEPIECEVIEW = "gamePieceView";
     private static final String PLAYINGFIELD = "playingField";
@@ -26,11 +26,11 @@ public class Persistence {
      * Es wird gespeichert wenn:
      * neues Spiel (empty parking), offer (set), place (empty), parken (move)
      */
-    public void save(GamePieceView v) {
+    @Override
+    public void save(int index, GamePiece p) {
         StringBuilder d = new StringBuilder();
-        String k = "";
-        GamePiece p = v.getGamePiece(); // TODO kann das null sein?
         if (p != null) {
+            String k = "";
             for (int x = 0; x < GamePiece.max; x++) {
                 for (int y = 0; y < GamePiece.max; y++) {
                     d.append(k);
@@ -39,16 +39,17 @@ public class Persistence {
                 }
             }
         }
-        save(GAMEPIECEVIEW + v.getIndex(), d);
+        save(GAMEPIECEVIEW + index, d);
     }
 
     /**
      * Es wird geladen wenn:
      * MainActivity.onCreate
      */
-    public void load(GamePieceView v) {
+    @Override
+    public GamePiece load(int index) {
         GamePiece p = null;
-        String d = pref.getString(GAMEPIECEVIEW + v.getIndex(), null);
+        String d = pref.getString(GAMEPIECEVIEW + index, null);
         if (d != null && !d.isEmpty()) {
             p = new GamePiece();
             String[] w = d.split(",");
@@ -59,13 +60,14 @@ public class Persistence {
                 }
             }
         }
-        v.setGamePiece(p);
+        return p;
     }
 
     /**
      * Es wird gespeichert wenn:
      * clear (newGame), place, gravitation (place), clearRows (place)
      */
+    @Override
     public void save(PlayingField f) {
         StringBuilder d = new StringBuilder();
         String k = "";
@@ -84,6 +86,7 @@ public class Persistence {
      * Es wird geladen wenn:
      * MainActivity.onCreate
      */
+    @Override
     public void load(PlayingField f) {
         String d = pref.getString(PLAYINGFIELD, null);
         final int blocks = f.getBlocks();
@@ -109,6 +112,7 @@ public class Persistence {
      * MainActivity.onCreate
      * @return negative value means that there is no GAMEDATA
      */
+    @Override
     public int loadScore() {
         return pref.getInt(SCORE, -9999);
     }
@@ -117,6 +121,7 @@ public class Persistence {
      * Es wird gespeichert wenn:
      * place (punkte erhöht), newGame (punkte=0)
      */
+    @Override
     public void saveScore(int punkte) {
         if (pref != null) {
             SharedPreferences.Editor edit = pref.edit();
@@ -125,10 +130,12 @@ public class Persistence {
         }
     }
 
+    @Override
     public int loadMoves() {
         return pref.getInt(MOVES, 0);
     }
 
+    @Override
     public void saveMoves(int moves) {
         if (pref != null) {
             SharedPreferences.Editor edit = pref.edit();
