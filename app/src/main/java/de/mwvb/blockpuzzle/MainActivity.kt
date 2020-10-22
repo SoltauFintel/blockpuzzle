@@ -25,6 +25,7 @@ import de.mwvb.blockpuzzle.game.MyDragShadowBuilder
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
+import de.mwvb.blockpuzzle.gravitation.ShakeService
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,12 +40,7 @@ import java.text.DecimalFormat
 class MainActivity : AppCompatActivity(), IGameView {
     private val game = Game(this)
     private var persistence: Persistence? = null
-
-    /* put this into your activity class */
-    private var mSensorManager: SensorManager? = null
-    private var mAccel = 0f // acceleration apart from gravity
-    private var mAccelCurrent = 0f// current acceleration including gravity
-    private var mAccelLast = 0f // last acceleration including gravity
+    private val shakeService = ShakeService(game)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +62,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())
-        initShakeDetection()
+        shakeService.initShakeDetection(this)
 
         game.initGame()
     }
@@ -206,54 +202,16 @@ class MainActivity : AppCompatActivity(), IGameView {
         getGamePieceView(index).setDrehmodus(true)
     }
 
-    private fun initShakeDetection() {
-        if (Features.shakeForGravitation) {
-            mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager?;
-            mSensorManager!!.registerListener(
-                mSensorListener,
-                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL
-            );
-            mAccel = 0.00f;
-            mAccelCurrent = SensorManager.GRAVITY_EARTH;
-            mAccelLast = SensorManager.GRAVITY_EARTH;
-        }
-    }
-
-    private val mSensorListener: SensorEventListener = object : SensorEventListener { // https://stackoverflow.com/a/2318356/3478021
-        override fun onSensorChanged(se: SensorEvent) {
-            val x = se.values[0]
-            val y = se.values[1]
-            val z = se.values[2]
-            mAccelLast = mAccelCurrent
-            mAccelCurrent = Math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
-            val delta = mAccelCurrent - mAccelLast
-            mAccel = mAccel * 0.9f + delta // perform low-cut filter
-            if (mAccel > 14) game.shaked() // value is how hard you have to shake
-        }
-
-        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { //
-        }
-    }
-
     // Activity goes sleeping
     override fun onPause() {
-        if (Features.shakeForGravitation) {
-            mSensorManager!!.unregisterListener(mSensorListener)
-        }
+        shakeService.onPause()
         super.onPause()
     }
 
     // Activity reactivated
     override fun onResume() {
         super.onResume()
-        if (Features.shakeForGravitation) {
-            mSensorManager!!.registerListener(
-                mSensorListener,
-                mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
+        shakeService.onResume()
     }
 
     override fun rotatingModeOff() {
