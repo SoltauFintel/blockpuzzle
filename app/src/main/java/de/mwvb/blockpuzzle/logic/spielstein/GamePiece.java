@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.logic.QPosition;
+import de.mwvb.blockpuzzle.entity.QPosition;
 
 /**
  * Game pieces can have different shapes with maximum size to 5x5 blocks and minimum size of 1x1.

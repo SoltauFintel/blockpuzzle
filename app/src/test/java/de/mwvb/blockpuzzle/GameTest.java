@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import de.mwvb.blockpuzzle.logic.DoesNotWorkException;
 import de.mwvb.blockpuzzle.logic.Game;
-import de.mwvb.blockpuzzle.logic.QPosition;
+import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 
 public class GameTest {

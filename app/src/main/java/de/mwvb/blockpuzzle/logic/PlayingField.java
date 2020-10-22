@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.logic;
 
+import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.view.IPlayingFieldView;
 

@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.logic
+package de.mwvb.blockpuzzle.entity
 
 /** Spielfeld-Koordinate */
 data class QPosition(val x: Int, val y: Int)

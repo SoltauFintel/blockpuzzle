@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.mwvb.blockpuzzle.entity.QPosition
 import de.mwvb.blockpuzzle.logic.*
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece
 import de.mwvb.blockpuzzle.view.*

@@ -6,7 +6,7 @@ import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.PlayingField;
-import de.mwvb.blockpuzzle.logic.QPosition;
+import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.view.IBlockDrawer;
 

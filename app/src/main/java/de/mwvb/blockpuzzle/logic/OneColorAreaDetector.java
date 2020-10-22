@@ -1,8 +1,9 @@
 package de.mwvb.blockpuzzle.logic;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.mwvb.blockpuzzle.entity.QPosition;
 
 public class OneColorAreaDetector {
     private final PlayingField playingField;
