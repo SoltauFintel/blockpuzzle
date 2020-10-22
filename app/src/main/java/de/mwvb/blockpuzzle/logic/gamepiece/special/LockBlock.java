@@ -5,8 +5,8 @@ import android.graphics.Paint;
 import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.entity.QPosition;
+import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.view.IBlockDrawer;
 

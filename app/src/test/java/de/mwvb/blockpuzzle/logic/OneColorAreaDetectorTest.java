@@ -1,11 +1,10 @@
 package de.mwvb.blockpuzzle.logic;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.List;
 
-import de.mwvb.blockpuzzle.logic.OneColorAreaDetector;
-import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.entity.QPosition;
 
 public class OneColorAreaDetectorTest {

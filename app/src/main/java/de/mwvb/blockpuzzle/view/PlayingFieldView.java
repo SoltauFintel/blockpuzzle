@@ -11,11 +11,11 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.PlayingField;
-import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.gamepiece.BlockTypes;
 import de.mwvb.blockpuzzle.sound.SoundService;
 

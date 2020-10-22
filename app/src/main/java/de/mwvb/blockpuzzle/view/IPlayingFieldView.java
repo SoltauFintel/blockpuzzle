@@ -2,7 +2,6 @@ package de.mwvb.blockpuzzle.view;
 
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
-import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.sound.SoundService;
 

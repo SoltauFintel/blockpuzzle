@@ -18,7 +18,9 @@ import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.entity.QPosition
-import de.mwvb.blockpuzzle.logic.*
+import de.mwvb.blockpuzzle.logic.DoesNotWorkException
+import de.mwvb.blockpuzzle.logic.Game
+import de.mwvb.blockpuzzle.logic.Persistence
 import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.view.*
 import kotlinx.android.synthetic.main.activity_main.*

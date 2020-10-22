@@ -7,7 +7,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
-import android.os.Handler;
 
 import de.mwvb.blockpuzzle.R;
 

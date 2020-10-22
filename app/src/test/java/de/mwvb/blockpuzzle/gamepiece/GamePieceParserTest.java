@@ -1,13 +1,13 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
-import de.mwvb.blockpuzzle.logic.gamepiece.GamePieceParser;
-import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.logic.gamepiece.GamePiecesDefinition;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePieceParser;
+import de.mwvb.blockpuzzle.logic.gamepiece.GamePiecesDefinition;
 
 public class GamePieceParserTest {
 

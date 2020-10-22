@@ -1,7 +1,5 @@
 package de.mwvb.blockpuzzle.view;
 
-import android.graphics.Paint;
-
 /**
  * Kästchen ausfüllen Strategie
  */
