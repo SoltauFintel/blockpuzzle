@@ -2,6 +2,8 @@ package de.mwvb.blockpuzzle.game;
 
 import java.util.List;
 
+import de.mwvb.blockpuzzle.gravitation.GravitationAction;
+import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
@@ -25,16 +27,14 @@ public class Game {
     private final Holders holders = new Holders();
     private int punkte;
     private int moves;
-    private boolean gameOver = false;
+    private boolean gameOver = false; // wird nicht persistiert
     private boolean rotatingMode = false; // wird nicht persistiert
-    private boolean firstGravitationPlayed = false;
-    private Action gravity = null; // ist ein Zustand weil es auch aussagt, ob eine Gravitation möglich ist oder nicht
+    private final GravitationData gravitation = new GravitationData();
 
     // Services
     private INextGamePiece nextGamePiece = new RandomGamePiece();
     private final IGameView view;
     private IPersistence persistence;
-//    private ISoundService soundService;
 
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
@@ -52,6 +52,7 @@ public class Game {
     public void setPersistence(IPersistence persistence) {
         this.persistence = persistence;
         playingField.setPersistence(persistence);
+        gravitation.setPersistence(persistence);
         holders.setPersistence(persistence);
     }
 
@@ -60,7 +61,6 @@ public class Game {
     public void initGame() {
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
-        gravity = null;
 
         // Drehmodus deaktivieren
         rotatingMode = false;
@@ -77,7 +77,7 @@ public class Game {
         view.showScore(punkte,0, gameOver); // TODO delta laden
         moves = persistence.loadMoves();
         view.showMoves(moves);
-        firstGravitationPlayed = false; // TODO laden
+        gravitation.load();
         playingField.load();
         holders.load();
         checkGame();
@@ -87,7 +87,7 @@ public class Game {
     public void newGame() {
         gameOver = false;
         punkte = 0;
-        firstGravitationPlayed = false;
+        gravitation.init();
         saveScore();
         view.showScore(punkte, 0, gameOver);
 
@@ -141,8 +141,7 @@ public class Game {
      * @return true wenn Spielstein platziert wurde, false wenn dies nicht möglich ist
      */
     private boolean place(int index, GamePiece teil, QPosition pos) { // old German name: platziere
-        gravity = null; // delete previous gravity action
-        Action lGravity = null;
+        gravitation.clear(); // delete previous gravity action
         final int punkteVorher = punkte;
         boolean ret = playingField.match(teil, pos);
         if (ret) {
@@ -161,11 +160,11 @@ public class Game {
 
             punkte += processSpecialBlockTypes(f);
 
-            lGravity = getGravityAction(f);
+            gravitation.set(f);
             if (view.getGravitySetting()) { // gravity needs phone shaking
                 playingField.clearRows(f, null);
             } else { // auto-gravity
-                playingField.clearRows(f, lGravity); // Action wird erst wenige Millisekunden später fertig!
+                playingField.clearRows(f, new GravitationAction(gravitation, this, playingField)); // Action wird erst wenige Millisekunden später fertig!
             }
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
@@ -174,9 +173,6 @@ public class Game {
             saveScore();
             view.showMoves(++moves);
             persistence.saveMoves(moves);
-        }
-        if (view.getGravitySetting()) { // gravity needs phone shaking
-            gravity = lGravity; // activate gravity
         }
         return ret;
     }
@@ -248,37 +244,10 @@ public class Game {
         return punkte;
     }
 
-    private Action getGravityAction(FilledRows f) {
-        return () -> {
-            for (int i = 5; i >= 1; i--) {
-                boolean doRemove = true;
-                for (QPosition k : f.getExclusions()) {
-                    if (k.getY() == blocks - i) {
-                        doRemove = false;
-                        break;
-                    }
-                }
-                if (doRemove && f.getYlist().contains(blocks - i)) {
-                    // Row war voll und wurde geleert -> Gravitation auslösen
-                    playingField.gravitation(blocks - i, !firstGravitationPlayed);
-                    firstGravitationPlayed = true;
-                }
-            }
-            moveImpossible(1);
-            moveImpossible(2);
-            moveImpossible(3);
-            moveImpossible(-1);
-        };
-    }
-
     /** Player has shaked smartphone */
     public void shaked() {
-        if (gravity != null) {
-            Action lGravity = gravity;
-            gravity = null;
-            lGravity.execute();
-            // TODO Ein kurzer Sound als Bestätigung wäre gut.
-        }
+        new GravitationAction(gravitation, this, playingField).execute();
+        // TODO Ein kurzer Sound als Bestätigung wäre gut.
     }
 
     private void rowsAdditionalBonus(int rows) {
@@ -322,6 +291,14 @@ public class Game {
         }
     }
 
+    public void checkPossibleMoves() {
+        moveImpossible(1);
+        moveImpossible(2);
+        moveImpossible(3);
+        moveImpossible(-1);
+    }
+
+    // TODO checken ob von außerhalb benötigt
     public boolean moveImpossible(int index) {
         GamePiece teil = holders.get(index).getGamePiece();
         int result = moveImpossibleR(teil);
@@ -388,5 +365,12 @@ public class Game {
 
     public int getMoves() {
         return moves;
+    }
+
+    public void rotate(int index) {
+        if (!gameOver) {
+            holders.get(index).rotate();
+            moveImpossible(index);
+        }
     }
 }

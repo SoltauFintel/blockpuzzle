@@ -49,4 +49,12 @@ public class GamePieceHolder {
     public void grey(boolean grey) {
         view.setGrey(grey);
     }
+
+    public void rotate() {
+        if (gamePiece != null) {
+            gamePiece.rotateToRight();
+            view.draw();
+            persistence.save(index, gamePiece);
+        }
+    }
 }

@@ -7,11 +7,11 @@ import de.mwvb.blockpuzzle.persistence.IPersistence
  * 4 GamePieceHolder objects
  */
 class Holders {
-    private val holders = mapOf(1 to GamePieceHolder(
-        1
-    ), 2 to GamePieceHolder(2), 3 to GamePieceHolder(
-        3
-    ), -1 to GamePieceHolder(-1)
+    private val holders = mapOf(
+                 1 to GamePieceHolder(1),
+                 2 to GamePieceHolder(2),
+                 3 to GamePieceHolder(3),
+                -1 to GamePieceHolder(-1)
     )
 
     fun get(index: Int): GamePieceHolder {

@@ -13,9 +13,6 @@ public interface IGamePieceView {
     // Methode nicht löschen! Die wird als isGrey in MainActivty verwendet.
     void setGrey(boolean v);
 
-    // Methode nicht löschen!
-//    boolean isGrey();
-
     void draw();
 
     void startDragMode();
@@ -23,10 +20,4 @@ public interface IGamePieceView {
     void endDragMode();
 
     void setDrehmodus(boolean d);
-
-    void rotate();
-
-    void write(); // TODO save
-
-    void read(); // TODO load
 }

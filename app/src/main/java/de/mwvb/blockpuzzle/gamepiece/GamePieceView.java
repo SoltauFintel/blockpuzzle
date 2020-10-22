@@ -9,7 +9,6 @@ import android.view.View;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.game.Game;
-import de.mwvb.blockpuzzle.persistence.Persistence;
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
@@ -22,26 +21,29 @@ import de.mwvb.blockpuzzle.block.IBlockDrawer;
  */
 @SuppressLint("ViewConstructor")
 public class GamePieceView extends View implements IGamePieceView {
+    // Stammdaten
     private final int index;
     private final boolean parking;
-    private final Persistence persistence;
-    private final Paint p_parking = new Paint();
     private final BlockTypes blockTypes;
-    private final IBlockDrawer greyBD;
-    private final IBlockDrawer drehmodusBD;
+
+    // Zustand    TODO den will ich hier loswerden
     private GamePiece gamePiece = null;
-    /**
-     * grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist
-     */
+    /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
     private boolean grey = false; // braucht nicht zu persistiert werden
     private boolean drehmodus = false; // wird nicht persistiert
     private boolean dragMode = false; // wird nicht persistiert
 
-    public GamePieceView(Context context, int index, boolean parking, Persistence persistence) {
+    // Services
+    private final IBlockDrawer greyBD;
+    private final IBlockDrawer drehmodusBD;
+
+    // Paints
+    private final Paint p_parking = new Paint();
+
+    public GamePieceView(Context context, int index, boolean parking) {
         super(context);
         this.index = index;
         this.parking = parking;
-        this.persistence = persistence;
 
         p_parking.setColor(getResources().getColor(R.color.colorParking));
 
@@ -73,12 +75,6 @@ public class GamePieceView extends View implements IGamePieceView {
         grey = v;
         draw();
     }
-
-//    // Methode nicht löschen!
-//    @Override
-//    public boolean isGrey() {
-//        return grey;
-//    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -138,27 +134,8 @@ public class GamePieceView extends View implements IGamePieceView {
     }
 
     @Override
-    public void rotate() {
-        if (gamePiece != null) {
-            gamePiece.rotateToRight();
-            draw();
-            write();
-        }
-    }
-
-    @Override
     public boolean performClick() {
         // wegen Warning in MainActivity.initClickListener()
         return super.performClick();
-    }
-
-    @Override
-    public void write() {
-        persistence.save(index, gamePiece);
-    }
-
-    @Override
-    public void read() {
-        setGamePiece(persistence.load(index));
     }
 }

@@ -51,49 +51,17 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        println("jux onCreate")
         println("GAME MODE: " + intent.getStringExtra("gameMode")) // TODO ...
-        println("jux onCreate 2")
 
         persistence = Persistence(this)
         game.setPersistence(persistence)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
-        println("jux onCreate 3")
-        (placeholder1 as ViewGroup).addView(
-            GamePieceView(
-                baseContext,
-                1,
-                false,
-                persistence
-            )
-        )
-        (placeholder2 as ViewGroup).addView(
-            GamePieceView(
-                baseContext,
-                2,
-                false,
-                persistence
-            )
-        )
-        (placeholder3 as ViewGroup).addView(
-            GamePieceView(
-                baseContext,
-                3,
-                false,
-                persistence
-            )
-        )
-        (parking      as ViewGroup).addView(
-            GamePieceView(
-                baseContext,
-                -1,
-                true,
-                persistence
-            )
-        )
-        println("jux onCreate 4")
+        (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false))
+        (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2, false))
+        (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3, false))
+        (parking      as ViewGroup).addView(GamePieceView(baseContext, -1, true))
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
@@ -115,11 +83,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                 val tv = it as GamePieceView
                 if (tv.gamePiece != null && !game.isGameOver) {
                     tv.startDragMode()
-                    val dragShadowBuilder =
-                        MyDragShadowBuilder(
-                            tv,
-                            resources.displayMetrics.density
-                        )
+                    val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
                         it.startDragAndDrop(data, dragShadowBuilder, it, 0)
                     } else { // for API level 19 (4.4. Kitkat)
@@ -235,11 +199,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         getGamePieceView(index).setOnTouchListener(null)
         getGamePieceView(index).setOnClickListener {
             try {
-                val tv = it as GamePieceView
-                if (!game.isGameOver) {
-                    tv.rotate()
-                    game.moveImpossible(index)
-                }
+                game.rotate(index)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
