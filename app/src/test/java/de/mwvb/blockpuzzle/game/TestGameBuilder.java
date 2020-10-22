@@ -23,11 +23,6 @@ public class TestGameBuilder {
 
     private static IGameView getGameView() {
         return new IGameView() {
-            @Override
-            public boolean getGravitySetting() {
-                return false;
-            }
-
             @NotNull
             @Override
             public IPlayingFieldView getPlayingFieldView() {
@@ -47,6 +42,9 @@ public class TestGameBuilder {
 
                     @Override
                     public void clearRows(FilledRows filledRows, Action action) {
+                        if (action != null) {
+                            action.execute();
+                        }
                     }
 
                     @Override
@@ -108,18 +106,6 @@ public class TestGameBuilder {
 
                     @Override
                     public void setDrehmodus(boolean d) {
-                    }
-
-                    @Override
-                    public void rotate() {
-                    }
-
-                    @Override
-                    public void write() {
-                    }
-
-                    @Override
-                    public void read() {
                     }
                 };
             }

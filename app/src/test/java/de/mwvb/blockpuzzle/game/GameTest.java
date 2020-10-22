@@ -3,7 +3,9 @@ package de.mwvb.blockpuzzle.game;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.TestGamePieces;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
@@ -105,7 +107,7 @@ public class GameTest {
         game.dispatch(false, 3, x, new QPosition(6, 7));
         GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(1, 0));
-        //System.out.println(GameForTest.getPlayingFieldAsString(game));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
 
         // Test
         GamePiece ecke3 = TestGamePieces.INSTANCE.getEcke3();
@@ -133,7 +135,7 @@ public class GameTest {
         game.dispatch(false, 3, x, new QPosition(6, 7));
         GamePiece five = TestGamePieces.INSTANCE.getFive();
         game.dispatch(false, 1, five, new QPosition(1, 0));
-        //System.out.println(GameForTest.getPlayingFieldAsString(game));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
 
         // Test
         GamePiece ecke3 = TestGamePieces.INSTANCE.getEcke3();
@@ -141,12 +143,96 @@ public class GameTest {
         ecke3 = ecke3.copy().rotateToRight().rotateToRight();
         Assert.assertEquals(0, game.moveImpossibleR(ecke3)); // 0: fits in without rotation
         game.dispatch(false, 2, ecke3, new QPosition(7, 0));
-        //System.out.println(GameForTest.getPlayingFieldAsString(game));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
     }
 
-    // TODO mehrere Rows abräumen (Bonuskontrolle)
+    // extra bonus for 2 filled rows: 12
+    @Test
+    public void twoRowsFilled() {
+        Game game = TestGameBuilder.create();
+        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
+        GamePiece three = TestGamePieces.INSTANCE.getThree();
+        game.dispatch(false, 1, block3, new QPosition(0, 0));
+        game.dispatch(false, 2, block3, new QPosition(3, 0));
+        game.dispatch(false, 3, three, new QPosition(6, 1));
+        game.dispatch(false, 1, three, new QPosition(6, 2));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
+        int oldScore = 3*3 * 2 + 3 * 2;
+        Assert.assertEquals(oldScore, game.getScore());
 
-    // TODO one color detect
+        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
+        game.dispatch(false, 2, fiveR, new QPosition(9, 0));
+        int bonus = 2 * 10 + 12;
+        Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
+    }
+
+    // extra bonus for 3 filled rows: 15
+    @Test
+    public void threeRowsFilled() {
+        Game game = TestGameBuilder.create();
+        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
+        GamePiece three = TestGamePieces.INSTANCE.getThree();
+        game.dispatch(false, 1, block3, new QPosition(0, 0));
+        game.dispatch(false, 2, block3, new QPosition(3, 0));
+        game.dispatch(false, 3, three, new QPosition(6, 0));
+        game.dispatch(false, 1, three, new QPosition(6, 1));
+        game.dispatch(false, 2, three, new QPosition(6, 2));
+        game.dispatch(false, 3, block3, new QPosition(1, 6));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
+        int oldScore = 3*3 * 3 + 3 * 3;
+        Assert.assertEquals(oldScore, game.getScore());
+
+        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
+        game.dispatch(false, 1, fiveR, new QPosition(9, 0));
+        int bonus = 3 * 10 + 15;
+        Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
+    }
+
+    // extra bonus for 4+ rows: 22
+    @Test
+    public void fourRowsFilled() {
+        Game game = TestGameBuilder.create();
+        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
+        GamePiece three = TestGamePieces.INSTANCE.getThree();
+        game.dispatch(false, 1, block3, new QPosition(0, 0));
+        game.dispatch(false, 2, block3, new QPosition(3, 0));
+        game.dispatch(false, 3, three, new QPosition(6, 0));
+        game.dispatch(false, 1, three, new QPosition(6, 1));
+        game.dispatch(false, 2, three, new QPosition(6, 2));
+        game.dispatch(false, 3, block3, new QPosition(1, 6));
+        game.dispatch(false, 1, three, new QPosition(0, 3));
+        game.dispatch(false, 2, three, new QPosition(3, 3));
+        game.dispatch(false, 3, three, new QPosition(6, 3));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
+        int oldScore = 3*3 * 3 + 3 * 6;
+        Assert.assertEquals(oldScore, game.getScore());
+
+        GamePiece fiveR = TestGamePieces.INSTANCE.getFive().copy().rotateToRight();
+        game.dispatch(false, 1, fiveR, new QPosition(9, 0));
+        int bonus = 4 * 10 + 22;
+        Assert.assertEquals(oldScore + 5 + bonus, game.getScore());
+    }
+
+    // extra bonus for 3*7 blocks of same color: 105
+    @Test
+    public void oneColorDetect() {
+        Game game = TestGameBuilder.create();
+        GamePiece block3 = TestGamePieces.INSTANCE.getBlock3();
+        GamePiece three = TestGamePieces.INSTANCE.getThree();
+        game.dispatch(false, 1, block3, new QPosition(0, 0));
+        game.dispatch(false, 2, three, new QPosition(6, 0));
+        game.dispatch(false, 3, three, new QPosition(6, 1));
+        game.dispatch(false, 1, three, new QPosition(6, 2));
+        game.dispatch(false, 2, three, new QPosition(0, 3));
+        game.dispatch(false, 3, three, new QPosition(3, 3));
+        game.dispatch(false, 1, three, new QPosition(6, 3));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
+        Assert.assertEquals(3*3 + 3 * 6, game.getScore());
+
+        game.dispatch(false, 2, three, new QPosition(3, 1));
+        //System.out.println(TestGameBuilder.getPlayingFieldAsString(game));
+        Assert.assertEquals(3*3 + 3 * 7 + 105, game.getScore());
+    }
 
     // TODO Game over bug: Gravitation schafft doch noch Platz für GP
 

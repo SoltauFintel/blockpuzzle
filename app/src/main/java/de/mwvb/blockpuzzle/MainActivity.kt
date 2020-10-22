@@ -126,10 +126,12 @@ class MainActivity : AppCompatActivity(), IGameView {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
             val gamePiece = getGamePieceView(index).gamePiece
+            var xy : QPosition? = null
 
-            // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
-            val xy = calculatePlayingFieldCoordinates(event, gamePiece)
-
+            if (!targetIsParking) {
+                // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
+                xy = calculatePlayingFieldCoordinates(event, gamePiece)
+            }
             game.dispatch(targetIsParking, index, gamePiece, xy)
         } catch (e: DoesNotWorkException) {
             playingField.soundService.doesNotWork()
