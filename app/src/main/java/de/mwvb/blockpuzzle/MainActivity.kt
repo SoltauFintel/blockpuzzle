@@ -44,19 +44,21 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        println("jux onCreate")
         println("GAME MODE: " + intent.getStringExtra("gameMode")) // TODO ...
+        println("jux onCreate 2")
 
         persistence = Persistence(this)
         game.setPersistence(persistence)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
-        playingField.setGame(game)
-
+        println("jux onCreate 3")
         (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false, persistence))
         (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2,false, persistence))
         (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3,false, persistence))
         (parking      as ViewGroup).addView(GamePieceView(baseContext, -1,true, persistence))
+        println("jux onCreate 4")
 
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
@@ -65,7 +67,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         rotatingMode.setOnClickListener(onRotatingMode())
         initShakeDetection()
 
-        game.setSoundService(playingField.soundService)
         game.initGame()
     }
 
@@ -134,6 +135,9 @@ class MainActivity : AppCompatActivity(), IGameView {
             val xy = calculatePlayingFieldCoordinates(event, gamePiece)
 
             game.dispatch(targetIsParking, index, gamePiece, xy)
+        } catch (e: DoesNotWorkException) {
+            playingField.soundService.doesNotWork()
+            Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "MA:" + e.message, Toast.LENGTH_LONG).show()
@@ -268,7 +272,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
     }
 
-    override fun updateScore(score: Int, delta: Int, gameOver: Boolean) {
+    override fun showScore(score: Int, delta: Int, gameOver: Boolean) {
         var text = getScoreText(score, gameOver)
         if (gameOver) {
             playingField.soundService.gameOver()
@@ -296,12 +300,8 @@ class MainActivity : AppCompatActivity(), IGameView {
         return ret.replace("XX", DecimalFormat("#,##0").format(score))
     }
 
-    override fun drawPlayingField() {
-        playingField.draw()
-    }
-
-    override fun clearRows(filledRows: FilledRows, action: Action?) {
-        playingField.clearRows(filledRows, action)
+    override fun getPlayingFieldView(): IPlayingFieldView {
+        return playingField
     }
 
     override fun getGamePieceView(index: Int): GamePieceView {
@@ -313,22 +313,6 @@ class MainActivity : AppCompatActivity(), IGameView {
             else -> throw RuntimeException()
         }
     }
-
-    override fun doesNotWork() {
-        Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
-        playingField.soundService.doesNotWork()
-    }
-
-/*
-    override fun onBackPressed() {
-        // do nothing
-        // Vorher war es so, dass dann der Spielstand verloren geht. Das will ich so erstmal verhindern.
-
-        // Wir spielen ein Sound ab, damit der User wenigstens merkt, dass die Taste nicht kaputt ist.
-        // Man könnte aber auch die Anwendung minimieren.
-        playingField.soundService.backPressed(game.isGameOver)
-    }
-*/
 
     override fun showMoves(moves: Int) {
         val text: String
@@ -342,7 +326,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         infoDisplay.setText(text)
     }
 
-    override fun getWithGravityOption(): Boolean {
+    override fun getGravitySetting(): Boolean {
         return withGravity
     }
 }

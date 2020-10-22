@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.mwvb.blockpuzzle.logic.DoesNotWorkException;
 import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
@@ -52,7 +53,7 @@ public class GameTest {
         try {
             game.dispatch(false, 2, five, new QPosition(0, 0));
             Assert.fail("expected DoesNotWorkException");
-        } catch (GameForTest.DoesNotWorkException expected) {
+        } catch (DoesNotWorkException expected) {
         }
     }
 
@@ -64,7 +65,7 @@ public class GameTest {
         try {
             game.dispatch(false, 1, two, new QPosition(9, 1));
             Assert.fail("expected DoesNotWorkException");
-        } catch (GameForTest.DoesNotWorkException expected) {
+        } catch (DoesNotWorkException expected) {
         }
     }
 
@@ -113,7 +114,7 @@ public class GameTest {
         try {
             game.dispatch(false, 2, ecke3, new QPosition(7, 0));
             Assert.fail("DoesNotWorkException expected");
-        } catch (GameForTest.DoesNotWorkException expected) {
+        } catch (DoesNotWorkException expected) {
         }
     }
 

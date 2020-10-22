@@ -14,6 +14,7 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.Action;
 import de.mwvb.blockpuzzle.logic.FilledRows;
 import de.mwvb.blockpuzzle.logic.Game;
+import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.logic.QPosition;
 import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
 import de.mwvb.blockpuzzle.sound.SoundService;
@@ -27,13 +28,12 @@ import de.mwvb.blockpuzzle.sound.SoundService;
  * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
  * funktioniert.
  */
-public class PlayingFieldView extends View {
+public class PlayingFieldView extends View implements IPlayingFieldView {
     public static final int w = 300; // dp
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
     private final Paint mark = new Paint();
     private final SoundService soundService = new SoundService();
-    private Game game;
     private FilledRows filledRows;
     private int mode = 0;
     private final IBlockDrawer empty = new EmptyBlockDrawer();
@@ -42,6 +42,7 @@ public class PlayingFieldView extends View {
     private IBlockDrawer bd31;
     private IBlockDrawer bd32;
     private BlockTypes blockTypes = new BlockTypes(this);
+    private PlayingField playingField;
     // TODO Der öußere Rand muss außerhalb der 10x10 Blockmatrix sein.
 
     public PlayingFieldView(Context context) {
@@ -85,14 +86,17 @@ public class PlayingFieldView extends View {
         mark.setStyle(Paint.Style.STROKE);
     }
 
+    @Override
+    public void setPlayingField(PlayingField playingField) {
+        this.playingField = playingField;
+    }
+
+    @Override
     public SoundService getSoundService() {
         return soundService;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
+    @Override
     public void draw() {
         invalidate();
         requestLayout();
@@ -132,8 +136,8 @@ public class PlayingFieldView extends View {
     }
 
     private MatrixGet getMatrixGet() {
-        if (game.isGameOver()) {
-            return (x, y) -> game.get(x, y) > 0 ? grey : empty;
+        if (playingField.isGameOver()) {
+            return (x, y) -> playingField.get(x, y) > 0 ? grey : empty;
         }
         final MatrixGet std = getStdMatrixGet();
         if (filledRows != null) { // row ausblenden Modus
@@ -156,12 +160,13 @@ public class PlayingFieldView extends View {
 
     private MatrixGet getStdMatrixGet() {
         return (x, y) -> {
-            int b = game.get(x, y);
+            int b = playingField.get(x, y);
             return b >= 1 ? blockTypes.getBlockDrawer(b) : empty;
         };
     }
 
     // TODO vielleicht eine Klasse daraus machen, evtl. kann man's auch kompakter schreiben
+    @Override
     public void clearRows(final FilledRows filledRows, final Action action) {
         if (filledRows.getHits() == 0) {
             return;
@@ -201,6 +206,16 @@ public class PlayingFieldView extends View {
                 }
             }
         }, 500);
+    }
+
+    @Override
+    public void oneColor() {
+        soundService.oneColor();
+    }
+
+    @Override
+    public void gravitation() {
+        soundService.firstGravitation();
     }
 
     @Override

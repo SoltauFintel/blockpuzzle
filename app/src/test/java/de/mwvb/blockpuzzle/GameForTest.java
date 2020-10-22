@@ -10,16 +10,17 @@ import de.mwvb.blockpuzzle.logic.IPersistence;
 import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
 import de.mwvb.blockpuzzle.sound.ISoundService;
+import de.mwvb.blockpuzzle.sound.SoundService;
 import de.mwvb.blockpuzzle.view.GamePieceView;
 import de.mwvb.blockpuzzle.view.IGamePieceView;
 import de.mwvb.blockpuzzle.view.IGameView;
+import de.mwvb.blockpuzzle.view.IPlayingFieldView;
 
 public class GameForTest {
 
     public static Game create() {
         Game game = new Game(getGameView());
         game.setPersistence(getPersistence());
-        game.setSoundService(getSoundService());
         game.initGame();
         return game;
     }
@@ -27,12 +28,43 @@ public class GameForTest {
     private static IGameView getGameView() {
         return new IGameView() {
             @Override
-            public void updateScore(int score, int delta, boolean gameOver) {
+            public boolean getGravitySetting() {
+                return false;
+            }
+
+            @NotNull
+            @Override
+            public IPlayingFieldView getPlayingFieldView() {
+                return new IPlayingFieldView() {
+                    @Override
+                    public SoundService getSoundService() {
+                        return getSoundService();
+                    }
+
+                    @Override
+                    public void setPlayingField(PlayingField playingField) {
+                    }
+
+                    @Override
+                    public void draw() {
+                    }
+
+                    @Override
+                    public void clearRows(FilledRows filledRows, Action action) {
+                    }
+
+                    @Override
+                    public void oneColor() {
+                    }
+
+                    @Override
+                    public void gravitation() {
+                    }
+                };
             }
 
             @Override
-            public boolean getWithGravityOption() {
-                return false;
+            public void showScore(int score, int delta, boolean gameOver) {
             }
 
             @Override
@@ -40,20 +72,7 @@ public class GameForTest {
             }
 
             @Override
-            public void clearRows(@NotNull FilledRows filledRows, @Nullable Action action) {
-            }
-
-            @Override
             public void rotatingModeOff() {
-            }
-
-            @Override
-            public void drawPlayingField() {
-            }
-
-            @Override
-            public void doesNotWork() {
-                throw new DoesNotWorkException();
             }
 
             @NotNull
@@ -109,9 +128,6 @@ public class GameForTest {
                 };
             }
         };
-    }
-
-    public static class DoesNotWorkException extends RuntimeException {
     }
 
     private static IPersistence getPersistence() {

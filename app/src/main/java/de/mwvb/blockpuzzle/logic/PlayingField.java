@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.logic;
 
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
+import de.mwvb.blockpuzzle.view.IPlayingFieldView;
 
 public class PlayingField {
     // Stammdaten
@@ -9,8 +10,10 @@ public class PlayingField {
     // Zustand
     /** 1: x (nach rechts), 2: y (nach unten) */
     private int[][] matrix;
+    private boolean gameOver = false;
 
     // Services
+    private IPlayingFieldView view;
     private IPersistence persistence;
     // TODO Der könnte noch eine IPlayingFieldView haben.
 
@@ -19,6 +22,11 @@ public class PlayingField {
     public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
+    }
+
+    public void setView(IPlayingFieldView view) {
+        this.view = view;
+        this.view.setPlayingField(this);
     }
 
     public void setPersistence(IPersistence persistence) {
@@ -35,13 +43,14 @@ public class PlayingField {
         matrix[x][y] = value;
     }
 
-    public void clear(boolean write) {
+    public void clear() {
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 set(x, y, 0);
             }
         }
-        if (write) write();
+        view.draw();
+        write();
     }
 
     public boolean match(GamePiece teil, QPosition pos) {
@@ -74,6 +83,7 @@ public class PlayingField {
                 }
             }
         }
+        view.draw();
         write();
     }
 
@@ -110,7 +120,7 @@ public class PlayingField {
         return true;
     }
 
-    public void clearRows(FilledRows f) {
+    public void clearRows(FilledRows f, Action action) {
         for (int x : f.getXlist()) {
             for (int y = 0; y < blocks; y++) {
                 if (!f.getExclusions().contains(new QPosition(x, y))) {
@@ -125,6 +135,7 @@ public class PlayingField {
                 }
             }
         }
+        view.clearRows(f, action);
         write();
     }
 
@@ -139,7 +150,7 @@ public class PlayingField {
         return ret;
     }
 
-    public void gravitation(int row) {
+    public void gravitation(int row, boolean playSound) {
         for (int y = row; y >= 1; y--) {
             for (int x = 0; x < blocks; x++) {
                 set(x, y, get(x, y - 1));
@@ -148,12 +159,25 @@ public class PlayingField {
         for (int x = 0; x < blocks; x++) {
             set(x, 0, 0);
         }
+        view.draw();
+        if (playSound) { // Sound must not be played always.
+            view.gravitation();
+        }
         write();
+    }
+
+    public void gameOver() {
+        gameOver = true;
+        view.draw();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public void load() {
         persistence.load(this);
-        // TODO view.draw();
+        view.draw();
     }
 
     private void write() {
@@ -172,5 +196,6 @@ public class PlayingField {
                 }
             }
         }
+        view.oneColor();
     }
 }

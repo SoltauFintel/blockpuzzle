@@ -1,11 +1,8 @@
 package de.mwvb.blockpuzzle.logic;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import de.mwvb.blockpuzzle.logic.spielstein.GamePiece;
-import de.mwvb.blockpuzzle.logic.spielstein.GamePiecesDefinition;
 import de.mwvb.blockpuzzle.logic.spielstein.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.sound.ISoundService;
 import de.mwvb.blockpuzzle.logic.spielstein.BlockTypes;
@@ -30,7 +27,7 @@ public class Game {
     private INextGamePiece nextGamePiece = new RandomGamePiece();
     private final IGameView view;
     private IPersistence persistence;
-    private ISoundService soundService;
+//    private ISoundService soundService;
 
     // TODO Bisher höchste Punktzahl persistieren.
     // TODO Drag Schatten anzeigen
@@ -39,7 +36,6 @@ public class Game {
 
     public Game(IGameView view) {
         this.view = view;
-        holders.setView(view);
     }
 
     public void setNextGamePiece(INextGamePiece nextGamePiece) {
@@ -52,13 +48,11 @@ public class Game {
         holders.setPersistence(persistence);
     }
 
-    public void setSoundService(ISoundService soundService) {
-        this.soundService = soundService;
-    }
-
     // New Game ----
 
     public void initGame() {
+        holders.setView(view);
+        playingField.setView(view.getPlayingFieldView());
         gravity = null;
 
         // Drehmodus deaktivieren
@@ -73,29 +67,29 @@ public class Game {
         }
 
         // Spielstand laden
-        view.updateScore(punkte,0, gameOver); // TODO delta laden
+        view.showScore(punkte,0, gameOver); // TODO delta laden
         moves = persistence.loadMoves();
         view.showMoves(moves);
         firstGravitationPlayed = false; // TODO laden
         playingField.load();
-        view.drawPlayingField();
         holders.load();
         checkGame();
     }
 
     /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
     public void newGame() {
-        playingField.clear(true);
         gameOver = false;
         punkte = 0;
-        moves = 0;
-        saveScore();
-        persistence.saveMoves(moves);
-        view.updateScore(punkte, 0, gameOver);
-        view.showMoves(moves);
         firstGravitationPlayed = false;
+        saveScore();
+        view.showScore(punkte, 0, gameOver);
 
-        view.drawPlayingField();
+        playingField.clear();
+
+        moves = 0;
+        persistence.saveMoves(moves);
+        view.showMoves(moves);
+
         holders.clearParking();
         offer();
     }
@@ -110,7 +104,11 @@ public class Game {
 
     // Spielaktionen ----
 
-    /** Drop Aktion für Spielfeld oder Parking */
+    /**
+     * Drop Aktion für Spielfeld oder Parking
+     *
+     * Throws DoesNotWorkException
+     */
     public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
         if (gameOver) {
             return;
@@ -127,7 +125,7 @@ public class Game {
             }
             checkGame();
         } else {
-            view.doesNotWork();
+            throw new DoesNotWorkException();
         }
     }
 
@@ -143,7 +141,6 @@ public class Game {
         if (ret) {
             sendPlacedEvent(teil, pos);
             playingField.place(teil, pos);
-            view.drawPlayingField();
             holders.get(index).setGamePiece(null);
 
             detectOneColorArea();
@@ -158,21 +155,20 @@ public class Game {
             punkte += processSpecialBlockTypes(f);
 
             lGravity = getGravityAction(f);
-            if (view.getWithGravityOption()) { // gravity needs phone shaking
-                view.clearRows(f, null);
+            if (view.getGravitySetting()) { // gravity needs phone shaking
+                playingField.clearRows(f, null);
             } else { // auto-gravity
-                view.clearRows(f, lGravity); // Action wird erst wenige Millisekunden später fertig!
+                playingField.clearRows(f, lGravity); // Action wird erst wenige Millisekunden später fertig!
             }
-            playingField.clearRows(f);
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
             }
-            view.updateScore(punkte,punkte - punkteVorher, gameOver);
+            view.showScore(punkte,punkte - punkteVorher, gameOver);
             saveScore();
             view.showMoves(++moves);
             persistence.saveMoves(moves);
         }
-        if (view.getWithGravityOption()) { // gravity needs phone shaking
+        if (view.getGravitySetting()) { // gravity needs phone shaking
             gravity = lGravity; // activate gravity
         }
         return ret;
@@ -196,14 +192,13 @@ public class Game {
     private void detectOneColorArea() {
         List<QPosition> r = new OneColorAreaDetector(playingField, 20).getOneColorArea();
         if (r == null) return;
-        playingField.makeOldColor(); // 10 -> 11
+        playingField.makeOldColor(); // 10 -> 11, plays also one color sound
         for (QPosition k : r) {
             playingField.set(k.getX(), k.getY(), 10);
         }
         int bonus = r.size() * 5;
         if (bonus < 100) bonus = 100;
         punkte += bonus;
-        soundService.oneColor();
     }
 
     private int processSpecialBlockTypes(FilledRows f) {
@@ -258,12 +253,8 @@ public class Game {
                 }
                 if (doRemove && f.getYlist().contains(blocks - i)) {
                     // Row war voll und wurde geleert -> Gravitation auslösen
-                    if (!firstGravitationPlayed) {
-                        firstGravitationPlayed = true;
-                        soundService.firstGravitation();
-                    }
-                    playingField.gravitation(blocks - i);
-                    view.drawPlayingField();
+                    playingField.gravitation(blocks - i, !firstGravitationPlayed);
+                    firstGravitationPlayed = true;
                 }
             }
             moveImpossible(1);
@@ -319,8 +310,8 @@ public class Game {
         boolean d = moveImpossible(-1);
         if (a && b && c && d && !holders.isParkingFree()) {
             gameOver = true;
-            view.updateScore(punkte,0, gameOver); // display game over text
-            view.drawPlayingField(); // wenn parke die letzte Aktion war
+            view.showScore(punkte,0, gameOver); // display game over text
+            playingField.gameOver(); // wenn parke die letzte Aktion war
         }
     }
 
