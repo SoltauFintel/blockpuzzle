@@ -14,9 +14,6 @@ interface IGameView {
     // init phase (and internal use)
     fun getGamePieceView(index: Int): IGamePieceView
 
-    /** Feature toggle. false: auto-gravity, true: player has to shake his phone to start gravity */
-    fun getGravitySetting(): Boolean
-
     fun showScore(score: Int, delta: Int, gameOver: Boolean)
 
     fun showMoves(moves: Int)

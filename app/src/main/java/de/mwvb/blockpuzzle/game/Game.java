@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.game;
 
 import java.util.List;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
@@ -161,7 +162,7 @@ public class Game {
             punkte += processSpecialBlockTypes(f);
 
             gravitation.set(f);
-            if (view.getGravitySetting()) { // gravity needs phone shaking
+            if (Features.shakeForGravitation) { // gravity needs phone shaking
                 playingField.clearRows(f, null);
             } else { // auto-gravity
                 playingField.clearRows(f, new GravitationAction(gravitation, this, playingField)); // Action wird erst wenige Millisekunden später fertig!

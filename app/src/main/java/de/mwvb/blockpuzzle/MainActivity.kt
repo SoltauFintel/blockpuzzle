@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity(), IGameView {
     private var mAccel = 0f // acceleration apart from gravity
     private var mAccelCurrent = 0f// current acceleration including gravity
     private var mAccelLast = 0f // last acceleration including gravity
-    /** Feature toggle. false: auto-gravity, true: player has to shake his phone to start gravity */
-    val withGravity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,7 +207,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     }
 
     private fun initShakeDetection() {
-        if (withGravity) {
+        if (Features.shakeForGravitation) {
             mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager?;
             mSensorManager!!.registerListener(
                 mSensorListener,
@@ -240,7 +238,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     // Activity goes sleeping
     override fun onPause() {
-        if (withGravity) {
+        if (Features.shakeForGravitation) {
             mSensorManager!!.unregisterListener(mSensorListener)
         }
         super.onPause()
@@ -249,7 +247,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     // Activity reactivated
     override fun onResume() {
         super.onResume()
-        if (withGravity) {
+        if (Features.shakeForGravitation) {
             mSensorManager!!.registerListener(
                 mSensorListener,
                 mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -323,9 +321,5 @@ class MainActivity : AppCompatActivity(), IGameView {
             text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
         }
         infoDisplay.setText(text)
-    }
-
-    override fun getGravitySetting(): Boolean {
-        return withGravity
     }
 }
