@@ -53,8 +53,10 @@ public class GravitationData {
     }
 
     public void load() {
+        persistence.load(this);
     }
 
     public void save() {
+        persistence.save(this);
     }
 }

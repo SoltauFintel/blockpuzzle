@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.persistence;
 
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public interface IPersistence {
@@ -10,6 +11,9 @@ public interface IPersistence {
 
     void load(PlayingField f);
     void save(PlayingField f);
+
+    void load(GravitationData data);
+    void save(GravitationData data);
 
     GamePiece load(int index);
     void save(int index, GamePiece p);

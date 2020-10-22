@@ -4,17 +4,27 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
+import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
 public class Persistence implements IPersistence {
-    private static final String NAME = "GAMEDATA_2";
+    private static final String NAME = "GAMEDATA_3";
     private static final String GAMEPIECEVIEW = "gamePieceView";
     private static final String PLAYINGFIELD = "playingField";
     private static final String SCORE = "score";
     private static final String MOVES = "moves";
+    private static final String GRAVITATION_ROWS = "gravitationRows";
+    private static final String GRAVITATION_EXCLUSIONS = "gravitationExclusions";
+    private static final String GRAVITATION_PLAYED_SOUND = "gravitationPlayedSound";
 
     private final ContextWrapper owner;
     private SharedPreferences __pref; // only access by pref() !
@@ -148,6 +158,53 @@ public class Persistence implements IPersistence {
     public void saveMoves(int moves) {
         SharedPreferences.Editor edit = pref().edit();
         edit.putInt(MOVES, moves);
+        edit.apply();
+    }
+
+    @Override
+    public void load(GravitationData data) {
+        data.clear();
+
+        String d = pref().getString(GRAVITATION_ROWS, "");
+        if (!d.isEmpty()) {
+            for (String w : d.split(",")) {
+                data.getRows().add(Integer.parseInt(w));
+            }
+        }
+
+        d = pref().getString(GRAVITATION_EXCLUSIONS, "");
+        if (!d.isEmpty()) {
+            for (String w : d.split(",")) {
+                String[] k = w.split("/");
+                data.getExclusions().add(new QPosition(Integer.parseInt(k[0]), Integer.parseInt(k[1])));
+            }
+        }
+
+        data.setFirstGravitationPlayed(pref().getBoolean(GRAVITATION_PLAYED_SOUND, false));
+    }
+
+    @Override
+    public void save(GravitationData data) {
+        StringBuilder d = new StringBuilder();
+        String k = "";
+        for (int y : data.getRows()) {
+            d.append(k);
+            k = ",";
+            d.append("" + y);
+        }
+        save(GRAVITATION_ROWS, d);
+
+        d = new StringBuilder();
+        k = "";
+        for (QPosition p : data.getExclusions()) {
+            d.append(k);
+            k = ",";
+            d.append(p.getX() + "/" + p.getY());
+        }
+        save(GRAVITATION_ROWS, d);
+
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putBoolean(GRAVITATION_PLAYED_SOUND, data.isFirstGravitationPlayed());
         edit.apply();
     }
 

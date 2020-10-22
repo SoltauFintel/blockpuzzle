@@ -377,6 +377,7 @@ public class Game {
     public void save() {
         persistence.saveScore(punkte);
         playingField.save();
+        gravitation.save();
         persistence.saveMoves(moves);
         holders.save();
     }
