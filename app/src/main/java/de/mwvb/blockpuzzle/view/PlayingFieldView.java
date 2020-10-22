@@ -18,6 +18,10 @@ import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.logic.gamepiece.BlockTypes;
 import de.mwvb.blockpuzzle.sound.SoundService;
+import de.mwvb.blockpuzzle.view.block.ColorBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.EmptyBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.MatrixGet;
 
 /**
  * Das Spielfeld ist ein 10x10 großes Quadrat.

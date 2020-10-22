@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.view;
+package de.mwvb.blockpuzzle.view.block;
 
 import android.graphics.Canvas;
 

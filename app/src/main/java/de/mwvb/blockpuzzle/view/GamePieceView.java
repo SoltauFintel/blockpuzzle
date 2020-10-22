@@ -11,6 +11,8 @@ import de.mwvb.blockpuzzle.logic.Game;
 import de.mwvb.blockpuzzle.logic.Persistence;
 import de.mwvb.blockpuzzle.logic.gamepiece.BlockTypes;
 import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.view.block.ColorBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.IBlockDrawer;
 
 /**
  * Im unteren Bereich die View Komponente, die ein Spielstein (oder einen leeren Spielstein) enthält.

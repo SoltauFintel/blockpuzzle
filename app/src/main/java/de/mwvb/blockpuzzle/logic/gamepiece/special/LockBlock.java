@@ -8,7 +8,7 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.PlayingField;
 import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.view.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.IBlockDrawer;
 
 public class LockBlock extends SpecialBock {
     public static final int TYPE = 21;

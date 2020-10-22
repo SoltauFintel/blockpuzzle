@@ -7,8 +7,8 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.entity.QPosition;
 import de.mwvb.blockpuzzle.logic.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.view.ColorBlockDrawer;
-import de.mwvb.blockpuzzle.view.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.ColorBlockDrawer;
 
 public abstract class SpecialBock implements ISpecialBlock {
     protected static final Random rand = new Random(System.currentTimeMillis());

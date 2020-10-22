@@ -11,8 +11,8 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.logic.gamepiece.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.logic.gamepiece.special.LockBlock;
 import de.mwvb.blockpuzzle.logic.gamepiece.special.StarBlock;
-import de.mwvb.blockpuzzle.view.ColorBlockDrawer;
-import de.mwvb.blockpuzzle.view.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.view.block.ColorBlockDrawer;
 
 // TODO Move to spielstein package
 // Bauplan für alle Blöcke
