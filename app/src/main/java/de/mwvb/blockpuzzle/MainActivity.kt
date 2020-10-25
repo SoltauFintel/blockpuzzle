@@ -230,7 +230,11 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun showScore(score: Int, delta: Int, gameOver: Boolean) {
         var text = getScoreText(score, gameOver)
         if (gameOver) {
-            playingField.soundService.gameOver()
+            if (game.isCleanerGame && game.isWon) {
+                playingField.soundService.youWon()
+            } else {
+                playingField.soundService.gameOver()
+            }
         } else if (delta != 0) {
             text += " (" + DecimalFormat("+#,##0").format(delta) + ")";
         }
@@ -240,10 +244,18 @@ class MainActivity : AppCompatActivity(), IGameView {
     private fun getScoreText(score: Int, gameOver: Boolean): String {
         val ret: String
         if (gameOver) {
-            if (score == 1) {
-                ret = resources.getString(R.string.gameOverScore1)
+            if (game.isCleanerGame && game.isWon) {
+                if (score == 1) {
+                    ret = resources.getString(R.string.winScore1)
+                } else {
+                    ret = resources.getString(R.string.winScore2)
+                }
             } else {
-                ret = resources.getString(R.string.gameOverScore2)
+                if (score == 1) {
+                    ret = resources.getString(R.string.gameOverScore1)
+                } else {
+                    ret = resources.getString(R.string.gameOverScore2)
+                }
             }
         } else {
             if (score == 1) {

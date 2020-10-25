@@ -5,6 +5,8 @@ import android.content.ContextWrapper;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
+import de.mwvb.blockpuzzle.block.special.LockBlock;
+import de.mwvb.blockpuzzle.block.special.StarBlock;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.Persistence;
@@ -29,13 +31,16 @@ public class Game {
     private final BlockTypes blockTypes = new BlockTypes(null);
 
     // Zustand
+    private String gameMode = Features.GAME_MODE_CLASSIC;
     private final PlayingField playingField = new PlayingField(blocks);
     private final Holders holders = new Holders();
     private int punkte;
     private int moves;
     private boolean gameOver = false; // wird nicht persistiert
+    private boolean won = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private final GravitationData gravitation = new GravitationData();
+    private static int cleanerStartRow = 9; // sowas wie ein Level fürs Cleaner Game
 
     // Services
     private INextGamePiece nextGamePiece = new RandomGamePiece();
@@ -63,8 +68,13 @@ public class Game {
     // New Game ----
 
     public void initGame(String gameMode) {
+        this.gameMode = gameMode;
+        persistence.setGameMode(gameMode);
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
+        if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
+            nextGamePiece.ausduennen();
+        }
 
         // Drehmodus deaktivieren
         rotatingMode = false;
@@ -95,6 +105,9 @@ public class Game {
         view.showScore(punkte, 0, gameOver);
 
         playingField.clear();
+        if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
+            newCleanerGame();
+        }
 
         moves = 0;
         view.showMoves(moves);
@@ -103,8 +116,54 @@ public class Game {
         offer();
     }
 
+    // TODO wie bei GPDef eine String-Notation benutzen
+    private void newCleanerGame() {
+        if (cleanerStartRow == 1) {
+            playingField.set(2,2,3);
+            playingField.set(7,2,3);
+
+            playingField.set(1,7,LockBlock.TYPE);
+            playingField.set(2,6,LockBlock.TYPE);
+            playingField.set(3,5,LockBlock.TYPE);
+            playingField.set(4,5,LockBlock.TYPE);
+            playingField.set(5,5,LockBlock.TYPE);
+            playingField.set(6,5,LockBlock.TYPE);
+            playingField.set(7,6,LockBlock.TYPE);
+            playingField.set(8,7,LockBlock.TYPE);
+        } else {
+            for (int y = cleanerStartRow; y < blocks; y++) {
+                for (int x = 0; x < blocks; x++) {
+                    if (x != y) {
+                        playingField.set(x, y, 11);
+                    }
+                }
+                if (y <= 5) {
+                    playingField.set(y - 2, y, LockBlock.TYPE);
+                }
+            }
+            if (cleanerStartRow >= 8) {
+                playingField.set(0, blocks - 1, StarBlock.TYPE);
+            }
+            playingField.set(1, 0, cleanerStartRow < 6 ? 21 : 5);
+            playingField.set(blocks - 2, 0, cleanerStartRow < 6 ? 21 : 5);
+            if (cleanerStartRow <= 4) {
+                for (int x = 1; x < blocks - 3; x++) {
+                    playingField.set(x, blocks - 1, LockBlock.TYPE);
+                }
+                playingField.set(1, blocks - 3, 0);
+            }
+        }
+        playingField.draw();
+        cleanerStartRow--;
+        if (cleanerStartRow < 1) {
+            cleanerStartRow = blocks - 1;
+        }
+    }
+
     /** 3 neue zufällige Spielsteine anzeigen */
     private void offer() { // old German method name: vorschlag
+        if (gameOver) return;
+
         for (int i = 1; i <= 3; i++) {
             holders.get(i).setGamePiece(nextGamePiece.next(punkte, blockTypes));
         }
@@ -278,6 +337,20 @@ public class Game {
         if (bonus > 0) {
             punkte += bonus;
         }
+
+        if (Features.GAME_MODE_CLEANER.equals(gameMode) && playingField.getFilled() == 0) {
+            holders.get(1).setGamePiece(null);
+            holders.get(2).setGamePiece(null);
+            holders.get(3).setGamePiece(null);
+            holders.clearParking();
+            // TODO << Methode für diese 4 Aufrufe machen
+
+            won = true;
+            gameOver = true;
+            // TODO Highscore: die wenigsten Moves und Punkte
+            playingField.gameOver();
+            // TODO ******** Ich will beim Sieg keine anderen Sounds haben!!! ***********
+        }
     }
 
     private void checkGame() {
@@ -392,5 +465,13 @@ public class Game {
         gravitation.save();
         persistence.saveMoves(moves);
         holders.save();
+    }
+
+    public boolean isCleanerGame() {
+        return Features.GAME_MODE_CLEANER.equals(gameMode);
+    }
+
+    public boolean isWon() {
+        return won;
     }
 }

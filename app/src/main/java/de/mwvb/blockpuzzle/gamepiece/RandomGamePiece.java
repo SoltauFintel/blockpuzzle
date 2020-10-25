@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +14,18 @@ public class RandomGamePiece implements INextGamePiece {
 
     public RandomGamePiece() {
         gamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
+    }
+
+    @Override
+    public void ausduennen() {
+        // TODO Das ist erstmal vorläufig so; zum Testen soll's einfacher sein.
+        Iterator<GamePiece> iter = gamePieces.iterator();
+        while (iter.hasNext()) {
+            GamePiece p = iter.next();
+            if (p.getName().length() > 1 && !"Ecke2".equals(p.getName())) {
+                iter.remove();
+            }
+        }
     }
 
     @Override

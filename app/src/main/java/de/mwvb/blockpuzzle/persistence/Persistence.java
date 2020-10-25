@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -30,6 +31,7 @@ public class Persistence implements IPersistence {
 
     private final ContextWrapper owner;
     private SharedPreferences __pref; // only access by pref() !
+    private String prefix = "";
 
     // TODO wenn beim Laden etwas schief geht, muss ich gescheit reagieren. Das Spiel darf dann nicht bei jedem AppStart abkacken.
     // TODO Die Kommentare entfernen. Die sind mtlw. überholt. (22.10.20)
@@ -45,7 +47,20 @@ public class Persistence implements IPersistence {
         }
         return __pref;
     }
-    
+
+    @Override
+    public void setGameMode(String gameMode) {
+        if (Features.GAME_MODE_CLASSIC.equals(gameMode)) {
+            prefix = "";
+        } else {
+            prefix = gameMode;
+        }
+    }
+
+    private String name(String name) {
+        return prefix + name;
+    }
+
     /**
      * Es wird gespeichert wenn:
      * neues Spiel (empty parking), offer (set), place (empty), parken (move)
@@ -73,7 +88,7 @@ public class Persistence implements IPersistence {
     @Override
     public GamePiece load(int index) {
         GamePiece p = null;
-        String d = pref().getString(GAMEPIECEVIEW + index, null);
+        String d = getString(GAMEPIECEVIEW + index);
         if (d != null && !d.isEmpty()) {
             p = new GamePiece();
             String[] w = d.split(",");
@@ -112,7 +127,7 @@ public class Persistence implements IPersistence {
      */
     @Override
     public void load(PlayingField f) {
-        String d = pref().getString(PLAYINGFIELD, null);
+        String d = getString(PLAYINGFIELD);
         final int blocks = f.getBlocks();
         if (d == null || d.isEmpty()) {
             for (int x = 0; x < blocks; x++) {
@@ -138,7 +153,7 @@ public class Persistence implements IPersistence {
      */
     @Override
     public int loadScore() {
-        return pref().getInt(SCORE, -9999);
+        return getInt(SCORE, -9999);
     }
 
     /**
@@ -147,59 +162,51 @@ public class Persistence implements IPersistence {
      */
     @Override
     public void saveScore(int punkte) {
-        SharedPreferences.Editor edit = pref().edit();
-        edit.putInt(SCORE, punkte);
-        edit.apply();
+        putInt(SCORE, punkte);
     }
 
     @Override
     public int loadHighScore() {
-        return pref().getInt(HIGHSCORE, 0);
+        return getInt(HIGHSCORE, 0);
     }
 
     @Override
     public void saveHighScore(int punkte) {
-        SharedPreferences.Editor edit = pref().edit();
-        edit.putInt(HIGHSCORE, punkte);
-        edit.apply();
+        putInt(name(HIGHSCORE), punkte);
     }
 
     @Override
     public int loadHighScoreMoves() {
-        return pref().getInt(HIGHSCORE_MOVES, 0);
+        return getInt(HIGHSCORE_MOVES, 0);
     }
 
     @Override
     public void saveHighScoreMoves(int moves) {
-        SharedPreferences.Editor edit = pref().edit();
-        edit.putInt(HIGHSCORE_MOVES, moves);
-        edit.apply();
+        putInt(HIGHSCORE_MOVES, moves);
     }
 
     @Override
     public int loadMoves() {
-        return pref().getInt(MOVES, 0);
+        return getInt(MOVES, 0);
     }
 
     @Override
     public void saveMoves(int moves) {
-        SharedPreferences.Editor edit = pref().edit();
-        edit.putInt(MOVES, moves);
-        edit.apply();
+        putInt(MOVES, moves);
     }
 
     @Override
     public void load(GravitationData data) {
         data.clear();
 
-        String d = pref().getString(GRAVITATION_ROWS, "");
+        String d = getString(GRAVITATION_ROWS);
         if (!d.isEmpty()) {
             for (String w : d.split(",")) {
                 data.getRows().add(Integer.parseInt(w));
             }
         }
 
-        d = pref().getString(GRAVITATION_EXCLUSIONS, "");
+        d = getString(GRAVITATION_EXCLUSIONS);
         if (!d.isEmpty()) {
             for (String w : d.split(",")) {
                 String[] k = w.split("/");
@@ -207,7 +214,7 @@ public class Persistence implements IPersistence {
             }
         }
 
-        data.setFirstGravitationPlayed(pref().getBoolean(GRAVITATION_PLAYED_SOUND, false));
+        data.setFirstGravitationPlayed(pref().getBoolean(name(GRAVITATION_PLAYED_SOUND), false));
     }
 
     @Override
@@ -231,13 +238,27 @@ public class Persistence implements IPersistence {
         save(GRAVITATION_ROWS, d);
 
         SharedPreferences.Editor edit = pref().edit();
-        edit.putBoolean(GRAVITATION_PLAYED_SOUND, data.isFirstGravitationPlayed());
+        edit.putBoolean(name(GRAVITATION_PLAYED_SOUND), data.isFirstGravitationPlayed());
+        edit.apply();
+    }
+
+    private String getString(String name) {
+        return pref().getString(name(name), "");
+    }
+
+    private int getInt(String name, int defVal) {
+        return pref().getInt(name(name), defVal);
+    }
+
+    private void putInt(String name, int val) {
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putInt(name(name), val);
         edit.apply();
     }
 
     private void save(String name, StringBuilder s) {
         SharedPreferences.Editor edit = pref().edit();
-        edit.putString(name, s.toString());
+        edit.putString(name(name), s.toString());
         edit.apply();
     }
 }

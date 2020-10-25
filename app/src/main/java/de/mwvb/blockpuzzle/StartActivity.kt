@@ -14,8 +14,8 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        classicGame.setOnClickListener { showGameActivity("classic") }
-        cleanerGame.setOnClickListener { showGameActivity("cleaner") }
+        classicGame.setOnClickListener { showGameActivity(Features.GAME_MODE_CLASSIC) }
+        cleanerGame.setOnClickListener { showGameActivity(Features.GAME_MODE_CLEANER) }
     }
 
     private fun showGameActivity(gameMode: String) {

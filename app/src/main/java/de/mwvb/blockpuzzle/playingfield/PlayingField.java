@@ -43,7 +43,12 @@ public class PlayingField {
         matrix[x][y] = value;
     }
 
+    public void draw() {
+        view.draw();
+    }
+
     public void clear() {
+        gameOver = false;
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 set(x, y, 0);

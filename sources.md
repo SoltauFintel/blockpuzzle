@@ -3,3 +3,4 @@
 - jeqa.wav (Japan Earthquake alert) = https://freesound.org/people/gorkem.yilmaz/sounds/518087/
 - laughter.wav = https://freesound.org/people/martysonic/sounds/383326/
 - money.wav = https://freesound.org/people/rolandseer/sounds/443334/
+- applause.mp3 = https://freesound.org/people/milton./sounds/77101/

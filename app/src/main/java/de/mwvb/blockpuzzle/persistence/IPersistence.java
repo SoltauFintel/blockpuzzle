@@ -6,6 +6,8 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public interface IPersistence {
 
+    void setGameMode(String gameMode);
+
     int loadScore();
     void saveScore(int punkte);
 

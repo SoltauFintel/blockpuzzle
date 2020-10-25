@@ -2,8 +2,10 @@ package de.mwvb.blockpuzzle.game;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
+import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
@@ -16,7 +18,7 @@ public class TestGameBuilder {
 
     public static Game create() {
         Game game = new Game(getGameView(), getPersistence());
-        game.initGame("classic");
+        game.initGame(Features.GAME_MODE_CLASSIC);
         return game;
     }
 
@@ -88,7 +90,6 @@ public class TestGameBuilder {
 
                     @Override
                     public void setGrey(boolean v) {
-
                     }
 
                     @Override
@@ -127,7 +128,19 @@ public class TestGameBuilder {
             }
 
             @Override
+            public void load(GravitationData data) {
+            }
+
+            @Override
+            public void save(GravitationData data) {
+            }
+
+            @Override
             public void load(PlayingField f) {
+            }
+
+            @Override
+            public void setGameMode(String gameMode) {
             }
 
             @Override
@@ -147,6 +160,24 @@ public class TestGameBuilder {
             @Override
             public void saveMoves(int moves) {
             }
+
+            @Override
+            public int loadHighScore() {
+                return 0;
+            }
+
+            @Override
+            public void saveHighScore(int punkte) {
+            }
+
+            @Override
+            public int loadHighScoreMoves() {
+                return 0;
+            }
+
+            @Override
+            public void saveHighScoreMoves(int moves) {
+            }
         };
     }
 
@@ -165,7 +196,7 @@ public class TestGameBuilder {
             }
 
             @Override
-            public void backPressed(boolean gameOver) {
+            public void youWon() {
             }
 
             @Override

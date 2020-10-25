@@ -7,7 +7,7 @@ public interface ISoundService {
 
     void gameOver();
 
-    void backPressed(boolean gameOver);
+    void youWon();
 
     void oneColor();
 

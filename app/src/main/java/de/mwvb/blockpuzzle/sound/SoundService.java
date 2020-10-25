@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
+import android.provider.MediaStore;
 
 import de.mwvb.blockpuzzle.R;
 
@@ -18,6 +19,7 @@ public class SoundService implements ISoundService {
     private int explosion;
     private MediaPlayer laughter;
     private MediaPlayer jeqa;
+    private MediaPlayer applause;
 
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
@@ -41,6 +43,7 @@ public class SoundService implements ISoundService {
         explosion = soundPool.load(context, R.raw.explosion, 0);
         laughter = MediaPlayer.create(context, R.raw.laughter);
         jeqa = MediaPlayer.create(context, R.raw.jeqa);
+        applause = MediaPlayer.create(context, R.raw.applause);
     }
 
     /** destroy SoundService */
@@ -69,12 +72,8 @@ public class SoundService implements ISoundService {
     }
 
     @Override
-    public void backPressed(boolean gameOver) {
-        if (gameOver) {
-            gameOver();
-        } else {
-            clear(false);
-        }
+    public void youWon() {
+        applause.start();
     }
 
     @Override

@@ -7,5 +7,7 @@ import de.mwvb.blockpuzzle.block.BlockTypes;
  */
 public interface INextGamePiece {
 
+    void ausduennen();
+
     GamePiece next(int score, BlockTypes blockTypes);
 }

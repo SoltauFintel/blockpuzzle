@@ -10,6 +10,8 @@
     <string name="score2">XX Punkte</string>
     <string name="gameOverScore1">Game over! (XX Punkt)</string>
     <string name="gameOverScore2">Game over! (XX Punkte)</string>
+    <string name="winScore1">Gewonnen! Score: XX</string>
+    <string name="winScore2">Gewonnen! Score: XX</string>
     <string name="move">Move</string>
     <string name="moves">Moves</string>
     <string name="classicGame">Klassisches Spiel</string>
