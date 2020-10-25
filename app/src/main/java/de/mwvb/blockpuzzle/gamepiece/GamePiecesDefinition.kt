@@ -84,7 +84,6 @@ L=1
 .....
 
 #Ecke3
-R=1
 RR=1
 L=1
 .....
@@ -179,7 +178,10 @@ min=9000
 #4_Bonus:4
 min=10000
 
-#Ecke3_Bonus1:Ecke3
+#Ecke3_Bonus1A:Ecke3
+min=11000
+
+#Ecke3_Bonus1B:Ecke3
 min=11000
 
 #2Dots
