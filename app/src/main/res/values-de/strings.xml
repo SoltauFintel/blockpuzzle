@@ -16,4 +16,5 @@
     <string name="moves">Moves</string>
     <string name="classicGame">Klassisches Spiel</string>
     <string name="emptyPFGame">Freiräumen Spiel</string>
+    <string name="save">Speichern</string>
 </resources>

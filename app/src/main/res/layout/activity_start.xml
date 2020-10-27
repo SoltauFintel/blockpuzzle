@@ -28,20 +28,44 @@
             android:id="@+id/classicGame"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginTop="30dp"
             android:text="@string/classicGame"
             android:textAllCaps="false"/>
         <Button
             android:id="@+id/cleanerGame"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:text="@string/emptyPFGame"
             android:textAllCaps="false"
-            android:layout_marginTop="30dp"/>
+            />
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/gamePieceSetNumber"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="0123456789"
+                />
+            <Button
+                android:id="@+id/saveGPSN"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Speichern"
+                android:textAllCaps="false"
+                />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

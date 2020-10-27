@@ -7,6 +7,7 @@ import java.util.List;
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.block.special.LockBlock;
 import de.mwvb.blockpuzzle.block.special.StarBlock;
+import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.Persistence;
@@ -43,7 +44,7 @@ public class Game {
     private static int cleanerStartRow = 9; // sowas wie ein Level fürs Cleaner Game
 
     // Services
-    private INextGamePiece nextGamePiece = new RandomGamePiece();
+    private INextGamePiece nextGamePiece;
     private final IGameView view;
     private IPersistence persistence;
 
@@ -61,19 +62,22 @@ public class Game {
         holders.setPersistence(this.persistence);
     }
 
-    public void setNextGamePiece(INextGamePiece nextGamePiece) {
-        this.nextGamePiece = nextGamePiece;
-    }
-
     // New Game ----
 
-    public void initGame(String gameMode) {
+    public void initGame(String gameMode, int gamePieceSetNumber) {
         this.gameMode = gameMode;
         persistence.setGameMode(gameMode);
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
-        if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
-            nextGamePiece.ausduennen();
+        if (gamePieceSetNumber == 0) {
+            nextGamePiece = new RandomGamePiece();
+            if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
+                nextGamePiece.ausduennen();
+            }
+        } else {
+            nextGamePiece = new NextGamePieceFromSet(gamePieceSetNumber);
+            // TODO NextGamePieceFromSet muss persistiert werden
+            // TODO Wenn der Spieler die GamePieceSetNumber ändert, bedeutet das Spielneustart.
         }
 
         // Drehmodus deaktivieren
@@ -103,6 +107,9 @@ public class Game {
         punkte = 0;
         gravitation.init();
         view.showScore(punkte, 0, gameOver);
+        if (nextGamePiece instanceof NextGamePieceFromSet) {
+            ((NextGamePieceFromSet) nextGamePiece).setNextRound(0);
+        }
 
         playingField.clear();
         if (Features.GAME_MODE_CLEANER.equals(gameMode)) {

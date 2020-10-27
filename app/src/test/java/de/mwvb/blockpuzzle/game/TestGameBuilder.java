@@ -18,7 +18,7 @@ public class TestGameBuilder {
 
     public static Game create() {
         Game game = new Game(getGameView(), getPersistence());
-        game.initGame(Features.GAME_MODE_CLASSIC);
+        game.initGame(Features.GAME_MODE_CLASSIC, 0);
         return game;
     }
 

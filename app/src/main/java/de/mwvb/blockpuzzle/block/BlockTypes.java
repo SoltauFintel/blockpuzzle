@@ -16,7 +16,9 @@ import de.mwvb.blockpuzzle.block.special.StarBlock;
 // Bauplan für alle Blöcke
 public class BlockTypes {
     public static final int ONE_COLOR = 10;
+    /** key: block type char, value: block type number */
     private final Map<String, Integer> charMap = new HashMap<>();
+    /** key: block type number, value: block drawing strategy */
     private final Map<Integer, IBlockDrawer> blockDrawerMap = new HashMap<>();
     private final View view;
     private final List<ISpecialBlock> specialBlockTypes = new ArrayList<>();
@@ -78,5 +80,18 @@ public class BlockTypes {
 
     public IBlockDrawer getBlockDrawer(int blockType) {
         return blockDrawerMap.get(blockType);
+    }
+
+    public char getBlockTypeChar(int blockTypeNumber) {
+        for (Map.Entry<String, Integer> e : charMap.entrySet()) {
+            if (e.getValue() == blockTypeNumber) {
+                return e.getKey().charAt(0);
+            }
+        }
+        throw new RuntimeException("Unknown block type number: " + blockTypeNumber);
+    }
+
+    public Integer getBlockTypeNumber(char c) {
+        return charMap.get("" + c);
     }
 }

@@ -184,6 +184,7 @@ public class GamePieceParserTest {
     }
 
     // only for test, not for Persistence
+    // TODO see also: GamePieceSetGenerator
     public String getStringPresentation(GamePiece p) {
         StringBuilder ret = new StringBuilder();
         for (int y = 0; y < GamePiece.max; y++) {

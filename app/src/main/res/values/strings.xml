@@ -15,4 +15,5 @@
     <string name="moves">moves</string>
     <string name="classicGame">Classic Game</string>
     <string name="emptyPFGame">Cleaner Game</string>
+    <string name="save">Save</string>
 </resources>

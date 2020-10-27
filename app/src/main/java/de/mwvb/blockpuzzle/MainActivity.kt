@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity(), IGameView {
         shakeService.setActive(true)
 
         val gameMode = intent.getStringExtra("gameMode")
-        game.initGame(gameMode)
+        val gamePieceSetNumber = intent.getIntExtra("gamePieceSetNumber", 0)
+        game.initGame(gameMode, gamePieceSetNumber)
     }
 
     // Activity goes sleeping
