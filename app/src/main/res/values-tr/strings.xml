@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name"><font size="18"><b>Blok Bulmaca</b></font></string>
+    <string name="neuesSpiel">Yeni Oyun</string>
+    <string name="gehtNicht">Uymuyor!</string>
+    <string name="drehenAus">Döndürme kapalı</string>
+    <string name="drehenAn">Döndürme açık</string>
+    <string name="startNewGame">Yeni oyun başlatmak istiyor musunuz?</string>
+    <string name="score1">Puan: XX</string>
+    <string name="score2">Puan: XX</string>
+    <string name="gameOverScore1">Oyun bitti! Puan: XX</string>
+    <string name="gameOverScore2">Oyun bitti! Puan: XX</string>
+    <string name="winScore1">Kazandın! Puan: XX</string>
+    <string name="winScore2">Kazandın! Puan: XX</string>
+    <string name="move">hamle</string>
+    <string name="moves">hamleler</string>
+    <string name="classicGame">Klasik Oyun</string>
+    <string name="emptyPFGame">Temizleyici Oyun</string>
+</resources>
