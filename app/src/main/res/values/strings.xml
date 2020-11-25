@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
+    <string name="neuesSpiel">New Game</string>
+    <string name="gehtNicht">Does not fit!</string>
+    <string name="drehenAus">Rotating off</string>
+    <string name="drehenAn">Rotating on</string>
+    <string name="startNewGame">Start new game?</string>
+    <string name="score1">Score: XX</string>
+    <string name="score2">Score: XX</string>
+    <string name="gameOverScore1">Game over! Score: XX</string>
+    <string name="gameOverScore2">Game over! Score: XX</string>
+    <string name="winScore1">You won! Score: XX</string>
+    <string name="winScore2">You won! Score: XX</string>
+    <string name="move">move</string>
+    <string name="moves">moves</string>
+    <string name="classicGame">Classic Game</string>
+    <string name="emptyPFGame">Cleaner Game</string>
+</resources> 
