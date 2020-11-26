@@ -7,6 +7,7 @@ import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView;
@@ -17,13 +18,21 @@ import de.mwvb.blockpuzzle.sound.SoundService;
 public class TestGameBuilder {
 
     public static Game create() {
-        Game game = new Game(getGameView(), getPersistence());
-        game.initGame(Features.GAME_MODE_CLASSIC, 0);
+        Game game = new Game(getGameView(), new PersistenceNoOp());
+        game.initGame();
         return game;
     }
 
     private static IGameView getGameView() {
         return new IGameView() {
+            @Override
+            public void shake() {
+            }
+
+            @Override
+            public void showToast(@NotNull String msg) {
+            }
+
             @NotNull
             @Override
             public IPlayingFieldView getPlayingFieldView() {
@@ -112,75 +121,6 @@ public class TestGameBuilder {
         };
     }
 
-    private static IPersistence getPersistence() {
-        return new IPersistence() {
-            @Override
-            public void save(int index, GamePiece p) {
-            }
-
-            @Override
-            public GamePiece load(int index) {
-                return null;
-            }
-
-            @Override
-            public void save(PlayingField f) {
-            }
-
-            @Override
-            public void load(GravitationData data) {
-            }
-
-            @Override
-            public void save(GravitationData data) {
-            }
-
-            @Override
-            public void load(PlayingField f) {
-            }
-
-            @Override
-            public void setGameMode(String gameMode) {
-            }
-
-            @Override
-            public int loadScore() {
-                return -9999;
-            }
-
-            @Override
-            public void saveScore(int punkte) {
-            }
-
-            @Override
-            public int loadMoves() {
-                return 0;
-            }
-
-            @Override
-            public void saveMoves(int moves) {
-            }
-
-            @Override
-            public int loadHighScore() {
-                return 0;
-            }
-
-            @Override
-            public void saveHighScore(int punkte) {
-            }
-
-            @Override
-            public int loadHighScoreMoves() {
-                return 0;
-            }
-
-            @Override
-            public void saveHighScoreMoves(int moves) {
-            }
-        };
-    }
-
     private static ISoundService getSoundService() {
         return new ISoundService() {
             @Override
@@ -205,6 +145,10 @@ public class TestGameBuilder {
 
             @Override
             public void doesNotWork() {
+            }
+
+            @Override
+            public void shake() {
             }
         };
     }

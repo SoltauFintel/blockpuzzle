@@ -4,30 +4,42 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
+import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
 public class Persistence implements IPersistence {
+    // Global data ----
+    private static final String GLOBAL_OLD_GAME = "/oldGame";
+    private static final String GLOBAL_PLAYERNAME = "/playername";
+    private static final String GLOBAL_SPACE_POS_X = "/spacePosX";
+    private static final String GLOBAL_SPACE_POS_Y = "/spacePosY";
+    private static final String GLOBAL_FLIGHT_MODE = "/flightMode";
+    public static final String GLOBAL_TARGET = "/target"; // planet number
+    // Planet specific data ----
+    private static final String PLANET_VERSION = "version";
+    private static final String PLANET_VISIBLE = "visible";
+    private static final String PLANET_OWNER = "owner";
+    // Game specific data ----
     private static final String NAME = "GAMEDATA_2";
+    private static final String SCORE = "score";
+    private static final String DELTA = "delta";
+    private static final String MOVES = "moves";
+    private static final String HIGHSCORE_SCORE = "highscore";
+    private static final String HIGHSCORE_MOVES = "highscoreMoves";
     private static final String GAMEPIECEVIEW = "gamePieceView";
     private static final String PLAYINGFIELD = "playingField";
-    private static final String SCORE = "score";
-    private static final String HIGHSCORE = "highscore";
-    private static final String HIGHSCORE_MOVES = "highscoreMoves";
-    private static final String MOVES = "moves";
     private static final String GRAVITATION_ROWS = "gravitationRows";
     private static final String GRAVITATION_EXCLUSIONS = "gravitationExclusions";
     private static final String GRAVITATION_PLAYED_SOUND = "gravitationPlayedSound";
+    private static final String OWNER_NAME = "owner_name";
+    private static final String OWNER_SCORE = "owner_score"; // enemy score
+    private static final String OWNER_MOVES = "owner_moves";
+    private static final String NEXT_ROUND = "nextRound"; // NextGamePieceFromSet
 
     private final ContextWrapper owner;
     private SharedPreferences __pref; // only access by pref() !
@@ -49,15 +61,30 @@ public class Persistence implements IPersistence {
     }
 
     @Override
-    public void setGameMode(String gameMode) {
-        if (Features.GAME_MODE_CLASSIC.equals(gameMode)) {
-            prefix = "";
-        } else {
-            prefix = gameMode;
-        }
+    public void setGameID_oldGame() {
+        prefix = "";
+    }
+
+    @Override
+    public void setGameID(IPlanet planet, int gameDefinitionIndex) {
+        // e.g. "C1_16_0"
+        prefix = "C" + planet.getClusterNumber() + "_" + planet.getNumber() + "_" + gameDefinitionIndex;
+    }
+
+    @Override
+    public void setGameID(IPlanet planet) {
+        setGameID(planet, planet.getGameDefinitions().indexOf(planet.getSelectedGame()));
+    }
+
+    private String getPlanetKey(IPlanet planet) {
+        // e.g. "/1_16_"
+        return "/" + planet.getClusterNumber() + "_" + planet.getNumber() + "_";
     }
 
     private String name(String name) {
+        if (name.startsWith("/")) { // global parameter -> don't prepend game-specific suffix
+            return name.substring(1);
+        }
         return prefix + name;
     }
 
@@ -166,13 +193,23 @@ public class Persistence implements IPersistence {
     }
 
     @Override
+    public int loadDelta() {
+        return getInt(DELTA, 0);
+    }
+
+    @Override
+    public void saveDelta(int delta) {
+        putInt(DELTA, delta);
+    }
+
+    @Override
     public int loadHighScore() {
-        return getInt(HIGHSCORE, 0);
+        return getInt(HIGHSCORE_SCORE, 0);
     }
 
     @Override
     public void saveHighScore(int punkte) {
-        putInt(name(HIGHSCORE), punkte);
+        putInt(name(HIGHSCORE_SCORE), punkte);
     }
 
     @Override
@@ -200,7 +237,7 @@ public class Persistence implements IPersistence {
         data.clear();
 
         String d = getString(GRAVITATION_ROWS);
-        if (!d.isEmpty()) {
+        if (!d.isEmpty() && !d.contains("/")/*because of bug*/) {
             for (String w : d.split(",")) {
                 data.getRows().add(Integer.parseInt(w));
             }
@@ -235,11 +272,126 @@ public class Persistence implements IPersistence {
             k = ",";
             d.append(p.getX() + "/" + p.getY());
         }
-        save(GRAVITATION_ROWS, d);
+        save(GRAVITATION_EXCLUSIONS, d);
 
         SharedPreferences.Editor edit = pref().edit();
         edit.putBoolean(name(GRAVITATION_PLAYED_SOUND), data.isFirstGravitationPlayed());
         edit.apply();
+    }
+
+    @Override
+    public void saveSpacePosition(int x, int y) {
+        putInt(GLOBAL_SPACE_POS_X, x);
+        putInt(GLOBAL_SPACE_POS_Y, y);
+    }
+
+    @Override
+    public int loadSpacePositionX() {
+        return getInt(GLOBAL_SPACE_POS_X, 5);
+    }
+
+    @Override
+    public int loadSpacePositionY() {
+        return getInt(GLOBAL_SPACE_POS_Y, 5);
+    }
+
+    @Override
+    public int loadFlightMode() {
+        return getInt(GLOBAL_FLIGHT_MODE, 2);
+    }
+
+    @Override
+    public void saveFlightMode(int val) {
+        putInt(GLOBAL_FLIGHT_MODE, val);
+    }
+
+    @Override
+    public void savePlayerName(String playername) {
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putString(name(GLOBAL_PLAYERNAME), playername);
+        edit.apply();
+    }
+
+    @Override
+    public String loadPlayerName() {
+        return pref().getString(name(GLOBAL_PLAYERNAME), "");
+    }
+
+    @Override
+    public void savePlanet(IPlanet planet) {
+        String key = getPlanetKey(planet);
+        putInt(key + PLANET_VERSION, 1);
+        putBoolean(key + PLANET_VISIBLE, planet.isVisibleOnMap());
+        putBoolean(key + PLANET_OWNER, planet.isOwner());
+    }
+
+    @Override
+    public void loadPlanet(IPlanet planet) {
+        String key = getPlanetKey(planet);
+        if (getInt(key + PLANET_VERSION, 0) != 1) {
+            return; // There are no planet data.
+        }
+        planet.setVisibleOnMap(getBoolean(key + PLANET_VISIBLE));
+        planet.setOwner(getBoolean(key + PLANET_OWNER));
+    }
+
+    @Override
+    public int loadTarget() {
+        return getInt(GLOBAL_TARGET, -1);
+    }
+
+    @Override
+    public void saveTarget(int target) {
+        putInt(GLOBAL_TARGET, target);
+    }
+
+    @Override
+    public void saveOldGame(int v) {
+        putInt(GLOBAL_OLD_GAME, v);
+    }
+
+    @Override
+    public int loadOldGame() {
+        return getInt(GLOBAL_OLD_GAME, 0);
+    }
+
+    @Override
+    public void saveNextRound(int nextRound) {
+        putInt(NEXT_ROUND, nextRound);
+    }
+
+    @Override
+    public int loadNextRound() {
+        return getInt(NEXT_ROUND, 0);
+    }
+
+    @Override
+    public void saveOwner(int score, int moves, String name) {
+        putInt(OWNER_SCORE, score);
+        putInt(OWNER_MOVES, moves);
+        SharedPreferences.Editor edit = pref().edit();
+        edit.putString(name(OWNER_NAME), name);
+        edit.apply();
+    }
+
+    @Override
+    public void clearOwner() {
+        saveOwner(0, 0, "");
+    }
+
+    @Override
+    public String loadOwnerName() {
+        return pref().getString(name(OWNER_NAME), "");
+    }
+
+    @Override
+    public int loadOwnerScore() {
+        return getInt(OWNER_SCORE, 0);
+    }
+
+    @Override
+    public int loadOwnerMoves() {
+        return getInt(OWNER_MOVES, 0);
     }
 
     private String getString(String name) {
@@ -250,10 +402,18 @@ public class Persistence implements IPersistence {
         return pref().getInt(name(name), defVal);
     }
 
+    private boolean getBoolean(String name) {
+        return getInt(name, 0) == 1;
+    }
+
     private void putInt(String name, int val) {
         SharedPreferences.Editor edit = pref().edit();
         edit.putInt(name(name), val);
         edit.apply();
+    }
+
+    private void putBoolean(String name, boolean val) {
+        putInt(name, val ? 1 : 0);
     }
 
     private void save(String name, StringBuilder s) {

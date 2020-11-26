@@ -36,6 +36,16 @@ public class AllGamePieceSets {
 		new GamePieceSet0028(),
 		new GamePieceSet0029(),
 		new GamePieceSet0030(),
+		new GamePieceSet0031(),
+		new GamePieceSet0032(),
+		new GamePieceSet0033(),
+		new GamePieceSet0034(),
+		new GamePieceSet0035(),
+		new GamePieceSet0036(),
+		new GamePieceSet0037(),
+		new GamePieceSet0038(),
+		new GamePieceSet0039(),
+		new GamePieceSet0040(),
 	};
 
 }

@@ -15,7 +15,6 @@ public class PlayingField {
     // Services
     private IPlayingFieldView view;
     private IPersistence persistence;
-    // TODO Der könnte noch eine IPlayingFieldView haben.
 
     // TODO Idee: Jeder Block sollte ein Objekt sein, welches Eigenschaften (z.B. Farbe) und Verhalten (z.B. LockBlock) hat.
 

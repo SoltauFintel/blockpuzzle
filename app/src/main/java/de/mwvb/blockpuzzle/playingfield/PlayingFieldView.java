@@ -11,7 +11,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.block.MatrixGet;
+import de.mwvb.blockpuzzle.block.BlockDrawParameters;
+import de.mwvb.blockpuzzle.block.BlockDrawerStrategy;
 import de.mwvb.blockpuzzle.game.Game;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.sound.SoundService;
@@ -36,13 +37,14 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
     private final SoundService soundService = new SoundService();
     private FilledRows filledRows;
     private int mode = 0;
-    private final IBlockDrawer empty = new EmptyBlockDrawer();
+    private final IBlockDrawer empty = new EmptyBlockDrawer(this);
     private IBlockDrawer grey;
     private IBlockDrawer bd30;
     private IBlockDrawer bd31;
     private IBlockDrawer bd32;
     private BlockTypes blockTypes = new BlockTypes(this);
     private PlayingField playingField;
+    private final BlockDrawParameters p = new BlockDrawParameters();
     // TODO Der öußere Rand muss außerhalb der 10x10 Blockmatrix sein.
 
     public PlayingFieldView(Context context) {
@@ -76,10 +78,10 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
         rectline.setStrokeWidth(1);
         rectline.setColor(rectborder.getColor());
 
-        grey = ColorBlockDrawer.byRColor(this, R.color.colorGrey);
-        bd30 = new ColorBlockDrawer(this, Color.parseColor("#ffdd00")); // TODO R.color verwenden
-        bd31 = new ColorBlockDrawer(this, Color.parseColor("#ff0000"));
-        bd32 = new ColorBlockDrawer(this, Color.parseColor("#bbbbbb"));
+        grey = ColorBlockDrawer.byRColor(this, R.color.colorGrey, R.color.colorGrey_i, R.color.colorGrey_ib);
+        bd30 = new ColorBlockDrawer(this, getResources().getColor(R.color.explosion30));
+        bd31 = new ColorBlockDrawer(this, getResources().getColor(R.color.explosion31));
+        bd32 = new ColorBlockDrawer(this, getResources().getColor(R.color.explosion32));
 
         mark.setColor(Color.GRAY);
         mark.setStrokeWidth(3);
@@ -104,46 +106,33 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawPlayingField(canvas);
+        setBackgroundColor(getResources().getColor(R.color.black));
         drawBlocks(canvas);
         super.onDraw(canvas);
     }
 
-    private void drawPlayingField(Canvas canvas) {
-        final float f = getResources().getDisplayMetrics().density;
-        // Rahmen
-        canvas.drawRect(1 * f, 1 * f, w * f, w * f, rectborder);
-
-        // Gitterlinien
-        final int br = w / Game.blocks; // 60px, auf Handy groß = 36
-        for (int i = 1; i < Game.blocks; i++) {
-            float t = i * br;
-            canvas.drawLine(t * f, 0, t * f, w * f, rectline);
-            canvas.drawLine(1 * f, t * f, w * f, t * f, rectline);
-        }
-    }
-
     private void drawBlocks(Canvas canvas) {
-        final float f = getResources().getDisplayMetrics().density;
-        final int br = w / Game.blocks; // 60px
-        final float p = br * 0.1f;
-        final MatrixGet m = getMatrixGet();
+        p.setCanvas(canvas);
+        p.setDragMode(true);
+        p.setF(getResources().getDisplayMetrics().density);
+        p.setBr(w / Game.blocks); // 60px
+        final BlockDrawerStrategy m = getMatrixGet();
         for (int x = 0; x < Game.blocks; x++) {
             for (int y = 0; y < Game.blocks; y++) {
-                m.get(x, y).draw(canvas, x * br, y * br, p, br, f);
+                m.get(x, y).draw(x * p.getBr(), y * p.getBr(), p);
             }
         }
     }
 
-    private MatrixGet getMatrixGet() {
+    private BlockDrawerStrategy getMatrixGet() {
         if (playingField.isGameOver()) {
             return (x, y) -> playingField.get(x, y) > 0 ? grey : empty;
         }
-        final MatrixGet std = getStdMatrixGet();
+        final BlockDrawerStrategy std = getStdMatrixGet();
         if (filledRows != null) { // row ausblenden Modus
             return (x, y) -> {
                 if (!filledRows.getExclusions().contains(new QPosition(x, y)) && (filledRows.containsX(x) || filledRows.containsY(y))) {
-                    switch (mode) { // TODO statt mit mode, könnte ich doch direkt mitm IBlockDrawer arbeiten
+                    switch (mode) {
                         case 30: return bd30;
                         case 31: return bd31;
                         case 32: return bd32;
@@ -158,54 +147,34 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
         }
     }
 
-    private MatrixGet getStdMatrixGet() {
+    private BlockDrawerStrategy getStdMatrixGet() {
         return (x, y) -> {
             int b = playingField.get(x, y);
             return b >= 1 ? blockTypes.getBlockDrawer(b) : empty;
         };
     }
 
-    // TODO vielleicht eine Klasse daraus machen, evtl. kann man's auch kompakter schreiben
     @Override
     public void clearRows(final FilledRows filledRows, final Action action) {
-        if (filledRows.getHits() == 0) {
-            return;
+        new RowExplosion().clearRows(filledRows, action, this);
+    }
+
+    // called by RowExplosion
+    void setFilledRows(FilledRows f) {
+        this.filledRows = f;
+    }
+
+    // called by RowExplosion
+    void drawmode(int mode) {
+        drawmode(mode, false, false);
+    }
+        // called by RowExplosion
+    void drawmode(int mode, boolean playClearSound, boolean bigClearSound) {
+        this.mode = mode;
+        draw();
+        if (playClearSound) {
+            soundService.clear(bigClearSound);
         }
-        this.filledRows = filledRows;
-        Handler handler = new Handler();
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                mode = 30;
-                draw();
-                soundService.clear(filledRows.getHits() >= 3);
-            }
-        }, 50);
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                mode = 31;
-                draw();
-            }
-        }, 200);
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                mode = 32;
-                draw();
-            }
-        }, 350);
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                mode = 0;
-                draw();
-                PlayingFieldView.this.filledRows = null;
-                if (action != null) {
-                    action.execute();
-                }
-            }
-        }, 500);
     }
 
     @Override

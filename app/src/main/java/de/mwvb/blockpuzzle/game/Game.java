@@ -5,8 +5,6 @@ import android.content.ContextWrapper;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
-import de.mwvb.blockpuzzle.block.special.LockBlock;
-import de.mwvb.blockpuzzle.block.special.StarBlock;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
@@ -24,7 +22,9 @@ import de.mwvb.blockpuzzle.playingfield.OneColorAreaDetector;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 /**
- * Central game logic
+ * Block Puzzle game logic
+ *
+ * This is the old game and the base class for the Stone Wars game.
  */
 public class Game {
     // Stammdaten (read only)
@@ -32,21 +32,19 @@ public class Game {
     private final BlockTypes blockTypes = new BlockTypes(null);
 
     // Zustand
-    private String gameMode = Features.GAME_MODE_CLASSIC;
-    private final PlayingField playingField = new PlayingField(blocks);
-    private final Holders holders = new Holders();
-    private int punkte;
-    private int moves;
-    private boolean gameOver = false; // wird nicht persistiert
-    private boolean won = false;
+    protected final PlayingField playingField = new PlayingField(blocks);
+    protected final Holders holders = new Holders();
+    protected int punkte;
+    protected int moves;
+    protected boolean gameOver = false; // wird nicht persistiert
+    protected boolean won = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private final GravitationData gravitation = new GravitationData();
-    private static int cleanerStartRow = 9; // sowas wie ein Level fürs Cleaner Game
 
     // Services
+    protected IPersistence persistence;
+    protected final IGameView view;
     private INextGamePiece nextGamePiece;
-    private final IGameView view;
-    private IPersistence persistence;
 
     // Spielaufbau ----
 
@@ -64,21 +62,11 @@ public class Game {
 
     // New Game ----
 
-    public void initGame(String gameMode, int gamePieceSetNumber) {
-        this.gameMode = gameMode;
-        persistence.setGameMode(gameMode);
+    public void initGame() {
+        initGameAndPersistence();
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
-        if (gamePieceSetNumber == 0) {
-            nextGamePiece = new RandomGamePiece();
-            if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
-                nextGamePiece.ausduennen();
-            }
-        } else {
-            nextGamePiece = new NextGamePieceFromSet(gamePieceSetNumber);
-            // TODO NextGamePieceFromSet muss persistiert werden
-            // TODO Wenn der Spieler die GamePieceSetNumber ändert, bedeutet das Spielneustart.
-        }
+        nextGamePiece = getNextGamePieceGenerator();
 
         // Drehmodus deaktivieren
         rotatingMode = false;
@@ -86,19 +74,19 @@ public class Game {
 
         // Gibt es einen Spielstand?
         punkte = persistence.loadScore();
-        if (punkte < 0) { // Nein -> Neues Spiel starten!
-            newGame();
-            return;
+        if (punkte < 0) { // Nein
+            newGame(); // Neues Spiel starten!
+        } else {
+            loadGame(); // Spielstand laden
         }
+    }
 
-        // Spielstand laden
-        view.showScore(punkte,0, gameOver); // TODO delta laden
-        moves = persistence.loadMoves();
-        view.showMoves(moves);
-        gravitation.load();
-        playingField.load();
-        holders.load();
-        checkGame();
+    protected void initGameAndPersistence() {
+        persistence.setGameID_oldGame();
+    }
+
+    protected INextGamePiece getNextGamePieceGenerator() {
+        return new RandomGamePiece();
     }
 
     /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
@@ -106,15 +94,11 @@ public class Game {
         gameOver = false;
         punkte = 0;
         gravitation.init();
+        persistence.saveDelta(0);
         view.showScore(punkte, 0, gameOver);
-        if (nextGamePiece instanceof NextGamePieceFromSet) {
-            ((NextGamePieceFromSet) nextGamePiece).setNextRound(0);
-        }
+        nextGamePiece.reset();
 
-        playingField.clear();
-        if (Features.GAME_MODE_CLEANER.equals(gameMode)) {
-            newCleanerGame();
-        }
+        initPlayingField();
 
         moves = 0;
         view.showMoves(moves);
@@ -123,58 +107,26 @@ public class Game {
         offer();
     }
 
-    // TODO wie bei GPDef eine String-Notation benutzen
-    private void newCleanerGame() {
-        if (cleanerStartRow == 1) {
-            playingField.set(2,2,3);
-            playingField.set(7,2,3);
+    protected void initPlayingField() {
+        playingField.clear();
+    }
 
-            playingField.set(1,7,LockBlock.TYPE);
-            playingField.set(2,6,LockBlock.TYPE);
-            playingField.set(3,5,LockBlock.TYPE);
-            playingField.set(4,5,LockBlock.TYPE);
-            playingField.set(5,5,LockBlock.TYPE);
-            playingField.set(6,5,LockBlock.TYPE);
-            playingField.set(7,6,LockBlock.TYPE);
-            playingField.set(8,7,LockBlock.TYPE);
-        } else {
-            for (int y = cleanerStartRow; y < blocks; y++) {
-                for (int x = 0; x < blocks; x++) {
-                    if (x != y) {
-                        playingField.set(x, y, 11);
-                    }
-                }
-                if (y <= 5) {
-                    playingField.set(y - 2, y, LockBlock.TYPE);
-                }
-            }
-            if (cleanerStartRow >= 8) {
-                playingField.set(0, blocks - 1, StarBlock.TYPE);
-            }
-            playingField.set(1, 0, cleanerStartRow < 6 ? 21 : 5);
-            playingField.set(blocks - 2, 0, cleanerStartRow < 6 ? 21 : 5);
-            if (cleanerStartRow <= 4) {
-                for (int x = 1; x < blocks - 3; x++) {
-                    playingField.set(x, blocks - 1, LockBlock.TYPE);
-                }
-                playingField.set(1, blocks - 3, 0);
-            }
-        }
-        playingField.draw();
-        cleanerStartRow--;
-        if (cleanerStartRow < 1) {
-            cleanerStartRow = blocks - 1;
-        }
+    protected void loadGame() {
+        view.showScore(punkte, persistence.loadDelta(), gameOver);
+        moves = persistence.loadMoves();
+        view.showMoves(moves);
+        nextGamePiece.load();
+        gravitation.load();
+        playingField.load();
+        holders.load();
+        checkGame();
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
-    private void offer() { // old German method name: vorschlag
-        if (gameOver) return;
-
+    protected void offer() { // old German method name: vorschlag
         for (int i = 1; i <= 3; i++) {
-            holders.get(i).setGamePiece(nextGamePiece.next(punkte, blockTypes));
+            holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
         }
-        // TODO avoid two/three 3x3 ?
 
         save();
     }
@@ -204,6 +156,7 @@ public class Game {
         } else {
             throw new DoesNotWorkException();
         }
+        // TODO Wieder einbauen, dass nach jedem Move gespeichert wird! (alles) old game. Denn durch App-Neustart geht der Move verloren
     }
 
     /**
@@ -234,15 +187,24 @@ public class Game {
             if (Features.shakeForGravitation) { // gravity needs phone shaking
                 playingField.clearRows(f, null);
             } else { // auto-gravity
-                playingField.clearRows(f, new GravitationAction(gravitation, this, playingField)); // Action wird erst wenige Millisekunden später fertig!
+                playingField.clearRows(f, new GravitationAction(gravitation, this, playingField, getGravitationStartRow()));
+                // Action wird erst wenige Millisekunden später fertig!
             }
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
             }
-            view.showScore(punkte,punkte - punkteVorher, gameOver);
+
+            checkForVictory(); // Spielsiegprüfung (showScore erst danach)
+
+            int delta = punkte - punkteVorher;
+            persistence.saveDelta(delta);
+            view.showScore(punkte, delta, gameOver);
             view.showMoves(++moves);
         }
         return ret;
+    }
+
+    protected void checkForVictory() {
     }
 
     private void sendPlacedEvent(GamePiece teil, QPosition pos) {
@@ -314,8 +276,12 @@ public class Game {
 
     /** Player has shaked smartphone */
     public void shaked() {
-        new GravitationAction(gravitation, this, playingField).execute();
-        // TODO Ein kurzer Sound als Bestätigung wäre gut.
+        new GravitationAction(gravitation, this, playingField, getGravitationStartRow()).execute();
+        view.shake();
+    }
+
+    protected int getGravitationStartRow() {
+        return 5;
     }
 
     private void rowsAdditionalBonus(int rows) {
@@ -344,20 +310,6 @@ public class Game {
         if (bonus > 0) {
             punkte += bonus;
         }
-
-        if (Features.GAME_MODE_CLEANER.equals(gameMode) && playingField.getFilled() == 0) {
-            holders.get(1).setGamePiece(null);
-            holders.get(2).setGamePiece(null);
-            holders.get(3).setGamePiece(null);
-            holders.clearParking();
-            // TODO << Methode für diese 4 Aufrufe machen
-
-            won = true;
-            gameOver = true;
-            // TODO Highscore: die wenigsten Moves und Punkte
-            playingField.gameOver();
-            // TODO ******** Ich will beim Sieg keine anderen Sounds haben!!! ***********
-        }
     }
 
     private void checkGame() {
@@ -369,11 +321,13 @@ public class Game {
         if (a && b && c && d && !holders.isParkingFree()) {
             gameOver = true;
             updateHighScore();
+            persistence.saveDelta(0);
             view.showScore(punkte,0, gameOver); // display game over text
             playingField.gameOver(); // wenn parke die letzte Aktion war
         }
     }
 
+    // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
     private void updateHighScore() {
         int highscore = persistence.loadHighScore();
         if (punkte > highscore || highscore <= 0) {
@@ -394,8 +348,7 @@ public class Game {
         moveImpossible(-1);
     }
 
-    // TODO checken ob von außerhalb benötigt
-    public boolean moveImpossible(int index) {
+    private boolean moveImpossible(int index) {
         GamePiece teil = holders.get(index).getGamePiece();
         int result = moveImpossibleR(teil);
         if (result != 2) {
@@ -411,7 +364,7 @@ public class Game {
      * -1: game piece fits in (ro is > 1, grey true!).
      * >0: return true (move is impossible), else return false (move is possible).
      */
-    public int moveImpossibleR(GamePiece teil) {
+    int moveImpossibleR(GamePiece teil) {
         if (teil == null) {
             return 2; // GamePieceView is empty
         }
@@ -474,8 +427,8 @@ public class Game {
         holders.save();
     }
 
-    public boolean isCleanerGame() {
-        return Features.GAME_MODE_CLEANER.equals(gameMode);
+    public boolean gameCanBeWon() {
+        return false;
     }
 
     public boolean isWon() {

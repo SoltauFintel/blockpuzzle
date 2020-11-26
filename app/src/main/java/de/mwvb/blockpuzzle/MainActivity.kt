@@ -4,25 +4,15 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.mwvb.blockpuzzle.game.*
 import de.mwvb.blockpuzzle.playingfield.QPosition
-import de.mwvb.blockpuzzle.game.DoesNotWorkException
-import de.mwvb.blockpuzzle.game.Game
-import de.mwvb.blockpuzzle.game.IGameView
-import de.mwvb.blockpuzzle.game.MyDragShadowBuilder
-import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gravitation.ShakeService
@@ -38,13 +28,23 @@ import java.text.DecimalFormat
  * without destroying everything.
  */
 class MainActivity : AppCompatActivity(), IGameView {
-    private val game = Game(this)
-    private val shakeService = ShakeService(game)
+    private lateinit var game: Game
+    private lateinit var shakeService : ShakeService
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // INIT PHASE
+        if (GameState.isStoneWars()) {
+            game = StoneWarsGame(this)
+        } else {
+            game = Game(this)
+        }
+        shakeService = ShakeService(game)
+
+        // SUPER PHASE
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // REST OF METHOD PHASE
         (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false))
         (placeholder2 as ViewGroup).addView(GamePieceView(baseContext, 2, false))
         (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3, false))
@@ -53,9 +53,14 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
+        if (GameState.isStoneWars()) {
+            newGame.visibility = View.INVISIBLE
+        } else {
+            newGame.visibility = View.VISIBLE
+        }
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())
-        shakeService.initShakeDetection(this)
+        shakeService!!.initShakeDetection(this)
     }
 
     // Activity reactivated
@@ -64,13 +69,12 @@ class MainActivity : AppCompatActivity(), IGameView {
 
         shakeService.setActive(true)
 
-        val gameMode = intent.getStringExtra("gameMode")
-        val gamePieceSetNumber = intent.getIntExtra("gamePieceSetNumber", 0)
-        game.initGame(gameMode, gamePieceSetNumber)
+        game.initGame()
     }
 
     // Activity goes sleeping
     override fun onPause() {
+        println("jux onPause")
         game.save();
 
         shakeService.setActive(false)
@@ -217,7 +221,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun rotatingModeOff() {
         rotatingMode.text = resources.getText(R.string.drehenAus)
-        rotatingMode.setBackgroundColor(resources.getColor(R.color.colorNormal))
+        rotatingMode.setBackgroundColor(resources.getColor(R.color.colorHeadlineBackground))
         initTouchListeners()
     }
 
@@ -231,7 +235,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun showScore(score: Int, delta: Int, gameOver: Boolean) {
         var text = getScoreText(score, gameOver)
         if (gameOver) {
-            if (game.isCleanerGame && game.isWon) {
+            if (game.gameCanBeWon() && game.isWon) {
                 playingField.soundService.youWon()
             } else {
                 playingField.soundService.gameOver()
@@ -245,7 +249,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     private fun getScoreText(score: Int, gameOver: Boolean): String {
         val ret: String
         if (gameOver) {
-            if (game.isCleanerGame && game.isWon) {
+            if (game.gameCanBeWon() && game.isWon) {
                 if (score == 1) {
                     ret = resources.getString(R.string.winScore1)
                 } else {
@@ -292,5 +296,18 @@ class MainActivity : AppCompatActivity(), IGameView {
             text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
         }
         infoDisplay.setText(text)
+    }
+
+    override fun showToast(msg: String) {
+        var msg2 = msg
+        if (msg.startsWith("+")) {
+            msg2 = msg.substring(1)
+            playingField.soundService.youWon()
+        }
+        Toast.makeText(this, msg2, Toast.LENGTH_LONG).show()
+    }
+
+    override fun shake() {
+        playingField.soundService.shake()
     }
 }

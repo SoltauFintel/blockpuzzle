@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    tools:context=".StartScreenActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/appTitleForecolor"
+            android:textSize="30sp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/blockPuzzle"/>
+        <Button
+            android:id="@+id/stoneWars"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:background="@color/colorHeadlineBackground"
+            android:text="@string/stoneWars"/>
+        <Button
+            android:id="@+id/oldGame"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorHeadlineBackground"
+            android:text="@string/oldGame"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorHeadlineBackground"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:textColor="@color/colorHeadlineForeground"
+            android:textAlignment="center"
+            android:text="@string/startScreenTitle"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -12,7 +12,6 @@ import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.block.special.LockBlock;
 import de.mwvb.blockpuzzle.block.special.StarBlock;
 
-// TODO Move to spielstein package
 // Bauplan für alle Blöcke
 public class BlockTypes {
     public static final int ONE_COLOR = 10;
@@ -23,21 +22,21 @@ public class BlockTypes {
     private final View view;
     private final List<ISpecialBlock> specialBlockTypes = new ArrayList<>();
     public static final int MIN_SPECIAL = 20;
-    public static final int MAX_SPECIAL = 29; // TODO Ich muss die 30er umziehen, um mehr Platz zu bekommen
+    public static final int MAX_SPECIAL = 29; // TO-DO Ich muss die 30er umziehen, um mehr Platz zu bekommen
 
     public BlockTypes(View view) {
         this.view = view;
         specialBlockTypes.add(new StarBlock());
         specialBlockTypes.add(new LockBlock());
 
-        add(1, R.color.colorNormal);
-        add(2, R.color.orange);
-        add(3, R.color.red);
-        add(4, R.color.blue);
-        add(5, R.color.pink);
-        add(6, R.color.yellow);
-        add(ONE_COLOR, 'f', R.color.oneColor);
-        add(11, 'o', R.color.oneColorOld);
+        add(1, R.color.brown, R.color.brown_i, R.color.brown_ib);
+        add(2, R.color.orange, R.color.orange_i, R.color.orange_ib);
+        add(3, R.color.red, R.color.red_i, R.color.red_ib);
+        add(4, R.color.blue, R.color.blue_i, R.color.blue_ib);
+        add(5, R.color.pink, R.color.pink_i, R.color.pink_ib);
+        add(6, R.color.yellow, R.color.yellow_i, R.color.yellow_ib);
+        add(ONE_COLOR, 'f', R.color.oneColor, R.color.oneColor_i, R.color.oneColor_ib);
+        add(11, 'o', R.color.oneColorOld, R.color.oneColorOld_i, R.color.oneColorOld_ib);
 
         for (ISpecialBlock s : getSpecialBlockTypes()) {
             charMap.put("" + s.getBlockTypeChar(), s.getBlockType());
@@ -51,20 +50,20 @@ public class BlockTypes {
         return specialBlockTypes;
     }
 
-    private void add(int blockType, int color) {
+    private void add(int blockType, int color, int color_i, int color_ib) {
         if (blockType > 9) {
             throw new RuntimeException("Use other add() for blockTypes > 9 !");
         }
         charMap.put("" + blockType, blockType);
         if (view != null) {
-            blockDrawerMap.put(blockType, ColorBlockDrawer.byRColor(view, color));
+            blockDrawerMap.put(blockType, ColorBlockDrawer.byRColor(view, color, color_i, color_ib));
         }
     }
 
-    private void add(int blockType, char cBlockType, int color) {
+    private void add(int blockType, char cBlockType, int color, int color_i, int color_ib) {
         charMap.put("" + cBlockType, blockType);
         if (view != null) {
-            blockDrawerMap.put(blockType, ColorBlockDrawer.byRColor(view, color));
+            blockDrawerMap.put(blockType, ColorBlockDrawer.byRColor(view, color, color_i, color_ib));
         }
     }
 

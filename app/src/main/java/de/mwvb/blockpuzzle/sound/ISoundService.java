@@ -12,4 +12,6 @@ public interface ISoundService {
     void oneColor();
 
     void doesNotWork();
+
+    void shake();
 }

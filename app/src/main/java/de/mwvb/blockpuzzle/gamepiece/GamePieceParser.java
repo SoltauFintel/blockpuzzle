@@ -7,7 +7,7 @@ import de.mwvb.blockpuzzle.block.BlockTypes;
 
 public class GamePieceParser {
     private final BlockTypes blockTypes = new BlockTypes(null);
-    // TODO Denkbar wäre auch noch eine Maximalpunktzahl.
+    // TO-DO Denkbar wäre auch noch eine Maximalpunktzahl.
 
     public List<GamePiece> parse(String definition) {
         final GPParseData data = new GPParseData();
@@ -57,7 +57,7 @@ public class GamePieceParser {
     private void parseParameters(String line, GPParseData data) {
         if (line.toLowerCase().startsWith("min=")) { // Mindestpunktzahl
             int min = Integer.parseInt(line.substring("min=".length()).trim());
-            data.current.setMindestpunktzahl(min);
+            data.current.setMinimumMoves(min);
 
         } else if (line.toLowerCase().startsWith("n=")) { // produce number of game pieces
             data.n = Integer.parseInt(line.substring("n=".length()).trim());

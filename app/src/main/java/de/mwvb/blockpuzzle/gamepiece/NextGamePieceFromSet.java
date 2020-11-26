@@ -4,20 +4,23 @@ import java.util.List;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.sets.AllGamePieceSets;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 
 public class NextGamePieceFromSet implements INextGamePiece {
     private final List<GamePiece> allGamePieces = GamePiecesDefinition.INSTANCE.get();
     private final BlockTypes blockTypes = new BlockTypes(null);
-    private final int number; // TODO muss persistiert werden
+    private final int number;
+    private final IPersistence persistence;
     private final String[] set;
-    private int nextRound = 0; // TODO muss persistiert werden
+    private int nextRound = 0;
     private int nextGamePieceInRound = 0;
 
-    public NextGamePieceFromSet(int number) {
-        this.number = number;
-        if (number < 0 || number > 9999) {
+    public NextGamePieceFromSet(int number, IPersistence persistence) {
+        if (number <= 0 || number > 9999 || persistence == null) {
             throw new IllegalArgumentException();
         }
+        this.number = number;
+        this.persistence = persistence;
         String a = "" + number;
         while (a.length() < 4) {
             a = "0" + a;
@@ -32,11 +35,7 @@ public class NextGamePieceFromSet implements INextGamePiece {
     }
 
     @Override
-    public void ausduennen() { //
-    }
-
-    @Override
-    public GamePiece next(int score, BlockTypes blockTypes) {
+    public GamePiece next(BlockTypes blockTypes) {
         if (nextRound == set.length) {
             return null;
         }
@@ -45,13 +44,14 @@ public class NextGamePieceFromSet implements INextGamePiece {
         if (nextGamePieceInRound == 3) {
             nextGamePieceInRound = 0;
             nextRound++;
+            persistence.saveNextRound(nextRound);
         }
         return ret;
     }
 
-    public void setNextRound(int v) {
-        nextRound = v;
-        nextGamePieceInRound = 0;
+    @Override
+    public GamePiece getOther(BlockTypes blockTypes) {
+        throw new UnsupportedOperationException();
     }
 
     private GamePiece fetch(int round, int piece) {
@@ -114,5 +114,18 @@ public class NextGamePieceFromSet implements INextGamePiece {
             }
         }
         return p;
+    }
+
+    @Override
+    public void reset() {
+        nextRound = 0;
+        persistence.saveNextRound(0);
+        nextGamePieceInRound = 0;
+    }
+
+    @Override
+    public void load() {
+        nextRound = persistence.loadNextRound();
+        nextGamePieceInRound = 0;
     }
 }

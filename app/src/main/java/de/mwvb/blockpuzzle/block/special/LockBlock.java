@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.block.BlockDrawParameters;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -45,23 +46,24 @@ public class LockBlock extends SpecialBock {
     @Override
     public IBlockDrawer getBlockDrawer(View view) {
         final Paint boxPaint = new Paint();
+        boxPaint.setColor(view.getResources().getColor(android.R.color.black));
         final Paint linePaint = new Paint();
         linePaint.setStrokeWidth(16);
         linePaint.setColor(view.getResources().getColor(R.color.lockBlock));
-        boxPaint.setColor(view.getResources().getColor(android.R.color.white)); // TODO Farbe definieren!
+        final Paint smallLinePaint = new Paint();
+        smallLinePaint.setStrokeWidth(8);
+        smallLinePaint.setColor(view.getResources().getColor(R.color.lockBlock));
         return new IBlockDrawer() {
             @Override
-            public void draw(Canvas canvas, float tx, float ty, float p, int br, float f) {
-                final float left = (tx + p) * f;
-                final float top = (ty + p) * f;
-                final float right = (tx + br - p) * f;
-                final float bottom = (ty + br - p) * f;
-                final float xLine = left + (right - left) / 2;
-                final float yLine = top + (bottom - top) / 2;
+            public void draw(float x, float y, BlockDrawParameters p) {
+                final float left = (x + p.getP()) * p.getF();
+                final float top = (y + p.getP()) * p.getF();
+                final float right = (x + p.getBr() - p.getP()) * p.getF();
+                final float bottom = (y + p.getBr() - p.getP()) * p.getF();
 
-                canvas.drawRect(left, top, right, bottom, boxPaint);
-                canvas.drawLine(left, top, right, bottom, linePaint);
-                canvas.drawLine(left, bottom, right, top, linePaint);
+                p.getCanvas().drawRect(left, top, right, bottom, boxPaint);
+                p.getCanvas().drawLine(left, top, right, bottom, p.isDragMode() ? linePaint : smallLinePaint);
+                p.getCanvas().drawLine(left, bottom, right, top, p.isDragMode() ? linePaint : smallLinePaint);
             }
         };
     }

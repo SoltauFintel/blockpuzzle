@@ -9,16 +9,18 @@ public class GravitationAction implements Action {
     private final GravitationData data;
     private final Game game;
     private final PlayingField playingField;
+    private final int startRow;
 
-    public GravitationAction(GravitationData gravitationData, Game game, PlayingField playingField) {
+    public GravitationAction(GravitationData gravitationData, Game game, PlayingField playingField, int startRow) {
         this.data = gravitationData;
         this.game = game;
         this.playingField = playingField;
+        this.startRow = startRow;
     }
 
     @Override
     public void execute() {
-        for (int i = 5; i >= 1; i--) {
+        for (int i = startRow; i >= 1; i--) {
             if (hasToBeRemoved(i) && data.getRows().contains(Game.blocks - i)) {
                 // Row war voll und wurde geleert -> Gravitation auslösen
                 playingField.gravitation(Game.blocks - i, !data.isFirstGravitationPlayed());

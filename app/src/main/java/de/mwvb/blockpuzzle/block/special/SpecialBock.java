@@ -25,7 +25,7 @@ public abstract class SpecialBock implements ISpecialBlock {
 
     @Override
     public IBlockDrawer getBlockDrawer(View view) {
-        return ColorBlockDrawer.byRColor(view, getColor());
+        return ColorBlockDrawer.byRColor(view, getColor(), getColor(), getColor()); // TODO new color formats _i _ib
     }
 
     @Override

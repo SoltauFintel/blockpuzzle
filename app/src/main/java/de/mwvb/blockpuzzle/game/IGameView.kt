@@ -18,5 +18,9 @@ interface IGameView {
 
     fun showMoves(moves: Int)
 
+    fun showToast(msg: String)
+
     fun rotatingModeOff()
+
+    fun shake()
 }

@@ -1,71 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/activityBackground"
     tools:context=".StartActivity">
 
+    <Button
+        android:id="@+id/selectTarget"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="@string/selectAsTarget"
+        android:textAllCaps="false"
+        android:layout_above="@id/titlebar"
+        android:layout_alignEnd="@id/clusterViewParent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@color/quadrant"/>
+
     <LinearLayout
+        android:id="@+id/clusterViewParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/colorHeadlineBackground">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="14dp"
-                android:textColor="@color/colorHeadlineForeground"
-                android:text="@string/app_name"/>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/classicGame"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:text="@string/classicGame"
-            android:textAllCaps="false"/>
-        <Button
-            android:id="@+id/cleanerGame"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:text="@string/emptyPFGame"
-            android:textAllCaps="false"
-            />
-        <LinearLayout
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/gamePieceSetNumber"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:digits="0123456789"
-                />
-            <Button
-                android:id="@+id/saveGPSN"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text="Speichern"
-                android:textAllCaps="false"
-                />
-        </LinearLayout>
+        <de.mwvb.blockpuzzle.cluster.ClusterView
+            android:id="@+id/clusterView"
+            android:layout_width="1500dp"
+            android:layout_height="1500dp"/>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorHeadlineBackground"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:textColor="@color/colorHeadlineForeground"
+            android:text="@string/app_name"/>
+    </LinearLayout>
+
+</RelativeLayout>

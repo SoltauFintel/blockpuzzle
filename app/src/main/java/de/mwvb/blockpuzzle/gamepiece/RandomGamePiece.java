@@ -1,7 +1,6 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -10,39 +9,39 @@ import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
 
 public class RandomGamePiece implements INextGamePiece {
     private final Random rand = new Random(System.currentTimeMillis());
-    private final List<GamePiece> gamePieces = new ArrayList<>();
+    private final List<GamePiece> allDefinedGamePieces = new ArrayList<>();
+    /** Wieviel Steine der Generator schon raus gegeben hat. */
+    private int output;
 
     public RandomGamePiece() {
-        gamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
+        reset();
+        allDefinedGamePieces.addAll(GamePiecesDefinition.INSTANCE.get());
     }
 
     @Override
-    public void ausduennen() {
-        // TODO Das ist erstmal vorläufig so; zum Testen soll's einfacher sein.
-        Iterator<GamePiece> iter = gamePieces.iterator();
-        while (iter.hasNext()) {
-            GamePiece p = iter.next();
-            if (p.getName().length() > 1 && !"Ecke2".equals(p.getName())) {
-                iter.remove();
-            }
-        }
-    }
-
-    @Override
-    public GamePiece next(int score, BlockTypes blockTypes) {
+    public GamePiece next(BlockTypes blockTypes) {
         int loop = 0;
-        int index = rand.nextInt(gamePieces.size());
-        GamePiece gamePiece = gamePieces.get(index);
-        while (score < gamePiece.getMindestpunktzahl()) {
-            if (++loop > 1000) { // Notausgang
-                return gamePieces.get(0);
+
+        int index = rand.nextInt(allDefinedGamePieces.size());
+        GamePiece gamePiece = allDefinedGamePieces.get(index);
+        while (output < gamePiece.getMinimumMoves()) {
+            if (++loop > 1000) { // killer loop
+                return allDefinedGamePieces.get(0);
             }
-            index = rand.nextInt(gamePieces.size());
-            gamePiece = gamePieces.get(index);
+
+            index = rand.nextInt(allDefinedGamePieces.size());
+            gamePiece = allDefinedGamePieces.get(index);
         }
         gamePiece = gamePiece.copy();
         addSpecialBlock(blockTypes, gamePiece);
+        output++;
         return gamePiece;
+    }
+
+    @Override
+    public GamePiece getOther(BlockTypes blockTypes) {
+        output--;
+        return next(blockTypes);
     }
 
     /** Insert a special block type randomly */
@@ -52,5 +51,15 @@ public class RandomGamePiece implements INextGamePiece {
                 break;
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        output = 0;
+    }
+
+    @Override
+    public void load() {
+        reset();
     }
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".developer.DeveloperActivity"
+    android:orientation="vertical"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developer Funktionen"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score für aktuellen Planeten"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:id="@+id/score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/saveScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Score speichern"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/liberated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Planet als befreit kennzeichnen"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/conquered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Planet als erobert kennzeichnen"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:id="@+id/ownername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text=" "/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gegner-Score für aktuellen Planeten"/>
+    <EditText
+        android:id="@+id/otherScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gegner-Moves für aktuellen Planeten"/>
+    <EditText
+        android:id="@+id/otherMoves"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/saveOtherScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gegner-Score/-Moves speichern"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zurück"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

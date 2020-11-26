@@ -1,0 +1,186 @@
+package de.mwvb.blockpuzzle.game;
+
+import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.gravitation.GravitationData;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.playingfield.PlayingField;
+
+public class PersistenceNoOp implements IPersistence {
+
+    @Override
+    public void save(int index, GamePiece p) {
+    }
+
+    @Override
+    public GamePiece load(int index) {
+        return null;
+    }
+
+    @Override
+    public void save(PlayingField f) {
+    }
+
+    @Override
+    public void load(GravitationData data) {
+    }
+
+    @Override
+    public void save(GravitationData data) {
+    }
+
+    @Override
+    public void load(PlayingField f) {
+    }
+
+    @Override
+    public void setGameID(IPlanet planet, int gameDefinitionIndex) {
+        throw new RuntimeException("unsupported");
+    }
+
+    @Override
+    public void setGameID(IPlanet planet) {
+        throw new RuntimeException("unsupported");
+    }
+
+    @Override
+    public void setGameID_oldGame() {
+        throw new RuntimeException("unsupported");
+    }
+
+    @Override
+    public int loadScore() {
+        return -9999;
+    }
+
+    @Override
+    public void saveScore(int punkte) {
+    }
+
+    @Override
+    public int loadDelta() {
+        return 0;
+    }
+
+    @Override
+    public void saveDelta(int delta) {
+    }
+
+    @Override
+    public int loadMoves() {
+        return 0;
+    }
+
+    @Override
+    public void saveMoves(int moves) {
+    }
+
+    @Override
+    public int loadHighScore() {
+        return 0;
+    }
+
+    @Override
+    public void saveHighScore(int punkte) {
+    }
+
+    @Override
+    public int loadHighScoreMoves() {
+        return 0;
+    }
+
+    @Override
+    public void saveHighScoreMoves(int moves) {
+    }
+
+    @Override
+    public void saveOwner(int score, int moves, String name) {
+    }
+
+    @Override
+    public void clearOwner() {
+    }
+
+    @Override
+    public String loadOwnerName() {
+        return null;
+    }
+
+    @Override
+    public int loadOwnerScore() {
+        return 0;
+    }
+
+    @Override
+    public int loadOwnerMoves() {
+        return 0;
+    }
+
+    @Override
+    public void saveSpacePosition(int x, int y) {
+    }
+
+    @Override
+    public int loadSpacePositionX() {
+        return 0;
+    }
+
+    @Override
+    public int loadSpacePositionY() {
+        return 0;
+    }
+
+    @Override
+    public void loadPlanet(IPlanet planet) {
+    }
+
+    @Override
+    public int loadFlightMode() {
+        return 0;
+    }
+
+    @Override
+    public void saveFlightMode(int val) {
+    }
+
+    @Override
+    public String loadPlayerName() {
+        return null;
+    }
+
+    @Override
+    public void savePlayerName(String playername) {
+    }
+
+    @Override
+    public void saveOldGame(int v) {
+
+    }
+
+    @Override
+    public int loadOldGame() {
+        return 0;
+    }
+
+    @Override
+    public void saveNextRound(int nextRound) {
+    }
+
+    @Override
+    public int loadNextRound() {
+        return 0;
+    }
+
+    @Override
+    public void savePlanet(IPlanet planet) {
+    }
+
+    @Override
+    public int loadTarget() {
+        return 0;
+    }
+
+    @Override
+    public void saveTarget(int target) {
+    }
+}

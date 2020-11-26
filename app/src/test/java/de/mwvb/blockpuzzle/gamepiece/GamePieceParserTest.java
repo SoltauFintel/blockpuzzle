@@ -11,6 +11,7 @@ public class GamePieceParserTest {
     public void testDefine() {
         // Test
         GamePiece p = GamePiecesDefinition.INSTANCE.find("2");
+        Assert.assertNotNull(p);
 
         // Verify
         Assert.assertFalse(p.filled(0, 0));
@@ -47,10 +48,10 @@ public class GamePieceParserTest {
     @Test
     public void testMinusOneRow() {
         try {
-            List<GamePiece> list = new GamePieceParser().parse("#Test\n.....\n.....\n..1..\n.....\n");
+            new GamePieceParser().parse("#Test\n.....\n.....\n..1..\n.....\n");
             Assert.fail("Exception expected");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().contains("5 rows"));
+            Assert.assertTrue(e.getMessage(), e.getMessage() != null && e.getMessage().contains("5 rows"));
             Assert.assertTrue(e.getMessage(), e.getMessage().contains("(A)"));
         }
     }
@@ -58,22 +59,20 @@ public class GamePieceParserTest {
     @Test
     public void testPlusOneRow() {
         try {
-            List<GamePiece> list = new GamePieceParser().parse(
-                    "#Test\n.....\n.....\n..1..\n.....\n.....\n.....\n");
+            new GamePieceParser().parse("#Test\n.....\n.....\n..1..\n.....\n.....\n.....\n");
             Assert.fail("Exception expected");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().contains("5 rows"));
+            Assert.assertTrue(e.getMessage(), e.getMessage() != null && e.getMessage().contains("5 rows"));
             Assert.assertTrue(e.getMessage(), e.getMessage().contains("(B)"));
         }
     }
     @Test
     public void testMissingName() {
         try {
-            List<GamePiece> list = new GamePieceParser().parse(
-                    "\n.....\n.....\n..1..\n.....\n.....\n");
+            new GamePieceParser().parse("\n.....\n.....\n..1..\n.....\n.....\n");
             Assert.fail("Exception expected");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().contains("Missing name"));
+            Assert.assertTrue(e.getMessage(), e.getMessage() != null && e.getMessage().contains("Missing name"));
             Assert.assertTrue(e.getMessage(), e.getMessage().contains("(C)"));
         }
     }
@@ -81,20 +80,19 @@ public class GamePieceParserTest {
     @Test
     public void testNoGamePieces() {
         try {
-            List<GamePiece> list = new GamePieceParser().parse(
-                    "/*\n\n#Test\n.....\n.....\n..1..\n.....\n.....\n*/\n\n");
+            new GamePieceParser().parse("/*\n\n#Test\n.....\n.....\n..1..\n.....\n.....\n*/\n\n");
             Assert.fail("Exception expected");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().contains("No game pieces"));
+            Assert.assertTrue(e.getMessage(), e.getMessage() != null && e.getMessage().contains("No game pieces"));
         }
     }
 
     @Test
     public void testMindestpunktzahl() {
         List<GamePiece> list = new GamePieceParser().parse(
-                "#Test\nmin=2000\n.....\n.....\n..1..\n.....\n.....\n");
+                "#Test\nmin=133\n.....\n.....\n..1..\n.....\n.....\n");
 
-        Assert.assertEquals(2000, list.get(0).getMindestpunktzahl());
+        Assert.assertEquals(133, list.get(0).getMinimumMoves());
     }
 
     @Test

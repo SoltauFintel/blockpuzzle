@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
@@ -17,8 +18,8 @@ public class GamePiece {
     private int[][] matrix = new int[max][max];
     /** rotate temp matrix */
     private int[][] neu = new int[max][max];
-    private int mindestpunktzahl = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
-    private String name; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im SpielsteinView gelandet ist.
+    private int minimumMoves = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im GamePieceView gelandet ist.
+    private String name; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im GamePieceView gelandet ist.
 
     public GamePiece() {
         for (int x = 0; x < max; x++) {
@@ -34,7 +35,7 @@ public class GamePiece {
             for (int x = 0; x < max; x++) {
                 System.arraycopy(matrix[x], 0, n.matrix[x], 0, max);
             }
-            n.mindestpunktzahl = mindestpunktzahl;
+            n.minimumMoves = minimumMoves;
             n.name = name;
             return n;
         } catch (Throwable e) {
@@ -50,8 +51,9 @@ public class GamePiece {
         this.name = name;
     }
 
-    public void setMindestpunktzahl(int minp) {
-        mindestpunktzahl = minp;
+    // 3x3 and X game pieces are called big blocks
+    public boolean isBigBlock() {
+        return name.startsWith("3x3") || name.startsWith("X");
     }
 
     public boolean filled(int x, int y) {
@@ -182,9 +184,12 @@ public class GamePiece {
         return ret;
     }
 
-    /* Der Spieler muss mindestens diese Punktzahl haben, damit der Spielstein verfügbar wird. */
-    public int getMindestpunktzahl() { // TODO English
-        return mindestpunktzahl;
+    public int getMinimumMoves() {
+        return minimumMoves;
+    }
+
+    public void setMinimumMoves(int v) {
+        minimumMoves = v;
     }
 
     @NotNull
@@ -204,6 +209,16 @@ public class GamePiece {
             }
         }
         return filledBlocks;
+    }
+
+    public boolean hasSpecialBlock() {
+        for (QPosition k : getAllFilledBlocks()) {
+            int blockType = getBlockType(k.getX(), k.getY());
+            if (blockType >= BlockTypes.MIN_SPECIAL && blockType <= BlockTypes.MAX_SPECIAL) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @NotNull

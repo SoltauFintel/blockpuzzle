@@ -16,10 +16,11 @@ public class SoundService implements ISoundService {
     private SoundPool soundPool;
     private int crunch;
     private int money;
-    private int explosion;
+    private MediaPlayer explosion;
     private MediaPlayer laughter;
     private MediaPlayer jeqa;
     private MediaPlayer applause;
+    private int brickdrop2;
 
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
@@ -40,10 +41,11 @@ public class SoundService implements ISoundService {
 
         crunch = soundPool.load(context, R.raw.crunch, 0);
         money = soundPool.load(context, R.raw.money, 0);
-        explosion = soundPool.load(context, R.raw.explosion, 0);
+        explosion = MediaPlayer.create(context, R.raw.explosion);
         laughter = MediaPlayer.create(context, R.raw.laughter);
         jeqa = MediaPlayer.create(context, R.raw.jeqa);
         applause = MediaPlayer.create(context, R.raw.applause);
+        brickdrop2 = soundPool.load(context, R.raw.brickdrop2, 0);
     }
 
     /** destroy SoundService */
@@ -58,7 +60,11 @@ public class SoundService implements ISoundService {
 
     @Override
     public void clear(boolean big) {
-        play(big ? explosion : crunch);
+        if (big) {
+            explosion.start();
+        } else {
+            play(crunch);
+        }
     }
 
     @Override
@@ -68,11 +74,13 @@ public class SoundService implements ISoundService {
 
     @Override
     public void gameOver() {
+        quiet();
         laughter.start();
     }
 
     @Override
     public void youWon() {
+        quiet();
         applause.start();
     }
 
@@ -83,6 +91,16 @@ public class SoundService implements ISoundService {
 
     @Override
     public void doesNotWork() {
-        // TODO
+        // no sound, maybe in the future
+    }
+
+    @Override
+    public void shake() {
+        play(brickdrop2);
+    }
+
+    private void quiet() {
+        jeqa.stop();
+        explosion.stop();
     }
 }
