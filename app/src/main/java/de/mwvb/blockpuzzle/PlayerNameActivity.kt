@@ -13,13 +13,14 @@ class PlayerNameActivity : AppCompatActivity() {
         saveBtn.setOnClickListener { onSaveBtn() }
     }
 
-    private fun onSaveBtn() {
-        GameState.savePlayername(playername.text.toString())
-        finish()
-    }
-
     override fun onResume() {
         super.onResume()
         playername.setText(GameState.playername)
+    }
+
+    private fun onSaveBtn() {
+        GameState.savePlayername(playername.text.toString())
+        GameState.persistence!!.savePlayernameEntered(true)
+        finish()
     }
 }

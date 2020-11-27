@@ -14,4 +14,6 @@ public interface ISoundService {
     void doesNotWork();
 
     void shake();
+
+    void alarm(boolean on);
 }

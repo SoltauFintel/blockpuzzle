@@ -18,8 +18,7 @@
     <string name="backToGame">Zurück zum Spiel</string>
     <string name="save">Speichern</string>
     <string name="empty" />
-    <string name="bridge">Brücke</string>
-    <string name="leaveShipInSpace">Wirklich Schiff verlassen?</string>
+    <string name="leaveShipInSpace">Wirklich Spiel beenden?</string>
     <string name="stoneWars">Krieg der Steine</string>
     <string name="oldGame">Altes Spiel</string>
     <string name="startScreenTitle">Version 4.0 von SoltauFintel</string>
@@ -34,7 +33,7 @@
     <string name="enterPlayerName">Spielername eingeben</string>
     <string name="transporter">Transporterraum</string>
     <string name="leaveShip">Schiff verlassen</string>
-    <string name="selectAsTarget">Als Ziel festlegen</string>
+    <string name="selectAsTarget">Auswählen</string>
     <string name="communications">Kommunikation</string>
     <string name="cargoBay">Frachtraum</string>
     <string name="shuttleRamp">Shuttlerampe</string>
@@ -80,4 +79,12 @@
     <string name="liberateTerritory_BlockPuzzle">Territorium befreien (Block Puzzle)</string>
     <string name="territoryLiberated">+Territorium befreit!</string>
     <string name="defeatedEnemy">+Gegner geschlagen! Territorium befreit!</string>
+    <string name="quitGame">Spiel beenden</string>
+    <string name="continue1">Weiter</string>
+    <string name="infotext">Roter Alarm! Captain, unser Raumschiff wurde durch eine Weltraumanomalie in eine unbekannte Galaxie katapultiert. Wie finden wir nur zurück? Aber erst müssen wir die Planeten von der Orange Union befreien. In unserem friedlichen Zeitalter werden Konflikte durchs Spielen von Block Puzzle ausgetragen. Los geht\'s.</string>
+    <string name="dataexchangeInfo">Tausche hier Deinen Spielstand mit anderen Spielern aus. Kopiere den Spielstand und sende diesen an andere Spieler, z.B. via WhatsApp. Kopiere den von anderen Spielern gesendeten Spielstand und drücke Einfügen.</string>
+    <string name="copy">Kopiere</string>
+    <string name="paste">Einfügen</string>
+    <string name="bayern">Oberbayern</string>
+    <string name="luxemburg">Luxemburg West</string>
 </resources>

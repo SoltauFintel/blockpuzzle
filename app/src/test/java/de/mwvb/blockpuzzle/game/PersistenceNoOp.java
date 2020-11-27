@@ -117,30 +117,7 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
-    public void saveSpacePosition(int x, int y) {
-    }
-
-    @Override
-    public int loadSpacePositionX() {
-        return 0;
-    }
-
-    @Override
-    public int loadSpacePositionY() {
-        return 0;
-    }
-
-    @Override
     public void loadPlanet(IPlanet planet) {
-    }
-
-    @Override
-    public int loadFlightMode() {
-        return 0;
-    }
-
-    @Override
-    public void saveFlightMode(int val) {
     }
 
     @Override
@@ -153,8 +130,21 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
-    public void saveOldGame(int v) {
+    public void saveCurrentPlanet(int clusterNumber, int planetNumber) {
+    }
 
+    @Override
+    public int loadCurrentPlanet() {
+        return 1;
+    }
+
+    @Override
+    public int loadCurrentCluster() {
+        return 1;
+    }
+
+    @Override
+    public void saveOldGame(int v) {
     }
 
     @Override
@@ -172,15 +162,19 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public boolean loadPlayernameEntered() {
+        return false;
+    }
+
+    @Override
+    public void savePlayernameEntered(boolean v) {
+    }
+
+    @Override
+    public void resetAll() {
+    }
+
+    @Override
     public void savePlanet(IPlanet planet) {
-    }
-
-    @Override
-    public int loadTarget() {
-        return 0;
-    }
-
-    @Override
-    public void saveTarget(int target) {
     }
 }

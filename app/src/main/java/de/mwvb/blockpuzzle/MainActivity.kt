@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     // Activity goes sleeping
     override fun onPause() {
-        println("jux onPause")
         game.save();
 
         shakeService.setActive(false)

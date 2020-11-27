@@ -165,8 +165,7 @@ public class ClusterView extends View {
 
             int n = p.getGameDefinitions().size();
 
-            String i1 = getName(p) + p.getNumber() + "    g=" + p.getGravitation();
-            p.setInfoText1(i1);
+            p.setInfoText1(getName(p) + p.getNumber());
 
             if (p.getGameDefinitions() != null && !p.getGameDefinitions().isEmpty()) {
                 p.setInfoText2(getFirstGameDefinition(p).getClusterViewInfo());
@@ -250,12 +249,10 @@ public class ClusterView extends View {
         }
 
         // aktuelle Raumschiffposition (erstmal nur ein Kreis, später ein Symbol oder ein Kreuz)
-        float ssx = GameState.INSTANCE.getX();
-        float ssy = GameState.INSTANCE.getY();
-        if (GameState.INSTANCE.getFlightMode() == 1) {
-            ssx -= 0.3f;
-            ssy += 0.3f;
-        }
+        float ssx = GameState.INSTANCE.getPlanet().getX();
+        float ssy = GameState.INSTANCE.getPlanet().getY();
+        ssx -= 0.3f;
+        ssy += 0.3f;
         canvas.drawCircle(ssx * w * f, ssy * w * f, 5 * f, spaceshipPaint);
 
         // Speech bubble
@@ -308,7 +305,7 @@ public class ClusterView extends View {
     }
 
     public void selectTarget() {
-        GameState.INSTANCE.setTarget(bubble.getPlanet());
+        GameState.INSTANCE.setPlanet(bubble.getPlanet());
         draw();
     }
 }

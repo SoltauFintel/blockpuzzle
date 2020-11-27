@@ -40,19 +40,23 @@ public interface IPersistence {
     int loadOwnerScore();
     int loadOwnerMoves();
 
-    void saveSpacePosition(int x, int y);
-    int loadSpacePositionX();
-    int loadSpacePositionY();
     void loadPlanet(IPlanet planet);
     void savePlanet(IPlanet planet);
-    int loadTarget();
-    void saveTarget(int target);
-    int loadFlightMode();
-    void saveFlightMode(int val);
     String loadPlayerName();
     void savePlayerName(String playername);
+
+    void saveCurrentPlanet(int clusterNumber, int planetNumber);
+    int loadCurrentPlanet();
+    int loadCurrentCluster();
+
     void saveOldGame(int v);
     int loadOldGame();
     void saveNextRound(int nextRound);
     int loadNextRound();
+
+    boolean loadPlayernameEntered();
+    void savePlayernameEntered(boolean v);
+
+    /** DELETE ALL DATA */
+    void resetAll();
 }

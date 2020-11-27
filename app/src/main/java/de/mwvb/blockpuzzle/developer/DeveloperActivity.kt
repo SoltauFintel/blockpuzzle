@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.developer
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import de.mwvb.blockpuzzle.Features
@@ -10,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_player_name.*
 import java.lang.RuntimeException
 
 class DeveloperActivity : AppCompatActivity() {
-    // TODO GamePieceSet Index hochsetzen (um das Spielende zu simulieren)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,9 @@ class DeveloperActivity : AppCompatActivity() {
         liberated.setOnClickListener { onLiberated() }
         conquered.setOnClickListener { onConquered() }
         saveOtherScore.setOnClickListener { onSaveOther() }
+        saveNextRound.setOnClickListener { onSaveNextRound() }
         backBtn.setOnClickListener { finish() }
+        resetAllBtn.setOnClickListener { onResetAll() }
     }
 
     override fun onResume() {
@@ -43,6 +45,7 @@ class DeveloperActivity : AppCompatActivity() {
             ownername.setText(per.loadOwnerName())
             otherScore.setText("" + per.loadOwnerScore())
             otherMoves.setText("" + per.loadOwnerMoves())
+            nextRound.setText("" + per.loadNextRound())
         }
     }
 
@@ -80,5 +83,27 @@ class DeveloperActivity : AppCompatActivity() {
         val per = GameState.persistence!!
         per.saveOwner(score, moves, "Detlef")
         finish()
+    }
+
+    private fun onSaveNextRound() {
+        val index = Integer.parseInt(nextRound.text.toString())
+        val per = GameState.persistence!!
+        per.saveNextRound(index)
+        finish()
+    }
+
+    private fun onResetAll() {
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        dialog.setTitle("ACHTUNG: Wirklich alle Daten löschen?")
+        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onReallyResetAll() }
+        dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+        dialog.show()
+
+    }
+
+    private fun onReallyResetAll() {
+        GameState.cluster.planets.forEach { p -> p.isOwner = false; }
+        GameState.persistence!!.resetAll()
+        finishAffinity()
     }
 }

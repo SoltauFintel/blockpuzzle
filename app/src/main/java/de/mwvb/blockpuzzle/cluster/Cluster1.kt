@@ -48,20 +48,20 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(9,26,9, CleanerGameDefinition(26, 6)))
         planets.add(Planet(10,26,11, ClassicGameDefinition(26, 5000)))
         planets.add(Moon(11,27,13, CleanerGameDefinition(26, 6)))
-        planets.add(Planet(21,34,12, CleanerGameDefinition(27, 5))) // 114 Moves
-        planets.add(GiantPlanet(39,20,16)) // TODO games
+        planets.add(Planet(21,34,12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
+        planets.add(GiantPlanet(39,20,16, 9, ClassicGameDefinition(37, 50000), null, null))
 
         // BETA QUADRANT
-        planets.add(Planet(27,20,25))
+        planets.add(Planet(27,20,25, CleanerGameDefinition(28, 3))) // TODO
         planets.add(Moon(12,27,21, CleanerGameDefinition(28, 8)))
         planets.add(Planet(13,28,22, 6, CleanerGameDefinition(29, 7)))
         planets.add(Moon(14,29,23, CleanerGameDefinition(30, 9)))
-        planets.add(Planet(33,24,30))
-        planets.add(Planet(34,34,21))
-        planets.add(Planet(35,32,27))
-        planets.add(GiantPlanet(36,28,32)) // TODO kooperative games
-        planets.add(Planet(37,33,33))
-        planets.add(Planet(38,25,36))
+        planets.add(Planet(33,24,30, CleanerGameDefinition(28, 4, 20))) // 12 Moves
+        planets.add(Planet(34,34,21, CleanerGameDefinition(31, 5)))
+        planets.add(Planet(35,32,27, CleanerGameDefinition(32, 6)))
+        planets.add(getGiantPlanet3())
+        planets.add(Planet(37,33,33, CleanerGameDefinition(33, 7, 200)))
+        planets.add(Planet(38,25,36, CleanerGameDefinition(34, 8, 200)))
 
         //planets.filter { p -> p.number != 1 }.forEach { p -> p.isVisibleOnMap = false }
     }
@@ -87,5 +87,15 @@ object Cluster1 : Cluster(1) {
         lowerSaxony.territoryName = R.string.lowerSaxony
 
         return GiantPlanet(29, 8, 31, brandenburg, saxony, lowerSaxony)
+    }
+
+    private fun getGiantPlanet3(): GiantPlanet {
+        val gd1 = ClassicGameDefinition(35, 40000)
+        gd1.territoryName = R.string.bayern
+
+        val gd2 = ClassicGameDefinition(36, 40000)
+        gd2.territoryName = R.string.luxemburg
+
+        return GiantPlanet(36, 28, 32, 8, gd1, gd2, null)
     }
 }

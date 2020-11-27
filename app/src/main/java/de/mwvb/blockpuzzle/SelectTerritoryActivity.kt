@@ -1,10 +1,13 @@
 package de.mwvb.blockpuzzle
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
+import de.mwvb.blockpuzzle.game.NewGameService
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_select_territory.*
 import java.text.DecimalFormat
@@ -51,14 +54,34 @@ class SelectTerritoryActivity : AppCompatActivity() {
         return GameInfoService().getSelectedGameInfo(resources, GameState.getPlanet()!!.gameDefinitions[gi])
     }
 
-    private fun thousand(n: Int): String {
-        return DecimalFormat("#,##0").format(n)
-    }
-
     private fun selectTerritory(territoryNumber: Int) {
         val planet = GameState.getPlanet()!!
         planet.selectedGame = planet.gameDefinitions[territoryNumber]
+        when (GameState.selectTerritoryMode) {
+            1 -> {
+                onNewLiberationAttemptQuestion()
+            }
+            2 -> {
+                finish()
+                startActivity(Intent(this, DeveloperActivity::class.java))
+            }
+            else -> {
+                finish()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
+    }
+
+    private fun onNewLiberationAttemptQuestion() {
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        dialog.setTitle(R.string.newLiberationAttemptQuestion)
+        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onResetGame() }
+        dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+        dialog.show()
+    }
+
+    private fun onResetGame() {
+        NewGameService().newGame()
         finish()
-        startActivity(Intent(this, PlanetActivity::class.java))
     }
 }

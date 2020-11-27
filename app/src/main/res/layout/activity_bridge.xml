@@ -16,10 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@string/bridge"
+            android:text="@string/stoneWars"
             android:textSize="26sp"
-            android:layout_marginStart="14dp"
-            />
+            android:layout_marginStart="14dp"/>
 
         <Button
             android:id="@+id/navigation"
@@ -37,36 +36,43 @@
             android:textSize="16sp"
             android:textAlignment="center"/>
         <Button
-            android:id="@+id/travel"
+            android:id="@+id/play"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/liberatePlanet_BlockPuzzle"
+            android:textAllCaps="false"
+            android:background="@color/playButtonColor"
+            android:layout_marginTop="4dp"/>
+        <Button
+            android:id="@+id/newGame"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="@string/travel"
+            android:text="@string/newLiberationAttempt"
+            android:textAllCaps="false"
+            android:background="@color/colorGrey"
+            android:layout_marginTop="4dp"/>
+        <Button
+            android:id="@+id/dataexchange"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/dataexchange"
             android:textAllCaps="false"
             android:background="@color/backButton"
             android:layout_marginTop="4dp"/>
         <Button
-            android:id="@+id/landOnPlanet"
+            android:id="@+id/quitGame"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="@string/landOnPlanet"
+            android:text="@string/quitGame"
             android:textAllCaps="false"
-            android:background="@color/backButton"
+            android:background="@color/colorGrey"
             android:layout_marginTop="4dp"/>
         <Button
-            android:id="@+id/communications"
+            android:id="@+id/developer"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="@string/communications"
+            android:text="@string/developer"
             android:textAllCaps="false"
-            android:background="@color/backButton"
-            android:layout_marginTop="4dp"/>
-        <Button
-            android:id="@+id/leaveBridge"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/leaveBridge"
-            android:textAllCaps="false"
-            android:background="@color/backButton"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
@@ -79,7 +85,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:textAlignment="center"
             android:textColor="@color/colorHeadlineForeground"
             android:text="@string/app_name"/>
     </LinearLayout>

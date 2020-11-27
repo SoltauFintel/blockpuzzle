@@ -16,10 +16,8 @@ public class Persistence implements IPersistence {
     // Global data ----
     private static final String GLOBAL_OLD_GAME = "/oldGame";
     private static final String GLOBAL_PLAYERNAME = "/playername";
-    private static final String GLOBAL_SPACE_POS_X = "/spacePosX";
-    private static final String GLOBAL_SPACE_POS_Y = "/spacePosY";
-    private static final String GLOBAL_FLIGHT_MODE = "/flightMode";
-    public static final String GLOBAL_TARGET = "/target"; // planet number
+    private static final String GLOBAL_CURRENT_PLANET = "/currentPlanet";
+    private static final String GLOBAL_PLAYERNAME_ENTERED = "/playernameEntered";
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
     private static final String PLANET_VISIBLE = "visible";
@@ -280,36 +278,25 @@ public class Persistence implements IPersistence {
     }
 
     @Override
-    public void saveSpacePosition(int x, int y) {
-        putInt(GLOBAL_SPACE_POS_X, x);
-        putInt(GLOBAL_SPACE_POS_Y, y);
-    }
-
-    @Override
-    public int loadSpacePositionX() {
-        return getInt(GLOBAL_SPACE_POS_X, 5);
-    }
-
-    @Override
-    public int loadSpacePositionY() {
-        return getInt(GLOBAL_SPACE_POS_Y, 5);
-    }
-
-    @Override
-    public int loadFlightMode() {
-        return getInt(GLOBAL_FLIGHT_MODE, 2);
-    }
-
-    @Override
-    public void saveFlightMode(int val) {
-        putInt(GLOBAL_FLIGHT_MODE, val);
-    }
-
-    @Override
     public void savePlayerName(String playername) {
         SharedPreferences.Editor edit = pref().edit();
         edit.putString(name(GLOBAL_PLAYERNAME), playername);
         edit.apply();
+    }
+
+    @Override
+    public void saveCurrentPlanet(int clusterNumber, int planetNumber) {
+       putInt(GLOBAL_CURRENT_PLANET, planetNumber);
+    }
+
+    @Override
+    public int loadCurrentPlanet() {
+        return getInt(GLOBAL_CURRENT_PLANET, 1);
+    }
+
+    @Override
+    public int loadCurrentCluster() {
+        return 1; // At this time there's only cluster 1 implemented.
     }
 
     @Override
@@ -329,20 +316,12 @@ public class Persistence implements IPersistence {
     public void loadPlanet(IPlanet planet) {
         String key = getPlanetKey(planet);
         if (getInt(key + PLANET_VERSION, 0) != 1) {
+            planet.setOwner(false);
+            planet.setVisibleOnMap(true);
             return; // There are no planet data.
         }
         planet.setVisibleOnMap(getBoolean(key + PLANET_VISIBLE));
         planet.setOwner(getBoolean(key + PLANET_OWNER));
-    }
-
-    @Override
-    public int loadTarget() {
-        return getInt(GLOBAL_TARGET, -1);
-    }
-
-    @Override
-    public void saveTarget(int target) {
-        putInt(GLOBAL_TARGET, target);
     }
 
     @Override
@@ -363,6 +342,16 @@ public class Persistence implements IPersistence {
     @Override
     public int loadNextRound() {
         return getInt(NEXT_ROUND, 0);
+    }
+
+    @Override
+    public boolean loadPlayernameEntered() {
+        return getBoolean(GLOBAL_PLAYERNAME_ENTERED);
+    }
+
+    @Override
+    public void savePlayernameEntered(boolean v) {
+        putBoolean(GLOBAL_PLAYERNAME_ENTERED, v);
     }
 
     @Override
@@ -419,6 +408,13 @@ public class Persistence implements IPersistence {
     private void save(String name, StringBuilder s) {
         SharedPreferences.Editor edit = pref().edit();
         edit.putString(name(name), s.toString());
+        edit.apply();
+    }
+
+    @Override
+    public void resetAll() {
+        SharedPreferences.Editor edit = pref().edit();
+        edit.clear();
         edit.apply();
     }
 }

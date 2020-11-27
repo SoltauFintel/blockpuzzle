@@ -150,6 +150,11 @@ public class TestGameBuilder {
             @Override
             public void shake() {
             }
+
+            @Override
+            public void alarm() {
+
+            }
         };
     }
 

@@ -25,7 +25,8 @@ class StartScreenActivity : AppCompatActivity() {
         super.onResume()
         GameState.load()
         if (GameState.isStoneWars()) {
-            onStoneWars()
+            GameState.activateStoneWars()
+            startActivity(Intent(this, BridgeActivity::class.java))
         }
     }
 
@@ -35,12 +36,12 @@ class StartScreenActivity : AppCompatActivity() {
     }
 
     private fun onStoneWars() {
-        GameState.setOldGame(2)
-        startActivity(Intent(this, BridgeActivity::class.java))
+        GameState.activateStoneWars()
+        startActivity(Intent(this, InfoActivity::class.java))
     }
 
     private fun onOldGame() {
-        GameState.setOldGame(1)
+        GameState.activateOldGame()
         startActivity(Intent(this, MainActivity::class.java))
     }
 }

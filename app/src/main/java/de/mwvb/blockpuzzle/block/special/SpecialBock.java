@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.block.special;
 
+import android.graphics.Color;
 import android.view.View;
 
 import java.util.List;
@@ -25,7 +26,15 @@ public abstract class SpecialBock implements ISpecialBlock {
 
     @Override
     public IBlockDrawer getBlockDrawer(View view) {
-        return ColorBlockDrawer.byRColor(view, getColor(), getColor(), getColor()); // TODO new color formats _i _ib
+        return ColorBlockDrawer.byRColor(view, getColor(), getColor_i(), getColor_ib());
+    }
+
+    public int getColor_i() {
+        return getColor();
+    }
+
+    public int getColor_ib() {
+        return getColor();
     }
 
     @Override

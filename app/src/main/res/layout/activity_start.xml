@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/selectTarget"
-        android:layout_width="140dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/selectAsTarget"
         android:textAllCaps="false"
@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:textAlignment="center"
             android:textColor="@color/colorHeadlineForeground"
             android:text="@string/app_name"/>
     </LinearLayout>

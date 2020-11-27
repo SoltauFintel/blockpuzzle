@@ -53,7 +53,7 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
         val rx = myX - bubbleWidth / 2
         val ry = myY - bubbleBoxHeight - 30
         val r = RectF(rx, ry, rx + bubbleWidth, ry + bubbleBoxHeight)
-        val isTarget = (GameState.getTargetPlanetNumber() == p.number)
+        val isTarget = (GameState.getPlanet()?.number == p.number)
         if (isTarget) {
             rectanglePaint.color = backgroundForTarget
             trianglePaint.color = backgroundForTarget
@@ -71,11 +71,6 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
             canvas.drawText(p.getInfoText(i), xx, yy, textPaint)
         }
         selectTargetButton.isEnabled = true
-        if (isTarget) {
-            selectTargetButton.text = "Ziel aufheben"
-        } else {
-            selectTargetButton.text = "Als Ziel festlegen"
-        }
     }
 
     private fun getPath(myX: Float, myY: Float): Path {

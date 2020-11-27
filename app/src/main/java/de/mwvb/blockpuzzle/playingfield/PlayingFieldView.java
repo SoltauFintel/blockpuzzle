@@ -168,7 +168,8 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
     void drawmode(int mode) {
         drawmode(mode, false, false);
     }
-        // called by RowExplosion
+
+    // called by RowExplosion
     void drawmode(int mode, boolean playClearSound, boolean bigClearSound) {
         this.mode = mode;
         draw();

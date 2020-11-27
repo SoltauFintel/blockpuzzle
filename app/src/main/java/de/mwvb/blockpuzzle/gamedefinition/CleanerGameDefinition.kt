@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
+import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.Game
 import de.mwvb.blockpuzzle.persistence.IPersistence
@@ -72,7 +73,11 @@ class CleanerGameDefinition @JvmOverloads constructor(
     // DISPLAY ----
 
     override fun getInfo(): String {
-        var ret = "Z$gamePieceSetNumber Cleaner Game L$level"
+        var ret = ""
+        if (Features.developerMode) {
+            ret = "Z$gamePieceSetNumber "
+        }
+        ret += "Cleaner Game L$level"
         if (maximumLiberationMoves > 0) {
             ret += " XLM$maximumLiberationMoves"
         }

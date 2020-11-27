@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.widget.Toast;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -42,7 +43,11 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public String getInfo() {
-        String info = "Z" + getGamePieceSetNumber() + " Classic Game" ;
+        String info = "";
+        if (Features.developerMode) {
+            info = "Z" + getGamePieceSetNumber() + " ";
+        }
+        info += "Classic Game" ;
         if (minimumLiberationScore > 0) {
             info += " MLS" + (minimumLiberationScore / 1000) + "k";
         }
@@ -51,7 +56,7 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public String getClusterViewInfo() {
-        return "Z" + getGamePieceSetNumber() + " Classic";
+        return "Classic";
     }
 
 

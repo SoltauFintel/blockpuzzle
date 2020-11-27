@@ -17,8 +17,7 @@
     <string name="backToGame">Back to Game</string>
     <string name="save">Save</string>
     <string name="empty" />
-    <string name="bridge">Bridge</string>
-    <string name="leaveShipInSpace">Really abandon ship?</string>
+    <string name="leaveShipInSpace">Really quit game?</string>
     <string name="stoneWars">Stone Wars</string>
     <string name="oldGame">Old Game</string>
     <string name="startScreenTitle">Version 4.0 by SoltauFintel</string>
@@ -33,7 +32,7 @@
     <string name="enterPlayerName">Enter player name</string>
     <string name="transporter">Transporter</string>
     <string name="leaveShip">Leave ship</string>
-    <string name="selectAsTarget">Select as target</string>
+    <string name="selectAsTarget">Select</string>
     <string name="communications">Communications</string>
     <string name="cargoBay">Cargo bay</string>
     <string name="shuttleRamp">Shuttle ramp</string>
@@ -56,8 +55,8 @@
     <string name="moon">Dwarf planet</string>
     <string name="giantPlanet">Giant planet</string>
     <string name="deathStar">Death star</string>
-    <string name="liberatedPlanetByYou">liberated planet by you</string>
-    <string name="liberatedTerritoryByYou">liberated territory by you</string>
+    <string name="liberatedPlanetByYou">Liberated planet by you</string>
+    <string name="liberatedTerritoryByYou">Liberated territory by you</string>
     <string name="planetOccByP1">Planet occupied by %1$s</string>
     <string name="orangeUnion">Orange Union</string>
     <string name="inOrbitOf">in orbit of</string>
@@ -79,4 +78,12 @@
     <string name="liberateTerritory_BlockPuzzle">Liberate territory (Block Puzzle)</string>
     <string name="territoryLiberated">+Territory liberated!</string>
     <string name="defeatedEnemy">+Enemy defeated! Territory liberated!</string>
+    <string name="quitGame">Quit game</string>
+    <string name="continue1">Weiter</string>
+    <string name="infotext">Red alert! Captain, our spaceship was catapulted into an unknown galaxy by a space anomaly. How do we find our way back to our home galaxy? But first we have to liberate the planets from the Orange Union. In our peaceful age, conflicts are resolved by playing Block Puzzle. Let\'s go.</string>
+    <string name="dataexchangeInfo">Use this to exchange your game state with other players. Copy your game state and paste it into e.g. WhatsApp. Copy game state sent by other players and paste it here.</string>
+    <string name="copy">Copy</string>
+    <string name="paste">Paste</string>
+    <string name="bayern">Upper Bavaria</string>
+    <string name="luxemburg">Luxembourg West</string>
 </resources>

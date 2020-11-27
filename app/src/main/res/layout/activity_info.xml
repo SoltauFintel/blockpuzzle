@@ -6,32 +6,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/black"
-    tools:context=".CommunicationsActivity">
+    tools:context=".InfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="4dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@string/communications"
+            android:text="@string/stoneWars"
             android:textSize="26sp"
-            android:layout_marginStart="14dp"
-            />
+            android:layout_marginStart="14dp"/>
         <TextView
-            android:id="@+id/comm"
+            android:id="@+id/infotext"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:textColor="@color/green"
-            android:text="----"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:scrollbars="vertical"
             android:layout_margin="4dp"
-            />
+            android:textSize="18sp"
+            android:text="@string/infotext"/>
+        <Button
+            android:id="@+id/contBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/continue1"
+            android:background="@color/colorHeadlineBackground"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +47,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:textAlignment="center"
             android:textColor="@color/colorHeadlineForeground"
             android:text="@string/app_name"/>
     </LinearLayout>

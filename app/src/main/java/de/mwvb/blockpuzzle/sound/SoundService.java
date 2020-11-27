@@ -7,7 +7,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
-import android.provider.MediaStore;
 
 import de.mwvb.blockpuzzle.R;
 
@@ -21,6 +20,7 @@ public class SoundService implements ISoundService {
     private MediaPlayer jeqa;
     private MediaPlayer applause;
     private int brickdrop2;
+    private MediaPlayer alarm;
 
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
@@ -46,6 +46,7 @@ public class SoundService implements ISoundService {
         jeqa = MediaPlayer.create(context, R.raw.jeqa);
         applause = MediaPlayer.create(context, R.raw.applause);
         brickdrop2 = soundPool.load(context, R.raw.brickdrop2, 0);
+        alarm = MediaPlayer.create(context, R.raw.alarm);
     }
 
     /** destroy SoundService */
@@ -99,8 +100,26 @@ public class SoundService implements ISoundService {
         play(brickdrop2);
     }
 
+    @Override
+    public void alarm(boolean on) {
+        if (on) {
+            alarm.setLooping(true);
+            alarm.start();
+        } else {
+            quiet(alarm);
+        }
+    }
+
     private void quiet() {
-        jeqa.stop();
-        explosion.stop();
+        quiet(jeqa);
+        quiet(explosion);
+    }
+
+    private void quiet(MediaPlayer mp) {
+        mp.stop();
+        try {
+            mp.prepare(); // direkt wieder startfähig machen
+        } catch (Throwable ignore) {
+        }
     }
 }

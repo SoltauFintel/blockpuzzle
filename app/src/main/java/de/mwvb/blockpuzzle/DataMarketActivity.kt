@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -21,11 +22,13 @@ class DataMarketActivity : AppCompatActivity() {
 
         pasteBtn.setOnClickListener { onPaste() }
         copyBtn.setOnClickListener { onCopy() }
+        enterPlayername.setOnClickListener { startActivity(Intent(this, PlayerNameActivity::class.java)) }
     }
 
     override fun onResume() {
         super.onResume()
         dataview.setText(DataService().get())
+        copyBtn.isEnabled = GameState.persistence!!.loadPlayernameEntered()
     }
 
     private fun onCopy() {
