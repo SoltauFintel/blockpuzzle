@@ -43,8 +43,7 @@ public class Persistence implements IPersistence {
     private SharedPreferences __pref; // only access by pref() !
     private String prefix = "";
 
-    // TODO wenn beim Laden etwas schief geht, muss ich gescheit reagieren. Das Spiel darf dann nicht bei jedem AppStart abkacken.
-    // TODO Die Kommentare entfernen. Die sind mtlw. überholt. (22.10.20)
+    // Die Kommentare sind mglw. tlw. überholt (22.10.20)
 
     public Persistence(ContextWrapper owner) {
         this.owner = owner;
@@ -316,8 +315,6 @@ public class Persistence implements IPersistence {
     public void loadPlanet(IPlanet planet) {
         String key = getPlanetKey(planet);
         if (getInt(key + PLANET_VERSION, 0) != 1) {
-            planet.setOwner(false);
-            planet.setVisibleOnMap(true);
             return; // There are no planet data.
         }
         planet.setVisibleOnMap(getBoolean(key + PLANET_VISIBLE));

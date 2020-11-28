@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.game;
 import org.jetbrains.annotations.NotNull;
 
 import de.mwvb.blockpuzzle.Features;
+import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
@@ -152,7 +153,7 @@ public class TestGameBuilder {
             }
 
             @Override
-            public void alarm() {
+            public void alarm(boolean on) {
 
             }
         };
@@ -174,5 +175,25 @@ public class TestGameBuilder {
             ret += "\n";
         }
         return ret;
+    }
+
+    // only for test, not for Persistence
+    public static String getStringPresentation(GamePiece p, BlockTypes blockTypes, boolean addNewline) {
+        StringBuilder ret = new StringBuilder();
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                final int blockType = p.getBlockType(x, y);
+                if (blockType == 0) {
+                    ret.append('.');
+                } else {
+                    char blockTypeChar = blockTypes.getBlockTypeChar(blockType);
+                    ret.append(blockTypeChar);
+                }
+            }
+            if (addNewline) {
+                ret.append("\n");
+            }
+        }
+        return ret.toString();
     }
 }

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileWriter;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.game.TestGameBuilder;
 
 public class GamePieceSetGenerator {
     private static final int MAX_GPS_FILES = 40;
@@ -40,7 +41,7 @@ public class GamePieceSetGenerator {
                 GamePiece p = next(gen);
                 if (p.hasSpecialBlock()) {
                     runde.append(":");
-                    runde.append(getStringPresentation(p)); // long presentation
+                    runde.append(TestGameBuilder.getStringPresentation(p, blockTypes, false)); // long presentation
                 } else {
                     runde.append("#");
                     runde.append(p.getName()); // short presentation
@@ -107,23 +108,6 @@ public class GamePieceSetGenerator {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    // only for test, not for Persistence
-    private String getStringPresentation(GamePiece p) {
-        StringBuilder ret = new StringBuilder();
-        for (int y = 0; y < GamePiece.max; y++) {
-            for (int x = 0; x < GamePiece.max; x++) {
-                final int blockType = p.getBlockType(x, y);
-                if (blockType == 0) {
-                    ret.append('.');
-                } else {
-                    char blockTypeChar = blockTypes.getBlockTypeChar(blockType);
-                    ret.append(blockTypeChar);
-                }
-            }
-        }
-        return ret.toString();
     }
 }
 

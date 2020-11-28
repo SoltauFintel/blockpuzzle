@@ -10,6 +10,7 @@ public abstract class GameDefinition {
     private final int gamePieceSetNumber;
     /** R.string constant, -1=use standard names */
     private int territoryName = -1;
+    private LiberatedFeature libf = null;
 
     public GameDefinition(int gamePieceSetNumber) {
         this.gamePieceSetNumber = gamePieceSetNumber;
@@ -81,4 +82,12 @@ public abstract class GameDefinition {
      * @return null, or message text for Toast, prefix "+" if victory (play applause sound)
      */
     public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, IPersistence persistence, ResourceAccess resouces);
+
+    public LiberatedFeature getFeatureOnLiberation() {
+        return libf;
+    }
+
+    public void setLiberatedFeature(LiberatedFeature v) {
+        libf = v;
+    }
 }

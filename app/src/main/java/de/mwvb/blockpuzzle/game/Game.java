@@ -105,6 +105,7 @@ public class Game {
 
         holders.clearParking();
         offer();
+        save();
     }
 
     protected void initPlayingField() {
@@ -127,8 +128,6 @@ public class Game {
         for (int i = 1; i <= 3; i++) {
             holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
         }
-
-        save();
     }
 
     // Spielaktionen ----
@@ -153,10 +152,10 @@ public class Game {
                 offer();
             }
             checkGame();
+            save();
         } else {
             throw new DoesNotWorkException();
         }
-        // TODO Wieder einbauen, dass nach jedem Move gespeichert wird! (alles) old game. Denn durch App-Neustart geht der Move verloren
     }
 
     /**

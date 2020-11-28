@@ -197,10 +197,9 @@ public class GameTest extends AbstractBlockPuzzleTest {
         Assert.assertEquals(3*3 + 3 * 7 + 105, game.getScore());
     }
 
-    // TODO Game over Situation
-
-    // TODO nach Game-over wird new-game gewählt
-    // TODO Nachdem ca. 5 Moves gespielt wurden, wird new-game gewählt
-
-    // TODO coverage
+    // TODO weitere Testideen
+    // - Game over Situation
+    // - nach Game-over wird new-game gewählt
+    // - Nachdem ca. 5 Moves gespielt wurden, wird new-game gewählt
+    // - coverage
 }

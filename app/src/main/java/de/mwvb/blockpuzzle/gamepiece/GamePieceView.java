@@ -93,7 +93,6 @@ public class GamePieceView extends View implements IGamePieceView {
             canvas.drawRect(0, 0, br * GamePiece.max * f, br * GamePiece.max * f, p_parking);
         }
         if (gamePiece != null) {
-            // TODO Ist das doppelter Code zu PlayingFieldView?
             for (int x = 0; x < GamePiece.max; x++) {
                 for (int y = 0; y < GamePiece.max; y++) {
                     int blockType = gamePiece.getBlockType(x, y);

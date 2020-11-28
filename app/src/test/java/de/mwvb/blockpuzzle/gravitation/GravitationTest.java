@@ -68,7 +68,7 @@ public class GravitationTest extends AbstractBlockPuzzleTest {
         Assert.assertEquals("Last row must be gone!", 0, game.get(9, row));
     }
 
-    // TODO Naja, so richtig testet dieser Testfall das nicht, da hier nicht die Verzögerung statt findet.
+    // TO-DO Naja, so richtig testet dieser Testfall das nicht, da hier nicht die Verzögerung statt findet.
     @Test
     public void gameOverBug() {
         // Prepare

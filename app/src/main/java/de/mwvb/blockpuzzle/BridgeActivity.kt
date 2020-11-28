@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import de.mwvb.blockpuzzle.cluster.Cluster
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
@@ -33,7 +34,7 @@ class BridgeActivity : AppCompatActivity() {
         update()
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed() { // do nothing
     }
 
     private fun update() {
@@ -44,7 +45,7 @@ class BridgeActivity : AppCompatActivity() {
     // Zeile 1
     private fun getPositionInfo(): String {
         var info = resources.getString(R.string.position) + ":   G=" + GameState.galaxy + "  C=" + GameState.cluster.number +
-                "  Q=" + GameState.cluster.getQuadrant(GameState.getPlanet()!!.x, GameState.getPlanet()!!.y) +
+                "  Q=" + Cluster.getQuadrant(GameState.getPlanet()!!) +
                 "  X=" + GameState.getPlanet()!!.x + "  Y=" + GameState.getPlanet()!!.y
         info += "\n" + getPlanetInfo() + "\n" + GameInfoService().getGameInfo(resources)
         return info

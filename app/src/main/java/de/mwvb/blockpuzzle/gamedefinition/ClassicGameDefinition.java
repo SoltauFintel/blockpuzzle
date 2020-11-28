@@ -56,7 +56,7 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public String getClusterViewInfo() {
-        return "Classic";
+        return "Z" + getGamePieceSetNumber() + " Classic MLS" + (minimumLiberationScore / 1000) + "k";
     }
 
 

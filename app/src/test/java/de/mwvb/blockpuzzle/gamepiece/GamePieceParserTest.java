@@ -5,7 +5,11 @@ import org.junit.Test;
 
 import java.util.List;
 
+import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.game.TestGameBuilder;
+
 public class GamePieceParserTest {
+    private final BlockTypes blockTypes = new BlockTypes(null);
 
     @Test
     public void testDefine() {
@@ -121,8 +125,8 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(2, list.size());
-        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
-        Assert.assertEquals(defR, getStringPresentation(list.get(1)));
+        Assert.assertEquals(def1, TestGameBuilder.getStringPresentation(list.get(0), blockTypes, true));
+        Assert.assertEquals(defR, TestGameBuilder.getStringPresentation(list.get(1), blockTypes, true));
     }
 
     @Test
@@ -144,9 +148,9 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(1 + m, list.size());
-        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
+        Assert.assertEquals(def1, TestGameBuilder.getStringPresentation(list.get(0), blockTypes, true));
         for (int i = 1; i < m; i++) {
-            Assert.assertEquals("Error #" + i, defRR, getStringPresentation(list.get(i)));
+            Assert.assertEquals("Error #" + i, defRR, TestGameBuilder.getStringPresentation(list.get(i), blockTypes, true));
         }
     }
 
@@ -168,8 +172,8 @@ public class GamePieceParserTest {
                         def1);
 
         Assert.assertEquals(2, list.size());
-        Assert.assertEquals(def1, getStringPresentation(list.get(0)));
-        Assert.assertEquals(defL, getStringPresentation(list.get(1)));
+        Assert.assertEquals(def1, TestGameBuilder.getStringPresentation(list.get(0), blockTypes, true));
+        Assert.assertEquals(defL, TestGameBuilder.getStringPresentation(list.get(1), blockTypes, true));
     }
 
     /** 3x3_Bonus1 is defined as "3x3_Bonus1:3x3", so it uses the layout from 3x3 */
@@ -178,25 +182,25 @@ public class GamePieceParserTest {
         GamePiece a = GamePiecesDefinition.INSTANCE.find("3x3");
         GamePiece b = GamePiecesDefinition.INSTANCE.find("3x3_Bonus1");
 
-        Assert.assertEquals(getStringPresentation(a), getStringPresentation(b));
+        Assert.assertEquals(TestGameBuilder.getStringPresentation(a, blockTypes, true), TestGameBuilder.getStringPresentation(b, blockTypes, true));
     }
 
+// old code, can be removed in February 2021
     // only for test, not for Persistence
-    // TODO see also: GamePieceSetGenerator
-    public String getStringPresentation(GamePiece p) {
-        StringBuilder ret = new StringBuilder();
-        for (int y = 0; y < GamePiece.max; y++) {
-            for (int x = 0; x < GamePiece.max; x++) {
-                final int blockType = p.getBlockType(x, y);
-                switch (blockType) {
-                    case 0: ret.append("."); break;
-                    case 1: ret.append("1"); break;
-                    case 3: ret.append("3"); break;
-                    default: throw new RuntimeException("Unknown block type: " + blockType);
-                }
-            }
-            ret.append("\n");
-        }
-        return ret.toString();
-    }
+//    public String getStringPresentation(GamePiece p) {
+//        StringBuilder ret = new StringBuilder();
+//        for (int y = 0; y < GamePiece.max; y++) {
+//            for (int x = 0; x < GamePiece.max; x++) {
+//                final int blockType = p.getBlockType(x, y);
+//                switch (blockType) {
+//                    case 0: ret.append("."); break;
+//                    case 1: ret.append("1"); break;
+//                    case 3: ret.append("3"); break;
+//                    default: throw new RuntimeException("Unknown block type: " + blockType);
+//                }
+//            }
+//            ret.append("\n");
+//        }
+//        return ret.toString();
+//    }
 }

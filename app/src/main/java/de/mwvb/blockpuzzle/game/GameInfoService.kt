@@ -4,6 +4,7 @@ import android.content.res.Resources
 import de.mwvb.blockpuzzle.GameState
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
+import de.mwvb.blockpuzzle.planet.IPlanet
 import java.text.DecimalFormat
 
 class GameInfoService {
@@ -49,5 +50,23 @@ class GameInfoService {
 
     private fun thousand(n: Int): String {
         return DecimalFormat("#,##0").format(n)
+    }
+
+    fun isPlanetFullyLiberated(planet: IPlanet): Boolean {
+        val per = GameState.persistence!!
+        val defs = planet.gameDefinitions
+        for (i in 0 until defs.size) {
+            per.setGameID(planet, i)
+            if (!defs[i].isLiberated(per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves())) {
+                return false
+            }
+        }
+        per.setGameID(planet) // set back to selected game
+        return defs.size > 0
+    }
+
+    fun executeLiberationFeature(planet: IPlanet) {
+        planet.gameDefinitions[0].featureOnLiberation?.start()
+        GameState.save()
     }
 }

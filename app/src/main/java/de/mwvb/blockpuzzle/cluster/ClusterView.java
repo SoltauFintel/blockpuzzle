@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import de.mwvb.blockpuzzle.GameState;
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.Persistence;
@@ -276,6 +277,18 @@ public class ClusterView extends View {
     }
 
     private Paint getPlanetPaint(IPlanet planet) {
+        /* DEBUG mode:
+        if (planet.getGameDefinitions().isEmpty()) {
+            return giantPlanetPaint;
+        }
+        if (planet.getSelectedGame() == null) {
+            planet.setSelectedGame(planet.getGameDefinitions().get(0));
+        }
+        if (planet.getSelectedGame() instanceof CleanerGameDefinition) {
+            return moonPaint;
+        }
+        return planetPaint; */
+
         Paint p;
         if (planet instanceof GiantPlanet) {
             p = giantPlanetPaint;

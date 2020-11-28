@@ -21,7 +21,11 @@ public class Cluster {
         return planets;
     }
 
-    public String getQuadrant(int x, int y) {
+    public static String getQuadrant(IPlanet p) {
+        return getQuadrant(p.getX(), p.getY());
+    }
+
+    public static String getQuadrant(int x, int y) {
         String ret;
         if (x < 20) {
             if (y < 19) {
