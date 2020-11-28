@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
+import de.mwvb.blockpuzzle.GameState;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -410,8 +411,6 @@ public class Persistence implements IPersistence {
 
     @Override
     public void resetAll() {
-        SharedPreferences.Editor edit = pref().edit();
-        edit.clear();
-        edit.apply();
+        pref().edit().clear().commit(); // scheiss auf die Warning
     }
 }

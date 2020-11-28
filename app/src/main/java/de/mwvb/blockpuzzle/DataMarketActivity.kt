@@ -27,8 +27,12 @@ class DataMarketActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        dataview.setText(DataService().get())
-        copyBtn.isEnabled = GameState.persistence!!.loadPlayernameEntered()
+        try {
+            dataview.setText(DataService().get())
+            copyBtn.isEnabled = GameState.persistence!!.loadPlayernameEntered()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun onCopy() {

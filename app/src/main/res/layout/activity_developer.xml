@@ -103,6 +103,14 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:id="@+id/openMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open Map"
+                android:layout_marginTop="40dp"
+                android:textAllCaps="false"/>
+
+            <Button
                 android:id="@+id/resetAllBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

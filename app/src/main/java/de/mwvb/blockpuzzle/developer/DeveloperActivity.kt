@@ -1,14 +1,13 @@
 package de.mwvb.blockpuzzle.developer
 
 import android.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.GameState
+import de.mwvb.blockpuzzle.GameState.cluster
 import de.mwvb.blockpuzzle.R
 import kotlinx.android.synthetic.main.activity_developer.*
-import kotlinx.android.synthetic.main.activity_player_name.*
-import java.lang.RuntimeException
 
 class DeveloperActivity : AppCompatActivity() {
 
@@ -25,6 +24,7 @@ class DeveloperActivity : AppCompatActivity() {
         saveNextRound.setOnClickListener { onSaveNextRound() }
         backBtn.setOnClickListener { finish() }
         resetAllBtn.setOnClickListener { onResetAll() }
+        openMap.setOnClickListener { onOpenMap() }
     }
 
     override fun onResume() {
@@ -98,12 +98,15 @@ class DeveloperActivity : AppCompatActivity() {
         dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onReallyResetAll() }
         dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
         dialog.show()
-
     }
 
     private fun onReallyResetAll() {
-        GameState.cluster.planets.forEach { p -> p.isOwner = false; }
         GameState.persistence!!.resetAll()
-        finishAffinity()
+        System.exit(0)
+    }
+
+    private fun onOpenMap() {
+        GameState.cluster.planets.forEach { p -> p.isVisibleOnMap = true }
+        finish()
     }
 }

@@ -66,10 +66,12 @@ class MainActivity : AppCompatActivity(), IGameView {
     // Activity reactivated
     override fun onResume() {
         super.onResume()
-
-        shakeService.setActive(true)
-
-        game.initGame()
+        try {
+            shakeService.setActive(true)
+            game.initGame()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
     // Activity goes sleeping

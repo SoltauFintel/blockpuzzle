@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import de.mwvb.blockpuzzle.sound.SoundService
 import kotlinx.android.synthetic.main.activity_info.*
 
@@ -23,6 +24,10 @@ class InfoActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        soundService.alarm(true)
+        try {
+            soundService.alarm(true)
+        } catch (e: Exception) {
+            Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
     }
 }

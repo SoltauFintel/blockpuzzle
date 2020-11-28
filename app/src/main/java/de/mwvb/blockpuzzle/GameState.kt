@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle
 
+import android.widget.Toast
 import de.mwvb.blockpuzzle.cluster.Cluster
 import de.mwvb.blockpuzzle.cluster.Cluster1
 import de.mwvb.blockpuzzle.persistence.IPersistence

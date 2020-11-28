@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
@@ -23,10 +24,14 @@ class StartScreenActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        GameState.load()
-        if (GameState.isStoneWars()) {
-            GameState.activateStoneWars()
-            startActivity(Intent(this, BridgeActivity::class.java))
+        try {
+            GameState.load()
+            if (GameState.isStoneWars()) {
+                GameState.activateStoneWars()
+                startActivity(Intent(this, BridgeActivity::class.java))
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
     }
 

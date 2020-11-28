@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import de.mwvb.blockpuzzle.cluster.Cluster
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
@@ -31,7 +32,11 @@ class BridgeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        update()
+        try {
+            update()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onBackPressed() { // do nothing
