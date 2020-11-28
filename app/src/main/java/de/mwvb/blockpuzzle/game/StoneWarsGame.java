@@ -131,7 +131,6 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected int getGravitationStartRow() {
-        System.out.println("getGravitationStartRow: " + GameState.INSTANCE.getPlanet().getGravitation());
         return GameState.INSTANCE.getPlanet().getGravitation();
     }
 }

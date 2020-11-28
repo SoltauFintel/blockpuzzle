@@ -118,7 +118,55 @@ public class GamePiece {
         for (int x = 0; x < 5; x++) {
             System.arraycopy(neu[x], 0, matrix[x], 0, 5);
         }
+
+        // Special handling for game pieces J and L
+        String def = getStringPresentation(this);
+        final String defJ =  ".....|.5...|.555.|.....|.....|";
+        final String defL =  ".....|...6.|.666.|.....|.....|";
+        if (defJ.equals(def)) {
+            reverse(defL);
+        } else if (defL.equals(def)) {
+            reverse(defJ);
+        }
+
         return this;
+    }
+
+    private void reverse(String def) {
+        int i = 0;
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                char c = def.charAt(i++);
+                if (c == '5') {
+                    setBlockType(x, y, 5);
+                } else if (c == '6') {
+                    setBlockType(x, y, 6);
+                } else {
+                    setBlockType(x, y, 0);
+                }
+            }
+            i++; // jump over "|"
+        }
+    }
+
+    private static String getStringPresentation(GamePiece p) {
+        StringBuilder ret = new StringBuilder();
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                final int blockType = p.getBlockType(x, y);
+                if (blockType == 0) {
+                    ret.append('.');
+                } else if (blockType == 5) {
+                    ret.append('5');
+                } else if (blockType == 6) {
+                    ret.append('6');
+                } else {
+                    ret.append('?');
+                }
+            }
+            ret.append("|");
+        }
+        return ret.toString();
     }
 
     private void transfer(int sx, int sy, int tx, int ty) {

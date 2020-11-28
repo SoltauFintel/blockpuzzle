@@ -177,7 +177,6 @@ public class TestGameBuilder {
         return ret;
     }
 
-    // only for test, not for Persistence
     public static String getStringPresentation(GamePiece p, BlockTypes blockTypes, boolean addNewline) {
         StringBuilder ret = new StringBuilder();
         for (int y = 0; y < GamePiece.max; y++) {
