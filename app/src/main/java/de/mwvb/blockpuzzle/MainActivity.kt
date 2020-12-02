@@ -16,6 +16,8 @@ import de.mwvb.blockpuzzle.playingfield.QPosition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gravitation.ShakeService
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,7 +35,8 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
-        if (GameState.isStoneWars()) {
+        val stoneWars = per().isStoneWars()
+        if (stoneWars) {
             game = StoneWarsGame(this)
         } else {
             game = Game(this)
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        if (GameState.isStoneWars()) {
+        if (stoneWars) {
             newGame.visibility = View.INVISIBLE
         } else {
             newGame.visibility = View.VISIBLE
@@ -310,5 +313,9 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun shake() {
         playingField.soundService.shake()
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }

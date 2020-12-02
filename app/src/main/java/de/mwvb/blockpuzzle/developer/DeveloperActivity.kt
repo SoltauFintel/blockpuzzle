@@ -1,12 +1,14 @@
 package de.mwvb.blockpuzzle.developer
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.Features
-import de.mwvb.blockpuzzle.GameState
-import de.mwvb.blockpuzzle.GameState.cluster
 import de.mwvb.blockpuzzle.R
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import kotlinx.android.synthetic.main.activity_developer.*
 
 class DeveloperActivity : AppCompatActivity() {
@@ -27,22 +29,24 @@ class DeveloperActivity : AppCompatActivity() {
         openMap.setOnClickListener { onOpenMap() }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
-        val planet = GameState.getPlanet()
+        val per = per()
+        val pa = PlanetAccess(per)
+        val planet = pa.planet
         saveScore.isEnabled = (planet != null)
         saveOtherScore.isEnabled = (planet != null)
         score.setText("")
-        ownername.setText(" ")
+        ownername.text = " "
         otherScore.setText("")
         otherMoves.setText("")
         if (planet != null) {
-            val per = GameState.persistence!!
             per.setGameID(planet)
 
             score.setText("" + per.loadScore())
-            ownername.setText(per.loadOwnerName())
+            ownername.text = per.loadOwnerName()
             otherScore.setText("" + per.loadOwnerScore())
             otherMoves.setText("" + per.loadOwnerMoves())
             nextRound.setText("" + per.loadNextRound())
@@ -51,7 +55,7 @@ class DeveloperActivity : AppCompatActivity() {
 
     private fun onSave() {
         val score = Integer.parseInt(score.text.toString())
-        val per = GameState.persistence!!
+        val per = per()
         per.saveScore(score)
         if (score <= 0) {
             per.saveMoves(0)
@@ -60,16 +64,16 @@ class DeveloperActivity : AppCompatActivity() {
     }
 
     private fun onLiberated() {
-        val per = GameState.persistence!!
-        val planet = GameState.getPlanet()
+        val per = per()
+        val planet = PlanetAccess(per).planet
         planet!!.isOwner = true
         per.savePlanet(planet)
         finish()
     }
 
     private fun onConquered() {
-        val per = GameState.persistence!!
-        val planet = GameState.getPlanet()
+        val per = per()
+        val planet = PlanetAccess(per).planet
         planet!!.isOwner = false
         per.savePlanet(planet)
         per.saveScore(-9999)
@@ -80,14 +84,14 @@ class DeveloperActivity : AppCompatActivity() {
     private fun onSaveOther() {
         val score = Integer.parseInt(otherScore.text.toString())
         val moves = Integer.parseInt(otherMoves.text.toString())
-        val per = GameState.persistence!!
+        val per = per()
         per.saveOwner(score, moves, "Detlef")
         finish()
     }
 
     private fun onSaveNextRound() {
         val index = Integer.parseInt(nextRound.text.toString())
-        val per = GameState.persistence!!
+        val per = per()
         per.saveNextRound(index)
         finish()
     }
@@ -101,12 +105,18 @@ class DeveloperActivity : AppCompatActivity() {
     }
 
     private fun onReallyResetAll() {
-        GameState.persistence!!.resetAll()
+        per().resetAll()
         System.exit(0)
     }
 
     private fun onOpenMap() {
-        GameState.cluster.planets.forEach { p -> p.isVisibleOnMap = true }
+        val pa = PlanetAccess(per())
+        pa.planets.forEach { p -> p.isVisibleOnMap = true }
+        pa.savePlanets()
         finish()
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }

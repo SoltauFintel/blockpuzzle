@@ -18,12 +18,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
-import de.mwvb.blockpuzzle.GameState;
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.Persistence;
+import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -35,13 +33,13 @@ import de.mwvb.blockpuzzle.planet.Moon;
  * Spielfeldgröße in Activity: 1500dp x 1500dp
  */
 public class ClusterView extends View {
-    /** grid size */
-    public static final int w = 40;
+    /** Model */
+    private ClusterViewModel model;
     /** for move action */
     private View parent;
     private Button selectTargetButton;
-    /** Model */
-    private Cluster cluster;
+    /** grid size */
+    public static final int w = 40;
     private Paint planetPaint, giantPlanetPaint, moonPaint, linePaint, quadrantPaint, myPaint, spaceshipPaint;
     /** for move action */
     private final PointF down = new PointF();
@@ -153,69 +151,12 @@ public class ClusterView extends View {
     public void setSelectTargetButton(Button selectTargetButton) {
         this.selectTargetButton = selectTargetButton;
     }
-    public Cluster getCluster() {
-        return cluster;
+    public void setModel(ClusterViewModel model) {
+        this.model = model;
+        bubble.setModel(model);
     }
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
-        IPersistence per = GameState.INSTANCE.getPersistence();
-        for (IPlanet p0 : cluster.getPlanets()) {
-            AbstractPlanet p = (AbstractPlanet) p0;
-
-            per.setGameID(p0, 0);
-
-            int n = p.getGameDefinitions().size();
-
-            p.setInfoText1(getName(p) + p.getNumber());
-
-            if (p.getGameDefinitions() != null && !p.getGameDefinitions().isEmpty()) {
-                p.setInfoText2(getFirstGameDefinition(p).getClusterViewInfo());
-            } else {
-                p.setInfoText2("");
-            }
-
-            int score = per.loadScore();
-            int moves = per.loadMoves();
-            int ownerScore = per.loadOwnerScore();
-            int ownerMoves = per.loadOwnerMoves();
-            String i3 = "";
-            if (n == 1 && getFirstGameDefinition(p).showMoves()) {
-                if (moves > 0) {
-                    i3 = "Moves: " + moves;
-                }
-                if (ownerMoves > 0) {
-                    i3 = "Moves: " + ownerMoves + " " + per.loadOwnerName();
-                }
-            } else if (score > 0) {
-                i3 = "Score: " + formatScore(score);
-                if (ownerScore > 0) {
-                    i3 = "Score: " + formatScore(ownerScore) + " " + per.loadOwnerName();
-                }
-            }
-            p.setInfoText3(i3);
-        }
-    }
-
-    private GameDefinition getFirstGameDefinition(IPlanet planet) {
-        return planet.getGameDefinitions().get(0);
-    }
-
-    @NotNull
-    private String getName(AbstractPlanet p) {
-        String name = "Planet #";
-        if (p instanceof Moon) {
-            name = "Dwarf planet #";
-        } else if (p instanceof GiantPlanet) {
-            name = "Giant planet #";
-        }
-        return name;
-    }
-
-    private String formatScore(int score) {
-        if (score <= 1000) {
-            return "" + score;
-        }
-        return ((int) (score / 1000)) + "k";
+    public ClusterViewModel getModel() {
+        return model;
     }
 
     public void draw() {
@@ -237,7 +178,7 @@ public class ClusterView extends View {
         canvas.drawText("beta", getWidth() / 2f + 30, getHeight() / 2f + 70, quadrantPaint);
 
         // Planets
-        for (IPlanet planet : cluster.getPlanets()) {
+        for (IPlanet planet : model.getPlanets()) {
             if (planet.isVisibleOnMap()) {
                 float xx = planet.getX() * w * f;
                 float yy = planet.getY() * w * f;
@@ -250,8 +191,8 @@ public class ClusterView extends View {
         }
 
         // aktuelle Raumschiffposition (erstmal nur ein Kreis, später ein Symbol oder ein Kreuz)
-        float ssx = GameState.INSTANCE.getPlanet().getX();
-        float ssy = GameState.INSTANCE.getPlanet().getY();
+        float ssx = model.getCurrentPlanet().getX();
+        float ssy = model.getCurrentPlanet().getY();
         ssx -= 0.3f;
         ssy += 0.3f;
         canvas.drawCircle(ssx * w * f, ssy * w * f, 5 * f, spaceshipPaint);
@@ -259,12 +200,9 @@ public class ClusterView extends View {
         // Speech bubble
         bubble.draw(canvas, selectTargetButton);
     }
-
     private void drawPlanet(Canvas canvas, float x, float y, float r, Paint paint) {
         canvas.drawCircle(x, y, r, paint);
-
     }
-
     private void drawOwnerMark(IPlanet planet, Canvas canvas, float f) {
         float ax = planet.getX() * w * f + planet.getRadius() * (planet instanceof Moon ? 1.33f : 1f) * f;
         float ay = planet.getY() * w * f - planet.getRadius() * .7f * f;
@@ -275,20 +213,7 @@ public class ClusterView extends View {
         canvas.drawLine(ax, ay, bx, by, myPaint);
         canvas.drawLine(bx, by, cx, cy, myPaint);
     }
-
     private Paint getPlanetPaint(IPlanet planet) {
-        /* DEBUG mode:
-        if (planet.getGameDefinitions().isEmpty()) {
-            return giantPlanetPaint;
-        }
-        if (planet.getSelectedGame() == null) {
-            planet.setSelectedGame(planet.getGameDefinitions().get(0));
-        }
-        if (planet.getSelectedGame() instanceof CleanerGameDefinition) {
-            return moonPaint;
-        }
-        return planetPaint; */
-
         Paint p;
         if (planet instanceof GiantPlanet) {
             p = giantPlanetPaint;
@@ -304,7 +229,7 @@ public class ClusterView extends View {
         final float wf = getResources().getDisplayMetrics().density * w;
         int kx = (int) (ix / wf + .5f);
         int ky = (int) (iy / wf + .5f);
-        for (IPlanet p : cluster.getPlanets()) {
+        for (IPlanet p : model.getPlanets()) {
             int tolerance = p.getRadius() > 20 ? 1 : 0;
             if (Math.abs(p.getX() - kx) <= tolerance && Math.abs(p.getY() - ky) <= tolerance) {
                 bubble.setPlanet(p);
@@ -312,13 +237,16 @@ public class ClusterView extends View {
                 return;
             }
         }
-        // no planet -> hide bubble
+        // clicked on space (=no planet) -> hide bubble
         bubble.hide();
         draw();
     }
 
     public void selectTarget() {
-        GameState.INSTANCE.setPlanet(bubble.getPlanet());
+        IPlanet planet = bubble.getPlanet();
+        if (planet != null) {
+            model.setCurrentPlanet(planet);
+        }
         draw();
     }
 }

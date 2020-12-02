@@ -42,15 +42,27 @@ public interface IPersistence {
 
     void loadPlanet(IPlanet planet);
     void savePlanet(IPlanet planet);
+
+    /**
+     * @return never null or empty, generates random player name if none is stored
+     */
     String loadPlayerName();
+    /**
+     * @param playername null or empty value won't be saved
+     */
     void savePlayerName(String playername);
 
     void saveCurrentPlanet(int clusterNumber, int planetNumber);
     int loadCurrentPlanet();
     int loadCurrentCluster();
 
+    /**
+     * @param v 0: no selection (show start screen), 1: old game, 2: Stone Wars game
+     */
     void saveOldGame(int v);
     int loadOldGame();
+    boolean isStoneWars();
+
     void saveNextRound(int nextRound);
     int loadNextRound();
 

@@ -5,6 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.cluster.Cluster1
+import de.mwvb.blockpuzzle.cluster.ClusterViewModel
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import kotlinx.android.synthetic.main.activity_start.*
 
 /**
@@ -23,6 +27,8 @@ class StartActivity : AppCompatActivity() {
         selectTarget.setOnClickListener { clusterView.selectTarget() }
 
         // set data ----
-        clusterView.cluster = GameState.cluster
+        val per = Persistence(this)
+        val pa = PlanetAccess(per)
+        clusterView.model = ClusterViewModel(pa.planets, pa.planet, per)
     }
 }

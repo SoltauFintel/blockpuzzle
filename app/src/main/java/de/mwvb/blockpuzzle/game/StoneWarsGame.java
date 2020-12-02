@@ -1,18 +1,15 @@
 package de.mwvb.blockpuzzle.game;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import de.mwvb.blockpuzzle.GameState;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.gamedefinition.LiberatedFeature;
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -31,7 +28,7 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected void initGameAndPersistence() {
-        IPlanet planet = GameState.INSTANCE.getPlanet();
+        IPlanet planet = getPlanet();
         definition = planet.getSelectedGame();
         persistence.setGameID(planet);
     }
@@ -51,7 +48,7 @@ public class StoneWarsGame extends Game {
     protected void loadGame() {
         super.loadGame();
         // calculate won [for classic game]
-        String msg = definition.scoreChanged(punkte, moves, GameState.INSTANCE.getPlanet(), false, persistence, getResourceAccess());
+        String msg = definition.scoreChanged(punkte, moves, getPlanet(), false, persistence, getResourceAccess());
         won = (msg != null && msg.startsWith("+"));
         // calculate game over [for cleaner game]
         if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
@@ -68,21 +65,25 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected void checkForVictory() {
-        IPlanet planet = GameState.INSTANCE.getPlanet();
+        IPlanet planet = getPlanet();
         String msg = definition.scoreChanged(punkte, moves, planet, won, persistence, getResourceAccess());
         if (msg != null) {
             view.showToast(msg);
             won = msg.startsWith("+");
             if (won) {
                 save();
-                if (new GameInfoService().isPlanetFullyLiberated(planet)) {
-                    new GameInfoService().executeLiberationFeature(planet);
+                if (new GameInfoService().isPlanetFullyLiberated(planet, persistence)) {
+                    new GameInfoService().executeLiberationFeature(planet, persistence);
                 }
             }
         }
         if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
             gameOverOnEmptyPlayingField();
         }
+    }
+
+    private IPlanet getPlanet() {
+        return new PlanetAccess(persistence).getPlanet();
     }
 
     @NotNull
@@ -113,13 +114,13 @@ public class StoneWarsGame extends Game {
         playingField.gameOver();
         if (definition.isLiberated(punkte, moves, persistence.loadOwnerScore(), persistence.loadOwnerMoves())) {
             persistence.clearOwner();
-            IPlanet planet = GameState.INSTANCE.getPlanet();
+            IPlanet planet = getPlanet();
             planet.setOwner(true);
             persistence.savePlanet(planet);
 
             save();
-            if (new GameInfoService().isPlanetFullyLiberated(planet)) {
-                new GameInfoService().executeLiberationFeature(planet);
+            if (new GameInfoService().isPlanetFullyLiberated(planet, persistence)) {
+                new GameInfoService().executeLiberationFeature(planet, persistence);
             }
         }
     }
@@ -131,6 +132,6 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected int getGravitationStartRow() {
-        return GameState.INSTANCE.getPlanet().getGravitation();
+        return getPlanet().getGravitation();
     }
 }

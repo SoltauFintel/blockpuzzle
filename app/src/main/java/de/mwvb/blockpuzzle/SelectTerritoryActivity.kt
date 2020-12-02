@@ -8,9 +8,12 @@ import android.view.View
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
+import de.mwvb.blockpuzzle.persistence.GlobalData
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_select_territory.*
-import java.text.DecimalFormat
 
 class SelectTerritoryActivity : AppCompatActivity() {
 
@@ -18,16 +21,12 @@ class SelectTerritoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_territory)
 
-        if (GameState.getPlanet() == null) {
-            finish()
-            return
-        }
+        val planet = PlanetAccess(per()).planet
 
-        territory1.setOnClickListener { selectTerritory(0) }
-        territory2.setOnClickListener { selectTerritory(1) }
-        territory3.setOnClickListener { selectTerritory(2) }
+        territory1.setOnClickListener { selectTerritory(0, planet) }
+        territory2.setOnClickListener { selectTerritory(1, planet) }
+        territory3.setOnClickListener { selectTerritory(2, planet) }
 
-        val planet = GameState.getPlanet()!!
         val n = planet.gameDefinitions.size
         if (n == 2) {
             set12(planet)
@@ -36,7 +35,7 @@ class SelectTerritoryActivity : AppCompatActivity() {
         } else if (n == 3) {
             set12(planet)
             territory3.text = resources.getString(planet.gameDefinitions[2].territoryName)
-            gameInfoView3.text = getGameInfoText(2)
+            gameInfoView3.text = getGameInfoText(2, planet)
         } else { // wrong value
             finish()
             return
@@ -46,21 +45,18 @@ class SelectTerritoryActivity : AppCompatActivity() {
     private fun set12(planet: IPlanet) {
         territory1.text = resources.getString(planet.gameDefinitions[0].territoryName)
         territory2.text = resources.getString(planet.gameDefinitions[1].territoryName)
-        gameInfoView1.text = getGameInfoText(0)
-        gameInfoView2.text = getGameInfoText(1)
+        gameInfoView1.text = getGameInfoText(0, planet)
+        gameInfoView2.text = getGameInfoText(1, planet)
     }
 
-    private fun getGameInfoText(gi: Int): String {
-        return GameInfoService().getSelectedGameInfo(resources, GameState.getPlanet()!!.gameDefinitions[gi])
+    private fun getGameInfoText(gi: Int, planet: IPlanet): String {
+        return GameInfoService().getSelectedGameInfo(PlanetAccess(per()), resources, planet.gameDefinitions[gi])
     }
 
-    private fun selectTerritory(territoryNumber: Int) {
-        val planet = GameState.getPlanet()!!
+    private fun selectTerritory(territoryNumber: Int, planet: IPlanet) {
         planet.selectedGame = planet.gameDefinitions[territoryNumber]
-        when (GameState.selectTerritoryMode) {
-            1 -> {
-                onNewLiberationAttemptQuestion()
-            }
+        when (GlobalData.selectTerritoryMode) {
+            1 -> onNewLiberationAttemptQuestion()
             2 -> {
                 finish()
                 startActivity(Intent(this, DeveloperActivity::class.java))
@@ -81,7 +77,11 @@ class SelectTerritoryActivity : AppCompatActivity() {
     }
 
     private fun onResetGame() {
-        NewGameService().newGame()
+        NewGameService().newGame(per())
         finish()
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }

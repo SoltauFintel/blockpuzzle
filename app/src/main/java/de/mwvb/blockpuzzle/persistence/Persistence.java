@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
-import de.mwvb.blockpuzzle.GameState;
+import java.util.Random;
+
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -279,6 +280,7 @@ public class Persistence implements IPersistence {
 
     @Override
     public void savePlayerName(String playername) {
+        if (playername == null || playername.trim().isEmpty()) return;
         SharedPreferences.Editor edit = pref().edit();
         edit.putString(name(GLOBAL_PLAYERNAME), playername);
         edit.apply();
@@ -301,7 +303,13 @@ public class Persistence implements IPersistence {
 
     @Override
     public String loadPlayerName() {
-        return pref().getString(name(GLOBAL_PLAYERNAME), "");
+        String playername = pref().getString(name(GLOBAL_PLAYERNAME), "");
+        if (playername == "") {
+            Random rand = new Random(System.currentTimeMillis());
+            playername = "Player_" + rand.nextInt(9999);
+            savePlayerName(playername);
+        }
+        return playername;
     }
 
     @Override
@@ -330,6 +338,11 @@ public class Persistence implements IPersistence {
     @Override
     public int loadOldGame() {
         return getInt(GLOBAL_OLD_GAME, 0);
+    }
+
+    @Override
+    public boolean isStoneWars() {
+        return loadOldGame() == 2;
     }
 
     @Override

@@ -10,7 +10,12 @@ import de.mwvb.blockpuzzle.cluster.Cluster
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
+import de.mwvb.blockpuzzle.persistence.GlobalData
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import de.mwvb.blockpuzzle.planet.GiantPlanet
+import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.planet.Moon
 import kotlinx.android.synthetic.main.activity_bridge.*
 import java.util.*
@@ -43,37 +48,39 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        positionView.text = getPositionInfo()
-        play.isEnabled = isGameBtnEnabled()
+        val pa = pa()
+        positionView.text = getPositionInfo(pa)
+        play.isEnabled = isGameBtnEnabled(pa)
     }
 
     // Zeile 1
-    private fun getPositionInfo(): String {
-        var info = resources.getString(R.string.position) + ":   G=" + GameState.galaxy + "  C=" + GameState.cluster.number +
-                "  Q=" + Cluster.getQuadrant(GameState.getPlanet()!!) +
-                "  X=" + GameState.getPlanet()!!.x + "  Y=" + GameState.getPlanet()!!.y
-        info += "\n" + getPlanetInfo() + "\n" + GameInfoService().getGameInfo(resources)
+    private fun getPositionInfo(pa: PlanetAccess): String {
+        var info = resources.getString(R.string.position) + ":   G=" + pa.galaxy + "  C=" + pa.clusterNumber +
+                "  Q=" + Cluster.getQuadrant(pa.planet) +
+                "  X=" + pa.planet.x + "  Y=" + pa.planet.y
+        info += "\n" + getPlanetInfo(pa) + "\n" + GameInfoService().getGameInfo(pa, resources)
         return info
     }
 
     // Zeile 2
-    private fun getPlanetInfo(): String {
+    private fun getPlanetInfo(pa: PlanetAccess): String {
         val f = resources.getString(R.string.inOrbitOf)
-        val pa = when {
-            GameState.getPlanet() is GiantPlanet -> resources.getString(R.string.giantPlanet)
-            GameState.getPlanet() is Moon -> resources.getString(R.string.moon)
+        val planet = pa.planet
+        val planetType = when {
+            planet is GiantPlanet -> resources.getString(R.string.giantPlanet)
+            planet is Moon -> resources.getString(R.string.moon)
             else -> resources.getString(R.string.planet)
         }
-        var info = f + " " + pa + " #" + GameState.getPlanet()!!.number + ", " + resources.getString(R.string.gravitation) + " " + GameState.getPlanet()!!.gravitation
-        if (GameState.getPlanet()!!.gameDefinitions.size > 1) {
-            info += "\n" + resources.getString(GameState.getPlanet()!!.selectedGame.territoryName)
+        var info = f + " " + planetType + " #" + planet.number + ", " + resources.getString(R.string.gravitation) + " " + planet.gravitation
+        if (planet.gameDefinitions.size > 1) {
+            info += "\n" + resources.getString(planet.selectedGame.territoryName)
         }
         return info
     }
 
     private fun getOwner(): String {
-        val per = GameState.persistence!!
-        val planet = GameState.getPlanet()!!
+        val per = per()
+        val planet = PlanetAccess(per).planet
 
         val max = planet.gameDefinitions.size - 1
         val owners = TreeSet<String>()
@@ -91,58 +98,70 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onPlay() {
-        if (GameState.getPlanet() == null || GameState.getPlanet()!!.gameDefinitions.isEmpty()) {
-            return
-        }
-        if (GameState.getPlanet()!!.gameDefinitions.size == 1) {
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-            GameState.selectTerritoryMode = 0
-            startActivity(Intent(this, SelectTerritoryActivity::class.java))
+        val games = getPlanet().gameDefinitions.size
+        when (games) {
+            0 -> return
+            1 -> startActivity(Intent(this, MainActivity::class.java))
+            else -> selectTerritory(0)
         }
     }
 
+    private fun selectTerritory(mode: Int) {
+        GlobalData.selectTerritoryMode = mode
+        startActivity(Intent(this, SelectTerritoryActivity::class.java))
+    }
+
     private fun onNewGame() {
-        if (GameState.getPlanet()!!.gameDefinitions.size == 1) {
+        if (getPlanet().gameDefinitions.size == 1) {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle(R.string.newLiberationAttemptQuestion)
             dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onResetGame() }
             dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
             dialog.show()
         } else {
-            GameState.selectTerritoryMode = 1
-            startActivity(Intent(this, SelectTerritoryActivity::class.java))
+            selectTerritory(1)
         }
     }
 
     private fun onResetGame() {
-        NewGameService().newGame()
+        NewGameService().newGame(per())
         update()
     }
 
-    private fun isGameBtnEnabled(): Boolean {
-        return GameState.getPlanet()!!.hasGames()
+    private fun isGameBtnEnabled(pa: PlanetAccess): Boolean {
+        return pa.planet.hasGames()
     }
 
     private fun onQuitGame() {
         val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
         dialog.setTitle(R.string.leaveShipInSpace)
-        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> leaveGame() }
+        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onQuitGame2() }
         dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
         dialog.show()
     }
 
-    private fun leaveGame() {
-        GameState.quitGame()
+    private fun onQuitGame2() {
+        per().saveOldGame(0)
         finishAffinity() // App beenden
     }
 
     private fun onDeveloper() {
-        if (GameState.getPlanet()!!.gameDefinitions.size == 1) {
+        if (getPlanet().gameDefinitions.size == 1) {
             startActivity(Intent(this, DeveloperActivity::class.java))
         } else {
-            GameState.selectTerritoryMode = 2
-            startActivity(Intent(this, SelectTerritoryActivity::class.java))
+            selectTerritory(2)
         }
+    }
+
+    private fun getPlanet(): IPlanet {
+        return pa().planet
+    }
+
+    private fun pa(): PlanetAccess {
+        return PlanetAccess(per())
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }

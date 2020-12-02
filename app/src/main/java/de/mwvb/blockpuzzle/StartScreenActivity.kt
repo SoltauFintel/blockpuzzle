@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
@@ -16,8 +17,6 @@ class StartScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_screen)
 
-        GameState.persistence = Persistence(this)
-
         stoneWars.setOnClickListener { onStoneWars() }
         oldGame.setOnClickListener { onOldGame() }
     }
@@ -25,9 +24,7 @@ class StartScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            GameState.load()
-            if (GameState.isStoneWars()) {
-                GameState.activateStoneWars()
+            if (per().loadOldGame() == 2) {
                 startActivity(Intent(this, BridgeActivity::class.java))
             }
         } catch (e: Exception) {
@@ -35,18 +32,17 @@ class StartScreenActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        GameState.save()
-        super.onPause()
-    }
-
     private fun onStoneWars() {
-        GameState.activateStoneWars()
+        per().saveOldGame(2)
         startActivity(Intent(this, InfoActivity::class.java))
     }
 
     private fun onOldGame() {
-        GameState.activateOldGame()
+        per().saveOldGame(1)
         startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }

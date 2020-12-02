@@ -153,6 +153,11 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public boolean isStoneWars() {
+        return loadOldGame() == 2;
+    }
+
+    @Override
     public void saveNextRound(int nextRound) {
     }
 

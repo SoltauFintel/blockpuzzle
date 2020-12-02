@@ -1,12 +1,13 @@
 package de.mwvb.blockpuzzle.data;
 
+import java.util.List;
 import java.util.zip.CRC32;
 
 import de.mwvb.blockpuzzle.Features;
-import de.mwvb.blockpuzzle.GameState;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -17,16 +18,19 @@ import de.mwvb.blockpuzzle.planet.IPlanet;
 public class DataService {
     public static final String VERSION = "1";
 
-    public String get() {
-        Cluster cluster = GameState.INSTANCE.getCluster();
-        String quadrant = cluster.getQuadrant(GameState.INSTANCE.getPlanet().getX(), GameState.INSTANCE.getPlanet().getY());
-        String ret = "BP" + VERSION + "/C" + cluster.getNumber() + ("ß".equals(quadrant) ? "b" : quadrant);
-        IPersistence persistence = GameState.INSTANCE.getPersistence();
-        for (IPlanet p : cluster.getPlanets()) {
+    public String get(IPersistence persistence) {
+        PlanetAccess pa = new PlanetAccess(persistence);
+        return get(pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence);
+    }
+
+    private String get(int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence) {
+        String quadrant = Cluster.getQuadrant(currentPlanet.getX(), currentPlanet.getY());
+        String ret = "BP" + VERSION + "/C" + clusterNumber + ("ß".equals(quadrant) ? "b" : quadrant);
+        for (IPlanet p : planets) {
             if (!p.isVisibleOnMap() || !p.isOwner()) {
                 continue;
             }
-            String q = cluster.getQuadrant(p.getX(), p.getY());
+            String q = Cluster.getQuadrant(p.getX(), p.getY());
             if (!q.equals(quadrant)) {
                 continue;
             }
@@ -39,7 +43,7 @@ public class DataService {
                 }
             }
         }
-        ret = ret + "/" + code6(ret) + "//" + GameState.INSTANCE.getPlayername().replace(" ", "_");
+        ret = ret + "/" + code6(ret) + "//" + persistence.loadPlayerName().replace(" ", "_");
         String k = "";
         int kl = 70;
         while (ret.length() > kl) {
@@ -49,15 +53,20 @@ public class DataService {
         return k + ret;
     }
 
-    public String put(String data) {
-        if (data != null && data.equals(get())) {
+    public String put(String data, IPersistence persistence) {
+        PlanetAccess pa = new PlanetAccess(persistence);
+        return put(data, pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence);
+    }
+
+    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence) {
+        if (data != null && data.equals(get(clusterNumber, planets, currentPlanet, persistence))) {
             return "Makes no sense to paste the copied data";
         } else if (data == null || !data.startsWith("BP")) {
             return "Unknown data format";
         } else if (!data.startsWith("BP" + VERSION + "/")) {
             return "Data is not compatible. Wrong version.";
         }
-        String rhead = "BP" + VERSION + "/C" + GameState.INSTANCE.getCluster().getNumber();
+        String rhead = "BP" + VERSION + "/C" + clusterNumber;
         int headLength = rhead.length() + "a/".length();
         if (!data.startsWith(rhead + "a/") && !data.startsWith(rhead + "b/") && !data.startsWith(rhead + "c/") && !data.startsWith(rhead + "d/")) {
             return "Not supported star cluster."; // or quadrant
@@ -81,27 +90,25 @@ public class DataService {
             return "Wrong planet data.";
         }
         for (int i = 0; i < w.length; i += 4) {
-            parse(w[i], w[i + 1], w[i + 2], w[i + 3], name);
+            parse(w[i], w[i + 1], w[i + 2], w[i + 3], name, planets, persistence);
         }
         return null;
     }
 
-    private void parse(String p0, String gi0, String s, String m, String name) {
-        IPersistence persistence = GameState.INSTANCE.getPersistence();
-        Cluster cluster = GameState.INSTANCE.getCluster();
+    private void parse(String p0, String gi0, String s, String m, String name, List<IPlanet> planets, IPersistence persistence) {
         int pl = Integer.parseInt(p0, 16);
         int gi = Integer.parseInt(gi0);
         int otherScore = Integer.parseInt(s, 16);
         int otherMoves = Integer.parseInt(m, 16);
-        for (int i = 0; i < cluster.getPlanets().size(); i++) {
-            IPlanet p = cluster.getPlanets().get(i);
+        for (int i = 0; i < planets.size(); i++) {
+            IPlanet p = planets.get(i);
             if (p.getNumber() == pl) {
                 persistence.setGameID(p, gi);
                 int meineScore = persistence.loadScore();
                 int meineMoves = persistence.loadMoves();
                 GameDefinition gd = p.getGameDefinitions().get(gi);
                 if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves)) {
-                    setOwner(p, gi, otherScore, otherMoves, name);
+                    setOwner(p, gi, otherScore, otherMoves, name, persistence);
                 }
                 return;
             }
@@ -109,9 +116,8 @@ public class DataService {
         // PLanet nicht gefunden
     }
 
-    private void setOwner(IPlanet p, int gi, int score, int moves, String name) {
+    private void setOwner(IPlanet p, int gi, int score, int moves, String name, IPersistence persistence) {
         System.out.println("NEW OWNER for planet #" + p.getNumber() + ": gi=" + gi + ", score: " + score + ", moves: " + moves + ", name: " + name);
-        IPersistence persistence = GameState.INSTANCE.getPersistence();
         persistence.setGameID(p, gi);
         persistence.saveOwner(score, moves, name);
     }

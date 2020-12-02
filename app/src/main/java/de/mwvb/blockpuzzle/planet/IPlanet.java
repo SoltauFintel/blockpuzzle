@@ -41,6 +41,10 @@ public interface IPlanet {
     void setSelectedGame(GameDefinition v);
     boolean hasGames();
 
+    String getInfoText(int lineNumber);
+
+    // Ist eigentlich etwas heikel vom Design her, dass diese Entity fixe Daten und variable Daten enthält.
+
     boolean isVisibleOnMap();
     void setVisibleOnMap(boolean v);
 
@@ -49,6 +53,4 @@ public interface IPlanet {
      */
     boolean isOwner();
     void setOwner(boolean v);
-
-    String getInfoText(int lineNumber);
 }

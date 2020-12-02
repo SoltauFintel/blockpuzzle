@@ -8,10 +8,12 @@ public class GamePieceSet0014 implements IGamePieceSet {
 	@Override
 	public String[] getGamePieceSet() {
 		String[] r = new String[1600];
-		r[0] = "#4#4#3";
-		r[1] = "#3#4#4";
-		r[2] = "#1#3#2x2";
-		r[3] = "#4#5#Ecke2";
+		// modifiziert, da sonst Cleaner L8 nicht schaffbar >>
+		r[0] = "#2Dots#1#3";
+		r[1] = "#1#1#1";
+		r[2] = "#1#2#1";
+		r[3] = "#2#5#2";
+		// <<
 		r[4] = "#3#1#1";
 		r[5] = "#Ecke2#5#2";
 		r[6] = "#1#3#Ecke2";

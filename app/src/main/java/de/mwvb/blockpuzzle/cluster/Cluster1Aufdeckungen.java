@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.gamedefinition.LiberatedFeature;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -44,8 +45,10 @@ public class Cluster1Aufdeckungen {
     private LiberatedFeature deckeAuf(final int pNumber) {
         return new LiberatedFeature() {
             @Override
-            public void start() {
-                finde(pNumber).setVisibleOnMap(true);
+            public void start(IPersistence persistence) {
+                IPlanet x = finde(pNumber);
+                x.setVisibleOnMap(true);
+                persistence.savePlanet(x);
             }
         };
     }
@@ -53,9 +56,10 @@ public class Cluster1Aufdeckungen {
     private LiberatedFeature deckeAuf(final String quadrant) {
         return new LiberatedFeature() {
             @Override
-            public void start() {
+            public void start(IPersistence persistence) {
                 for (IPlanet x : getPlanets(quadrant)) {
                     x.setVisibleOnMap(true);
+                    persistence.savePlanet(x);
                 }
             }
         };

@@ -1,28 +1,29 @@
 package de.mwvb.blockpuzzle.game
 
 import android.content.res.Resources
-import de.mwvb.blockpuzzle.GameState
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import de.mwvb.blockpuzzle.planet.IPlanet
 import java.text.DecimalFormat
 
 class GameInfoService {
 
-    fun getGameInfo(resources: Resources): String {
-        return if (GameState.getPlanet()!!.hasGames()) {
-            getSelectedGameInfo(resources, GameState.getPlanet()!!.selectedGame)
+    fun getGameInfo(pa: PlanetAccess, resources: Resources): String {
+        return if (pa.planet.hasGames()) {
+            getSelectedGameInfo(pa, resources, pa.planet.selectedGame)
         } else {
             resources.getString(R.string.planetNeedsNoLiberation)
         }
     }
 
-    fun getSelectedGameInfo(resources: Resources, s: GameDefinition): String {
+    fun getSelectedGameInfo(pa: PlanetAccess, resources: Resources, s: GameDefinition): String {
         var info = s.info // Game definition
 
         // Scores
-        val planet = GameState.getPlanet()!!
-        val per = GameState.persistence!!
+        val planet = pa.planet
+        val per = pa.persistence
         per.setGameID(planet, planet.gameDefinitions.indexOf(s))
 
         val score: Int = per.loadScore()
@@ -52,8 +53,7 @@ class GameInfoService {
         return DecimalFormat("#,##0").format(n)
     }
 
-    fun isPlanetFullyLiberated(planet: IPlanet): Boolean {
-        val per = GameState.persistence!!
+    fun isPlanetFullyLiberated(planet: IPlanet, per: IPersistence): Boolean {
         val defs = planet.gameDefinitions
         for (i in 0 until defs.size) {
             per.setGameID(planet, i)
@@ -65,8 +65,7 @@ class GameInfoService {
         return defs.size > 0
     }
 
-    fun executeLiberationFeature(planet: IPlanet) {
-        planet.gameDefinitions[0].featureOnLiberation?.start()
-        GameState.save()
+    fun executeLiberationFeature(planet: IPlanet, persistence: IPersistence) {
+        planet.gameDefinitions[0].featureOnLiberation?.start(persistence)
     }
 }

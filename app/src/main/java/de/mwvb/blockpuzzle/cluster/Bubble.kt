@@ -2,7 +2,6 @@ package de.mwvb.blockpuzzle.cluster
 
 import android.graphics.*
 import android.widget.Button
-import de.mwvb.blockpuzzle.GameState
 import de.mwvb.blockpuzzle.planet.IPlanet
 
 /**
@@ -14,7 +13,12 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
     val textPaint = Paint()
     /** speech bubble visibility  */
     var isVisible = false
-    private var planet: IPlanet? = null
+    /**
+     * Das ist der Planet, der in der Map gewählt ist. Ist null wenn gerade kein Planet gewählt ist.
+     * Abzugrenzen von ClusterViewModel.planet, der nie null ist und die aktuelle Raumschiffposition darstellt!
+     */
+    private var markedPlanetOnMap: IPlanet? = null
+    private var model: ClusterViewModel? = null
 
     init {
         rectanglePaint.color = background
@@ -25,27 +29,30 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
         textPaint.textSize = 20f * f
     }
 
-    fun setPlanet(planet: IPlanet?) {
-        if (planet == null || planet === this.planet) {
-            // von sichtbar auf nicht sichtbar schalten, da gleiche Position
+    fun setModel(model: ClusterViewModel) {
+        this.model = model
+    }
+    fun setPlanet(pPlanet: IPlanet?) {
+        if (pPlanet == null || pPlanet === markedPlanetOnMap) {
+            // wenn Planet nicht null: von sichtbar auf nicht sichtbar schalten, da gleiche Position
             isVisible = false
-            this.planet = null
+            markedPlanetOnMap = null
         } else {
             // sichtbar!
             isVisible = true
-            this.planet = planet
+            markedPlanetOnMap = pPlanet
         }
     }
     fun getPlanet(): IPlanet? {
-        return this.planet
+        return this.markedPlanetOnMap
     }
 
     fun draw(canvas: Canvas, selectTargetButton: Button) {
-        if (planet == null || !isVisible) {
+        if (markedPlanetOnMap == null || !isVisible) {
             selectTargetButton.isEnabled = false
             return
         };
-        val p = planet!!
+        val p = markedPlanetOnMap!!
         val myX: Float = p.x * ClusterView.w * f
         val myY: Float = p.y * ClusterView.w * f - p.radius * f
         val bubbleWidth = 240f * f
@@ -53,7 +60,7 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
         val rx = myX - bubbleWidth / 2
         val ry = myY - bubbleBoxHeight - 30
         val r = RectF(rx, ry, rx + bubbleWidth, ry + bubbleBoxHeight)
-        val isTarget = (GameState.getPlanet()?.number == p.number)
+        val isTarget = (model != null && model?.currentPlanet?.number == p.number)
         if (isTarget) {
             rectanglePaint.color = backgroundForTarget
             trianglePaint.color = backgroundForTarget

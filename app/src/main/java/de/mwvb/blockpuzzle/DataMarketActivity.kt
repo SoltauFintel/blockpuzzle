@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import de.mwvb.blockpuzzle.data.DataService
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_data_market.*
 
 /**
@@ -28,8 +30,8 @@ class DataMarketActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            dataview.setText(DataService().get())
-            copyBtn.isEnabled = GameState.persistence!!.loadPlayernameEntered()
+            dataview.setText(DataService().get(per()))
+            copyBtn.isEnabled = per().loadPlayernameEntered()
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -37,7 +39,7 @@ class DataMarketActivity : AppCompatActivity() {
 
     private fun onCopy() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val o = ClipData.newPlainText("BlockPuzzleDataPacket", DataService().get())
+        val o = ClipData.newPlainText("BlockPuzzleDataPacket", DataService().get(per()))
         clipboard.setPrimaryClip(o)
         Toast.makeText(this, "Kopiert", Toast.LENGTH_SHORT).show()
     }
@@ -49,7 +51,7 @@ class DataMarketActivity : AppCompatActivity() {
                 val item = clipboard.primaryClip!!.getItemAt(0)
                 val pasteData = item.text
                 if (pasteData != null) {
-                    val msg = DataService().put(pasteData.toString());
+                    val msg = DataService().put(pasteData.toString(), per());
                     if (msg != null && !msg.isEmpty()) {
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                     }
@@ -58,5 +60,9 @@ class DataMarketActivity : AppCompatActivity() {
             }
         }
         Toast.makeText(this, "Nichts einzufügen", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun per(): IPersistence {
+        return Persistence(this)
     }
 }
