@@ -91,6 +91,11 @@ public class SoundService implements ISoundService {
     }
 
     @Override
+    public void targetSelected() {
+        play(money); // for the moment use the same as oneColor, for the future use another sound
+    }
+
+    @Override
     public void doesNotWork() {
         // no sound, maybe in the future
     }

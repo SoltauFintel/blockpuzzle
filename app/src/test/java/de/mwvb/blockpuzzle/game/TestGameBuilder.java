@@ -150,7 +150,10 @@ public class TestGameBuilder {
 
             @Override
             public void alarm(boolean on) {
+            }
 
+            @Override
+            public void targetSelected() {
             }
         };
     }

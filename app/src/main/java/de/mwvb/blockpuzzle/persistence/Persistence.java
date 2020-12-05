@@ -62,14 +62,12 @@ public class Persistence implements IPersistence {
     @Override
     public void setGameID_oldGame() {
         prefix = "";
-        System.out.println("(old game) game ID: \"\""); // TODO XXX DEBUG
     }
 
     @Override
     public void setGameID(IPlanet planet, int gameDefinitionIndex) {
         // e.g. "C1_16_0"
         prefix = "C" + planet.getClusterNumber() + "_" + planet.getNumber() + "_" + gameDefinitionIndex;
-        System.out.println("game ID: \"" + prefix + "\""); // TODO XXX DEBUG
     }
 
     @Override

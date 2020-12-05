@@ -1,19 +1,28 @@
 package de.mwvb.blockpuzzle
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_player_name.*
 
-// TODO Enter -> click Save Btn
 class PlayerNameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_name)
 
+        playername.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onSaveBtn()
+                true
+            } else {
+                false
+            }
+        }
         saveBtn.setOnClickListener { onSaveBtn() }
     }
 

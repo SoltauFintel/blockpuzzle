@@ -89,12 +89,15 @@ object Cluster1 : Cluster(1) {
         return GiantPlanet(29, 8, 31, brandenburg, saxony, lowerSaxony)
     }
 
+    // last planet
     private fun getGiantPlanet3(): GiantPlanet {
         val gd1 = ClassicGameDefinition(35, 40000)
         gd1.territoryName = R.string.bayern
 
         val gd2 = ClassicGameDefinition(36, 40000)
         gd2.territoryName = R.string.luxemburg
+
+        // third territory (e.g. "Gelre") will be added in future release with star gate to star cluster 2
 
         return GiantPlanet(36, 28, 32, 8, gd1, gd2, null)
     }

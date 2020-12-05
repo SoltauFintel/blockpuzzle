@@ -16,4 +16,6 @@ public interface ISoundService {
     void shake();
 
     void alarm(boolean on);
+
+    void targetSelected();
 }

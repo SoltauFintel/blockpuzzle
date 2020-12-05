@@ -11,32 +11,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/stoneWars"
-            android:textSize="26sp"
-            android:layout_marginStart="14dp"/>
+            android:textSize="26sp"/>
         <TextView
             android:id="@+id/infotext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:scrollbars="vertical"
-            android:layout_margin="4dp"
             android:textSize="18sp"
+            android:layout_marginTop="10dp"
             android:text="@string/infotext"/>
-        <Button
-            android:id="@+id/contBtn"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/continue1"
-            android:background="@color/colorHeadlineBackground"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="4dp"
-            android:textAllCaps="false"/>
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/contBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/continue1"
+                android:background="@color/colorHeadlineBackground"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/muteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mute"
+                android:background="@color/colorGrey"
+                android:layout_marginStart="10dp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

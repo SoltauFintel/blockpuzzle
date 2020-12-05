@@ -20,6 +20,7 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.Moon;
+import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
  * Map view of a star cluster
@@ -27,6 +28,7 @@ import de.mwvb.blockpuzzle.planet.Moon;
  * Spielfeldgröße in Activity: 1500dp x 1500dp
  */
 public class ClusterView extends View {
+    private final SoundService soundService = new SoundService();
     /** Model */
     private ClusterViewModel model;
     /** for move action */
@@ -48,14 +50,17 @@ public class ClusterView extends View {
     public ClusterView(Context context) {
         super(context);
         init();
+        soundService.init(getContext());
     }
     public ClusterView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
+        soundService.init(getContext());
     }
     public ClusterView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        soundService.init(getContext());
     }
 
     private void init() {
@@ -240,6 +245,7 @@ public class ClusterView extends View {
         IPlanet planet = bubble.getPlanet();
         if (planet != null) {
             model.setCurrentPlanet(planet);
+            soundService.targetSelected(); // Piepton als Bestätigung
         }
         draw();
     }
