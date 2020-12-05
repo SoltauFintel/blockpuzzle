@@ -54,7 +54,7 @@ public class ClusterView extends View {
         setBackgroundColor(Color.BLACK);
         initPaints();
         bubble = new Bubble(getResources().getColor(R.color.speechBubbleBackground), getResources().getColor(R.color.target), getResources().getDisplayMetrics().density);
-        setOnTouchListener(new ClusterViewTouchListener(bubble));
+        setOnTouchListener(new ClusterViewTouchListener(bubble, getResources().getDisplayMetrics().density));
     }
     private void initPaints() {
         moonPaint = new Paint();
