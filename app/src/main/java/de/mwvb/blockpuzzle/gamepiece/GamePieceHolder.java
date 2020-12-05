@@ -1,8 +1,6 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
-import de.mwvb.blockpuzzle.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 
 public class GamePieceHolder {
     // Stammdaten
@@ -13,7 +11,7 @@ public class GamePieceHolder {
 
     // Services
     private IGamePieceView view;
-    private IPersistence persistence;
+    private GamePersistence persistence;
 
     public GamePieceHolder(int index) {
         this.index = index;
@@ -27,17 +25,17 @@ public class GamePieceHolder {
         this.view = view;
     }
 
-    public void setPersistence(IPersistence persistence) {
+    public void setPersistence(GamePersistence persistence) {
         this.persistence = persistence;
     }
 
     public void load() {
-        gamePiece = persistence.load(index);
+        gamePiece = persistence.get().load(index);
         view.setGamePiece(gamePiece);
     }
 
     public void save() {
-        persistence.save(index, gamePiece);
+        persistence.get().save(index, gamePiece);
     }
 
     public void setGamePiece(GamePiece gamePiece) {

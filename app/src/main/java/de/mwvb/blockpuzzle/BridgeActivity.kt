@@ -49,42 +49,16 @@ class BridgeActivity : AppCompatActivity() {
 
     private fun update() {
         val pa = pa()
-        positionView.text = getPositionInfo(pa)
+        positionView.text = GameInfoService().getPositionInfo(pa, resources)
         play.isEnabled = isGameBtnEnabled(pa)
-    }
-
-    // Zeile 1
-    private fun getPositionInfo(pa: PlanetAccess): String {
-        var info = resources.getString(R.string.position) + ":   G=" + pa.galaxy + "  C=" + pa.clusterNumber +
-                "  Q=" + Cluster.getQuadrant(pa.planet) +
-                "  X=" + pa.planet.x + "  Y=" + pa.planet.y
-        info += "\n" + getPlanetInfo(pa) + "\n" + GameInfoService().getGameInfo(pa, resources)
-        return info
-    }
-
-    // Zeile 2
-    private fun getPlanetInfo(pa: PlanetAccess): String {
-        val f = resources.getString(R.string.inOrbitOf)
-        val planet = pa.planet
-        val planetType = when {
-            planet is GiantPlanet -> resources.getString(R.string.giantPlanet)
-            planet is Moon -> resources.getString(R.string.moon)
-            else -> resources.getString(R.string.planet)
-        }
-        var info = f + " " + planetType + " #" + planet.number + ", " + resources.getString(R.string.gravitation) + " " + planet.gravitation
-        if (planet.gameDefinitions.size > 1) {
-            info += "\n" + resources.getString(planet.selectedGame.territoryName)
-        }
-        return info
     }
 
     private fun getOwner(): String {
         val per = per()
         val planet = PlanetAccess(per).planet
 
-        val max = planet.gameDefinitions.size - 1
         val owners = TreeSet<String>()
-        for (gi in 0..max) {
+        for (gi in 0 until planet.gameDefinitions.size) {
             per.setGameID(planet, gi)
             val owner = per.loadOwnerName()
             if (owner != null && owner.isNotEmpty()) {

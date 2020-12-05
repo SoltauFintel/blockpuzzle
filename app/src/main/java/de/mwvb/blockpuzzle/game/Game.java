@@ -1,14 +1,11 @@
 package de.mwvb.blockpuzzle.game;
 
-import android.content.ContextWrapper;
-
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
-import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
-import de.mwvb.blockpuzzle.persistence.Persistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
@@ -42,7 +39,7 @@ public class Game {
     private final GravitationData gravitation = new GravitationData();
 
     // Services
-    protected IPersistence persistence;
+    protected GamePersistence gape; // "ga" for game + "pe" for persistence
     protected final IGameView view;
     private INextGamePiece nextGamePiece;
 
@@ -54,10 +51,10 @@ public class Game {
 
     public Game(IGameView view, IPersistence persistence) {
         this.view = view;
-        this.persistence = persistence == null ? new Persistence((ContextWrapper) view) : persistence;
-        playingField.setPersistence(this.persistence);
-        gravitation.setPersistence(this.persistence);
-        holders.setPersistence(this.persistence);
+        gape = new GamePersistence(persistence, view);
+        playingField.setPersistence(gape);
+        gravitation.setPersistence(gape);
+        holders.setPersistence(gape);
     }
 
     // New Game ----
@@ -73,7 +70,7 @@ public class Game {
         view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
-        punkte = persistence.loadScore();
+        punkte = gape.loadScore();
         if (punkte < 0) { // Nein
             newGame(); // Neues Spiel starten!
         } else {
@@ -82,7 +79,7 @@ public class Game {
     }
 
     protected void initGameAndPersistence() {
-        persistence.setGameID_oldGame();
+        gape.setGameID_oldGame();
     }
 
     protected INextGamePiece getNextGamePieceGenerator() {
@@ -94,7 +91,7 @@ public class Game {
         gameOver = false;
         punkte = 0;
         gravitation.init();
-        persistence.saveDelta(0);
+        gape.saveDelta(0);
         view.showScore(punkte, 0, gameOver);
         nextGamePiece.reset();
 
@@ -113,8 +110,8 @@ public class Game {
     }
 
     protected void loadGame() {
-        view.showScore(punkte, persistence.loadDelta(), gameOver);
-        moves = persistence.loadMoves();
+        view.showScore(punkte, gape.loadDelta(), gameOver);
+        moves = gape.loadMoves();
         view.showMoves(moves);
         nextGamePiece.load();
         gravitation.load();
@@ -196,7 +193,7 @@ public class Game {
             checkForVictory(); // Spielsiegprüfung (showScore erst danach)
 
             int delta = punkte - punkteVorher;
-            persistence.saveDelta(delta);
+            gape.saveDelta(delta);
             view.showScore(punkte, delta, gameOver);
             view.showMoves(++moves);
         }
@@ -320,7 +317,7 @@ public class Game {
         if (a && b && c && d && !holders.isParkingFree()) {
             gameOver = true;
             updateHighScore();
-            persistence.saveDelta(0);
+            gape.saveDelta(0);
             view.showScore(punkte,0, gameOver); // display game over text
             playingField.gameOver(); // wenn parke die letzte Aktion war
         }
@@ -328,14 +325,15 @@ public class Game {
 
     // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
     private void updateHighScore() {
-        int highscore = persistence.loadHighScore();
+        IPersistence px = gape.get();
+        int highscore = px.loadHighScore();
         if (punkte > highscore || highscore <= 0) {
-            persistence.saveHighScore(punkte);
-            persistence.saveHighScoreMoves(moves);
+            px.saveHighScore(punkte);
+            px.saveHighScoreMoves(moves);
         } else if (punkte == highscore) {
-            int hMoves = persistence.loadHighScoreMoves();
+            int hMoves = px.loadHighScoreMoves();
             if (moves < hMoves || hMoves <= 0) {
-                persistence.saveHighScoreMoves(moves);
+                px.saveHighScoreMoves(moves);
             }
         }
     }
@@ -419,10 +417,10 @@ public class Game {
     }
 
     public void save() {
-        persistence.saveScore(punkte);
+        gape.saveScore(punkte);
         playingField.save();
         gravitation.save();
-        persistence.saveMoves(moves);
+        gape.saveMoves(moves);
         holders.save();
     }
 

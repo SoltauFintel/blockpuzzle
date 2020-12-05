@@ -1,12 +1,8 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
-import android.app.Activity;
-import android.content.res.Resources;
-import android.widget.Toast;
-
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -69,18 +65,18 @@ public class ClassicGameDefinition extends GameDefinition {
     }
 
     @Override
-    public String scoreChanged(int score, int moves, IPlanet planet, boolean won, IPersistence persistence, ResourceAccess resources) {
+    public String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resources) {
         if (won || score < minimumLiberationScore) return null;
 
         int ownerScore = persistence.loadOwnerScore();
         if (ownerScore > 0 && score > ownerScore) { // Planet war von Gegner besetzt
-            persistence.clearOwner(); // Gegner geschlagen!
+            persistence.get().clearOwner(); // Gegner geschlagen!
             planet.setOwner(true); // Spiel gewonnen! Territorium befreit!
-            persistence.savePlanet(planet);
+            persistence.get().savePlanet(planet);
             return resources.getString(R.string.defeatedEnemy);
         } else if (ownerScore <= 0) { // Planet war von Orange Union besetzt
             planet.setOwner(true); // Spiel gewonnen! Territorium befreit!
-            persistence.savePlanet(planet);
+            persistence.get().savePlanet(planet);
             return resources.getString(R.string.territoryLiberated);
         }
         return null;

@@ -3,19 +3,19 @@ package de.mwvb.blockpuzzle.gamepiece;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.gamepiece.sets.AllGamePieceSets;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
 
 public class NextGamePieceFromSet implements INextGamePiece {
     private final List<GamePiece> allGamePieces = GamePiecesDefinition.INSTANCE.get();
     private final BlockTypes blockTypes = new BlockTypes(null);
     private final int number;
-    private final IPersistence persistence;
+    private final GamePersistence persistence;
     private final String[] set;
     private int nextRound = 0;
     private int nextGamePieceInRound = 0;
 
-    public NextGamePieceFromSet(int number, IPersistence persistence) {
+    public NextGamePieceFromSet(int number, GamePersistence persistence) {
         if (number <= 0 || number > 9999 || persistence == null) {
             throw new IllegalArgumentException();
         }
@@ -44,7 +44,7 @@ public class NextGamePieceFromSet implements INextGamePiece {
         if (nextGamePieceInRound == 3) {
             nextGamePieceInRound = 0;
             nextRound++;
-            persistence.saveNextRound(nextRound);
+            persistence.get().saveNextRound(nextRound);
         }
         return ret;
     }
@@ -119,13 +119,13 @@ public class NextGamePieceFromSet implements INextGamePiece {
     @Override
     public void reset() {
         nextRound = 0;
-        persistence.saveNextRound(0);
+        persistence.get().saveNextRound(0);
         nextGamePieceInRound = 0;
     }
 
     @Override
     public void load() {
-        nextRound = persistence.loadNextRound();
+        nextRound = persistence.get().loadNextRound();
         nextGamePieceInRound = 0;
     }
 }

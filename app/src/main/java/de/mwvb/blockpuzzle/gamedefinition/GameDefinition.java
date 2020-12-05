@@ -1,8 +1,6 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
-import android.app.Activity;
-
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
@@ -81,7 +79,7 @@ public abstract class GameDefinition {
     /**
      * @return null, or message text for Toast, prefix "+" if victory (play applause sound)
      */
-    public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, IPersistence persistence, ResourceAccess resouces);
+    public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resouces);
 
     public LiberatedFeature getFeatureOnLiberation() {
         return libf;

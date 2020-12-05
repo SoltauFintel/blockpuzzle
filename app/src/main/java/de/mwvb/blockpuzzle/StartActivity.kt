@@ -29,6 +29,6 @@ class StartActivity : AppCompatActivity() {
         // set data ----
         val per = Persistence(this)
         val pa = PlanetAccess(per)
-        clusterView.model = ClusterViewModel(pa.planets, pa.planet, per)
+        clusterView.model = ClusterViewModel(pa.planets, pa.planet, per, resources)
     }
 }

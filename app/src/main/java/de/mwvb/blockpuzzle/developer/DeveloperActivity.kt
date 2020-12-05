@@ -24,7 +24,7 @@ class DeveloperActivity : AppCompatActivity() {
         conquered.setOnClickListener { onConquered() }
         saveOtherScore.setOnClickListener { onSaveOther() }
         saveNextRound.setOnClickListener { onSaveNextRound() }
-        backBtn.setOnClickListener { finish() }
+
         resetAllBtn.setOnClickListener { onResetAll() }
         openMap.setOnClickListener { onOpenMap() }
     }
@@ -33,66 +33,66 @@ class DeveloperActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val per = per()
-        val pa = PlanetAccess(per)
+        val pa = pa()
         val planet = pa.planet
+
         saveScore.isEnabled = (planet != null)
+        liberated.isEnabled = (planet != null)
+        conquered.isEnabled = (planet != null)
         saveOtherScore.isEnabled = (planet != null)
+        saveNextRound.isEnabled = (planet != null)
+
         score.setText("")
         ownername.text = " "
         otherScore.setText("")
         otherMoves.setText("")
         if (planet != null) {
-            per.setGameID(planet)
-
-            score.setText("" + per.loadScore())
-            ownername.text = per.loadOwnerName()
-            otherScore.setText("" + per.loadOwnerScore())
-            otherMoves.setText("" + per.loadOwnerMoves())
-            nextRound.setText("" + per.loadNextRound())
+            score.setText("" + pa.persistence.loadScore())
+            ownername.text = pa.persistence.loadOwnerName()
+            otherScore.setText("" + pa.persistence.loadOwnerScore())
+            otherMoves.setText("" + pa.persistence.loadOwnerMoves())
+            nextRound.setText("" + pa.persistence.loadNextRound())
         }
     }
 
     private fun onSave() {
+        val pa = pa()
         val score = Integer.parseInt(score.text.toString())
-        val per = per()
-        per.saveScore(score)
+        pa.persistence.saveScore(score)
         if (score <= 0) {
-            per.saveMoves(0)
+            pa.persistence.saveMoves(0)
         }
         finish()
     }
 
     private fun onLiberated() {
-        val per = per()
-        val planet = PlanetAccess(per).planet
-        planet!!.isOwner = true
-        per.savePlanet(planet)
+        val pa = pa()
+        pa.planet.isOwner = true
+        pa.persistence.savePlanet(pa.planet)
         finish()
     }
 
     private fun onConquered() {
-        val per = per()
-        val planet = PlanetAccess(per).planet
-        planet!!.isOwner = false
-        per.savePlanet(planet)
-        per.saveScore(-9999)
-        per.saveMoves(0)
+        val pa = pa()
+        pa.planet.isOwner = false
+        pa.persistence.savePlanet(pa.planet)
+        pa.persistence.saveScore(-1)
+        pa.persistence.saveMoves(0)
         finish()
     }
 
     private fun onSaveOther() {
+        val pa = pa()
         val score = Integer.parseInt(otherScore.text.toString())
         val moves = Integer.parseInt(otherMoves.text.toString())
-        val per = per()
-        per.saveOwner(score, moves, "Detlef")
+        pa.persistence.saveOwner(score, moves, "Detlef")
         finish()
     }
 
     private fun onSaveNextRound() {
+        val pa = pa()
         val index = Integer.parseInt(nextRound.text.toString())
-        val per = per()
-        per.saveNextRound(index)
+        pa.persistence.saveNextRound(index)
         finish()
     }
 
@@ -105,18 +105,23 @@ class DeveloperActivity : AppCompatActivity() {
     }
 
     private fun onReallyResetAll() {
-        per().resetAll()
+        pa().persistence.resetAll()
         System.exit(0)
     }
 
     private fun onOpenMap() {
-        val pa = PlanetAccess(per())
+        val pa = pa()
         pa.planets.forEach { p -> p.isVisibleOnMap = true }
         pa.savePlanets()
         finish()
     }
 
-    private fun per(): IPersistence {
-        return Persistence(this)
+    private fun pa(): PlanetAccess {
+        val per = Persistence(this)
+        val pa = PlanetAccess(per)
+        if (pa.planet != null) {
+            per.setGameID(pa.planet)
+        }
+        return pa
     }
 }

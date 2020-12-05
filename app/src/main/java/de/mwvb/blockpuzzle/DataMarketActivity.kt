@@ -45,7 +45,7 @@ class DataMarketActivity : AppCompatActivity() {
     }
 
     private fun onPaste() {
-        var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         if (clipboard.hasPrimaryClip()) {
             if (clipboard.primaryClipDescription!!.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
                 val item = clipboard.primaryClip!!.getItemAt(0)

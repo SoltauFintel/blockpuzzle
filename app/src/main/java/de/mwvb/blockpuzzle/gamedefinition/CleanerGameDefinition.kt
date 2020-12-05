@@ -3,7 +3,7 @@ package de.mwvb.blockpuzzle.gamedefinition
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.Game
-import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.GamePersistence
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
@@ -103,7 +103,7 @@ class CleanerGameDefinition @JvmOverloads constructor(
                         (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
     }
 
-    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: IPersistence?, resouces: ResourceAccess?): String? {
+    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resouces: ResourceAccess?): String? {
         return null
     }
 

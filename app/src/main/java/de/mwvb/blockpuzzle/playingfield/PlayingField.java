@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.playingfield;
 
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 
 public class PlayingField {
@@ -14,7 +14,7 @@ public class PlayingField {
 
     // Services
     private IPlayingFieldView view;
-    private IPersistence persistence;
+    private GamePersistence persistence;
 
     // TODO Idee: Jeder Block sollte ein Objekt sein, welches Eigenschaften (z.B. Farbe) und Verhalten (z.B. LockBlock) hat.
 
@@ -28,7 +28,7 @@ public class PlayingField {
         this.view.setPlayingField(this);
     }
 
-    public void setPersistence(IPersistence persistence) {
+    public void setPersistence(GamePersistence persistence) {
         this.persistence = persistence;
     }
 
@@ -176,12 +176,12 @@ public class PlayingField {
     }
 
     public void load() {
-        persistence.load(this);
+        persistence.get().load(this);
         view.draw();
     }
 
     public void save() {
-        persistence.save(this);
+        persistence.get().save(this);
     }
 
     public int getBlocks() {
@@ -189,10 +189,12 @@ public class PlayingField {
     }
 
     public void makeOldColor() {
+        int blocktype10 = 10; // TODO use constant
+        int blocktype11 = 11; // TODO use constant
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
-                if (matrix[x][y] == 10) {
-                    matrix[x][y] = 11;
+                if (matrix[x][y] == blocktype10) {
+                    matrix[x][y] = blocktype11;
                 }
             }
         }

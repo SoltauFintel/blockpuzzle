@@ -18,8 +18,8 @@ public class Persistence implements IPersistence {
     // Global data ----
     private static final String GLOBAL_OLD_GAME = "/oldGame";
     private static final String GLOBAL_PLAYERNAME = "/playername";
-    private static final String GLOBAL_CURRENT_PLANET = "/currentPlanet";
     private static final String GLOBAL_PLAYERNAME_ENTERED = "/playernameEntered";
+    private static final String GLOBAL_CURRENT_PLANET = "/currentPlanet";
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
     private static final String PLANET_VISIBLE = "visible";
@@ -62,12 +62,14 @@ public class Persistence implements IPersistence {
     @Override
     public void setGameID_oldGame() {
         prefix = "";
+        System.out.println("(old game) game ID: \"\""); // TODO XXX DEBUG
     }
 
     @Override
     public void setGameID(IPlanet planet, int gameDefinitionIndex) {
         // e.g. "C1_16_0"
         prefix = "C" + planet.getClusterNumber() + "_" + planet.getNumber() + "_" + gameDefinitionIndex;
+        System.out.println("game ID: \"" + prefix + "\""); // TODO XXX DEBUG
     }
 
     @Override

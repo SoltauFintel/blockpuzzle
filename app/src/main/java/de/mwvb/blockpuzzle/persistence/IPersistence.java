@@ -7,6 +7,8 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public interface IPersistence {
 
+    // GAME SPECIFIC ----
+
     void setGameID(IPlanet planet, int gameDefinitionIndex);
     /** gameDefinitionIndex: use selected game */
     void setGameID(IPlanet planet);
@@ -16,6 +18,14 @@ public interface IPersistence {
     void saveScore(int punkte);
     int loadDelta();
     void saveDelta(int delta);
+    int loadMoves();
+    void saveMoves(int moves);
+    int loadHighScore();
+    void saveHighScore(int punkte);
+    int loadHighScoreMoves();
+    void saveHighScoreMoves(int moves);
+    void saveNextRound(int nextRound);
+    int loadNextRound();
 
     void load(PlayingField f);
     void save(PlayingField f);
@@ -26,22 +36,18 @@ public interface IPersistence {
     GamePiece load(int index);
     void save(int index, GamePiece p);
 
-    int loadMoves();
-    void saveMoves(int moves);
-
-    int loadHighScore();
-    void saveHighScore(int punkte);
-    int loadHighScoreMoves();
-    void saveHighScoreMoves(int moves);
-
     void saveOwner(int score, int moves, String name);
     void clearOwner();
     String loadOwnerName();
     int loadOwnerScore();
     int loadOwnerMoves();
 
+    // PLANT SPECIFIC ----
+
     void loadPlanet(IPlanet planet);
     void savePlanet(IPlanet planet);
+
+    // GLOBAL DATA ----
 
     /**
      * @return never null or empty, generates random player name if none is stored
@@ -51,6 +57,8 @@ public interface IPersistence {
      * @param playername null or empty value won't be saved
      */
     void savePlayerName(String playername);
+    boolean loadPlayernameEntered();
+    void savePlayernameEntered(boolean v);
 
     void saveCurrentPlanet(int clusterNumber, int planetNumber);
     int loadCurrentPlanet();
@@ -62,12 +70,6 @@ public interface IPersistence {
     void saveOldGame(int v);
     int loadOldGame();
     boolean isStoneWars();
-
-    void saveNextRound(int nextRound);
-    int loadNextRound();
-
-    boolean loadPlayernameEntered();
-    void savePlayernameEntered(boolean v);
 
     /** DELETE ALL DATA */
     void resetAll();

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
@@ -15,9 +15,9 @@ public class GravitationData {
     /** blocks that must not be cleared */
     private final Set<QPosition> exclusions = new HashSet<>();
     private boolean firstGravitationPlayed;
-    private IPersistence persistence;
+    private GamePersistence persistence;
 
-    public void setPersistence(IPersistence persistence) {
+    public void setPersistence(GamePersistence persistence) {
         this.persistence = persistence;
     }
 
@@ -53,10 +53,10 @@ public class GravitationData {
     }
 
     public void load() {
-        persistence.load(this);
+        persistence.get().load(this);
     }
 
     public void save() {
-        persistence.save(this);
+        persistence.get().save(this);
     }
 }

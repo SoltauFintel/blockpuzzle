@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.gamepiece
 
+import de.mwvb.blockpuzzle.persistence.GamePersistence
 import de.mwvb.blockpuzzle.game.IGameView
-import de.mwvb.blockpuzzle.persistence.IPersistence
 
 /**
  * 4 GamePieceHolder objects
@@ -22,7 +22,7 @@ class Holders {
         holders.values.forEach { it.setView(view.getGamePieceView(it.index)) }
     }
 
-    fun setPersistence(persistence: IPersistence) {
+    fun setPersistence(persistence: GamePersistence) {
         holders.values.forEach { it.setPersistence(persistence) }
     }
 

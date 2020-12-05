@@ -58,7 +58,7 @@
     <string name="quitGame">Spiel beenden</string>
     <string name="continue1">Weiter</string>
     <string name="infotext">Roter Alarm! Captain, unser Raumschiff wurde durch eine Weltraumanomalie in eine unbekannte Galaxie katapultiert. Wie finden wir nur zurück? Aber erst müssen wir die Planeten von der Orange Union befreien. In unserem friedlichen Zeitalter werden Konflikte durchs Spielen von Block Puzzle ausgetragen. Los geht\'s.</string>
-    <string name="dataexchangeInfo">Tausche hier Deinen Spielstand mit anderen Spielern aus. Kopiere den Spielstand und sende diesen an andere Spieler, z.B. via WhatsApp. Kopiere den von anderen Spielern gesendeten Spielstand und drücke Einfügen.</string>
+    <string name="dataexchangeInfo">Tausche hier Deinen Spielstand mit anderen Spielern aus. Kopiere den Spielstand des aktuellen Quadranten und sende diesen an andere Spieler, z.B. via WhatsApp. Kopiere den von anderen Spielern gesendeten Spielstand und drücke Einfügen.</string>
     <string name="copy">Kopiere</string>
     <string name="paste">Einfügen</string>
     <string name="bayern">Oberbayern</string>

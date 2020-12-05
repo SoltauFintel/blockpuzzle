@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.game.*
 import de.mwvb.blockpuzzle.playingfield.QPosition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())
-        shakeService!!.initShakeDetection(this)
+        shakeService.initShakeDetection(this)
     }
 
     // Activity reactivated
@@ -100,6 +101,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
                         it.startDragAndDrop(data, dragShadowBuilder, it, 0)
                     } else { // for API level 19 (4.4. Kitkat)
+                        @Suppress("DEPRECATION")
                         it.startDrag(data, dragShadowBuilder, it, 0)
                     }
                 }
@@ -196,7 +198,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                 if (game.toggleRotatingMode()) {
                     // Drehen ist an
                     rotatingMode.text = resources.getText(R.string.drehenAn)
-                    rotatingMode.setBackgroundColor(resources.getColor(R.color.colorDrehmodus))
+                    rotatingMode.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorDrehmodus))
                     initClickListener(1)
                     initClickListener(2)
                     initClickListener(3)
@@ -225,7 +227,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun rotatingModeOff() {
         rotatingMode.text = resources.getText(R.string.drehenAus)
-        rotatingMode.setBackgroundColor(resources.getColor(R.color.colorHeadlineBackground))
+        rotatingMode.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorHeadlineBackground))
         initTouchListeners()
     }
 

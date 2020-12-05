@@ -9,8 +9,6 @@ import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.PlanetAccess;
-import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
  * Stone Wars game engine
@@ -28,14 +26,12 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected void initGameAndPersistence() {
-        IPlanet planet = getPlanet();
-        definition = planet.getSelectedGame();
-        persistence.setGameID(planet);
+        definition = gape.init4StoneWars().getSelectedGame();
     }
 
     @Override
     protected INextGamePiece getNextGamePieceGenerator() {
-        return new NextGamePieceFromSet(definition.getGamePieceSetNumber(), persistence);
+        return new NextGamePieceFromSet(definition.getGamePieceSetNumber(), gape);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class StoneWarsGame extends Game {
     protected void loadGame() {
         super.loadGame();
         // calculate won [for classic game]
-        String msg = definition.scoreChanged(punkte, moves, getPlanet(), false, persistence, getResourceAccess());
+        String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), false, gape, getResourceAccess());
         won = (msg != null && msg.startsWith("+"));
         // calculate game over [for cleaner game]
         if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
@@ -65,16 +61,12 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected void checkForVictory() {
-        IPlanet planet = getPlanet();
-        String msg = definition.scoreChanged(punkte, moves, planet, won, persistence, getResourceAccess());
+        String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), won, gape, getResourceAccess());
         if (msg != null) {
             view.showToast(msg);
             won = msg.startsWith("+");
             if (won) {
-                save();
-                if (new GameInfoService().isPlanetFullyLiberated(planet, persistence)) {
-                    new GameInfoService().executeLiberationFeature(planet, persistence);
-                }
+                check4Liberation();
             }
         }
         if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
@@ -82,8 +74,11 @@ public class StoneWarsGame extends Game {
         }
     }
 
-    private IPlanet getPlanet() {
-        return new PlanetAccess(persistence).getPlanet();
+    private void check4Liberation() {
+        save();
+        if (new GameInfoService().isPlanetFullyLiberated(gape.getPlanet(), gape.getPersistenceOK())) {
+            new GameInfoService().executeLiberationFeature(gape.getPlanet(), gape.getPersistenceOK());
+        }
     }
 
     @NotNull
@@ -112,16 +107,9 @@ public class StoneWarsGame extends Game {
         won = true;
         gameOver = true;
         playingField.gameOver();
-        if (definition.isLiberated(punkte, moves, persistence.loadOwnerScore(), persistence.loadOwnerMoves())) {
-            persistence.clearOwner();
-            IPlanet planet = getPlanet();
-            planet.setOwner(true);
-            persistence.savePlanet(planet);
-
-            save();
-            if (new GameInfoService().isPlanetFullyLiberated(planet, persistence)) {
-                new GameInfoService().executeLiberationFeature(planet, persistence);
-            }
+        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves())) {
+            gape.setOwnerToMe();
+            check4Liberation();
         }
     }
 
@@ -132,6 +120,6 @@ public class StoneWarsGame extends Game {
 
     @Override
     protected int getGravitationStartRow() {
-        return getPlanet().getGravitation();
+        return gape.getPlanet().getGravitation();
     }
 }

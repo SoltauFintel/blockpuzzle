@@ -1,9 +1,12 @@
 package de.mwvb.blockpuzzle.cluster;
 
+import android.content.res.Resources;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
@@ -17,7 +20,7 @@ public class ClusterViewModel {
     private IPlanet currentPlanet;
     private IPersistence persistence;
 
-    public ClusterViewModel(List<IPlanet> planets, IPlanet planet, IPersistence per) {
+    public ClusterViewModel(List<IPlanet> planets, IPlanet planet, IPersistence per, Resources resources) {
         this.planets = planets;
         currentPlanet = planet;
         persistence = per; // for saving the current planet
@@ -25,8 +28,8 @@ public class ClusterViewModel {
         for (IPlanet p0 : planets) {
             AbstractPlanet p = (AbstractPlanet) p0;
 
-            per.setGameID(p, 0);
-            p.setInfoText1(getName(p) + p.getNumber());
+            per.setGameID(p);
+            p.setInfoText1(getName(p, resources) + p.getNumber());
             p.setInfoText2(createInfoText2(p));
             p.setInfoText3(createInfoText3(per, p, p.getGameDefinitions().size(), per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves()));
         }
@@ -34,14 +37,16 @@ public class ClusterViewModel {
     }
 
     @NotNull
-    private String getName(AbstractPlanet p) {
-        String name = "Planet #";
+    private String getName(AbstractPlanet p, Resources resources) {
+        String name;
         if (p instanceof Moon) {
-            name = "Dwarf planet #";
+            name = resources.getString(R.string.moon);
         } else if (p instanceof GiantPlanet) {
-            name = "Giant planet #";
+            name = resources.getString(R.string.giantPlanet);
+        } else {
+            name = resources.getString(R.string.planet);
         }
-        return name;
+        return name + " #";
     }
 
     private String createInfoText2(AbstractPlanet p) {
