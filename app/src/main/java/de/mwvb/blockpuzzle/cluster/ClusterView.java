@@ -110,10 +110,12 @@ public class ClusterView extends View {
         canvas.drawLine(0, getHeight() / 2f, getWidth(), getHeight() / 2f, linePaint);
 
         // Quadrant texts
-        canvas.drawText("alpha", getWidth() / 2f - 30 - quadrantPaint.measureText("alpha"), getHeight() / 2f + 70, quadrantPaint);
-        canvas.drawText("gamma", getWidth() / 2f - 30 - quadrantPaint.measureText("gamma"), getHeight() / 2f - 30, quadrantPaint);
-        canvas.drawText("delta", getWidth() / 2f + 30, getHeight() / 2f - 30, quadrantPaint);
-        canvas.drawText("beta", getWidth() / 2f + 30, getHeight() / 2f + 70, quadrantPaint);
+        String alpha = getResources().getString(R.string.alpha);
+        String gamma = getResources().getString(R.string.gamma);
+        canvas.drawText(alpha, getWidth() / 2f - 30 - quadrantPaint.measureText(alpha), getHeight() / 2f + 70, quadrantPaint);
+        canvas.drawText(gamma, getWidth() / 2f - 30 - quadrantPaint.measureText(gamma), getHeight() / 2f - 30, quadrantPaint);
+        canvas.drawText(getResources().getString(R.string.delta), getWidth() / 2f + 30, getHeight() / 2f - 30, quadrantPaint);
+        canvas.drawText(getResources().getString(R.string.beta), getWidth() / 2f + 30, getHeight() / 2f + 70, quadrantPaint);
 
         // Planets
         for (IPlanet planet : model.getPlanets()) {

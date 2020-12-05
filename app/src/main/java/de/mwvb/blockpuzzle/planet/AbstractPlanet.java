@@ -94,7 +94,7 @@ public abstract class AbstractPlanet implements IPlanet {
     @Override
     public void setSelectedGame(GameDefinition selectedGame) {
         if (!gameDefinitions.contains(selectedGame)) {
-            throw new RuntimeException("Das Game gehört nicht zu diesem Planeten!");
+            throw new RuntimeException("Given selectedGame is not known for this planet!");
         }
         this.selectedGame = selectedGame;
     }

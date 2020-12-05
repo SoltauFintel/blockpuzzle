@@ -74,4 +74,8 @@
     <string name="putData_success">Neue Owner wurden gesetzt.</string>
     <string name="nothingToInsert">Nichts einzufügen.</string>
     <string name="copied">Kopiert.</string>
+    <string name="alpha">alpha</string>
+    <string name="beta">beta</string>
+    <string name="gamma">gamma</string>
+    <string name="delta">delta</string>
 </resources>

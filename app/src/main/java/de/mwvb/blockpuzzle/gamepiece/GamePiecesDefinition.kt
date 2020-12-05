@@ -16,7 +16,7 @@ object GamePiecesDefinition {
 
     fun find(name: String): GamePiece? {
         val ret = get()
-        for (p in ret!!) {
+        for (p in ret) {
             if (p.name == name) {
                 return p
             }

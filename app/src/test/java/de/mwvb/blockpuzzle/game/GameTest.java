@@ -65,7 +65,7 @@ public class GameTest extends AbstractBlockPuzzleTest {
         game.dispatch(false, 1, five, new QPosition(0, 0));
         game.dispatch(false, 2, five, new QPosition(5, 0));
         game.dispatch(false, 3, five, new QPosition(0, 0)); // jetzt ist da wieder Platz
-        // TODO Bonuspunkte für Test ausschalten!
+        // TO-DO Bonuspunkte für Test ausschalten!
         //      Auch zeitlich verzögerte Aktionen sind störend. (wobei ich warten könnte)
     }
 
@@ -197,9 +197,10 @@ public class GameTest extends AbstractBlockPuzzleTest {
         Assert.assertEquals(3*3 + 3 * 7 + 105, game.getScore());
     }
 
-    // TODO weitere Testideen
+    // TO-DO weitere Testideen
     // - Game over Situation
     // - nach Game-over wird new-game gewählt
     // - Nachdem ca. 5 Moves gespielt wurden, wird new-game gewählt
     // - coverage
+    // - gesamtes Spiel (tlw. gefaket) durchspielen (also quasi alle [wichtigen] Planeten)
 }

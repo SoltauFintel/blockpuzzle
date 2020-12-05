@@ -28,10 +28,10 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(40,9, 11, 2, CleanerGameDefinition(8, 5)))
 
         // ALPHA QUADRANT
-        //planets.add(Planet(23,6,21, CleanerGameDefinition(19, 2))) // TODO oneColor
+        //planets.add(Planet(23,6,21, CleanerGameDefinition(19, 2))) // TO-DO oneColor
         planets.add(Planet(24,3,25, ClassicGameDefinition(20, 8000)))
         planets.add(Planet(25,11,24, 3, ClassicGameDefinition(21, 8000)))
-        //planets.add(Planet(26,16,22, CleanerGameDefinition(22, 3))) // TODO oneColor
+        //planets.add(Planet(26,16,22, CleanerGameDefinition(22, 3))) // TO-DO oneColor
         planets.add(Planet(28,14,27, 6, CleanerGameDefinition(23, 5, 70))) // 49 Moves
         planets.add(getGiantPlanet2())
         planets.add(Planet(31,6,35, ClassicGameDefinition(4, 40000)))
@@ -56,7 +56,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Planet(13,28,22, 6, CleanerGameDefinition(29, 7, 200))) // 196 Moves
         planets.add(Moon(14,29,23, CleanerGameDefinition(30, 9)))
         planets.add(Planet(33,24,30, CleanerGameDefinition(28, 4, 20))) // 12 Moves
-        //planets.add(Planet(34,34,21, CleanerGameDefinition(31, 5))) // TODO oneColor
+        //planets.add(Planet(34,34,21, CleanerGameDefinition(31, 5))) // TO-DO oneColor
         planets.add(Planet(35,32,27, CleanerGameDefinition(32, 6)))
         planets.add(getGiantPlanet3())
         planets.add(Planet(37,33,33, CleanerGameDefinition(33, 7, 200)))

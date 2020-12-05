@@ -71,7 +71,7 @@ public class Cluster1Aufdeckungen {
                 return p;
             }
         }
-        throw new RuntimeException("Planet #" + number + " nicht gefunden!");
+        throw new RuntimeException("Planet #" + number + " not found!");
     }
 
     private List<IPlanet> getPlanets(String quadrant) {

@@ -8,5 +8,5 @@ public interface Features {
      */
     boolean shakeForGravitation = false;
 
-    boolean developerMode = true;
+    boolean developerMode = false;
 }

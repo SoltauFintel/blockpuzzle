@@ -73,4 +73,8 @@
     <string name="putData_success">New owners were set.</string>
     <string name="nothingToInsert">Nothing to insert</string>
     <string name="copied">Copied.</string>
+    <string name="alpha">alpha</string>
+    <string name="beta">beta</string>
+    <string name="gamma">gamma</string>
+    <string name="delta">delta</string>
 </resources>

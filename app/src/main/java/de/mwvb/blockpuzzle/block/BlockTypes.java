@@ -15,6 +15,7 @@ import de.mwvb.blockpuzzle.block.special.StarBlock;
 // Bauplan für alle Blöcke
 public class BlockTypes {
     public static final int ONE_COLOR = 10;
+    public static final int OLD_ONE_COLOR = 11;
     /** key: block type char, value: block type number */
     private final Map<String, Integer> charMap = new HashMap<>();
     /** key: block type number, value: block drawing strategy */
@@ -36,7 +37,7 @@ public class BlockTypes {
         add(5, R.color.pink, R.color.pink_i, R.color.pink_ib);
         add(6, R.color.yellow, R.color.yellow_i, R.color.yellow_ib);
         add(ONE_COLOR, 'f', R.color.oneColor, R.color.oneColor_i, R.color.oneColor_ib);
-        add(11, 'o', R.color.oneColorOld, R.color.oneColorOld_i, R.color.oneColorOld_ib);
+        add(OLD_ONE_COLOR, 'o', R.color.oneColorOld, R.color.oneColorOld_i, R.color.oneColorOld_ib);
 
         for (ISpecialBlock s : getSpecialBlockTypes()) {
             charMap.put("" + s.getBlockTypeChar(), s.getBlockType());
