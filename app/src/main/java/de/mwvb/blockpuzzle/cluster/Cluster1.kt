@@ -94,10 +94,10 @@ object Cluster1 : Cluster(1) {
         val gd1 = ClassicGameDefinition(35, 40000)
         gd1.territoryName = R.string.bayern
 
-        val gd2 = ClassicGameDefinition(36, 40000)
+        val gd2 = ClassicGameDefinition(36, 999000) // Ich setz erstmal die Score sehr hoch, damit das keiner schafft.
         gd2.territoryName = R.string.luxemburg
 
-        // third territory (e.g. "Gelre") will be added in future release with star gate to star cluster 2
+        // evtl. noch weiteres Territory "Gelre"
 
         return GiantPlanet(36, 28, 32, 8, gd1, gd2, null)
     }

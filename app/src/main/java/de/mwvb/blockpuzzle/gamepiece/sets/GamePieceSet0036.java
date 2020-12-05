@@ -4,10 +4,11 @@ import de.mwvb.blockpuzzle.gamepiece.IGamePieceSet;
 
 /** GENERATED */
 public class GamePieceSet0036 implements IGamePieceSet {
+	// modifiziert: Todesstoß
 
 	@Override
 	public String[] getGamePieceSet() {
-		String[] r = new String[1600];
+		String[] r = new String[1610];
 		r[0] = "#3#5#Ecke2";
 		r[1] = "#2#Ecke2#2";
 		r[2] = "#5#5#Ecke2";
@@ -1608,6 +1609,18 @@ public class GamePieceSet0036 implements IGamePieceSet {
 		r[1597] = "#2#T#T";
 		r[1598] = "#2x2#Ecke3#X";
 		r[1599] = "#Z#Ecke3_Bonus1B#1_Bonus1";
+
+		// Todesstoß, damit Spiel nicht gewonnen werden kann durch 'keine Spielsteine mehr'.
+		r[1600] = "#X#X#X";
+		r[1601] = "#X#X#X";
+		r[1602] = "#3x3#3x3#3x3";
+		r[1603] = "#X#X#X";
+		r[1604] = "#X#X#3x3"; // Hier ist dann Ende
+		r[1605] = "#X#X#X"; // oder spätestens hier
+		r[1606] = "#X#X#X";
+		r[1607] = "#X#X#X";
+		r[1608] = "#X#X#X";
+		r[1609] = "#X#X#X";
 		return r;
 	}
 }
