@@ -64,4 +64,14 @@
     <string name="bayern">Oberbayern</string>
     <string name="luxemburg">Luxemburg West</string>
     <string name="mute">Stumm</string>
+    <string name="putData_makesNoSense">Macht kein Sinn die gerade kopierten Daten einzufügen</string>
+    <string name="putData_formatError1">Unbekanntes Datenformat</string>
+    <string name="putData_formatError2">Daten sind nicht kompatibel. Falsche Version.</string>
+    <string name="putData_unknownCluster">Unbekannter Cluster.</string>
+    <string name="putData_checksumMismatch">Prüfsummenfehler</string>
+    <string name="putData_wrongPlanetData">Falsche Planetendaten</string>
+    <string name="putData_okay">Daten sind okay, aber es wurden keine Owner gesetzt.</string>
+    <string name="putData_success">Neue Owner wurden gesetzt.</string>
+    <string name="nothingToInsert">Nichts einzufügen.</string>
+    <string name="copied">Kopiert.</string>
 </resources>

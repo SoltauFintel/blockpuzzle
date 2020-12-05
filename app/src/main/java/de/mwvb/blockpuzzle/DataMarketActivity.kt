@@ -41,7 +41,7 @@ class DataMarketActivity : AppCompatActivity() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val o = ClipData.newPlainText("BlockPuzzleDataPacket", DataService().get(per()))
         clipboard.setPrimaryClip(o)
-        Toast.makeText(this, "Kopiert", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
     }
 
     private fun onPaste() {
@@ -51,7 +51,7 @@ class DataMarketActivity : AppCompatActivity() {
                 val item = clipboard.primaryClip!!.getItemAt(0)
                 val pasteData = item.text
                 if (pasteData != null) {
-                    val msg = DataService().put(pasteData.toString(), per());
+                    val msg = DataService().put(pasteData.toString(), per(), resources);
                     if (msg != null && !msg.isEmpty()) {
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                     }
@@ -59,7 +59,7 @@ class DataMarketActivity : AppCompatActivity() {
                 }
             }
         }
-        Toast.makeText(this, "Nichts einzufügen", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, resources.getString(R.string.nothingToInsert), Toast.LENGTH_SHORT).show()
     }
 
     private fun per(): IPersistence {

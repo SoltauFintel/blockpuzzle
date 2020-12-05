@@ -63,4 +63,14 @@
     <string name="bayern">Upper Bavaria</string>
     <string name="luxemburg">Luxembourg West</string>
     <string name="mute">Mute</string>
+    <string name="putData_makesNoSense">Makes no sense to paste the copied data</string>
+    <string name="putData_formatError1">Unknown data format</string>
+    <string name="putData_formatError2">Data is not compatible. Wrong version.</string>
+    <string name="putData_unknownCluster">Unknown star cluster.</string>
+    <string name="putData_checksumMismatch">Checksum mismatch!</string>
+    <string name="putData_wrongPlanetData">Wrong planet data.</string>
+    <string name="putData_okay">Data were okay, but no new owner was set.</string>
+    <string name="putData_success">New owners were set.</string>
+    <string name="nothingToInsert">Nothing to insert</string>
+    <string name="copied">Copied.</string>
 </resources>

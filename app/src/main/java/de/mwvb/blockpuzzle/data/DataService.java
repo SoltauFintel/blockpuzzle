@@ -1,9 +1,12 @@
 package de.mwvb.blockpuzzle.data;
 
+import android.content.res.Resources;
+
 import java.util.List;
 import java.util.zip.CRC32;
 
 import de.mwvb.blockpuzzle.Features;
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
@@ -53,23 +56,23 @@ public class DataService {
         return k + ret;
     }
 
-    public String put(String data, IPersistence persistence) {
+    public String put(String data, IPersistence persistence, Resources resources) {
         PlanetAccess pa = new PlanetAccess(persistence);
-        return put(data, pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence);
+        return put(data, pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence, resources);
     }
 
-    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence) {
+    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence, Resources resources) {
         if (data != null && data.equals(get(clusterNumber, planets, currentPlanet, persistence))) {
-            return "Makes no sense to paste the copied data";
+            return resources.getString(R.string.putData_makesNoSense);
         } else if (data == null || !data.startsWith("BP")) {
-            return "Unknown data format";
+            return resources.getString(R.string.putData_formatError1); // unknown data
         } else if (!data.startsWith("BP" + VERSION + "/")) {
-            return "Data is not compatible. Wrong version.";
+            return resources.getString(R.string.putData_formatError2); // version mismatch
         }
         String rhead = "BP" + VERSION + "/C" + clusterNumber;
         int headLength = rhead.length() + "a/".length();
         if (!data.startsWith(rhead + "a/") && !data.startsWith(rhead + "b/") && !data.startsWith(rhead + "c/") && !data.startsWith(rhead + "d/")) {
-            return "Not supported star cluster."; // or quadrant
+            return resources.getString(R.string.putData_unknownCluster); // or quadrant
         }
         data = data.replace("\n", "");
         int loo = data.lastIndexOf("//");
@@ -82,20 +85,22 @@ public class DataService {
         String code = data.substring(lo + 1);
         data = data.substring(0, lo);
         if (!Features.developerMode && !code6(data).equals(code)) {
-            return "Checksum mismatch!";
+            return resources.getString(R.string.putData_checksumMismatch);
         }
         data = data.substring(headLength);
         String[] w = data.split("/");
         if (w.length % 4 != 0) {
-            return "Wrong planet data.";
+            return resources.getString(R.string.putData_wrongPlanetData);
         }
+        int newOwnerCount = 0;
         for (int i = 0; i < w.length; i += 4) {
-            parse(w[i], w[i + 1], w[i + 2], w[i + 3], name, planets, persistence);
+            newOwnerCount += parse(w[i], w[i + 1], w[i + 2], w[i + 3], name, planets, persistence);
         }
-        return null;
+        return resources.getString(newOwnerCount == 0 ? R.string.putData_okay : R.string.putData_success);
     }
 
-    private void parse(String p0, String gi0, String s, String m, String name, List<IPlanet> planets, IPersistence persistence) {
+    private int parse(String p0, String gi0, String s, String m, String name, List<IPlanet> planets, IPersistence persistence) {
+        int newOwnerCount = 0;
         int pl = Integer.parseInt(p0, 16);
         int gi = Integer.parseInt(gi0);
         int otherScore = Integer.parseInt(s, 16);
@@ -109,11 +114,13 @@ public class DataService {
                 GameDefinition gd = p.getGameDefinitions().get(gi);
                 if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves)) {
                     setOwner(p, gi, otherScore, otherMoves, name, persistence);
+                    newOwnerCount++;
                 }
-                return;
+                return newOwnerCount;
             }
         }
         // PLanet nicht gefunden
+        return 0;
     }
 
     private void setOwner(IPlanet p, int gi, int score, int moves, String name, IPersistence persistence) {
