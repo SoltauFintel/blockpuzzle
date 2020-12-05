@@ -5,9 +5,9 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.data.DataService
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence

@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import de.mwvb.blockpuzzle.game.AbstractBlockPuzzleTest;
 import de.mwvb.blockpuzzle.game.Game;
-import de.mwvb.blockpuzzle.game.TestGameBuilder;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.TestGamePieces;
 import de.mwvb.blockpuzzle.playingfield.QPosition;

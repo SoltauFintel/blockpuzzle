@@ -1,15 +1,14 @@
 package de.mwvb.blockpuzzle.block.special;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.block.BlockDrawParameters;
-import de.mwvb.blockpuzzle.playingfield.QPosition;
+import de.mwvb.blockpuzzle.block.IBlockDrawer;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
-import de.mwvb.blockpuzzle.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 public class LockBlock extends SpecialBock {
     public static final int TYPE = 21;

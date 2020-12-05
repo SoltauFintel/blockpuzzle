@@ -1,7 +1,6 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
 
 /**
  * Next game piece strategy

@@ -3,20 +3,20 @@ package de.mwvb.blockpuzzle.game;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
+import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.gamepiece.Holders;
+import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
+import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
-import de.mwvb.blockpuzzle.playingfield.QPosition;
-import de.mwvb.blockpuzzle.block.BlockTypes;
-import de.mwvb.blockpuzzle.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
-import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
-import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.playingfield.FilledRows;
-import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.OneColorAreaDetector;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
+import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
  * Block Puzzle game logic

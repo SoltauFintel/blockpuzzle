@@ -9,10 +9,10 @@ import android.view.View;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.block.BlockDrawParameters;
 import de.mwvb.blockpuzzle.block.BlockTypes;
-import de.mwvb.blockpuzzle.game.Game;
-import de.mwvb.blockpuzzle.playingfield.PlayingFieldView;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.playingfield.PlayingFieldView;
 
 /**
  * Im unteren Bereich die View Komponente, die ein Spielstein (oder einen leeren Spielstein) enthält.

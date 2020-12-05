@@ -2,8 +2,8 @@ package de.mwvb.blockpuzzle.game
 
 import android.graphics.Point
 import android.view.View
-import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 
 class MyDragShadowBuilder(view: GamePieceView, private val f: Float) : View.DragShadowBuilder(view) {

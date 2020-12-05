@@ -2,8 +2,6 @@ package de.mwvb.blockpuzzle.gamepiece;
 
 import org.junit.Assert;
 
-import java.util.List;
-
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.game.TestGameBuilder;
 

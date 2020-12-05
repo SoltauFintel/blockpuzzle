@@ -2,9 +2,9 @@ package de.mwvb.blockpuzzle
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService

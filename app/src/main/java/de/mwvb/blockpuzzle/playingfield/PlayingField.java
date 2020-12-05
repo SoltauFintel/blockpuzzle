@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.playingfield;
 
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 
 public class PlayingField {
     // Stammdaten

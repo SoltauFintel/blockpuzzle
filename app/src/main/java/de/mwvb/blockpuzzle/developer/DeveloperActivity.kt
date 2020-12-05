@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import kotlinx.android.synthetic.main.activity_developer.*

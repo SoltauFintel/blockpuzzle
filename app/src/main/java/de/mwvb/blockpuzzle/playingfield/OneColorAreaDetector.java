@@ -3,9 +3,6 @@ package de.mwvb.blockpuzzle.playingfield;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.playingfield.QPosition;
-import de.mwvb.blockpuzzle.playingfield.PlayingField;
-
 public class OneColorAreaDetector {
     private final PlayingField playingField;
     private final int blocks;

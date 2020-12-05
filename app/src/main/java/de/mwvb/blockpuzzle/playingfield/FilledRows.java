@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.mwvb.blockpuzzle.playingfield.QPosition;
-
 public class FilledRows {
     private final List<Integer> ylist = new ArrayList<>();
     private final List<Integer> xlist = new ArrayList<>();

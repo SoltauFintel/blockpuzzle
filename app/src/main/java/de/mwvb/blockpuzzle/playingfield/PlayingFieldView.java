@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -13,12 +12,12 @@ import androidx.annotation.Nullable;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.block.BlockDrawParameters;
 import de.mwvb.blockpuzzle.block.BlockDrawerStrategy;
-import de.mwvb.blockpuzzle.game.Game;
 import de.mwvb.blockpuzzle.block.BlockTypes;
-import de.mwvb.blockpuzzle.sound.SoundService;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.EmptyBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
  * Das Spielfeld ist ein 10x10 großes Quadrat.

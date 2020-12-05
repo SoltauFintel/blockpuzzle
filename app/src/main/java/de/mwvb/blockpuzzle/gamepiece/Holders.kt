@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.gamepiece
 
-import de.mwvb.blockpuzzle.persistence.GamePersistence
 import de.mwvb.blockpuzzle.game.IGameView
+import de.mwvb.blockpuzzle.persistence.GamePersistence
 
 /**
  * 4 GamePieceHolder objects

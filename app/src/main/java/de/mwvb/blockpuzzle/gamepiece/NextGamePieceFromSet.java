@@ -3,8 +3,8 @@ package de.mwvb.blockpuzzle.gamepiece;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.gamepiece.sets.AllGamePieceSets;
+import de.mwvb.blockpuzzle.persistence.GamePersistence;
 
 public class NextGamePieceFromSet implements INextGamePiece {
     private final List<GamePiece> allGamePieces = GamePiecesDefinition.INSTANCE.get();

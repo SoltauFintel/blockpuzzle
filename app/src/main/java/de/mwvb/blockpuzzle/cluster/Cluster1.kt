@@ -3,7 +3,6 @@ package de.mwvb.blockpuzzle.cluster
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
-import de.mwvb.blockpuzzle.gamedefinition.LiberatedFeature
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon
 import de.mwvb.blockpuzzle.planet.Planet

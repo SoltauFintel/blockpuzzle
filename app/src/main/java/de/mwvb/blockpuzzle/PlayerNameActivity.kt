@@ -1,8 +1,8 @@
 package de.mwvb.blockpuzzle
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_player_name.*

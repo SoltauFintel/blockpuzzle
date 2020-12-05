@@ -1,15 +1,14 @@
 package de.mwvb.blockpuzzle.block.special;
 
-import android.graphics.Color;
 import android.view.View;
 
 import java.util.List;
 import java.util.Random;
 
-import de.mwvb.blockpuzzle.playingfield.QPosition;
-import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.gamepiece.GamePiece;
+import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 public abstract class SpecialBock implements ISpecialBlock {
     protected static final Random rand = new Random(System.currentTimeMillis());

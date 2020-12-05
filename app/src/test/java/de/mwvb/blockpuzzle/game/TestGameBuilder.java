@@ -2,13 +2,9 @@ package de.mwvb.blockpuzzle.game;
 
 import org.jetbrains.annotations.NotNull;
 
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
-import de.mwvb.blockpuzzle.gravitation.GravitationData;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView;

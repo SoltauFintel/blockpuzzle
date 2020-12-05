@@ -2,11 +2,10 @@ package de.mwvb.blockpuzzle
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import de.mwvb.blockpuzzle.cluster.Cluster
+import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
@@ -14,9 +13,7 @@ import de.mwvb.blockpuzzle.persistence.GlobalData
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.persistence.PlanetAccess
-import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.IPlanet
-import de.mwvb.blockpuzzle.planet.Moon
 import kotlinx.android.synthetic.main.activity_bridge.*
 import java.util.*
 

@@ -1,7 +1,5 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
-import de.mwvb.blockpuzzle.gamepiece.GamePiece;
-
 public interface IGamePieceView {
 
     void setGamePiece(GamePiece v);

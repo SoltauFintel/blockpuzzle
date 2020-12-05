@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.game.*
-import de.mwvb.blockpuzzle.playingfield.QPosition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gravitation.ShakeService
@@ -21,6 +20,7 @@ import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
+import de.mwvb.blockpuzzle.playingfield.QPosition
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 

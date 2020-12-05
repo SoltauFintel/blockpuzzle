@@ -2,10 +2,10 @@ package de.mwvb.blockpuzzle.block.special;
 
 import android.view.View;
 
-import de.mwvb.blockpuzzle.playingfield.QPosition;
+import de.mwvb.blockpuzzle.block.IBlockDrawer;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
-import de.mwvb.blockpuzzle.block.IBlockDrawer;
+import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 public interface ISpecialBlock {
 

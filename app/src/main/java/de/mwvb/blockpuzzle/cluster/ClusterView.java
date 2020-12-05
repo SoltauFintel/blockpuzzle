@@ -14,15 +14,9 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Calendar;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.PlanetAccess;
-import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.Moon;
