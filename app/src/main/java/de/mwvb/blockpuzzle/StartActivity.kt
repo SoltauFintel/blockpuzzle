@@ -19,7 +19,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
 
         // build view ----
-        clusterView.setParent(clusterViewParent)
+        clusterView.setClusterViewParent(clusterViewParent)
         clusterView.setSelectTargetButton(selectTarget)
         selectTarget.setOnClickListener { clusterView.selectTarget() }
 

@@ -1,20 +1,15 @@
 package de.mwvb.blockpuzzle.cluster;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-
-import java.util.Calendar;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
@@ -32,20 +27,12 @@ public class ClusterView extends View {
     /** Model */
     private ClusterViewModel model;
     /** for move action */
-    private View parent;
+    private View clusterViewParent;
     private Button selectTargetButton;
     /** grid size */
     public static final int w = 40;
     private Paint planetPaint, giantPlanetPaint, moonPaint, linePaint, quadrantPaint, myPaint, spaceshipPaint;
-    /** for move action */
-    private final PointF down = new PointF();
-    /** for move action */
-    private final PointF start = new PointF();
-    /** for click action */
-    private long startClickTime = 0;
     private Bubble bubble;
-    /** for my phone 100 is better, 200 is better for emulators on PC */
-    private long clickDurationLimit = 100;
 
     public ClusterView(Context context) {
         super(context);
@@ -67,11 +54,7 @@ public class ClusterView extends View {
         setBackgroundColor(Color.BLACK);
         initPaints();
         bubble = new Bubble(getResources().getColor(R.color.speechBubbleBackground), getResources().getColor(R.color.target), getResources().getDisplayMetrics().density);
-        initTouch();
-        if (Build.FINGERPRINT.contains("generic")) { // Is emulator?
-            clickDurationLimit = 200;
-            System.out.println("RUNS ON EMULATOR");
-        }
+        setOnTouchListener(new ClusterViewTouchListener(bubble));
     }
     private void initPaints() {
         moonPaint = new Paint();
@@ -96,56 +79,12 @@ public class ClusterView extends View {
         spaceshipPaint = new Paint();
         spaceshipPaint.setColor(getResources().getColor(R.color.spaceship));
     }
-    private void initTouch() {
-        setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        down.set(event.getX(), event.getY());
-                        start.set(getX(), getY());
-                        startClickTime = Calendar.getInstance().getTimeInMillis();
-                        if (bubble.isVisible()) {
-                            bubble.hide();
-                            draw();
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (parent == null) return false;
-                        float f = start.x + event.getX() - down.x;
-                        float r = f + getWidth();
-                        if (r < parent.getWidth()) {
-                            f += parent.getWidth() - r;
-                        }
-                        if (f > 0f) f = 0f;
-                        setX(f);
-                        f = start.y + event.getY() - down.y;
-                        r = f + getHeight();
-                        if (r < parent.getHeight()) {
-                            f += parent.getHeight() - r;
-                        }
-                        if (f > 0f) f = 0f;
-                        setY(f);
-                        start.set(getX(), getY());
-                        bubble.setPlanet(null);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // https://stackoverflow.com/a/15799372/3478021
-                        long now = Calendar.getInstance().getTimeInMillis();
-                        long clickDuration = now - startClickTime;
-                        if (clickDuration < clickDurationLimit) {
-                            click(event.getX(), event.getY());
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
-    }
 
-    public void setParent(View parent) {
-        this.parent = parent;
+    public void setClusterViewParent(View parent) {
+        this.clusterViewParent = parent;
+    }
+    public View getClusterViewParent() {
+        return clusterViewParent;
     }
     public void setSelectTargetButton(Button selectTargetButton) {
         this.selectTargetButton = selectTargetButton;
