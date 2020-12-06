@@ -55,7 +55,7 @@
     <string name="territoryLiberated">+Territory liberated!</string>
     <string name="defeatedEnemy">+Enemy defeated! Territory liberated!</string>
     <string name="quitGame">Quit game</string>
-    <string name="continue1">Weiter</string>
+    <string name="continue1">Continue</string>
     <string name="infotext">Red alert! Captain, our spaceship was catapulted into an unknown galaxy by a space anomaly. How do we find our way back to our home galaxy? But first we have to liberate the planets from the Orange Union. In our peaceful age, conflicts are resolved by playing Block Puzzle. Let\'s go.</string>
     <string name="dataexchangeInfo">Use this to exchange your game state with other players. Copy your game state of the current quadrant and paste it into e.g. WhatsApp. Copy game state sent by other players and paste it here.</string>
     <string name="copy">Copy</string>

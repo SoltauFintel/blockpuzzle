@@ -52,7 +52,11 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public String getClusterViewInfo() {
-        return "Z" + getGamePieceSetNumber() + " Classic MLS" + (minimumLiberationScore / 1000) + "k";
+        if (Features.developerMode) {
+            return "Z" + getGamePieceSetNumber() + " Classic MLS" + (minimumLiberationScore / 1000) + "k";
+        } else {
+            return "Classic MLS" + (minimumLiberationScore / 1000) + "k";
+        }
     }
 
 

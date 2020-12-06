@@ -85,11 +85,19 @@ class CleanerGameDefinition @JvmOverloads constructor(
     }
 
     override fun getClusterViewInfo(): String {
-        var ret = "Z" + getGamePieceSetNumber() + " Cleaner L$level"
-        if (maximumLiberationMoves > 0) {
-            ret += " XLM" + maximumLiberationMoves
+        if (!Features.developerMode) {
+            var ret = "Cleaner L$level"
+            if (maximumLiberationMoves > 0) {
+                ret += " XLM" + maximumLiberationMoves
+            }
+            return ret
+        } else {
+            var ret = "Z" + getGamePieceSetNumber() + " Cleaner L$level"
+            if (maximumLiberationMoves > 0) {
+                ret += " XLM" + maximumLiberationMoves
+            }
+            return ret
         }
-        return ret
     }
 
 
