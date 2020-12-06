@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
-        val stoneWars = per().isStoneWars()
+        val stoneWars = per().isStoneWars
         if (stoneWars) {
             game = StoneWarsGame(this)
         } else {
@@ -57,10 +57,9 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListeners() // Zum Auslösen des Drag&Drop Events
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        if (stoneWars) {
-            newGame.visibility = View.INVISIBLE
-        } else {
-            newGame.visibility = View.VISIBLE
+        newGame.visibility = when (game.isNewGameButtonVisible) {
+            true -> View.VISIBLE
+            false -> View.INVISIBLE
         }
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())

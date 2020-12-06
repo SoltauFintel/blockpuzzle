@@ -82,6 +82,10 @@ public class Game {
         gape.setGameID_oldGame();
     }
 
+    public boolean isNewGameButtonVisible() {
+        return true;
+    }
+
     protected INextGamePiece getNextGamePieceGenerator() {
         return new RandomGamePiece();
     }

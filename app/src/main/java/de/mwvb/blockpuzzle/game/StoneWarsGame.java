@@ -30,6 +30,11 @@ public class StoneWarsGame extends Game {
     }
 
     @Override
+    public boolean isNewGameButtonVisible() {
+        return false;
+    }
+
+    @Override
     protected INextGamePiece getNextGamePieceGenerator() {
         return new NextGamePieceFromSet(definition.getGamePieceSetNumber(), gape);
     }
