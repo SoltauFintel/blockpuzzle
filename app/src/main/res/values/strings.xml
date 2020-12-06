@@ -15,7 +15,7 @@
     <string name="move">move</string>
     <string name="moves">moves</string>
     <string name="save">Save</string>
-    <string name="empty" />
+    <string name="empty"/>
     <string name="leaveShipInSpace">Really quit game?</string>
     <string name="stoneWars">Stone Wars</string>
     <string name="oldGame">Old Game</string>
@@ -42,7 +42,6 @@
     <string name="liberatedTerritoryByYou">Liberated territory by you</string>
     <string name="planetOccByP1">Planet occupied by %1$s</string>
     <string name="orangeUnion">Orange Union</string>
-    <string name="inOrbitOf">in orbit of</string>
     <string name="gravitation">Gravitation</string>
     <string name="position">Position</string>
     <string name="selectTargetInNavigation">Please select a planet as target in navigation!</string>
@@ -64,13 +63,13 @@
     <string name="luxemburg">Luxembourg West</string>
     <string name="mute">Mute</string>
     <string name="putData_makesNoSense">Makes no sense to paste the copied data</string>
-    <string name="putData_formatError1">Unknown data format</string>
-    <string name="putData_formatError2">Data is not compatible. Wrong version.</string>
-    <string name="putData_unknownCluster">Unknown star cluster.</string>
-    <string name="putData_checksumMismatch">Checksum mismatch!</string>
-    <string name="putData_wrongPlanetData">Wrong planet data.</string>
-    <string name="putData_okay">Data were okay, but no new owner was set.</string>
-    <string name="putData_success">New owners were set.</string>
+    <string name="putData_formatError1">Don\'t understand data!</string>
+    <string name="putData_formatError2">Data is not compatible! (wrong version)</string>
+    <string name="putData_unknownCluster">Unknown star cluster!</string>
+    <string name="putData_checksumMismatch">Manipulated game state will not be saved!</string>
+    <string name="putData_wrongPlanetData">Wrong planet data!</string>
+    <string name="putData_okay">No planets have been liberated by the enemy.</string>
+    <string name="putData_success">Planets have been liberated by the enemy!</string>
     <string name="nothingToInsert">Nothing to insert</string>
     <string name="copied">Copied.</string>
     <string name="alpha">alpha</string>
