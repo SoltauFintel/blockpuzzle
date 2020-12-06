@@ -1,0 +1,5 @@
+- Spielstein Ecke3 kommt jetzt nicht mehr so oft.
+- Krieg der Steine (Stone Wars): spiele gegen deine Freunde
+- Cleaner Game als neue Spielart (Spielfeld leeren als Spielziel)
+- neues Blockdesign und Dark Theme
+- interne Überarbeitungen

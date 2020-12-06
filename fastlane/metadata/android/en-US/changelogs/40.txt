@@ -1,0 +1,5 @@
+- The blue game piece "Ecke3" doesn't appear that often anymore.
+- Stone Wars: play against your friends
+- Cleaner Game as a new game type
+- new block design and dark theme
+- internal revisions

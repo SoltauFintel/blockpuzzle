@@ -1,22 +1,28 @@
-Block puzzle. This classic game is actually just a little pastime, but an addicting one!
-It's not about speed and the level of difficulty should stay within limits.
-Our program is and will remain free and ad-free. There will be no in-app purchases.
-Suggestions are always welcome.
+Block Puzzle is an addicting classic game! A little pastime that is not about speed. With new multi-player mode "Stone Wars"!
 
-Different game pieces are to be inserted into a 10 x 10 large playing field. Horizontal rows or vertical columns are removed as soon as they are full. As the game progresses, more tile shapes are added again and again. What high score will you achieve?
+Different game pieces are to be inserted in a 10 x 10 large playing field. Horizontal rows or vertical columns are removed as soon as they are full. As the game progresses, more tile shapes are added again and again. What high score will you achieve?
 
-Parking: A token can be parked in the blue field. But be careful! As soon as no If more pieces can be inserted in the playing field or in the parking space, game over! So play the parked token as quickly as possible! Hint: To park you have to put your finger while dragging onto the blue field.
+Parking: A game piece can be parked in the gray field. But be careful! As soon as no more pieces can be inserted in the playing field or in the parking area, the game is over! So play the parked game piece as quickly as possible! To park you have to drag'n'drop your finger onto the parking area.
 
-Rotation mode: Activate the rotation mode at any time to move tiles in 90 degree steps before inserting them to turn. In spin mode, the pieces to be played are green.
+Rotation mode: Activate the rotation mode (green) at any time to rotate the tiles in 90 degree steps before inserting them.
 
-Gravitation: If horizontal rows are cleared in the lower playing field, the upper one slips part down.
+Gravitation: If horizontal rows are cleared in the lower playing field, the upper part slides down.
 
 Points system:
- - Insert: number of blocks of the game piece
+ - Insert: number of blocks on the piece
  - Clear row: 10 points
  - clear away several rows at once: bonus points
  - The playing field only has a few blocks left or is empty: extra bonus!
- - 20 connected game pieces of one color result in a further extra bonus.
+ - 20 connected pieces of one color result in a further extra bonus.
+ - Star block gives 200 bonus points!
 
-The game requires Android 4.4 or higher and is designed for smartphones in portrait mode.
-The game is constantly being developed, but it already works fine.
+Block Puzzle Stone Wars
+
+While the old game (with randomly generated game pieces) has been retained, a new multi-player mode has been added: Stone Wars. You are on a spaceship and you have to liberate the galaxy. In the distant future, conflicts will be resolved by playing Block Puzzle. Navigate through a star cluster of tens of planets at lightning speed thanks to the spur drive. Little by little, the space map is revealed. The planets are of different sizes and have different gravity, which affects the game. The liberation takes place through the Block Puzzle Classic Game or through the new Cleaner Game.
+In the Cleaner Game, you win by clearing the playing field. However, if your enemy needs fewer moves, he is the liberator of the planet. In the Classic Game, however, a high score counts. A minimum liberation score (MLS) must be achieved in the Classic Game. In some cleaner games, a certain number of moves may not be exceeded (XLM).
+
+Since the epochal data breach 200 years ago, a data processing system is no longer allowed to send or receive data. Therefore, you have to exchange your score with your friends or enemies via another app (e.g. WhatsApp). Enter your player name, which is as unique as possible, and copy the score of the current quadrant in the data exchange. Then go to WhatsApp, for example, and add the game status there. The recipient can then copy this saved game and paste it into the Stone Wars data exchange. You then take over all planets in his game where you are better than him. Will he be able to drive you out again?
+
+Stone Wars works in such a way that you first select a planet in the navigation and click Select. Then tap back on the phone and start the liberation. All game pieces are predefined in terms of type and order.
+
+Our program is and will remain free and ad-free. There will be no in-app purchases. It does not require any phone rights and is played completely offline.

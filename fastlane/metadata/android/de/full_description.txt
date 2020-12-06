@@ -1,13 +1,10 @@
-Block Puzzle. Dieser Spieleklassiker ist eigentlich nur ein kleiner Zeitvertreib, aber ein süchtig machender!
-Es geht nicht um Geschwindigkeit und der Schwierigkeitsgrad soll im Rahmen bleiben.
-Unser Programm ist und bleibt kostenlos und werbefrei. In-App-Käufe wird es nicht geben.
-Anregungen sind stets willkommen.
+Block Puzzle ist ein süchtig machender Spieleklassiker! Ein kleiner Zeitvertreib, bei dem es nicht um Geschwindigkeit geht. Neu ist der Multi-Player-Modus "Stone Wars"!
 
 Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen. Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind. Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt. Welche Highscore wirst Du schaffen?
 
-Parken: Ein Spielstein kann im blauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over! Also spiele möglichst schnell den geparkten Spielstein! Zum Parken muss man den Finger beim Drag & Drop aufs blaue Feld führen.
+Parken: Ein Spielstein kann im grauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over! Also spiele möglichst schnell den geparkten Spielstein! Zum Parken muss man den Finger beim Drag & Drop aufs Parkfeld führen.
 
-Drehmodus: Aktiviere jederzeit den Drehmodus, um Spielsteine vor dem Einfügen in 90 Grad Schritten zu drehen. Im Drehmodus sind die zu spielenden Spielsteine grün.
+Drehmodus: Aktiviere jederzeit den Drehmodus (grün), um Spielsteine vor dem Einfügen in 90 Grad Schritten zu drehen.
 
 Gravitation: Werden im unteren Spielfeld waagrechte Reihen abgeräumt, so rutscht der obere Teil nach unten.
 
@@ -17,6 +14,15 @@ Punktesystem:
  - mehrere Reihen auf einmal wegräumen: Bonuspunkte
  - Spielfeld hat nur noch sehr wenige Blöcke oder ist leer: Extrabonus!
  - 20 zusammenhängende Spielsteine einer Farbe ergeben einen weiteren Extrabonus.
+ - Sternblock ergibt 200 Bonuspunkte!
 
-Das Spiel benötigt Android ab Version 4.4 und ist für Smartphones im Portraitmodus ausgelegt.
-Das Spiel wird laufend weiter entwickelt, aber es funktioniert bereits prima.
+Block Puzzle Stone Wars
+
+Während das alte Spiel (mit zufällig generierten Spielsteinen) erhalten geblieben ist, wurde ein neuer Multi-Player-Modus eingebaut: Krieg der Steine. Du bist auf einem Raumschiff und musst die Galaxie befreien. In der fernen Zukunft werden Konflikte durchs Spielen von Block Puzzle ausgetragen. Navigiere Dank Sporenantrieb pfeilschnell durch einen Cluster von zig Planeten. Nach und nach wird die Weltraumkarte aufgedeckt. Die Planeten sind unterschiedlich groß und haben eine unterschiedliche Gravitation, was sich aufs Spiel auswirkt. Die Befreiung erfolgt durch das Block Puzzle Classic Game oder durch das neue Cleaner Game.
+Beim Cleaner Game gewinnst Du durch das Leerräumen des Spielfelds. Benötigt Dein Gegner jedoch weniger Moves, so ist dieser der Befreier des Planeten. Beim Classic Game zählt hingegen eine hohe Punktzahl. Beim Classic Game muss eine Mindestpunktzahl (MLS) erreicht werden. Bei manchen Cleaner Games darf eine bestimme Anzahl Spielzüge nicht überschritten werden.
+
+Seit dem Epochalen Datenumbruch darf ein datenverarbeitendes System keine Daten mehr senden oder empfangen. Daher musst Du deinen Spielstand über eine andere App (z.B. WhatsApp) mit Deinen Freunden bzw. Gegnern austauschen. Gebe Deinen möglichst eindeutigen Spielernamen frei ein und kopiere im Datenaustausch den Spielstand des aktuellen Quadranten. Rufe dann bspw. WhatsApp auf und füge dort den Spielstand ein. Der Empfänger kann dann diesen Spielstand kopieren und im Stone Wars Datenaustausch einfügen. Du übernimmst dann in seinem Spiel alle Planeten, wo Du besser bist als er. Wird er Dich wieder vertreiben können?
+
+Stone Wars funktioniert so, dass Du zuerst in der Navigation einen Planeten wählst und Auswählen anklickst. Tippe dann zurück auf dem Handy und starte die Befreiung. Alle Spielsteine sind in Art und Reihenfolge vordefiniert.
+
+Unser Programm ist und bleibt kostenlos und werbefrei. In-App-Käufe wird es nicht geben. Es erfordert keine Rechte und wird komplett offline gespielt.
