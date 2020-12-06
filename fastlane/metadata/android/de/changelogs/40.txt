@@ -1,5 +1,5 @@
-- Spielstein Ecke3 kommt jetzt nicht mehr so oft.
-- Krieg der Steine (Stone Wars): spiele gegen deine Freunde
-- Cleaner Game als neue Spielart (Spielfeld leeren als Spielziel)
+- Krieg der Steine: spiele gegen deine Freunde (Multi-Player)
 - neues Blockdesign und Dark Theme
-- interne Überarbeitungen
+- Cleaner Game als neue Spielart (Spielfeld leeren als Spielziel)
+- Der blaue Spielstein "lange Ecke" kommt jetzt nicht mehr so oft.
+- Drei 3x3 Spielsteine werden dich nicht mehr töten.
