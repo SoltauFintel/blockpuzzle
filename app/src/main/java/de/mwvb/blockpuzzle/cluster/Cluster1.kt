@@ -29,7 +29,7 @@ object Cluster1 : Cluster(1) {
 
         // ALPHA QUADRANT
         //planets.add(Planet(23,6,21, CleanerGameDefinition(19, 2))) // TO-DO oneColor
-        planets.add(Planet(24,3,25, ClassicGameDefinition(20, 8000)))
+        planets.add(Planet(24,3,25, ClassicGameDefinition(20, 8000))) // GPSN Z20 is good for oneColor
         planets.add(Planet(25,11,24, 3, ClassicGameDefinition(21, 8000)))
         //planets.add(Planet(26,16,22, CleanerGameDefinition(22, 3))) // TO-DO oneColor
         planets.add(Planet(28,14,27, 6, CleanerGameDefinition(23, 5, 70))) // 49 Moves
@@ -70,7 +70,7 @@ object Cluster1 : Cluster(1) {
         val gd1 = ClassicGameDefinition(12, 20000)
         gd1.territoryName = R.string.northernTerritory
 
-        val gd2 = CleanerGameDefinition(13, 5, 80) // 61 Moves
+        val gd2 = CleanerGameDefinition(13, 5, 80) // 61 Moves, 30 Moves
         gd2.territoryName = R.string.southernTerritory
 
         return GiantPlanet(16, 12, 8, 9, gd1, gd2, null)
