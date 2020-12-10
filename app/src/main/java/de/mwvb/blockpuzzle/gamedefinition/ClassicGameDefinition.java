@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.gamedefinition;
 
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
@@ -79,9 +80,18 @@ public class ClassicGameDefinition extends GameDefinition {
             persistence.get().savePlanet(planet);
             return resources.getString(R.string.defeatedEnemy);
         } else if (ownerScore <= 0) { // Planet war von Orange Union besetzt
-            planet.setOwner(true); // Spiel gewonnen! Territorium befreit!
-            persistence.get().savePlanet(planet);
-            return resources.getString(R.string.territoryLiberated);
+            if (planet.getGameDefinitions().size() == 1) {
+                planet.setOwner(true); // Spiel gewonnen! Planet befreit!
+                persistence.get().savePlanet(planet);
+                return resources.getString(R.string.planetLiberated);
+            } else {
+                if (new GameInfoService().isPlanetFullyLiberated(planet, persistence.getPersistenceOK())) {
+                    planet.setOwner(true); // Spiel gewonnen! Planet befreit!
+                    persistence.get().savePlanet(planet);
+                    return resources.getString(R.string.planetLiberated);
+                }
+                return resources.getString(R.string.territoryLiberated);
+            }
         }
         return null;
     }
