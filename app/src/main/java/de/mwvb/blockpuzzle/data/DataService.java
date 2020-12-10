@@ -114,6 +114,8 @@ public class DataService {
                 GameDefinition gd = p.getGameDefinitions().get(gi);
                 if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves)) {
                     setOwner(p, gi, otherScore, otherMoves, name, persistence);
+                    p.setOwner(false);
+                    persistence.savePlanet(p);
                     newOwnerCount++;
                 }
                 return newOwnerCount;
