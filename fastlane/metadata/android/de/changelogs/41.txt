@@ -1,0 +1,2 @@
+- bugfix: Nach Game over wird Planet von Orange Union übernommen.
+- bugfix: Haken am Planeten muss verschwinden, wenn Planet vom Gegner befreit wurde.
