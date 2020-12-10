@@ -100,6 +100,12 @@ public class GamePersistence {
         persistence.savePlanet(planet);
     }
 
+    public void setOwnerToOrangeUnion() {
+        prepare("setOwnerToOrangeUnion");
+        planet.setOwner(false);
+        persistence.savePlanet(planet);
+    }
+
     public int loadOwnerScore() {
         prepare("loadOwnerScore");
         return persistence.loadOwnerScore();

@@ -86,6 +86,14 @@ public class StoneWarsGame extends Game {
         }
     }
 
+    @Override
+    protected void onGameOver() {
+        super.onGameOver();
+        gape.setOwnerToOrangeUnion();
+        punkte = 0;
+        moves = 0;
+    }
+
     @NotNull
     private ResourceAccess getResourceAccess() {
         ResourceAccess ret;

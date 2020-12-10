@@ -319,12 +319,16 @@ public class Game {
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
         if (a && b && c && d && !holders.isParkingFree()) {
-            gameOver = true;
-            updateHighScore();
-            gape.saveDelta(0);
-            view.showScore(punkte,0, gameOver); // display game over text
-            playingField.gameOver(); // wenn parke die letzte Aktion war
+            onGameOver();
         }
+    }
+
+    protected void onGameOver() {
+        gameOver = true;
+        updateHighScore();
+        gape.saveDelta(0);
+        view.showScore(punkte,0, gameOver); // display game over text
+        playingField.gameOver(); // wenn parke die letzte Aktion war
     }
 
     // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
