@@ -53,6 +53,7 @@
     <string name="scoreOfMoves">Score von %1$s: %2$s, Moves: %3$s</string>
     <string name="newLiberationAttempt">Erneuten Befreiungsversuch starten</string>
     <string name="territoryLiberated">+Territorium befreit!</string>
+    <string name="planetLiberated">+Planet befreit!</string>
     <string name="defeatedEnemy">+Gegner geschlagen! Territorium befreit!</string>
     <string name="quitGame">Spiel beenden</string>
     <string name="continue1">Weiter</string>
