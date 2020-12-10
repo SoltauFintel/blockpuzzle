@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">4.0</string>
+    <string name="version">4.1</string>
+    <string name="startScreenTitle">Version 4.1 by SoltauFintel</string>
     <string name="neuesSpiel">New Game</string>
     <string name="gehtNicht">Does not fit!</string>
     <string name="drehenAus">Rotating off</string>
@@ -19,7 +20,6 @@
     <string name="leaveShipInSpace">Really quit game?</string>
     <string name="stoneWars">Stone Wars</string>
     <string name="oldGame">Old Game</string>
-    <string name="startScreenTitle">Version 4.0 by SoltauFintel</string>
     <string name="blockPuzzle">Block Puzzle</string>
     <string name="navigation">Navigation</string>
     <string name="liberatePlanet_BlockPuzzle">Liberate planet (Block Puzzle)</string>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">4.0</string>
+    <string name="version">4.1</string>
+    <string name="startScreenTitle">Version 4.1 von SoltauFintel</string>
     <string name="neuesSpiel">Neues Spiel</string>
     <string name="gehtNicht">Geht nicht!</string>
     <string name="drehenAus">Drehmodus aus</string>
@@ -20,7 +21,6 @@
     <string name="leaveShipInSpace">Wirklich Spiel beenden?</string>
     <string name="stoneWars">Krieg der Steine</string>
     <string name="oldGame">Altes Spiel</string>
-    <string name="startScreenTitle">Version 4.0 von SoltauFintel</string>
     <string name="blockPuzzle">Block Puzzle</string>
     <string name="navigation">Navigation</string>
     <string name="liberatePlanet_BlockPuzzle">Planet befreien (Block Puzzle)</string>
