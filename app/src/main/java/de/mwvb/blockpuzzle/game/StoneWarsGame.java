@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
@@ -94,6 +95,30 @@ public class StoneWarsGame extends Game {
         moves = 0;
     }
 
+    private void gameOverOnEmptyPlayingField() {
+        holders.clearAll();
+        won = true;
+        gameOver = true;
+        playingField.gameOver();
+        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves())) {
+            // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber auch nur bei 1-Game-Planets angeboten.
+            // Daher passt das.
+            gape.setOwnerToMe();
+            check4Liberation();
+        }
+        view.showToast(getResourceAccess().getString(R.string.planetLiberated));
+    }
+
+    @Override
+    public boolean gameCanBeWon() {
+        return definition.gameCanBeWon();
+    }
+
+    @Override
+    protected int getGravitationStartRow() {
+        return gape.getPlanet().getGravitation();
+    }
+
     @NotNull
     private ResourceAccess getResourceAccess() {
         ResourceAccess ret;
@@ -113,26 +138,5 @@ public class StoneWarsGame extends Game {
             };
         }
         return ret;
-    }
-
-    private void gameOverOnEmptyPlayingField() {
-        holders.clearAll();
-        won = true;
-        gameOver = true;
-        playingField.gameOver();
-        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves())) {
-            gape.setOwnerToMe();
-            check4Liberation();
-        }
-    }
-
-    @Override
-    public boolean gameCanBeWon() {
-        return definition.gameCanBeWon();
-    }
-
-    @Override
-    protected int getGravitationStartRow() {
-        return gape.getPlanet().getGravitation();
     }
 }

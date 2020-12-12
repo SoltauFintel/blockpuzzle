@@ -20,7 +20,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Planet(4,17,5, ClassicGameDefinition(10, 10000)))
         planets.add(Planet(15,4,10, ClassicGameDefinition(3, 4000)))
         planets.add(getGiantPlanet1())
-        planets.add(Planet(17,3,13, CleanerGameDefinition(4, 1)))
+        planets.add(Planet(17,3,13, CleanerGameDefinition(4, 1))) // 13 Moves
         planets.add(Planet(18,7,15, CleanerGameDefinition(5, 2)))
         planets.add(Planet(19,17,10, CleanerGameDefinition(7, 4, 60))) // 27 Moves
         planets.add(Planet(20,14,14, CleanerGameDefinition(6, 3, 80))) // 37 Moves
@@ -70,7 +70,6 @@ object Cluster1 : Cluster(1) {
         val gd1 = ClassicGameDefinition(12, 20000)
         gd1.territoryName = R.string.northernTerritory
 
-        //val gd2 = CleanerGameDefinition(13, 5, 80) // 61 Moves, 30 Moves
         val gd2 = ClassicGameDefinition(13, 20000)
         gd2.territoryName = R.string.southernTerritory
 
