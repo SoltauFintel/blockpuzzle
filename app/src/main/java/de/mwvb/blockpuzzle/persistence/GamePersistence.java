@@ -100,10 +100,11 @@ public class GamePersistence {
         persistence.savePlanet(planet);
     }
 
-    public void setOwnerToOrangeUnion() {
-        prepare("setOwnerToOrangeUnion");
+    public void gameOver() {
+        prepare("gameOver");
         planet.setOwner(false);
         persistence.savePlanet(planet);
+        persistence.saveGameOver(true);
     }
 
     public int loadOwnerScore() {
@@ -114,5 +115,10 @@ public class GamePersistence {
     public int loadOwnerMoves() {
         prepare("loadOwnerMoves");
         return persistence.loadOwnerMoves();
+    }
+
+    public boolean loadGameOver() {
+        prepare("loadGameOver");
+        return persistence.loadGameOver();
     }
 }

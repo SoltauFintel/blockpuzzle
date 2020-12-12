@@ -49,12 +49,18 @@ public class StoneWarsGame extends Game {
     @Override
     protected void loadGame() {
         super.loadGame();
-        // calculate won [for classic game]
-        String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), false, gape, getResourceAccess());
-        won = (msg != null && msg.startsWith("+"));
-        // calculate game over [for cleaner game]
-        if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
+        if (gape.loadGameOver()) {
             gameOver = true;
+            view.showScore(punkte,0, true); // display game over text
+            playingField.gameOver();
+        } else {
+            // calculate won [for classic game]
+            String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), false, gape, getResourceAccess());
+            won = (msg != null && msg.startsWith("+"));
+            // calculate game over [for cleaner game]
+            if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
+                gameOver = true;
+            }
         }
     }
 
@@ -66,9 +72,22 @@ public class StoneWarsGame extends Game {
     }
 
     @Override
+    protected void handleNoGamePieces() {
+        if (!won) {
+            won = definition.isWonAfterNoGamePieces(punkte, moves, gape);
+            if (won) {
+                if (gape.getPlanet().getGameDefinitions().size() == 1) {
+                    gape.setOwnerToMe();
+                    check4Liberation();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void checkForVictory() {
         String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), won, gape, getResourceAccess());
-        if (msg != null) {
+        if (msg != null && !msg.startsWith("-")) {
             view.showToast(msg);
             won = msg.startsWith("+");
             if (won) {
@@ -77,6 +96,9 @@ public class StoneWarsGame extends Game {
         }
         if (playingField.getFilled() == 0 && definition.onEmptyPlayingField()) {
             gameOverOnEmptyPlayingField();
+        } else if (msg != null && msg.startsWith("-")) { // Game over?
+            view.showToast(msg);
+            onGameOver();
         }
     }
 
@@ -90,9 +112,7 @@ public class StoneWarsGame extends Game {
     @Override
     protected void onGameOver() {
         super.onGameOver();
-        gape.setOwnerToOrangeUnion();
-        punkte = 0;
-        moves = 0;
+        gape.gameOver(); // owner is Orange Union, save game over state
     }
 
     private void gameOverOnEmptyPlayingField() {
@@ -117,26 +137,5 @@ public class StoneWarsGame extends Game {
     @Override
     protected int getGravitationStartRow() {
         return gape.getPlanet().getGravitation();
-    }
-
-    @NotNull
-    private ResourceAccess getResourceAccess() {
-        ResourceAccess ret;
-        if (view instanceof Activity) {
-            ret = new ResourceAccess() {
-                @Override
-                public String getString(int resId) {
-                    return ((Activity) view).getResources().getString(resId);
-                }
-            };
-        } else { // testcases
-            ret = new ResourceAccess() {
-                @Override
-                public String getString(int resId) {
-                    return "#" + resId;
-                }
-            };
-        }
-        return ret;
     }
 }

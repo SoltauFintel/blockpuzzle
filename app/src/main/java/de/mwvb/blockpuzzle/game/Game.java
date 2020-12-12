@@ -1,10 +1,16 @@
 package de.mwvb.blockpuzzle.game;
 
+import android.app.Activity;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import de.mwvb.blockpuzzle.Features;
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
@@ -23,6 +29,8 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
  *
  * This is the old game and the base class for the Stone Wars game.
  */
+// Eigentlich ist das eine GameEngine.
+// Zu unübersichtlich, weil zu viele Methoden. Vll kann man ein Core-GameEngine machen und Listener? Vll auch die Initialisierung rausziehen?
 public class Game {
     // Stammdaten (read only)
     public static final int blocks = 10;
@@ -129,6 +137,22 @@ public class Game {
         for (int i = 1; i <= 3; i++) {
             holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
         }
+
+        if (!gameOver && holders.is123Empty()) {
+            // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
+            // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
+            // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
+            // Unvorteilhaft weil man mit dem letzten Stein noch ein Spielfeld-voll-Game-over erzielen könnte.
+            holders.clearParking();
+
+            // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
+            view.showToast(getResourceAccess().getString(R.string.noMoreGamePieces));
+            handleNoGamePieces();
+            onGameOver();
+        }
+    }
+
+    protected void handleNoGamePieces() { // Template method
     }
 
     // Spielaktionen ----
@@ -312,6 +336,7 @@ public class Game {
         }
     }
 
+    /** check for game over */
     private void checkGame() {
         // es muss ein Spielstein noch rein gehen
         boolean a = moveImpossible(1);
@@ -438,5 +463,26 @@ public class Game {
 
     public boolean isWon() {
         return won;
+    }
+
+    @NotNull
+    protected final ResourceAccess getResourceAccess() {
+        ResourceAccess ret;
+        if (view instanceof Activity) {
+            ret = new ResourceAccess() {
+                @Override
+                public String getString(int resId) {
+                    return ((Activity) view).getResources().getString(resId);
+                }
+            };
+        } else { // testcases
+            ret = new ResourceAccess() {
+                @Override
+                public String getString(int resId) {
+                    return "#" + resId;
+                }
+            };
+        }
+        return ret;
     }
 }

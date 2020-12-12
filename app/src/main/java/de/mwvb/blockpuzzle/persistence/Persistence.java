@@ -29,6 +29,7 @@ public class Persistence implements IPersistence {
     private static final String SCORE = "score";
     private static final String DELTA = "delta";
     private static final String MOVES = "moves";
+    private static final String GAME_OVER = "gameOver";
     private static final String HIGHSCORE_SCORE = "highscore";
     private static final String HIGHSCORE_MOVES = "highscoreMoves";
     private static final String GAMEPIECEVIEW = "gamePieceView";
@@ -353,6 +354,16 @@ public class Persistence implements IPersistence {
     @Override
     public int loadNextRound() {
         return getInt(NEXT_ROUND, 0);
+    }
+
+    @Override
+    public boolean loadGameOver() {
+        return getBoolean(GAME_OVER);
+    }
+
+    @Override
+    public void saveGameOver(boolean gameOver) {
+        putBoolean(GAME_OVER, gameOver);
     }
 
     @Override

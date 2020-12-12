@@ -167,6 +167,15 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public boolean loadGameOver() {
+        return false;
+    }
+
+    @Override
+    public void saveGameOver(boolean gameOver) {
+    }
+
+    @Override
     public boolean loadPlayernameEntered() {
         return false;
     }

@@ -77,4 +77,6 @@
     <string name="beta">beta</string>
     <string name="gamma">gamma</string>
     <string name="delta">delta</string>
+    <string name="tooManyMoves">-Too many moves!</string>
+    <string name="noMoreGamePieces">Game over: No more game pieces!</string>
 </resources>

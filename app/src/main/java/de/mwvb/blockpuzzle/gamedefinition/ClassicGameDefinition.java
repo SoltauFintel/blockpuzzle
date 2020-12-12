@@ -95,4 +95,21 @@ public class ClassicGameDefinition extends GameDefinition {
         }
         return null;
     }
+
+    @Override
+    public boolean isWonAfterNoGamePieces(int punkte, int moves, GamePersistence gape) {
+        if (punkte <= 0) { // Sicherstellen, dass ein Sieg ohne Punkte nicht möglich ist.
+            return false;
+        }
+        // Entweder hat man's geschafft mehr Punkte als der Gegner zu bekommen oder nicht.
+        // MEHR (ODER FALLS KEIN GEGNER): Planet befreit. Das müsste schon zuvor bekannt gewesen sein. Spielsieg.
+        // WENIGER:                       Planet nicht befreit. Spiel verloren.
+        if (minimumLiberationScore <= 0 || punkte >= minimumLiberationScore) {
+            int ownerScore = gape.loadOwnerScore();
+            return ownerScore <= 0 // Es gibt kein Gegner
+                    || punkte > ownerScore // oder man ist besser als der Gegner
+                    || (punkte == ownerScore && moves <= gape.loadOwnerMoves()); // oder man ist gleich gut wie der Gegner, hat aber nicht mehr Moves
+        }
+        return false;
+    }
 }

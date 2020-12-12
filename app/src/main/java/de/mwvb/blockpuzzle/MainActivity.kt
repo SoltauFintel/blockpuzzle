@@ -245,7 +245,7 @@ class MainActivity : AppCompatActivity(), IGameView {
             } else {
                 playingField.soundService.gameOver()
             }
-        } else if (delta != 0) {
+        } else if (delta > 0) {
             text += " (" + DecimalFormat("+#,##0").format(delta) + ")";
         }
         info.text = text
@@ -308,6 +308,9 @@ class MainActivity : AppCompatActivity(), IGameView {
         if (msg.startsWith("+")) {
             msg2 = msg.substring(1)
             playingField.soundService.youWon()
+        } else if (msg.startsWith("-")) {
+            msg2 = msg.substring(1)
+            playingField.soundService.gameOver()
         }
         Toast.makeText(this, msg2, Toast.LENGTH_LONG).show()
     }

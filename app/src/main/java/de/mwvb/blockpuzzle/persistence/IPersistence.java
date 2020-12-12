@@ -26,6 +26,9 @@ public interface IPersistence {
     void saveHighScoreMoves(int moves);
     void saveNextRound(int nextRound);
     int loadNextRound();
+    /** Wenn true hat der Spieler es verkackt. */
+    boolean loadGameOver();
+    void saveGameOver(boolean gameOver);
 
     void load(PlayingField f);
     void save(PlayingField f);

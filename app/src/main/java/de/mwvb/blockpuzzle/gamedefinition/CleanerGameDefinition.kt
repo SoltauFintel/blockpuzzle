@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
 import de.mwvb.blockpuzzle.Features
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.Game
 import de.mwvb.blockpuzzle.persistence.GamePersistence
@@ -111,8 +112,19 @@ class CleanerGameDefinition @JvmOverloads constructor(
                         (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
     }
 
-    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resouces: ResourceAccess?): String? {
+    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resources: ResourceAccess): String? {
+        val currentMoveNumber = moves + 1 // has not been incremented yet
+        if (maximumLiberationMoves > 0) { // Is XLM feature active?
+            if (currentMoveNumber > maximumLiberationMoves) {
+                return resources.getString(R.string.tooManyMoves)
+            }
+        }
         return null
+    }
+
+    override fun isWonAfterNoGamePieces(punkte: Int, moves: Int, gape: GamePersistence): Boolean {
+        // XLM muss ja 0 sein, sonst wäre vorher schon Game over. Spielfeld wird nicht leer sein, man hat also verloren.
+        return false
     }
 
     // PLAYING FIELDS ----

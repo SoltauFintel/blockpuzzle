@@ -77,7 +77,7 @@ public abstract class GameDefinition {
     public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves);
 
     /**
-     * @return null, or message text for Toast, prefix "+" if victory (play applause sound)
+     * @return null, or message text for Toast, prefix "+" if victory (play applause sound), prefix "-" for game over (play laughing)
      */
     public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resouces);
 
@@ -87,5 +87,13 @@ public abstract class GameDefinition {
 
     public void setLiberatedFeature(LiberatedFeature v) {
         libf = v;
+    }
+
+    /**
+     * If there are no game pieces anymore the player has lost the game by default.
+     * If you return true here you can let the player win the game.
+     */
+    public boolean isWonAfterNoGamePieces(int punkte, int moves, GamePersistence gape) {
+        return false;
     }
 }

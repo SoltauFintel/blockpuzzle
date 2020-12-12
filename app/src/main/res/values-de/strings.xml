@@ -78,4 +78,6 @@
     <string name="beta">beta</string>
     <string name="gamma">gamma</string>
     <string name="delta">delta</string>
+    <string name="tooManyMoves">-Zu viele Spielzüge!</string>
+    <string name="noMoreGamePieces">Spielsteine aufgebraucht! (Spielende)</string>
 </resources>

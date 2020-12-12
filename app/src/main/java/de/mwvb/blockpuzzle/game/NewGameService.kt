@@ -19,6 +19,7 @@ class NewGameService {
             per.saveScore(-1)
         }
         per.saveMoves(0)
+        per.saveGameOver(false)
         planet.isOwner = false
         per.savePlanet(planet)
     }
