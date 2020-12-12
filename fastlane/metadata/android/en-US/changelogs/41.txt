@@ -1,2 +1,2 @@
-- bugfix: Planet must go to Orange Union if game over
-- bugfix: Planet marker must go away if enemy has liberated planet
+- bugfixes
+- modified giant planet 16
