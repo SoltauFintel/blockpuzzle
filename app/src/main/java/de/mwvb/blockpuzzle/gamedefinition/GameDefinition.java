@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
@@ -72,9 +73,10 @@ public abstract class GameDefinition {
     // QUESTIONS AND EVENTS ----
 
     /**
+     * @param persistence fertig eingestellt für das Game
      * @return true if planet or territory was liberated by player 1
      */
-    public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves);
+    public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence);
 
     /**
      * @return null, or message text for Toast, prefix "+" if victory (play applause sound), prefix "-" for game over (play laughing)

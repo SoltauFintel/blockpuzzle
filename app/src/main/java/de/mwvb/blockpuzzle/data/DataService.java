@@ -112,7 +112,7 @@ public class DataService {
                 int meineScore = persistence.loadScore();
                 int meineMoves = persistence.loadMoves();
                 GameDefinition gd = p.getGameDefinitions().get(gi);
-                if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves)) {
+                if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves, persistence)) {
                     setOwner(p, gi, otherScore, otherMoves, name, persistence);
                     p.setOwner(false);
                     persistence.savePlanet(p);

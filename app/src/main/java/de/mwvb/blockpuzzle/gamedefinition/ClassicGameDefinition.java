@@ -4,6 +4,7 @@ import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -64,7 +65,7 @@ public class ClassicGameDefinition extends GameDefinition {
     // QUESTIONS AND EVENTS ----
 
     @Override
-    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves) {
+    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence) {
         return player1Score > 0 && player1Score >= minimumLiberationScore &&
                 (player1Score > player2Score || (player1Score == player2Score && player1Moves < player2Moves));
     }

@@ -42,7 +42,7 @@ class GameInfoService {
         }
 
         // Liberated?
-        if (s.isLiberated(score, moves, otherScore, otherMoves)) {
+        if (s.isLiberated(score, moves, otherScore, otherMoves, per)) {
             if (planet.gameDefinitions.size == 1) {
                 info += "\n" + resources.getString(R.string.liberatedPlanetByYou)
             } else {
@@ -60,7 +60,7 @@ class GameInfoService {
         val defs = planet.gameDefinitions
         for (i in 0 until defs.size) {
             per.setGameID(planet, i)
-            if (!defs[i].isLiberated(per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves())) {
+            if (!defs[i].isLiberated(per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves(), per)) {
                 return false
             }
         }

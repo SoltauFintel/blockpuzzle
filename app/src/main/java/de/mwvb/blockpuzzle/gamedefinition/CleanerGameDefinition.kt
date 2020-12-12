@@ -5,6 +5,8 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.Game
 import de.mwvb.blockpuzzle.persistence.GamePersistence
+import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
@@ -104,12 +106,19 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // QUESTIONS AND EVENTS ----
 
-    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int): Boolean {
-        return player1Moves > 0 &&
+    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, persistence: IPersistence): Boolean {
+        val ret = player1Moves > 0 &&
                 (maximumLiberationMoves <= 0 || player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX
                 (player2Moves <= 0 || // entweder kein Gegner
                         player1Moves < player2Moves || // oder ich bin besser (d.h. weniger Moves)
                         (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
+        return ret && isPlayingFieldEmpty(persistence)
+    }
+
+    private fun isPlayingFieldEmpty(persistence: IPersistence): Boolean {
+        val pf = PlayingField(Game.blocks)
+        persistence.load(pf)
+        return pf.filled == 0
     }
 
     override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resources: ResourceAccess): String? {
