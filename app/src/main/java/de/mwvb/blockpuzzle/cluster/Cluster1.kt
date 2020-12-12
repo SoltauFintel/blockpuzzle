@@ -70,7 +70,8 @@ object Cluster1 : Cluster(1) {
         val gd1 = ClassicGameDefinition(12, 20000)
         gd1.territoryName = R.string.northernTerritory
 
-        val gd2 = CleanerGameDefinition(13, 5, 80) // 61 Moves, 30 Moves
+        //val gd2 = CleanerGameDefinition(13, 5, 80) // 61 Moves, 30 Moves
+        val gd2 = ClassicGameDefinition(13, 20000)
         gd2.territoryName = R.string.southernTerritory
 
         return GiantPlanet(16, 12, 8, 9, gd1, gd2, null)
