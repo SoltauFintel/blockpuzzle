@@ -28,3 +28,20 @@ kenntlich gemacht.
 Die fastlane/../changelogs Dateien heißen versionCode + ".txt"
 
 Beispiel: versionName = 12.0, versionCode: 120, changelog: 120.txt
+
+## Veröffentlichung (DE)
+
+- versionCode und versionName hochzählen
+- alles pushen
+
+### F-Droid
+- Fastlane Dateien aktualisieren (Neue Datei für changelogs)
+- einfach nur auf Github taggen
+
+### Google Play
+- Google Play Console aufrufen
+- Block Puzzle Stone Wars wählen
+- Produktion
+- Reiter: Releases
+- Build > Generate Signed Bundle/APK verwenden > APK. D:\dev\AndroidKeystores\android12_2020.jks. V1 und V2 anhaken.
+- Dann die APK Datei im Browser per Drag&Drop hochladen und die weiteren Schritte durchgehen.
