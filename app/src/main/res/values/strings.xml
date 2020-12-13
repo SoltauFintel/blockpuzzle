@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">4.1</string>
-    <string name="startScreenTitle">Version 4.1 by SoltauFintel</string>
+    <string name="version">4.2</string>
+    <string name="startScreenTitle">Version 4.2 by SoltauFintel</string>
     <string name="neuesSpiel">New Game</string>
     <string name="gehtNicht">Does not fit!</string>
     <string name="drehenAus">Rotating off</string>
