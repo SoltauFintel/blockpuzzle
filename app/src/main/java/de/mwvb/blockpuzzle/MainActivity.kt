@@ -121,12 +121,25 @@ class MainActivity : AppCompatActivity(), IGameView {
                     event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
                 }
                 DragEvent.ACTION_DROP -> drop(event, targetIsParking)
-                DragEvent.ACTION_DRAG_ENTERED -> true
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    if (targetIsParking) {
+                        getGamePieceView(-1).onDragEnter();
+                    }
+                    true
+                }
                 DragEvent.ACTION_DRAG_LOCATION -> true
-                DragEvent.ACTION_DRAG_EXITED -> true
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    if (targetIsParking) {
+                        getGamePieceView(-1).onDragLeave();
+                    }
+                    true
+                }
                 DragEvent.ACTION_DRAG_ENDED -> {
                     try {
-                        // Da ich nicht weiß, welcher ausgeblent ist, blende ich einfach alle ein.
+                        if (targetIsParking) {
+                            getGamePieceView(-1).onDragLeave();
+                        }
+                        // Da ich nicht weiß, welcher ausgeblendet ist, blende ich einfach alle ein.
                         getGamePieceView(1).endDragMode()
                         getGamePieceView(2).endDragMode()
                         getGamePieceView(3).endDragMode()

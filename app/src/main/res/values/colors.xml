@@ -54,6 +54,7 @@
     <color name="explosion32">#bbbbbb</color>
 
     <color name="colorParking">#1E1E1E</color>
+    <color name="colorParkingHover">#555555</color>
     <color name="mapBackground">#E1C699</color>
     <color name="speechBubbleBackground">#DDDD0E</color>
     <color name="target">#00DD0E</color>

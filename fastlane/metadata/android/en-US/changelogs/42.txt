@@ -1,0 +1,1 @@
+- Parking area effect while dragging

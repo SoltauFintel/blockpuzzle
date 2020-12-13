@@ -47,7 +47,7 @@ public class GamePieceView extends View implements IGamePieceView {
         this.index = index;
         this.parking = parking;
 
-        p_parking.setColor(getResources().getColor(R.color.colorParking));
+        initParkingAreaColor();
 
         blockTypes = new BlockTypes(this);
         greyBD = ColorBlockDrawer.byRColor(this, R.color.colorGrey, R.color.colorGrey, R.color.colorGrey);
@@ -142,5 +142,21 @@ public class GamePieceView extends View implements IGamePieceView {
     public boolean performClick() {
         // wegen Warning in MainActivity.initClickListener()
         return super.performClick();
+    }
+
+    public void onDragEnter() {
+        if (gamePiece == null) {
+            p_parking.setColor(getResources().getColor(R.color.colorParkingHover));
+            draw();
+        }
+    }
+
+    public void onDragLeave() {
+        initParkingAreaColor();
+        draw();
+    }
+
+    private void initParkingAreaColor() {
+        p_parking.setColor(getResources().getColor(R.color.colorParking));
     }
 }
