@@ -76,7 +76,8 @@
                 android:id="@+id/parking"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp"
+                android:background="@color/colorParking"/>
         </LinearLayout>
 
         <RelativeLayout

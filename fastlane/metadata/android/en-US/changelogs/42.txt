@@ -1,1 +1,2 @@
 - Parking area effect while dragging
+- Don't hide parking background while dragging
