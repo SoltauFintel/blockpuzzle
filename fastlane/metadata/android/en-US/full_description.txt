@@ -2,7 +2,7 @@ Block Puzzle is an addicting classic game! A little pastime that is not about sp
 
 Different game pieces are to be inserted in a 10 x 10 large playing field. Horizontal rows or vertical columns are removed as soon as they are full. As the game progresses, more tile shapes are added again and again. What high score will you achieve?
 
-Parking: A game piece can be parked in the gray field. But be careful! As soon as no more pieces can be inserted in the playing field or in the parking area, the game is over! So play the parked game piece as quickly as possible! To park you have to drag'n'drop your finger onto the parking area.
+Parking: A game piece can be parked in the gray field. But be careful! As soon as no more pieces can be inserted in the playing field or in the parking area, the game is over! So play the parked game piece as quickly as possible!
 
 Rotation mode: Activate the rotation mode (green) at any time to rotate the tiles in 90 degree steps before inserting them.
 
