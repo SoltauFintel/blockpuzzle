@@ -106,13 +106,16 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // QUESTIONS AND EVENTS ----
 
-    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, persistence: IPersistence): Boolean {
+    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, persistence: IPersistence, playerIsPlayer1: Boolean): Boolean {
         val ret = player1Moves > 0 &&
                 (maximumLiberationMoves <= 0 || player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX
                 (player2Moves <= 0 || // entweder kein Gegner
                         player1Moves < player2Moves || // oder ich bin besser (d.h. weniger Moves)
                         (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
-        return ret && isPlayingFieldEmpty(persistence)
+        if (ret && playerIsPlayer1) {
+            return isPlayingFieldEmpty(persistence)
+        }
+        return ret
     }
 
     private fun isPlayingFieldEmpty(persistence: IPersistence): Boolean {

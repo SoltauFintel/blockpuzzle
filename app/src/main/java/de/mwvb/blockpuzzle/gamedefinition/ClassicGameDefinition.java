@@ -65,7 +65,7 @@ public class ClassicGameDefinition extends GameDefinition {
     // QUESTIONS AND EVENTS ----
 
     @Override
-    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence) {
+    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence, boolean playerIsPlayer1) {
         return player1Score > 0 && player1Score >= minimumLiberationScore &&
                 (player1Score > player2Score || (player1Score == player2Score && player1Moves < player2Moves));
     }

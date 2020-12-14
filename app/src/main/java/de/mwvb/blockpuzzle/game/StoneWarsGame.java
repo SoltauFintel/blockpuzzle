@@ -15,7 +15,7 @@ import de.mwvb.blockpuzzle.persistence.IPersistence;
  * Stone Wars game engine
  */
 public class StoneWarsGame extends Game {
-    private GameDefinition definition;
+    protected GameDefinition definition;
 
     public StoneWarsGame(IGameView view) {
         super(view);
@@ -120,7 +120,7 @@ public class StoneWarsGame extends Game {
         won = true;
         gameOver = true;
         playingField.gameOver();
-        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves(), gape.get())) {
+        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves(), gape.get(), true)) {
             // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber auch nur bei 1-Game-Planets angeboten.
             // Daher passt das.
             gape.setOwnerToMe();

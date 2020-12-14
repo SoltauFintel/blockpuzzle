@@ -3,8 +3,10 @@ package de.mwvb.blockpuzzle.game;
 import org.jetbrains.annotations.NotNull;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.game.stonewars.TestStoneWarsGame;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView;
@@ -20,6 +22,12 @@ public class TestGameBuilder {
         return game;
     }
 
+    public static TestStoneWarsGame createStoneWarsGame(IPersistence persistence) {
+        TestStoneWarsGame game = new TestStoneWarsGame(getGameView(), persistence);
+        game.initGame();
+        return game;
+    }
+
     private static IGameView getGameView() {
         return new IGameView() {
             @Override
@@ -28,6 +36,7 @@ public class TestGameBuilder {
 
             @Override
             public void showToast(@NotNull String msg) {
+                System.out.println("TOAST: " + msg);
             }
 
             @NotNull

@@ -35,17 +35,14 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public void setGameID(IPlanet planet, int gameDefinitionIndex) {
-        throw new RuntimeException("unsupported");
     }
 
     @Override
     public void setGameID(IPlanet planet) {
-        throw new RuntimeException("unsupported");
     }
 
     @Override
     public void setGameID_oldGame() {
-        throw new RuntimeException("unsupported");
     }
 
     @Override
@@ -122,7 +119,7 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public String loadPlayerName() {
-        return null;
+        return "TEST";
     }
 
     @Override

@@ -1,10 +1,9 @@
 package de.mwvb.blockpuzzle.game;
 
-import android.app.Activity;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Stack;
 
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
@@ -465,24 +464,14 @@ public class Game {
         return won;
     }
 
+    // public for test
     @NotNull
-    protected final ResourceAccess getResourceAccess() {
-        ResourceAccess ret;
-        if (view instanceof Activity) {
-            ret = new ResourceAccess() {
-                @Override
-                public String getString(int resId) {
-                    return ((Activity) view).getResources().getString(resId);
-                }
-            };
-        } else { // testcases
-            ret = new ResourceAccess() {
-                @Override
-                public String getString(int resId) {
-                    return "#" + resId;
-                }
-            };
-        }
-        return ret;
+    public final ResourceAccess getResourceAccess() {
+        return new ResourceService().getResourceAccess(view, getExpectedResources());
+    }
+
+    // for test
+    public Stack<Integer> getExpectedResources() {
+        return null;
     }
 }

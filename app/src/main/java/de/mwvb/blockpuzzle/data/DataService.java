@@ -1,7 +1,5 @@
 package de.mwvb.blockpuzzle.data;
 
-import android.content.res.Resources;
-
 import java.util.List;
 import java.util.zip.CRC32;
 
@@ -9,6 +7,7 @@ import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
+import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -42,7 +41,7 @@ public class DataService {
                 int score = persistence.loadScore();
                 int moves = persistence.loadMoves();
                 if (moves > 0) {
-                    ret += "/" + Integer.toHexString(p.getNumber()).toUpperCase() + "/" + gi + "/" + Integer.toHexString(score) + "/" + Integer.toHexString(moves);
+                    ret += buildString(p.getNumber(), gi, score, moves);
                 }
             }
         }
@@ -56,12 +55,16 @@ public class DataService {
         return k + ret;
     }
 
-    public String put(String data, IPersistence persistence, Resources resources) {
+    public static String buildString(int planetNumber, int gi, int score, int moves) {
+        return "/" + Integer.toHexString(planetNumber).toUpperCase() + "/" + gi + "/" + Integer.toHexString(score) + "/" + Integer.toHexString(moves);
+    }
+
+    public String put(String data, IPersistence persistence, ResourceAccess resources) {
         PlanetAccess pa = new PlanetAccess(persistence);
         return put(data, pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence, resources);
     }
 
-    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence, Resources resources) {
+    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence, ResourceAccess resources) {
         if (data != null && data.equals(get(clusterNumber, planets, currentPlanet, persistence))) {
             return resources.getString(R.string.putData_makesNoSense);
         } else if (data == null || !data.startsWith("BP")) {
@@ -112,7 +115,7 @@ public class DataService {
                 int meineScore = persistence.loadScore();
                 int meineMoves = persistence.loadMoves();
                 GameDefinition gd = p.getGameDefinitions().get(gi);
-                if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves, persistence)) {
+                if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves, persistence, false)) {
                     setOwner(p, gi, otherScore, otherMoves, name, persistence);
                     p.setOwner(false);
                     persistence.savePlanet(p);
@@ -131,7 +134,7 @@ public class DataService {
         persistence.saveOwner(score, moves, name);
     }
 
-    private static String code6(String str) {
+    public static String code6(String str) {
         CRC32 crc = new CRC32();
         crc.update(str.getBytes());
         String ret = "000000" + Integer.toString((int) crc.getValue(), 36).toLowerCase().replace("-", "");

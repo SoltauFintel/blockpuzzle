@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.data.DataService
+import de.mwvb.blockpuzzle.game.ResourceService
+import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_data_market.*
@@ -51,7 +53,7 @@ class DataMarketActivity : AppCompatActivity() {
                 val item = clipboard.primaryClip!!.getItemAt(0)
                 val pasteData = item.text
                 if (pasteData != null) {
-                    val msg = DataService().put(pasteData.toString(), per(), resources);
+                    val msg = DataService().put(pasteData.toString(), per(), ResourceService().getResourceAccess(this, null));
                     if (msg != null && !msg.isEmpty()) {
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
                     }
