@@ -106,6 +106,9 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // QUESTIONS AND EVENTS ----
 
+    /**
+     * @param playerIsPlayer1 true if player 1 is the playing player or it is sure that the playing field is empty
+     */
     override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, persistence: IPersistence, playerIsPlayer1: Boolean): Boolean {
         val ret = player1Moves > 0 &&
                 (maximumLiberationMoves <= 0 || player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX

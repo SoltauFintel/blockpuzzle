@@ -120,7 +120,7 @@ public class StoneWarsGame extends Game {
         won = true;
         gameOver = true;
         playingField.gameOver();
-        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves(), gape.get(), true)) {
+        if (definition.isLiberated(punkte, moves, gape.loadOwnerScore(), gape.loadOwnerMoves(), gape.get(), false/*playing field is really empty*/)) {
             // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber auch nur bei 1-Game-Planets angeboten.
             // Daher passt das.
             gape.setOwnerToMe();
