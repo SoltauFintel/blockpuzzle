@@ -11,8 +11,8 @@ import de.mwvb.blockpuzzle.game.TestGameBuilder;
 public class JLRotationTest {
     final String defJ =
                     ".....\n" +
-                    ".5...\n" +
-                    ".555.\n" +
+                    ".6...\n" +
+                    ".666.\n" +
                     ".....\n" +
                     ".....\n";
     final String defL =
@@ -20,6 +20,18 @@ public class JLRotationTest {
                     "...6.\n" +
                     ".666.\n" +
                     ".....\n" +
+                    ".....\n";
+    final String defS =
+            ".....\n" +
+                    ".....\n" +
+                    "..55.\n" +
+                    ".55..\n" +
+                    ".....\n";
+    final String defZ =
+            ".....\n" +
+                    ".....\n" +
+                    ".55..\n" +
+                    "..55.\n" +
                     ".....\n";
 
     @org.junit.Test
@@ -46,6 +58,19 @@ public class JLRotationTest {
         // Test L -> J
         rotate4x(theL);
         Assert.assertEquals("Test J -> L failed", defL, TestGameBuilder.getStringPresentation(theL, new BlockTypes(null), true));
+    }
+
+    @org.junit.Test
+    public void testS() {
+        GamePiece theS = new GamePieceParser().parse("#S\n" + defS).get(0);
+
+        // Test L -> J
+        rotate4x(theS);
+        Assert.assertEquals("Test S -> Z failed", defZ, TestGameBuilder.getStringPresentation(theS, new BlockTypes(null), true));
+
+        // Test L -> J
+        rotate4x(theS);
+        Assert.assertEquals("Test J -> L failed", defS, TestGameBuilder.getStringPresentation(theS, new BlockTypes(null), true));
     }
 
     private void rotate4x(GamePiece gp) {

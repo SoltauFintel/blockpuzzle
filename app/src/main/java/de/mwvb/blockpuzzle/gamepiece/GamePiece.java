@@ -121,12 +121,19 @@ public class GamePiece {
 
         // Special handling for game pieces J and L
         String def = getStringPresentation(this);
-        final String defJ =  ".....|.5...|.555.|.....|.....|";
+        final String defJ =  ".....|.6...|.666.|.....|.....|";
         final String defL =  ".....|...6.|.666.|.....|.....|";
         if (defJ.equals(def)) {
             reverse(defL);
         } else if (defL.equals(def)) {
             reverse(defJ);
+        }
+        final String defS =  ".....|.....|..55.|.55..|.....|";
+        final String defZ =  ".....|.....|.55..|..55.|.....|";
+        if (defS.equals(def)) {
+            reverse(defZ);
+        } else if (defZ.equals(def)) {
+            reverse(defS);
         }
 
         return this;
