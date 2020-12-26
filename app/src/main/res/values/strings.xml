@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">4.2</string>
-    <string name="startScreenTitle">Version 4.2 by SoltauFintel</string>
+    <string name="version">5.0</string>
+    <string name="startScreenTitle">Version 5.0 by SoltauFintel</string>
     <string name="neuesSpiel">New Game</string>
     <string name="gehtNicht">Does not fit!</string>
     <string name="drehenAus">Rotating off</string>
@@ -28,7 +28,6 @@
     <string name="selectAsTarget">Select</string>
     <string name="developer">Developer</string>
     <string name="dataexchange">Data exchange</string>
-    <string name="startFromPlanet">Start from planet</string>
     <string name="selectTerritory">Select territory</string>
     <string name="saxony">Saxony</string>
     <string name="lowerSaxony">Lower Saxony</string>
@@ -44,8 +43,6 @@
     <string name="orangeUnion">Orange Union</string>
     <string name="gravitation">Gravitation</string>
     <string name="position">Position</string>
-    <string name="selectTargetInNavigation">Please select a planet as target in navigation!</string>
-    <string name="targetPlanetP1">Target: planet #%1$d</string>
     <string name="newLiberationAttemptQuestion">Start new liberation attempt?</string>
     <string name="planetNeedsNoLiberation">Planet needs no liberation</string>
     <string name="yourScoreYourMoves">Your score: %1$s, your moves: %2$s</string>

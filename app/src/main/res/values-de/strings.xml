@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">4.2</string>
-    <string name="startScreenTitle">Version 4.2 von SoltauFintel</string>
+    <string name="version">5.0</string>
+    <string name="startScreenTitle">Version 5.0 von SoltauFintel</string>
     <string name="neuesSpiel">Neues Spiel</string>
     <string name="gehtNicht">Geht nicht!</string>
     <string name="drehenAus">Drehmodus aus</string>
@@ -19,7 +19,7 @@
     <string name="save">Speichern</string>
     <string name="empty" />
     <string name="leaveShipInSpace">Wirklich Spiel beenden?</string>
-    <string name="stoneWars">Krieg der Steine</string>
+    <string name="stoneWars">Stone Wars</string>
     <string name="oldGame">Altes Spiel</string>
     <string name="blockPuzzle">Block Puzzle</string>
     <string name="navigation">Navigation</string>
@@ -29,7 +29,6 @@
     <string name="selectAsTarget">Auswählen</string>
     <string name="developer">Developer</string>
     <string name="dataexchange">Datenaustausch</string>
-    <string name="startFromPlanet">Vom Planeten starten</string>
     <string name="selectTerritory">Territorium auswählen</string>
     <string name="saxony">Sachsen</string>
     <string name="lowerSaxony">Niedersachsen</string>
@@ -45,8 +44,6 @@
     <string name="orangeUnion">Orange Union</string>
     <string name="gravitation">Gravitation</string>
     <string name="position">Position</string>
-    <string name="selectTargetInNavigation">Bitte in der Navigation ein Planet als Ziel definieren!</string>
-    <string name="targetPlanetP1">Ziel: Planet #1%1$d</string>
     <string name="newLiberationAttemptQuestion">Erneuten Befreiungsversuch starten?</string>
     <string name="planetNeedsNoLiberation">Planet benötigt keine Befreiung</string>
     <string name="yourScoreYourMoves">Deine Punkte: %1$s, deine Moves: %2$s</string>
