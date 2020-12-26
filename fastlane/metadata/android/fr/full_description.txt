@@ -1,0 +1,28 @@
+Block Puzzle est un jeu classique addictif! Un petit passe-temps qui n'a rien à voir avec la vitesse. Avec le nouveau mode multi-joueurs "Stone Wars"!
+
+Différentes pièces de jeu doivent être insérées dans un grand terrain de jeu de 10 x 10. Les lignes horizontales ou les colonnes verticales sont supprimées dès qu'elles sont pleines. Au fur et à mesure que le jeu progresse, plus de formes de tuiles sont ajoutées encore et encore. Quel score obtiendrez-vous?
+
+Parking: Une pièce de jeu peut être garée dans le champ gris. Mais fais attention! Dès que plus aucune pièce ne peut être insérée dans le terrain de jeu ou dans l'aire de stationnement, le jeu est terminé! Alors jouez la pièce de jeu garée le plus rapidement possible!
+
+Mode de rotation: activez le mode de rotation (vert) à tout moment pour faire pivoter les carreaux par pas de 90 degrés avant de les insérer.
+
+Gravitation: Si les lignes horizontales sont effacées dans le terrain de jeu inférieur, la partie supérieure glisse vers le bas.
+
+Système de points:
+ - Insertion: nombre de blocs sur la pièce
+ - Ligne claire: 10 points
+ - effacez plusieurs lignes à la fois: points bonus
+ - Le terrain de jeu n'a plus que quelques blocs ou est vide: bonus supplémentaire!
+ - 20 pièces connectées d'une couleur donnent un bonus supplémentaire.
+ - Le bloc étoiles donne 200 points bonus!
+
+Block Puzzle Stone Wars
+
+Alors que l'ancien jeu (avec des pièces de jeu générées aléatoirement) a été conservé, un nouveau mode multi-joueurs a été ajouté: Stone Wars. Vous êtes sur un vaisseau spatial et vous devez libérer la galaxie. Dans un avenir lointain, les conflits seront résolus en jouant au puzzle de blocs. Naviguez à travers un amas d'étoiles de dizaines de planètes à la vitesse de l'éclair grâce à la propulsion. Petit à petit, la carte spatiale se dévoile. Les planètes sont de tailles différentes et ont une gravité différente, ce qui affecte le jeu. La libération a lieu via le jeu classique Block Puzzle ou via le nouveau jeu Cleaner.
+Dans le jeu plus propre, vous gagnez en dégageant le terrain de jeu. Cependant, si votre ennemi a besoin de moins de mouvements, il est le libérateur de la planète. Dans le jeu classique, cependant, un score élevé compte. Un score minimum de libération (MLS) doit être atteint dans le jeu classique. Dans certains jeux plus propres, un certain nombre de coups ne peut être dépassé (XLM).
+
+Depuis la violation de données historique d'il y a 200 ans, un système de traitement de données n'est plus autorisé à envoyer ou à recevoir des données. Par conséquent, vous devez échanger votre score avec vos amis ou ennemis via une autre application (par exemple WhatsApp). Entrez votre nom de joueur, qui est aussi unique que possible, et copiez le score du quadrant actuel dans l'échange de données. Ensuite, allez sur WhatsApp, par exemple, et ajoutez-y le statut du jeu. Le destinataire peut ensuite copier cette partie sauvegardée et la coller dans l'échange de données Stone Wars. Vous prenez ensuite le contrôle de toutes les planètes de son jeu où vous êtes meilleur que lui. Sera-t-il capable de vous chasser à nouveau?
+
+Stone Wars fonctionne de telle manière que vous sélectionnez d'abord une planète dans la navigation et cliquez sur Sélectionner. Puis appuyez à nouveau sur le téléphone et démarrez la libération. Toutes les pièces du jeu sont prédéfinies en termes de type et d'ordre.
+
+Notre programme est et restera gratuit et sans publicité. Il n'y aura pas d'achats intégrés. Il ne nécessite aucun droit de téléphone et est joué complètement hors ligne.
