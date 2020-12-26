@@ -5,9 +5,11 @@ import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.data.DataService
 import de.mwvb.blockpuzzle.game.ResourceService
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess
@@ -23,6 +25,10 @@ class DataMarketActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_market)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
 
         pasteBtn.setOnClickListener { onPaste() }
         copyBtn.setOnClickListener { onCopy() }

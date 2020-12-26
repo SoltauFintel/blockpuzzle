@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
         val stoneWars = per().isStoneWars
         if (stoneWars) {
             game = StoneWarsGame(this)

@@ -2,9 +2,11 @@ package de.mwvb.blockpuzzle
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
@@ -20,6 +22,10 @@ class SelectTerritoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_territory)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
 
         val planet = PlanetAccess(per()).planet
 

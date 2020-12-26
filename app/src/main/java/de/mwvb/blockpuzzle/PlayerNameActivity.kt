@@ -1,10 +1,12 @@
 package de.mwvb.blockpuzzle
 
+import android.os.Build
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_player_name.*
@@ -14,6 +16,10 @@ class PlayerNameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_name)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
 
         playername.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

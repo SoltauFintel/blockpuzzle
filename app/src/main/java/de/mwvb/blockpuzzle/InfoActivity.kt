@@ -1,9 +1,11 @@
 package de.mwvb.blockpuzzle
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.sound.SoundService
@@ -15,6 +17,10 @@ class InfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
 
         soundService.init(this)
 

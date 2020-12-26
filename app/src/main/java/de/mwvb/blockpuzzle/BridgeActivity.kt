@@ -2,10 +2,12 @@ package de.mwvb.blockpuzzle
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
@@ -23,7 +25,11 @@ class BridgeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bridge)
 
-        navigation.setOnClickListener { startActivity(Intent(this, StartActivity::class.java)) }
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+        }
+
+        navigation.setOnClickListener { startActivity(Intent(this, NavigationActivity::class.java)) }
         play.setOnClickListener { onPlay() }
         newGame.setOnClickListener { onNewGame() }
         dataexchange.setOnClickListener { startActivity(Intent(this, DataMarketActivity::class.java)) }

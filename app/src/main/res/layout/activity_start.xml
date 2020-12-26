@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/activityBackground"
-    tools:context=".StartActivity">
+    tools:context=".NavigationActivity">
 
     <Button
         android:id="@+id/selectTarget"
