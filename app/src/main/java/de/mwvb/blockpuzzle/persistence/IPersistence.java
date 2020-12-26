@@ -62,6 +62,8 @@ public interface IPersistence {
     void savePlayerName(String playername);
     boolean loadPlayernameEntered();
     void savePlayernameEntered(boolean v);
+    boolean isGameSoundOn();
+    void saveGameSound(boolean on);
 
     void saveCurrentPlanet(int clusterNumber, int planetNumber);
     int loadCurrentPlanet();

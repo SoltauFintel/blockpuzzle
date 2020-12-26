@@ -27,14 +27,20 @@
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
             android:textColor="@color/white"
-            android:autofillHints="@string/playerName"
-            />
+            android:autofillHints="@string/playerName"/>
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save"
             android:textAllCaps="false"/>
+        <Switch
+            android:id="@+id/gameSounds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Game sounds"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout

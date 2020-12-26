@@ -35,10 +35,17 @@ class PlayerNameActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            playername.setText(per().loadPlayerName())
+            val per = per()
+            playername.setText(per.loadPlayerName())
+            gameSounds.isChecked = per.isGameSoundOn
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        per().saveGameSound(gameSounds.isChecked)
     }
 
     private fun onSaveBtn() {

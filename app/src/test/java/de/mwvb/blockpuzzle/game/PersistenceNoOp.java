@@ -182,6 +182,15 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public boolean isGameSoundOn() {
+        return false; // no game sounds for unit tests
+    }
+
+    @Override
+    public void saveGameSound(boolean on) {
+    }
+
+    @Override
     public void resetAll() {
     }
 

@@ -19,6 +19,7 @@ public class Persistence implements IPersistence {
     private static final String GLOBAL_OLD_GAME = "/oldGame";
     private static final String GLOBAL_PLAYERNAME = "/playername";
     private static final String GLOBAL_PLAYERNAME_ENTERED = "/playernameEntered";
+    private static final String GLOBAL_GAME_SOUNDS = "/gameSounds";
     private static final String GLOBAL_CURRENT_PLANET = "/currentPlanet";
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
@@ -42,13 +43,13 @@ public class Persistence implements IPersistence {
     private static final String OWNER_MOVES = "owner_moves";
     private static final String NEXT_ROUND = "nextRound"; // NextGamePieceFromSet
 
-    private final ContextWrapper owner;
+    private final Context owner;
     private SharedPreferences __pref; // only access by pref() !
     private String prefix = "";
 
     // Die Kommentare sind mglw. tlw. überholt (22.10.20)
 
-    public Persistence(ContextWrapper owner) {
+    public Persistence(Context owner) {
         this.owner = owner;
         // Ich kann hier nicht sofort auf getSharedPreferences() zugreifen.
     }
@@ -374,6 +375,17 @@ public class Persistence implements IPersistence {
     @Override
     public void savePlayernameEntered(boolean v) {
         putBoolean(GLOBAL_PLAYERNAME_ENTERED, v);
+    }
+
+    @Override
+    public boolean isGameSoundOn() {
+        // default: with game sounds
+        return getInt(GLOBAL_GAME_SOUNDS, 1) == 1;
+    }
+
+    @Override
+    public void saveGameSound(boolean on) {
+        putBoolean(GLOBAL_GAME_SOUNDS, on);
     }
 
     @Override

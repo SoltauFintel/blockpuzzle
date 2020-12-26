@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.sound;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -9,9 +10,11 @@ import android.media.SoundPool;
 import android.os.Build;
 
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.Persistence;
 
 public class SoundService implements ISoundService {
-    private Context context;
+    private boolean on;
     private SoundPool soundPool;
     private int crunch;
     private int money;
@@ -25,7 +28,7 @@ public class SoundService implements ISoundService {
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
     public void init(Context context) {
-        this.context = context;
+        on = new Persistence(context).isGameSoundOn();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_GAME)
@@ -56,12 +59,14 @@ public class SoundService implements ISoundService {
     }
 
     private void play(int soundId) {
+        if (off()) return;
         soundPool.play(soundId, 1, 1, 0, 0, 1f);
     }
 
     @Override
     public void clear(boolean big) {
         if (big) {
+            if (off()) return;
             explosion.start();
         } else {
             play(crunch);
@@ -70,17 +75,20 @@ public class SoundService implements ISoundService {
 
     @Override
     public void firstGravitation() {
+        if (off()) return;
         jeqa.start();
     }
 
     @Override
     public void gameOver() {
+        if (off()) return;
         quiet();
         laughter.start();
     }
 
     @Override
     public void youWon() {
+        if (off()) return;
         quiet();
         applause.start();
     }
@@ -107,6 +115,7 @@ public class SoundService implements ISoundService {
 
     @Override
     public void alarm(boolean on) {
+        if (off()) return;
         if (on) {
             alarm.setLooping(true);
             alarm.start();
@@ -116,15 +125,21 @@ public class SoundService implements ISoundService {
     }
 
     private void quiet() {
+        if (off()) return;
         quiet(jeqa);
         quiet(explosion);
     }
 
     private void quiet(MediaPlayer mp) {
+        if (off()) return;
         mp.stop();
         try {
             mp.prepare(); // direkt wieder startfähig machen
         } catch (Throwable ignore) {
         }
+    }
+
+    private boolean off() {
+        return !on;
     }
 }
