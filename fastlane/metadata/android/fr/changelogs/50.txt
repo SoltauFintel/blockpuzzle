@@ -1,1 +1,2 @@
 - Version française nouveau
+- Option de sons de jeu

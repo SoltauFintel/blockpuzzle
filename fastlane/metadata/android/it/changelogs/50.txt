@@ -1,1 +1,2 @@
 - Versione italiana
+- I toni di gioco possono essere disattivati
