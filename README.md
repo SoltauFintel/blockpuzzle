@@ -16,6 +16,8 @@ The app doesn't need any rights.
 
 <img src="https://raw.githubusercontent.com/SoltauFintel/blockpuzzle/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" height="500">
 
+Languages: English, German, French, Italian.
+
 ## License
 MIT
 
