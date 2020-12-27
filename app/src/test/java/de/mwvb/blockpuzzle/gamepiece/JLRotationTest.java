@@ -11,24 +11,24 @@ import de.mwvb.blockpuzzle.game.TestGameBuilder;
 public class JLRotationTest {
     final String defJ =
                     ".....\n" +
-                    ".6...\n" +
-                    ".666.\n" +
+                    ".7...\n" +
+                    ".777.\n" +
                     ".....\n" +
                     ".....\n";
     final String defL =
                     ".....\n" +
-                    "...6.\n" +
-                    ".666.\n" +
+                    "...7.\n" +
+                    ".777.\n" +
                     ".....\n" +
                     ".....\n";
     final String defS =
-            ".....\n" +
+                    ".....\n" +
                     ".....\n" +
                     "..55.\n" +
                     ".55..\n" +
                     ".....\n";
     final String defZ =
-            ".....\n" +
+                    ".....\n" +
                     ".....\n" +
                     ".55..\n" +
                     "..55.\n" +

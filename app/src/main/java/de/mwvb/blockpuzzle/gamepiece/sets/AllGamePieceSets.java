@@ -46,6 +46,7 @@ public class AllGamePieceSets {
 		new GamePieceSet0038(),
 		new GamePieceSet0039(),
 		new GamePieceSet0040(),
+		new GamePieceSet0041() // Development only
 	};
 
 }

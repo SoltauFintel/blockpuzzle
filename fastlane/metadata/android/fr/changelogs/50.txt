@@ -1,2 +1,3 @@
 - Version française nouveau
 - Option de sons de jeu
+- Les couleurs des pièces ont changé

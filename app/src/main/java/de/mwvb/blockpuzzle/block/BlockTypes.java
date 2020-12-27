@@ -36,6 +36,7 @@ public class BlockTypes {
         add(4, R.color.blue, R.color.blue_i, R.color.blue_ib);
         add(5, R.color.pink, R.color.pink_i, R.color.pink_ib);
         add(6, R.color.yellow, R.color.yellow_i, R.color.yellow_ib);
+        add(7, R.color.green, R.color.green_i, R.color.green_ib);
         add(ONE_COLOR, 'f', R.color.oneColor, R.color.oneColor_i, R.color.oneColor_ib);
         add(OLD_ONE_COLOR, 'o', R.color.oneColorOld, R.color.oneColorOld_i, R.color.oneColorOld_ib);
 

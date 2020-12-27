@@ -1,1 +1,2 @@
 - Game Sounds Option
+- Spielsteinfarben geändert

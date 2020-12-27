@@ -1,2 +1,3 @@
 - Versione italiana
 - I toni di gioco possono essere disattivati
+- I colori dei pezzi sono cambiati

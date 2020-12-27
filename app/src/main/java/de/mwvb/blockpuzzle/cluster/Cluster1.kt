@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.cluster
 
+import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
@@ -64,6 +65,10 @@ object Cluster1 : Cluster(1) {
 
         // AUFDECKUNGEN
         Cluster1Aufdeckungen(planets).aufdeckungen()
+
+        if (Features.developerMode) {
+            planets.add(Planet(99, 6, 7, ClassicGameDefinition(41, 2000))) // for testing game pieces, blocks and colors
+        }
     }
 
     private fun getGiantPlanet1(): GiantPlanet {

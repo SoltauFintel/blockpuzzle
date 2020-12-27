@@ -121,8 +121,8 @@ public class GamePiece {
 
         // Special handling for game pieces J and L
         String def = getStringPresentation(this);
-        final String defJ =  ".....|.6...|.666.|.....|.....|";
-        final String defL =  ".....|...6.|.666.|.....|.....|";
+        final String defJ =  ".....|.7...|.777.|.....|.....|";
+        final String defL =  ".....|...7.|.777.|.....|.....|";
         if (defJ.equals(def)) {
             reverse(defL);
         } else if (defL.equals(def)) {
@@ -148,6 +148,8 @@ public class GamePiece {
                     setBlockType(x, y, 5);
                 } else if (c == '6') {
                     setBlockType(x, y, 6);
+                } else if (c == '7') {
+                    setBlockType(x, y, 7);
                 } else {
                     setBlockType(x, y, 0);
                 }
@@ -167,6 +169,8 @@ public class GamePiece {
                     ret.append('5');
                 } else if (blockType == 6) {
                     ret.append('6');
+                } else if (blockType == 7) {
+                    ret.append('7');
                 } else {
                     ret.append('?');
                 }

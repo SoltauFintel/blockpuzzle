@@ -2,7 +2,6 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="green">#00CC00</color>
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
@@ -22,7 +21,7 @@
     <color name="oneColorOld">#0D5E9E</color>
     <color name="colorDrehmodus">#86EA33</color>
     <color name="colorGrey">#888888</color>
-    <color name="playButtonColor">#00CC00</color>
+    <color name="green">#009900</color>
 
     <color name="brown_i">#85461E</color>
     <color name="red_i">#D70F37</color>
@@ -34,6 +33,7 @@
     <color name="oneColorOld_i">#0A4C7E</color>
     <color name="colorDrehmodus_i">#7CD424</color>
     <color name="colorGrey_i">#888888</color>
+    <color name="green_i">#007700</color>
 
     <color name="brown_ib">#C7682E</color>
     <color name="red_ib">#FE4E71</color>
@@ -45,6 +45,9 @@
     <color name="oneColorOld_ib">#0F72BD</color>
     <color name="colorDrehmodus_ib">#A4F83A</color>
     <color name="colorGrey_ib">#888888</color>
+    <color name="green_ib">#00CC00</color>
+
+    <color name="playButtonColor">#00CC00</color>
 
     <color name="lockBlock">#660000</color>
     <color name="starBlockForeground">#FFFF00</color>
