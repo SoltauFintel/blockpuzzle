@@ -86,6 +86,8 @@ public class ClassicGameDefinition extends GameDefinition {
                 persistence.get().savePlanet(planet);
                 return resources.getString(R.string.planetLiberated);
             } else {
+                persistence.saveScore(score);
+                persistence.saveMoves(moves);
                 if (new GameInfoService().isPlanetFullyLiberated(planet, persistence.getPersistenceOK())) {
                     planet.setOwner(true); // Spiel gewonnen! Planet befreit!
                     persistence.get().savePlanet(planet);
