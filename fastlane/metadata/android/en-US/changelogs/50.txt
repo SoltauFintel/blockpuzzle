@@ -1,2 +1,5 @@
+- French and Italian versions
 - game sounds option
-- game piece color changes
+- some game piece color changes
+- planet marker bugfix
+- star field background

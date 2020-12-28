@@ -1,3 +1,5 @@
 - Version française nouveau
 - Option de sons de jeu
 - Les couleurs des pièces ont changé
+- Marqueur de planète fixe
+- Fond de champ étoile

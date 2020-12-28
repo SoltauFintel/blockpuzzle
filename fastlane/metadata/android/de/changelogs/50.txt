@@ -1,2 +1,5 @@
+- französische und italienische Versionen
 - Game Sounds Option
-- Spielsteinfarben geändert
+- Spielsteinfarben tlw. geändert
+- Haken am Planeten korrigiert
+- Sternfeld Hintergrund
