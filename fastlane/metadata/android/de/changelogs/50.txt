@@ -3,3 +3,4 @@
 - Spielsteinfarben tlw. geändert
 - Haken am Planeten korrigiert
 - Sternfeld Hintergrund
+- Rasterlinien

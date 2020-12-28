@@ -49,7 +49,7 @@ public class StarsView extends View {
         final int w = getWidth();
         final int h = getHeight();
 
-        for (int i = 0; i < 180; i++) {
+        for (int i = 0; i < 100; i++) {
             int x = r.nextInt(w);
             int y = r.nextInt(h);
             canvas.drawCircle(x, y, 3, paint);

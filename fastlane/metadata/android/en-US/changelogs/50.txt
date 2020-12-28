@@ -3,3 +3,4 @@
 - some game piece color changes
 - planet marker bugfix
 - star field background
+- grid lines

@@ -3,3 +3,4 @@
 - Les couleurs des pièces ont changé
 - Marqueur de planète fixe
 - Fond de champ étoile
+- Lignes de grille

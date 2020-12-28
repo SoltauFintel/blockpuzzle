@@ -3,3 +3,4 @@
 - I colori dei pezzi sono cambiati
 - Marcatore del pianeta fisso
 - Sfondo del campo stellare
+- Linee della griglia

@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.cluster;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -31,7 +32,7 @@ public class ClusterView extends View {
     private Button selectTargetButton;
     /** grid size */
     public static final int w = 40;
-    private Paint planetPaint, giantPlanetPaint, moonPaint, linePaint, quadrantPaint, myPaint, spaceshipPaint;
+    private Paint planetPaint, giantPlanetPaint, moonPaint, linePaint, line2Paint, quadrantPaint, myPaint, spaceshipPaint;
     private Bubble bubble;
 
     public ClusterView(Context context) {
@@ -70,6 +71,10 @@ public class ClusterView extends View {
         linePaint = new Paint();
         linePaint.setColor(getResources().getColor(R.color.quadrant));
         linePaint.setStrokeWidth(4f);
+        line2Paint = new Paint();
+        line2Paint.setColor(getResources().getColor(R.color.colorGrey));
+        line2Paint.setStrokeWidth(2f);
+        line2Paint.setPathEffect(new DashPathEffect(new float[] {4f, 27f}, 0f));
         quadrantPaint = new Paint();
         quadrantPaint.setColor(getResources().getColor(R.color.quadrant));
         quadrantPaint.setTextSize(60f);
@@ -108,6 +113,16 @@ public class ClusterView extends View {
         // Quadrant lines
         canvas.drawLine(getWidth() / 2f, 0, getWidth() / 2f, getHeight(), linePaint);
         canvas.drawLine(0, getHeight() / 2f, getWidth(), getHeight() / 2f, linePaint);
+
+        // weitere Rasterlinien
+        for (int rx = 1; rx < 35; rx += 5) {
+            float k = rx * w * f;
+            canvas.drawLine(k, 0, k, getHeight(), line2Paint);
+        }
+        for (int ry = 1; ry < 35; ry += 5) {
+            float k = ry * w * f;
+            canvas.drawLine(0, k, getWidth(), k, line2Paint);
+        }
 
         // Quadrant texts
         String alpha = getResources().getString(R.string.alpha);
