@@ -40,6 +40,7 @@ public class Game {
     protected final Holders holders = new Holders();
     protected int punkte;
     protected int moves;
+    protected boolean emptyScreenBonusActive = false;
     protected boolean gameOver = false; // wird nicht persistiert
     protected boolean won = false;
     private boolean rotatingMode = false; // wird nicht persistiert
@@ -110,6 +111,8 @@ public class Game {
 
         moves = 0;
         view.showMoves(moves);
+        emptyScreenBonusActive = false;
+        gape.get().saveEmptyScreenBonusActive(emptyScreenBonusActive);
 
         holders.clearParking();
         offer();
@@ -123,6 +126,7 @@ public class Game {
     protected void loadGame() {
         view.showScore(punkte, gape.loadDelta(), gameOver);
         moves = gape.loadMoves();
+        emptyScreenBonusActive = gape.get().loadEmptyScreenBonusActive();
         view.showMoves(moves);
         nextGamePiece.load();
         gravitation.load();
@@ -212,6 +216,11 @@ public class Game {
             } else { // auto-gravity
                 playingField.clearRows(f, new GravitationAction(gravitation, this, playingField, getGravitationStartRow()));
                 // Action wird erst wenige Millisekunden später fertig!
+            }
+            if (!emptyScreenBonusActive && playingField.getFilled() > (blocks * blocks * 0.50f)) { // More than 50% filled: fewGamePiecesOnThePlayingField bonus is active
+                emptyScreenBonusActive = true;
+                gape.get().saveEmptyScreenBonusActive(emptyScreenBonusActive);
+                view.playSound(1); // play sound "more than 50%"
             }
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();
@@ -320,18 +329,20 @@ public class Game {
     }
 
     private void fewGamePiecesOnThePlayingField() {
-        // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine
-        // auf dem Spielfeld sind. 1-2 ist nicht einfach, 0 fast unmöglich.
+        if (!emptyScreenBonusActive) {
+            return;
+        }
+        // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine auf dem Spielfeld sind.
         int bonus = 0;
         switch (playingField.getFilled()) {
-            case 0: bonus = 444; break; // Wahnsinn!
+            case 0: bonus = 444; break;
             case 1: bonus = 111; break;
-            case 2: bonus = 60; break;
-            case 3: bonus = 30; break;
-            case 4: bonus = 4; break;
         }
         if (bonus > 0) {
             punkte += bonus;
+            emptyScreenBonusActive = false;
+            gape.get().saveEmptyScreenBonusActive(emptyScreenBonusActive);
+            view.playSound(2); // play sound "empty screen bonus"
         }
     }
 

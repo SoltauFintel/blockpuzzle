@@ -4,3 +4,4 @@
 - Marcatore del pianeta fisso
 - Sfondo del campo stellare
 - Linee della griglia
+- Bonus schermo vuoto modificato

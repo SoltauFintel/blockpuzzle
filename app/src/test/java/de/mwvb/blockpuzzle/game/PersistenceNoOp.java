@@ -74,6 +74,15 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public boolean loadEmptyScreenBonusActive() {
+        return true;
+    }
+
+    @Override
+    public void saveEmptyScreenBonusActive(boolean v) {
+    }
+
+    @Override
     public int loadHighScore() {
         return 0;
     }

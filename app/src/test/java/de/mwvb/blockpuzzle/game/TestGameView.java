@@ -106,4 +106,8 @@ public class TestGameView implements IGameView {
             }
         };
     }
+
+    @Override
+    public void playSound(int number) {
+    }
 }

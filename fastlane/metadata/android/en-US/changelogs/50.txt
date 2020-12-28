@@ -4,3 +4,5 @@
 - planet marker bugfix
 - star field background
 - grid lines
+- empty screen bonus only if playing field filled more than 50%
+- empty screen bonus only for 0 or 1 block left on playing field

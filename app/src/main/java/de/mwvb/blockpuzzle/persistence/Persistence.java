@@ -30,6 +30,7 @@ public class Persistence implements IPersistence {
     private static final String SCORE = "score";
     private static final String DELTA = "delta";
     private static final String MOVES = "moves";
+    private static final String EMPTY_SCREEN_BONUS_ACTIVE = "emptyScreenBonusActive";
     private static final String GAME_OVER = "gameOver";
     private static final String HIGHSCORE_SCORE = "highscore";
     private static final String HIGHSCORE_MOVES = "highscoreMoves";
@@ -231,6 +232,16 @@ public class Persistence implements IPersistence {
     @Override
     public void saveMoves(int moves) {
         putInt(MOVES, moves);
+    }
+
+    @Override
+    public boolean loadEmptyScreenBonusActive() {
+        return getBoolean(EMPTY_SCREEN_BONUS_ACTIVE);
+    }
+
+    @Override
+    public void saveEmptyScreenBonusActive(boolean v) {
+        putBoolean(EMPTY_SCREEN_BONUS_ACTIVE, v);
     }
 
     @Override

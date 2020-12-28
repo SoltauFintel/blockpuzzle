@@ -4,3 +4,4 @@
 - Haken am Planeten korrigiert
 - Sternfeld Hintergrund
 - Rasterlinien
+- Leerer Bildschirm Bonus nur wenn Spielfeld zuvor >50% gefüllt war

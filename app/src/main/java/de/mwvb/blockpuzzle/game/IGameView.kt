@@ -23,4 +23,6 @@ interface IGameView {
     fun rotatingModeOff()
 
     fun shake()
+
+    fun playSound(number: Int)
 }

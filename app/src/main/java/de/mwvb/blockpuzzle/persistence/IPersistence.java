@@ -20,6 +20,8 @@ public interface IPersistence {
     void saveDelta(int delta);
     int loadMoves();
     void saveMoves(int moves);
+    boolean loadEmptyScreenBonusActive();
+    void saveEmptyScreenBonusActive(boolean v);
     int loadHighScore();
     void saveHighScore(int punkte);
     int loadHighScoreMoves();

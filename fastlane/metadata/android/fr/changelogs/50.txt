@@ -4,3 +4,4 @@
 - Marqueur de planète fixe
 - Fond de champ étoile
 - Lignes de grille
+- Bonus d'écran vide modifié

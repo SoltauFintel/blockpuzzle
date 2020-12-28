@@ -335,6 +335,10 @@ class MainActivity : AppCompatActivity(), IGameView {
         playingField.soundService.shake()
     }
 
+    override fun playSound(number: Int) {
+        playingField.soundService.playSound(number)
+    }
+
     private fun per(): IPersistence {
         return Persistence(this)
     }

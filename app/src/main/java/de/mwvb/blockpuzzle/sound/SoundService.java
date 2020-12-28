@@ -24,6 +24,8 @@ public class SoundService implements ISoundService {
     private MediaPlayer applause;
     private int brickdrop2;
     private MediaPlayer alarm;
+    private int moreThan50P;
+    private int emptyScreenBonus;
 
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
@@ -50,6 +52,8 @@ public class SoundService implements ISoundService {
         applause = MediaPlayer.create(context, R.raw.applause);
         brickdrop2 = soundPool.load(context, R.raw.brickdrop2, 0);
         alarm = MediaPlayer.create(context, R.raw.alarm);
+        moreThan50P = soundPool.load(context, R.raw.more50, 0);
+        emptyScreenBonus = soundPool.load(context, R.raw.emptysb, 0);
     }
 
     /** destroy SoundService */
@@ -101,6 +105,17 @@ public class SoundService implements ISoundService {
     @Override
     public void targetSelected() {
         play(money); // for the moment use the same as oneColor, for the future use another sound
+    }
+
+    public void playSound(int number) {
+        switch (number) {
+            case 1:
+                play(moreThan50P);
+                break;
+            case 2:
+                play(emptyScreenBonus);
+                break;
+        }
     }
 
     @Override
