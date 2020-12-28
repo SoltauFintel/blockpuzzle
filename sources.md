@@ -9,10 +9,13 @@
 - applause.mp3 = https://freesound.org/people/milton./sounds/77101/
 - ( brickdrop2.wav = https://freesound.org/people/Robinhood76/sounds/503554/ )
 - alarm = https://freesound.org/people/Tomlija/sounds/96831/ 
+- more50 "more than 50%" (EN)  = https://voicegenerator.io
+- emptysb "empty screen bonus" (IT) = https://voicegenerator.io
 
 ## candidates
 - emergency alert = https://freesound.org/people/NocturnalNarrations/sounds/415266/
 - nuclear alarm = https://freesound.org/people/radio_illuminati/sounds/206141/
+- success fanfare = https://freesound.org/people/FunWithSound/sounds/456966/
 
 ## not used
 - spaceshipalarm.wav = https://freesound.org/people/Tim_Verberne/sounds/514080/
