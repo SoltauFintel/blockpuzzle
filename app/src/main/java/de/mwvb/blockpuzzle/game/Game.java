@@ -217,7 +217,7 @@ public class Game {
                 fewGamePiecesOnThePlayingField();
             }
 
-            checkForVictory(); // Spielsiegprüfung (showScore erst danach)
+            check4Victory(); // Spielsiegprüfung (showScore erst danach)
 
             int delta = punkte - punkteVorher;
             gape.saveDelta(delta);
@@ -227,7 +227,7 @@ public class Game {
         return ret;
     }
 
-    protected void checkForVictory() {
+    protected void check4Victory() {
     }
 
     private void sendPlacedEvent(GamePiece teil, QPosition pos) {

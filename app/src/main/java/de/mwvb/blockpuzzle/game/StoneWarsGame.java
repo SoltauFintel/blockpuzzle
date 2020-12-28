@@ -85,7 +85,7 @@ public class StoneWarsGame extends Game {
     }
 
     @Override
-    protected void checkForVictory() {
+    protected void check4Victory() {
         String msg = definition.scoreChanged(punkte, moves, gape.getPlanet(), won, gape, getResourceAccess());
         if (msg != null && !msg.startsWith("-")) {
             view.showToast(msg);
