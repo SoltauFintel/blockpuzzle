@@ -39,6 +39,7 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public void setGameID(IPlanet planet) {
+        setGameID(planet, planet.getGameDefinitions().indexOf(planet.getSelectedGame()));
     }
 
     @Override

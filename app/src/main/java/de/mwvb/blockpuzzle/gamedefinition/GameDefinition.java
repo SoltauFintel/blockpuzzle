@@ -79,6 +79,7 @@ public abstract class GameDefinition {
     public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence, boolean playerIsPlayer1);
 
     /**
+     * @param planet must be persistence.getPlanet()
      * @return null, or message text for Toast, prefix "+" if victory (play applause sound), prefix "-" for game over (play laughing)
      */
     public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resouces);

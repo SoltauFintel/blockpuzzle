@@ -12,6 +12,7 @@ import de.mwvb.blockpuzzle.data.DataService;
 import de.mwvb.blockpuzzle.game.PersistenceNoOp;
 import de.mwvb.blockpuzzle.game.TestGameBuilder;
 import de.mwvb.blockpuzzle.game.TestGameState;
+import de.mwvb.blockpuzzle.game.TestPersistence;
 import de.mwvb.blockpuzzle.gamepiece.GamePieceHolder;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -53,77 +54,7 @@ public class CleanerAttackTest {
     }
 
     private void initNewGame() {
-        IPersistence persistence = new PersistenceNoOp() {
-            private final Map<String, TestGameState> games = new HashMap<>();
-            private String currentGameID;
-
-            @Override
-            public void loadPlanet(IPlanet planet) {
-                super.loadPlanet(planet);
-                planet.setVisibleOnMap(true); // Karte aufgedeckt
-            }
-
-            @Override
-            public int loadCurrentPlanet() {
-                return 17;
-            }
-
-            @Override
-            public void setGameID(IPlanet planet) {
-                currentGameID = planet.getNumber() + "_" +  planet.getGameDefinitions().indexOf(planet.getSelectedGame());
-            }
-
-            @Override
-            public void saveScore(int punkte) {
-                get().setScore(punkte);
-            }
-
-            @Override
-            public void saveMoves(int moves) {
-                get().setMoves(moves);
-            }
-
-            @Override
-            public int loadMoves() {
-                return get().getMoves();
-            }
-
-            @Override
-            public int loadScore() {
-                return get().getScore();
-            }
-
-            @Override
-            public int loadOwnerScore() {
-                return get().getOwnerScore();
-            }
-
-            @Override
-            public String loadOwnerName() {
-                return get().getOwnerName();
-            }
-
-            @Override
-            public int loadOwnerMoves() {
-                return get().getOwnerMoves();
-            }
-
-            @Override
-            public void saveOwner(int score, int moves, String name) {
-                get().setOwnerScore(score);
-                get().setOwnerMoves(moves);
-                get().setOwnerName(name);
-            }
-
-            private TestGameState get() {
-                TestGameState ret = games.get(currentGameID);
-                if (ret == null) {
-                    ret = new TestGameState();
-                    games.put(currentGameID, ret);
-                }
-                return ret;
-            }
-        };
+        IPersistence persistence = new TestPersistence();
         game = TestGameBuilder.createStoneWarsGame(persistence);
         Assert.assertEquals("Wrong planet!", 17, game.getPlanet().getNumber());
         Assert.assertEquals("Wrong GamePieceSet!", 4, game.getDefinition().getGamePieceSetNumber());
