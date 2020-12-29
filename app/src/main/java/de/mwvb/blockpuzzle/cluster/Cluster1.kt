@@ -4,6 +4,7 @@ import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
+import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon
 import de.mwvb.blockpuzzle.planet.Planet
@@ -50,6 +51,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(11, 27, 13, CleanerGameDefinition(26, 9)))
         planets.add(Planet(21, 34, 12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
         planets.add(GiantPlanet(39, 20, 16, 9, ClassicGameDefinition(39, 50000), null, null))
+        planets.add(Planet(42, 34, 14, DailyClassicGameDefinition(1))) // Daily Planet
 
         // BETA QUADRANT
         planets.add(Planet(27, 20, 25, CleanerGameDefinition(37, 3)))

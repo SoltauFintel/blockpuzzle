@@ -13,7 +13,7 @@ import de.mwvb.blockpuzzle.planet.IPlanet;
  * - keine vordefinierten Spielsteine mehr -> Wertung der Score
  */
 public class ClassicGameDefinition extends GameDefinition {
-    /** MLS */
+    /** MLS | use getter to access it! */
     private final int minimumLiberationScore;
 
     public ClassicGameDefinition(int gamePieceSetNumber) {
@@ -33,7 +33,7 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public String toString() {
-        return "ClassicGame(GPSN=" + getGamePieceSetNumber() + ",MLS=" + minimumLiberationScore + ")";
+        return "ClassicGame(GPSN=" + getGamePieceSetNumber() + ",MLS=" + getMinimumLiberationScore() + ")";
     }
 
 
@@ -46,8 +46,8 @@ public class ClassicGameDefinition extends GameDefinition {
             info = "Z" + getGamePieceSetNumber() + " ";
         }
         info += "Classic Game" ;
-        if (minimumLiberationScore > 0) {
-            info += " MLS" + (minimumLiberationScore / 1000) + "k";
+        if (getMinimumLiberationScore() > 0) {
+            info += " MLS" + (getMinimumLiberationScore() / 1000) + "k";
         }
         return info;
     }
@@ -55,9 +55,9 @@ public class ClassicGameDefinition extends GameDefinition {
     @Override
     public String getClusterViewInfo() {
         if (Features.developerMode) {
-            return "Z" + getGamePieceSetNumber() + " Classic MLS" + (minimumLiberationScore / 1000) + "k";
+            return "Z" + getGamePieceSetNumber() + " Classic MLS" + (getMinimumLiberationScore() / 1000) + "k";
         } else {
-            return "Classic MLS" + (minimumLiberationScore / 1000) + "k";
+            return "Classic MLS" + (getMinimumLiberationScore() / 1000) + "k";
         }
     }
 
@@ -66,13 +66,13 @@ public class ClassicGameDefinition extends GameDefinition {
 
     @Override
     public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence, boolean playerIsPlayer1) {
-        return player1Score > 0 && player1Score >= minimumLiberationScore &&
+        return player1Score > 0 && player1Score >= getMinimumLiberationScore() &&
                 (player1Score > player2Score || (player1Score == player2Score && player1Moves < player2Moves));
     }
 
     @Override
     public String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resources) {
-        if (won || score < minimumLiberationScore) return null;
+        if (won || score < getMinimumLiberationScore()) return null;
 
         int ownerScore = persistence.loadOwnerScore();
         if (ownerScore > 0 && score > ownerScore) { // Planet war von Gegner besetzt
@@ -107,7 +107,7 @@ public class ClassicGameDefinition extends GameDefinition {
         // Entweder hat man's geschafft mehr Punkte als der Gegner zu bekommen oder nicht.
         // MEHR (ODER FALLS KEIN GEGNER): Planet befreit. Das müsste schon zuvor bekannt gewesen sein. Spielsieg.
         // WENIGER:                       Planet nicht befreit. Spiel verloren.
-        if (minimumLiberationScore <= 0 || punkte >= minimumLiberationScore) {
+        if (getMinimumLiberationScore() <= 0 || punkte >= getMinimumLiberationScore()) {
             int ownerScore = gape.loadOwnerScore();
             return ownerScore <= 0 // Es gibt kein Gegner
                     || punkte > ownerScore // oder man ist besser als der Gegner
