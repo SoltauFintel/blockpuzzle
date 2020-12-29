@@ -15,6 +15,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
 public class Persistence implements IPersistence {
+    private static final String NAME = "GAMEDATA_2";
     // Global data ----
     private static final String GLOBAL_OLD_GAME = "/oldGame";
     private static final String GLOBAL_PLAYERNAME = "/playername";
@@ -26,7 +27,6 @@ public class Persistence implements IPersistence {
     private static final String PLANET_VISIBLE = "visible";
     private static final String PLANET_OWNER = "owner";
     // Game specific data ----
-    private static final String NAME = "GAMEDATA_2";
     private static final String SCORE = "score";
     private static final String DELTA = "delta";
     private static final String MOVES = "moves";
@@ -44,7 +44,7 @@ public class Persistence implements IPersistence {
     private static final String OWNER_MOVES = "owner_moves";
     private static final String NEXT_ROUND = "nextRound"; // NextGamePieceFromSet
 
-    private final Context owner;
+    private Context owner;
     private SharedPreferences __pref; // only access by pref() !
     private String prefix = "";
 
@@ -58,6 +58,7 @@ public class Persistence implements IPersistence {
     private SharedPreferences pref() {
         if (__pref == null) {
             __pref = owner.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+            owner = null; // not need any more
         }
         return __pref;
     }
