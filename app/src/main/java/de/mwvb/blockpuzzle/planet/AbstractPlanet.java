@@ -3,7 +3,9 @@ package de.mwvb.blockpuzzle.planet;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
+import de.mwvb.blockpuzzle.persistence.IPersistence;
 
 public abstract class AbstractPlanet implements IPlanet {
     // Stammdaten
@@ -84,6 +86,21 @@ public abstract class AbstractPlanet implements IPlanet {
     @Override
     public boolean hasGames() {
         return !gameDefinitions.isEmpty();
+    }
+
+    @Override
+    public boolean userMustSelectTerritory() {
+        return getGameDefinitions().size() > 1;
+    }
+
+    @Override
+    public boolean isNextGamePieceResetedForNewGame() {
+        return true;
+    }
+
+    @Override
+    public int getCurrentGameDefinitionIndex(IPersistence persistence) {
+        return getGameDefinitions().indexOf(getSelectedGame());
     }
 
     @Override

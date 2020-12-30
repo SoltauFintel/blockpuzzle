@@ -94,6 +94,17 @@
                 android:text="Speichere Next Round"
                 android:textAllCaps="false"/>
 
+            <EditText
+                android:id="@+id/todayDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/saveTodayDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Speichere Tagesdatum"
+                android:textAllCaps="false"/>
+
             <Button
                 android:id="@+id/openMap"
                 android:layout_width="match_parent"

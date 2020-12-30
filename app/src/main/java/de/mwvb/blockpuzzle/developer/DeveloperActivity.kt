@@ -23,6 +23,7 @@ class DeveloperActivity : AppCompatActivity() {
         conquered.setOnClickListener { onConquered() }
         saveOtherScore.setOnClickListener { onSaveOther() }
         saveNextRound.setOnClickListener { onSaveNextRound() }
+        saveTodayDate.setOnClickListener { onSaveTodayDate() }
 
         resetAllBtn.setOnClickListener { onResetAll() }
         openMap.setOnClickListener { onOpenMap() }
@@ -52,6 +53,7 @@ class DeveloperActivity : AppCompatActivity() {
             otherMoves.setText("" + pa.persistence.loadOwnerMoves())
             nextRound.setText("" + pa.persistence.loadNextRound())
         }
+        todayDate.setText(Persistence(this).loadTodayDate())
     }
 
     private fun onSave() {
@@ -92,6 +94,11 @@ class DeveloperActivity : AppCompatActivity() {
         val pa = pa()
         val index = Integer.parseInt(nextRound.text.toString())
         pa.persistence.saveNextRound(index)
+        finish()
+    }
+
+    private fun onSaveTodayDate() {
+        Persistence(this).saveTodayDate(todayDate.text.toString())
         finish()
     }
 

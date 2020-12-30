@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
@@ -38,6 +37,15 @@ public class StoneWarsGame extends Game {
     @Override
     protected INextGamePiece getNextGamePieceGenerator() {
         return new NextGamePieceFromSet(definition.getGamePieceSetNumber(), gape);
+    }
+
+    @Override
+    protected void initNextGamePieceForNewGame() {
+        if (gape.getPlanet().isNextGamePieceResetedForNewGame()) {
+            nextGamePiece.reset();
+        } else { // Daily Planet
+            nextGamePiece.load();
+        }
     }
 
     @Override

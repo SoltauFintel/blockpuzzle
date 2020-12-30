@@ -18,6 +18,7 @@ import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.OneColorAreaDetector;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -49,7 +50,7 @@ public class Game {
     // Services
     protected GamePersistence gape; // "ga" for game + "pe" for persistence
     protected final IGameView view;
-    private INextGamePiece nextGamePiece;
+    protected INextGamePiece nextGamePiece;
 
     // Spielaufbau ----
 
@@ -67,6 +68,7 @@ public class Game {
 
     // New Game ----
 
+    // called by MainActivity.onResume()
     public void initGame() {
         initGameAndPersistence();
         holders.setView(view);
@@ -105,7 +107,7 @@ public class Game {
         gravitation.init();
         gape.saveDelta(0);
         view.showScore(punkte, 0, gameOver);
-        nextGamePiece.reset();
+        initNextGamePieceForNewGame();
 
         initPlayingField();
 
@@ -117,6 +119,10 @@ public class Game {
         holders.clearParking();
         offer();
         save();
+    }
+
+    protected void initNextGamePieceForNewGame() {
+        nextGamePiece.reset();
     }
 
     protected void initPlayingField() {

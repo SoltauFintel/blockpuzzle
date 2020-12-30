@@ -76,4 +76,11 @@
     <string name="alpha">alfa</string>
     <string name="tooManyMoves">-Too many moves!</string>
     <string name="noMoreGamePieces">Game over: No more game pieces!</string>
+    <string name="daily1">Giorno 1</string>
+    <string name="daily2">Giorno 2</string>
+    <string name="daily3">Giorno 3</string>
+    <string name="daily4">Giorno 4</string>
+    <string name="daily5">Giorno 5</string>
+    <string name="daily6">Giorno 6</string>
+    <string name="daily7">Giorno 7</string>
 </resources>

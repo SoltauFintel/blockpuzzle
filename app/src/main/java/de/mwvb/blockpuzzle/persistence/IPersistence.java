@@ -31,6 +31,13 @@ public interface IPersistence {
     /** Wenn true hat der Spieler es verkackt. */
     boolean loadGameOver();
     void saveGameOver(boolean gameOver);
+    String loadDailyDate(IPlanet planet, int gameDefinitionIndex);
+    /**
+     * @param planet -
+     * @param gameDefinitionIndex -
+     * @param date Datum im Format JJJJ-MM-TT + Konstante DailyPlanet.ACTIVE_GAME oder DailyPlanet.WON_GAME
+     */
+    void saveDailyDate(IPlanet planet, int gameDefinitionIndex, String date);
 
     void load(PlayingField f);
     void save(PlayingField f);

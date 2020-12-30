@@ -8,6 +8,7 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
+import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
@@ -31,6 +32,7 @@ public class Persistence implements IPersistence {
     private static final String DELTA = "delta";
     private static final String MOVES = "moves";
     private static final String EMPTY_SCREEN_BONUS_ACTIVE = "emptyScreenBonusActive";
+    private static final String DAILY_DATE = "dailyDate";
     private static final String GAME_OVER = "gameOver";
     private static final String HIGHSCORE_SCORE = "highscore";
     private static final String HIGHSCORE_MOVES = "highscoreMoves";
@@ -70,13 +72,17 @@ public class Persistence implements IPersistence {
 
     @Override
     public void setGameID(IPlanet planet, int gameDefinitionIndex) {
+        prefix = buildGameKey(planet, gameDefinitionIndex);
+    }
+
+    private String buildGameKey(IPlanet planet, int gameDefinitionIndex) {
         // e.g. "C1_16_0"
-        prefix = "C" + planet.getClusterNumber() + "_" + planet.getNumber() + "_" + gameDefinitionIndex;
+        return "C" + planet.getClusterNumber() + "_" + planet.getNumber() + "_" + gameDefinitionIndex;
     }
 
     @Override
     public void setGameID(IPlanet planet) {
-        setGameID(planet, planet.getGameDefinitions().indexOf(planet.getSelectedGame()));
+        setGameID(planet, planet.getCurrentGameDefinitionIndex(this));
     }
 
     private String getPlanetKey(IPlanet planet) {
@@ -380,6 +386,34 @@ public class Persistence implements IPersistence {
     }
 
     @Override
+    public String loadDailyDate(IPlanet planet, int gameDefinitionIndex) {
+        final String rem = prefix;
+        setGameID(planet, gameDefinitionIndex);
+        try {
+            String ret = getString(DAILY_DATE);
+            if (ret == null || ret.isEmpty()) {
+                return "1972-01-01";
+            }
+            return ret;
+        } finally {
+            prefix = rem;
+        }
+    }
+
+    @Override
+    public void saveDailyDate(IPlanet planet, int gameDefinitionIndex, String date) {
+        final String rem = prefix;
+        setGameID(planet, gameDefinitionIndex);
+        try {
+            SharedPreferences.Editor edit = pref().edit();
+            edit.putString(name(DAILY_DATE), date == null ? "" : date);
+            edit.apply();
+        } finally {
+            prefix = rem;
+        }
+    }
+
+    @Override
     public boolean loadPlayernameEntered() {
         return getBoolean(GLOBAL_PLAYERNAME_ENTERED);
     }
@@ -451,10 +485,23 @@ public class Persistence implements IPersistence {
         putInt(name, val ? 1 : 0);
     }
 
-    private void save(String name, StringBuilder s) {
+    // TODO überall diese Methode verwenden
+    private void putString(String name, String value) {
         SharedPreferences.Editor edit = pref().edit();
-        edit.putString(name(name), s.toString());
+        edit.putString(name(name), value);
         edit.apply();
+    }
+
+    private void save(String name, StringBuilder s) {
+        putString(name, s.toString());
+    }
+
+    public void saveTodayDate(String date) {
+        putString("/today", date);
+    }
+
+    public String loadTodayDate() {
+        return getString("/today");
     }
 
     @Override

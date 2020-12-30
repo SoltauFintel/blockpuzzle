@@ -10,6 +10,7 @@ import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.PlanetAccess;
+import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -29,7 +30,7 @@ public class DataService {
         String quadrant = Cluster.getQuadrant(currentPlanet.getX(), currentPlanet.getY());
         String ret = "BP" + VERSION + "/C" + clusterNumber + ("ß".equals(quadrant) ? "b" : quadrant);
         for (IPlanet p : planets) {
-            if (!p.isVisibleOnMap() || !p.isOwner()) {
+            if (!p.isVisibleOnMap() || !p.isOwner() || p instanceof DailyPlanet) {
                 continue;
             }
             String q = Cluster.getQuadrant(p.getX(), p.getY());
@@ -110,7 +111,7 @@ public class DataService {
         int otherMoves = Integer.parseInt(m, 16);
         for (int i = 0; i < planets.size(); i++) {
             IPlanet p = planets.get(i);
-            if (p.getNumber() == pl) {
+            if (p.getNumber() == pl && !(p instanceof DailyPlanet)) {
                 persistence.setGameID(p, gi);
                 int meineScore = persistence.loadScore();
                 int meineMoves = persistence.loadMoves();

@@ -1,5 +1,7 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.game.GameInfoService;
@@ -31,6 +33,7 @@ public class ClassicGameDefinition extends GameDefinition {
         return minimumLiberationScore;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "ClassicGame(GPSN=" + getGamePieceSetNumber() + ",MLS=" + getMinimumLiberationScore() + ")";

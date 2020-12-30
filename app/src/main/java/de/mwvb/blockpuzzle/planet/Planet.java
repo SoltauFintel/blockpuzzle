@@ -16,6 +16,10 @@ public class Planet extends AbstractPlanet {
         super(number, x, y, gravitation, gameDefinition);
     }
 
+    protected Planet(int number, int x, int y, int gravitation) {
+        super(number, x, y, gravitation);
+    }
+
     @Override
     public final int getRadius() {
         return 20;

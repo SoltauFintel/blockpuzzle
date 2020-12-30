@@ -75,11 +75,10 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onPlay() {
-        val games = getPlanet().gameDefinitions.size
-        when (games) {
-            0 -> return
-            1 -> startActivity(Intent(this, MainActivity::class.java))
-            else -> selectTerritory(0)
+        if (getPlanet().userMustSelectTerritory()) {
+            selectTerritory(0)
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
@@ -89,14 +88,14 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onNewGame() {
-        if (getPlanet().gameDefinitions.size == 1) {
+        if (getPlanet().userMustSelectTerritory()) {
+            selectTerritory(1)
+        } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle(R.string.newLiberationAttemptQuestion)
             dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onResetGame() }
             dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
             dialog.show()
-        } else {
-            selectTerritory(1)
         }
     }
 
@@ -123,10 +122,10 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onDeveloper() {
-        if (getPlanet().gameDefinitions.size == 1) {
-            startActivity(Intent(this, DeveloperActivity::class.java))
-        } else {
+        if (getPlanet().userMustSelectTerritory()) {
             selectTerritory(2)
+        } else {
+            startActivity(Intent(this, DeveloperActivity::class.java))
         }
     }
 

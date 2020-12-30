@@ -76,4 +76,11 @@
     <string name="delta">delta</string>
     <string name="tooManyMoves">-Trop de mouvements!</string>
     <string name="noMoreGamePieces">Pièces de jeu épuisées! (Game over)</string>
+    <string name="daily1">Journée 1</string>
+    <string name="daily2">Journée 2</string>
+    <string name="daily3">Journée 3</string>
+    <string name="daily4">Journée 4</string>
+    <string name="daily5">Journée 5</string>
+    <string name="daily6">Journée 6</string>
+    <string name="daily7">Journée 7</string>
 </resources>

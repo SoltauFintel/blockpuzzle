@@ -15,6 +15,7 @@ class GameInfoService {
 
     fun getGameInfo(pa: PlanetAccess, resources: Resources): String {
         return if (pa.planet.hasGames()) {
+            pa.planet.getCurrentGameDefinitionIndex(pa.persistence)
             getSelectedGameInfo(pa, resources, pa.planet.selectedGame)
         } else {
             resources.getString(R.string.planetNeedsNoLiberation)
@@ -43,10 +44,10 @@ class GameInfoService {
 
         // Liberated?
         if (s.isLiberated(score, moves, otherScore, otherMoves, per, true)) {
-            if (planet.gameDefinitions.size == 1) {
-                info += "\n" + resources.getString(R.string.liberatedPlanetByYou)
-            } else {
+            if (planet.userMustSelectTerritory()) {
                 info += "\n" + resources.getString(R.string.liberatedTerritoryByYou)
+            } else {
+                info += "\n" + resources.getString(R.string.liberatedPlanetByYou)
             }
         }
         return info
@@ -90,6 +91,7 @@ class GameInfoService {
         }
         var info = planetType + " #" + planet.number + ", " + resources.getString(R.string.gravitation) + " " + planet.gravitation
         if (planet.gameDefinitions.size > 1) {
+            planet.getCurrentGameDefinitionIndex(pa.persistence)
             info += "\n" + resources.getString(planet.selectedGame.territoryName)
         }
         return info

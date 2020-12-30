@@ -5,6 +5,7 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
+import de.mwvb.blockpuzzle.planet.DailyPlanet
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon
 import de.mwvb.blockpuzzle.planet.Planet
@@ -51,7 +52,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(11, 27, 13, CleanerGameDefinition(26, 9)))
         planets.add(Planet(21, 34, 12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
         planets.add(GiantPlanet(39, 20, 16, 9, ClassicGameDefinition(39, 50000), null, null))
-        planets.add(Planet(42, 34, 14, DailyClassicGameDefinition(1))) // Daily Planet
+        planets.add(getDailyPlanet())
 
         // BETA QUADRANT
         planets.add(Planet(27, 20, 25, CleanerGameDefinition(37, 3)))
@@ -107,5 +108,20 @@ object Cluster1 : Cluster(1) {
         // evtl. noch weiteres Territory "Gelre"
 
         return GiantPlanet(36, 28, 32, 8, gd1, gd2, null)
+    }
+
+    private fun getDailyPlanet(): Planet {
+        val p = DailyPlanet(42, 34, 14, 6)
+        for (day in 1..7) {
+            p.gameDefinitions.add(DailyClassicGameDefinition(day))
+        }
+        p.gameDefinitions[0].territoryName = R.string.daily1
+        p.gameDefinitions[1].territoryName = R.string.daily2
+        p.gameDefinitions[2].territoryName = R.string.daily3
+        p.gameDefinitions[3].territoryName = R.string.daily4
+        p.gameDefinitions[4].territoryName = R.string.daily5
+        p.gameDefinitions[5].territoryName = R.string.daily6
+        p.gameDefinitions[6].territoryName = R.string.daily7
+        return p
     }
 }

@@ -39,7 +39,7 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public void setGameID(IPlanet planet) {
-        setGameID(planet, planet.getGameDefinitions().indexOf(planet.getSelectedGame()));
+        setGameID(planet, planet.getCurrentGameDefinitionIndex(this));
     }
 
     @Override
@@ -180,6 +180,15 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public void saveGameOver(boolean gameOver) {
+    }
+
+    @Override
+    public String loadDailyDate(IPlanet planet, int gameDefinitionIndex) {
+        return "";
+    }
+
+    @Override
+    public void saveDailyDate(IPlanet planet, int gameDefinitionIndex, String date) {
     }
 
     @Override

@@ -2,11 +2,9 @@ package de.mwvb.blockpuzzle.gamedefinition
 
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.Game
 import de.mwvb.blockpuzzle.persistence.GamePersistence
 import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
@@ -52,24 +50,8 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // INIT PHASE ----
 
-    override fun fillStartPlayingField(p0: PlayingField?) {
-        val p = p0!!
-        val blockTypes = BlockTypes(null)
-        var def = getStartPlayingField(level)
-        while (def.startsWith("\n")) {
-            def = def.substring(1)
-        }
-        val lines = def.split("\n")
-        for (y in 0..Game.blocks - 1) {
-            for (x in 0..Game.blocks - 1) {
-                val c = lines[y][x]
-                if (c != '_') {
-                    val blockType = blockTypes.getBlockTypeNumber(c)
-                    p.set(x, y, blockType)
-                }
-            }
-        }
-        p.draw()
+    override fun fillStartPlayingField(pf: PlayingField?) {
+        StartPlayingFieldFiller().fillStartPlayingField(pf!!, getStartPlayingField(level))
     }
 
 
@@ -145,16 +127,16 @@ class CleanerGameDefinition @JvmOverloads constructor(
     // PLAYING FIELDS ----
 
     private fun getStartPlayingField(level: Int): String {
-        when (level) {
-            1 -> return getLevel1()
-            2 -> return getLevel2()
-            3 -> return getLevel3()
-            4 -> return getLevel4()
-            5 -> return getLevel5()
-            6 -> return getLevel6()
-            7 -> return getLevel7()
-            8 -> return getLevel8()
-            9 -> return getLevel9()
+        return when (level) {
+            1 -> getLevel1()
+            2 -> getLevel2()
+            3 -> getLevel3()
+            4 -> getLevel4()
+            5 -> getLevel5()
+            6 -> getLevel6()
+            7 -> getLevel7()
+            8 -> getLevel8()
+            9 -> getLevel9()
             else -> throw RuntimeException("Unknown level $level")
         }
     }
