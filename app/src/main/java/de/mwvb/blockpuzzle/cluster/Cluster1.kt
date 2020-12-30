@@ -88,10 +88,10 @@ object Cluster1 : Cluster(1) {
         val brandenburg = ClassicGameDefinition(1, 30000)
         brandenburg.territoryName = R.string.brandenburg
 
-        val saxony = ClassicGameDefinition(17, 30000)
+        val saxony = ClassicGameDefinition(17, 27000)
         saxony.territoryName = R.string.saxony
 
-        val lowerSaxony = ClassicGameDefinition(18, 30000)
+        val lowerSaxony = ClassicGameDefinition(18, 25000)
         lowerSaxony.territoryName = R.string.lowerSaxony
 
         return GiantPlanet(29, 8, 31, brandenburg, saxony, lowerSaxony)
