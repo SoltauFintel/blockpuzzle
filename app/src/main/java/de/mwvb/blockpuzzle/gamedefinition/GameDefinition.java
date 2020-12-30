@@ -1,5 +1,9 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
+import java.util.List;
+
+import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
+import de.mwvb.blockpuzzle.game.Game;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -42,6 +46,27 @@ public abstract class GameDefinition {
 
     public boolean gameCanBeWon() {
         return false;
+    }
+
+    public int getGamePieceBlocksScoreFactor() {
+        return Game.GPB_SCORE_FACTOR;
+    }
+
+    public int getHitsScoreFactor() {
+        return Game.HITS_SCORE_FACTOR;
+    }
+
+    public boolean isRowsAdditionalBonusEnabled() {
+        return true;
+    }
+
+    /**
+     * @param specialBlocks -
+     * @param mode "placed" or "cleared"
+     * @return specialBlocks
+     */
+    public List<ISpecialBlock> filterSpecialBlockTypes(List<ISpecialBlock> specialBlocks, String mode) {
+        return specialBlocks;
     }
 
     /**

@@ -84,13 +84,29 @@ public class Cluster1Aufdeckungen {
         return ret;
     }
 
-    // Data fix for version 5.0: make daily planet visible for players that are already in delta quadrant
+    // Data fixes
     public void fix(IPersistence persistence) {
+        // Fixes for version 5.0: make one color planets visible for players that are already in alpha quadrant
+        IPlanet aPlanetInAlphaQ = finde(30);
+        if (aPlanetInAlphaQ.isVisibleOnMap()) {
+            makeVisible(23, persistence);
+            makeVisible(26, persistence);
+        }
+
+        // Fix for version 5.0: make daily planet visible for players that are already in delta quadrant
         IPlanet aPlanetInDeltaQ = finde(5);
         IPlanet dailyPlanet = finde(42);
         if (aPlanetInDeltaQ.isVisibleOnMap() && !dailyPlanet.isVisibleOnMap()) {
             dailyPlanet.setVisibleOnMap(true);
             persistence.savePlanet(dailyPlanet);
+        }
+    }
+
+    private void makeVisible(int planetNumber, IPersistence persistence) {
+        IPlanet planet = finde(planetNumber);
+        if (!planet.isVisibleOnMap()) {
+            planet.setVisibleOnMap(true);
+            persistence.savePlanet(planet);
         }
     }
 }

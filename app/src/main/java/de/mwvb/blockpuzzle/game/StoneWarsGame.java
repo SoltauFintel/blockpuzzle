@@ -4,7 +4,10 @@ import android.app.Activity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
@@ -89,6 +92,23 @@ public class StoneWarsGame extends Game {
                     check4Liberation();
                 }
             }
+        }
+    }
+
+    @Override
+    protected int getGamePieceBlocksScoreFactor() {
+        return definition.getGamePieceBlocksScoreFactor();
+    }
+
+    @Override
+    protected int getHitsScoreFactor() {
+        return definition.getHitsScoreFactor();
+    }
+
+    @Override
+    protected void rowsAdditionalBonus(int xrows, int yrows) {
+        if (definition.isRowsAdditionalBonusEnabled()) {
+            super.rowsAdditionalBonus(xrows, yrows);
         }
     }
 

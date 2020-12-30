@@ -18,7 +18,6 @@ import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.GamePersistence;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.OneColorAreaDetector;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -35,6 +34,8 @@ public class Game {
     // Stammdaten (read only)
     public static final int blocks = 10;
     private final BlockTypes blockTypes = new BlockTypes(null);
+    public static final int GPB_SCORE_FACTOR = 1;
+    public static final int HITS_SCORE_FACTOR = 10;
 
     // Zustand
     protected final PlayingField playingField = new PlayingField(blocks);
@@ -211,7 +212,7 @@ public class Game {
             FilledRows f = playingField.getFilledRows();
 
             // Punktzahl erhöhen
-            punkte += teil.getPunkte() + 10 * f.getHits();
+            punkte += teil.getPunkte() * getGamePieceBlocksScoreFactor() + f.getHits() * getHitsScoreFactor();
             rowsAdditionalBonus(f.getXHits(), f.getYHits());
 
             punkte += processSpecialBlockTypes(f);
@@ -242,15 +243,24 @@ public class Game {
         return ret;
     }
 
+    protected int getGamePieceBlocksScoreFactor() {
+        return GPB_SCORE_FACTOR;
+    }
+
+    protected int getHitsScoreFactor() {
+        return HITS_SCORE_FACTOR;
+    }
+
     protected void check4Victory() {
     }
 
     private void sendPlacedEvent(GamePiece teil, QPosition pos) {
+        List<ISpecialBlock> specialBlocks = blockTypes.getSpecialBlockTypes();
         for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
             for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
                 if (teil.filled(x, y)) {
                     int bt = teil.getBlockType(x, y);
-                    for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                    for (ISpecialBlock s : specialBlocks) {
                         if (s.getBlockType() == bt) {
                             s.placed(teil, pos, new QPosition(x, y));
                         }
@@ -274,12 +284,13 @@ public class Game {
 
     private int processSpecialBlockTypes(FilledRows f) {
         int punkte = 0;
+        List<ISpecialBlock> specialBlocks = blockTypes.getSpecialBlockTypes();
 
         // Rows ----
         for (int y : f.getYlist()) {
             for (int x = 0; x < blocks; x++) {
                 int bt = playingField.get(x, y);
-                for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                for (ISpecialBlock s : specialBlocks) {
                     if (s.getBlockType() == bt) {
                         int r = s.cleared(playingField, new QPosition(x, y));
                         if (r > ISpecialBlock.CLEAR_MAX_MODE) {
@@ -296,7 +307,7 @@ public class Game {
         for (int x : f.getXlist()) {
             for (int y = 0; y < blocks; y++) {
                 int bt = playingField.get(x, y);
-                for (ISpecialBlock s : blockTypes.getSpecialBlockTypes()) {
+                for (ISpecialBlock s : specialBlocks) {
                     if (s.getBlockType() == bt) {
                         int r = s.cleared(playingField, new QPosition(x, y));
                         if (r > ISpecialBlock.CLEAR_MAX_MODE) {
@@ -322,7 +333,7 @@ public class Game {
         return 5;
     }
 
-    private void rowsAdditionalBonus(int xrows, int yrows) {
+    protected void rowsAdditionalBonus(int xrows, int yrows) {
         switch (xrows + yrows) {
             case 0:
             case 1: break; // 0-1 kein Bonus

@@ -5,6 +5,7 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
+import de.mwvb.blockpuzzle.gamedefinition.OneColorGameDefinition
 import de.mwvb.blockpuzzle.planet.DailyPlanet
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon
@@ -31,15 +32,15 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(40, 9, 11, 2, CleanerGameDefinition(8, 5))) // 34 Moves
 
         // ALPHA QUADRANT
-        //planets.add(Planet(23,6,21, CleanerGameDefinition(19, 2))) // TO-DO oneColor
+        planets.add(Moon(23, 6, 21, 0, OneColorGameDefinition(19, 1000)))
         planets.add(Planet(24, 3, 25, ClassicGameDefinition(20, 8000))) // GPSN Z20 is good for oneColor
         planets.add(Planet(25, 11, 24, 3, ClassicGameDefinition(21, 8000)))
-        //planets.add(Planet(26,16,22, CleanerGameDefinition(22, 3))) // TO-DO oneColor
+        planets.add(Moon(26, 16, 22, 0, OneColorGameDefinition(22, 1000)))
         planets.add(Planet(28, 14, 27, 6, CleanerGameDefinition(23, 5, 70))) // 49 Moves
         planets.add(getGiantPlanet2())
         planets.add(Planet(31, 6, 35, ClassicGameDefinition(4, 40000)))
         planets.add(Planet(32, 16, 32, 3, ClassicGameDefinition(5, 16000)))
-        planets.add(Moon(30, 3, 32, CleanerGameDefinition(14, 8)))
+        planets.add(Moon(30, 3, 32, CleanerGameDefinition(14, 8)))  // reference planet for alpha quadrant
         planets.add(Moon(41, 7, 27, 0, CleanerGameDefinition(15, 7, 130))) // 105 Moves
 
         // DELTA QUADRANT
