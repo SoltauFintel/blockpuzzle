@@ -51,7 +51,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Planet(10, 26, 11, ClassicGameDefinition(26, 20000)))
         planets.add(Moon(11, 27, 13, CleanerGameDefinition(26, 9)))
         planets.add(Planet(21, 34, 12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
-        planets.add(GiantPlanet(39, 20, 16, 9, ClassicGameDefinition(39, 50000), null, null))
+        planets.add(getGiantPlanet3())
         planets.add(getDailyPlanet()) // new planet in version 5.0
 
         // BETA QUADRANT
@@ -62,7 +62,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Planet(33, 24, 30, CleanerGameDefinition(28, 4, 20))) // 12 Moves
         //planets.add(Planet(34,34,21, CleanerGameDefinition(31, 5))) // TO-DO oneColor
         planets.add(Planet(35, 32, 27, CleanerGameDefinition(32, 6)))
-        planets.add(getGiantPlanet3())
+        planets.add(getGiantPlanet4())
         planets.add(Planet(37, 33, 33, CleanerGameDefinition(33, 7, 200)))
         planets.add(Planet(38, 25, 36, CleanerGameDefinition(34, 8, 200)))
 
@@ -74,6 +74,7 @@ object Cluster1 : Cluster(1) {
         }
     }
 
+    // first quadrant (gamma)
     private fun getGiantPlanet1(): GiantPlanet {
         val gd1 = ClassicGameDefinition(12, 20000)
         gd1.territoryName = R.string.northernTerritory
@@ -84,6 +85,7 @@ object Cluster1 : Cluster(1) {
         return GiantPlanet(16, 12, 8, 9, gd1, gd2, null)
     }
 
+    // 2nd quadrant (alpha)
     private fun getGiantPlanet2(): GiantPlanet {
         val brandenburg = ClassicGameDefinition(1, 30000)
         brandenburg.territoryName = R.string.brandenburg
@@ -97,8 +99,22 @@ object Cluster1 : Cluster(1) {
         return GiantPlanet(29, 8, 31, brandenburg, saxony, lowerSaxony)
     }
 
-    // last planet
+    // 3rd quadrant (delta)
     private fun getGiantPlanet3(): GiantPlanet {
+        val gd1 = ClassicGameDefinition(39, 50000)
+        gd1.territoryName = R.string.theBronx
+
+        // and two quite easy territories:
+        val gd2 = ClassicGameDefinition(18, 4000)
+        gd2.territoryName = R.string.queens
+        val gd3 = ClassicGameDefinition(17, 4000)
+        gd3.territoryName = R.string.beverlyHills
+
+        return GiantPlanet(39, 20, 16, 9, gd1, gd2, gd3)
+    }
+
+    // last planet (beta)
+    private fun getGiantPlanet4(): GiantPlanet {
         val gd1 = ClassicGameDefinition(35, 40000)
         gd1.territoryName = R.string.luxemburg
 

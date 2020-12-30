@@ -85,4 +85,7 @@
     <string name="daily7">Giorno 7</string>
     <string name="trophies">Ammasso stellare %1$d: medaglie di bronzo: %2$d, coppe d\'argento: %3$d, trofei d\'oro: %4$d.\nTrofei di platino: %5$d</string>
     <string name="receivedTrophy">+Pianeta liberato! Hai ricevuto un trofeo. (vedi scambio dati)</string>
+    <string name="theBronx">Bronx</string>
+    <string name="beverlyHills">Beverly Hills</string>
+    <string name="queens">Queens</string>
 </resources>

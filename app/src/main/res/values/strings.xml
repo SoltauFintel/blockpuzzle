@@ -85,4 +85,7 @@
     <string name="daily7">Day 7</string>
     <string name="trophies">Cluster %1$d: bronze medals: %2$d, silver cups: %3$d, golden trophies: %4$d.\nPlatinum records: %5$d</string>
     <string name="receivedTrophy">+Planet liberated! You received a trophy. (see data exchange)</string>
+    <string name="theBronx">The Bronx</string>
+    <string name="beverlyHills">Beverly Hills</string>
+    <string name="queens">Queens</string>
 </resources>
