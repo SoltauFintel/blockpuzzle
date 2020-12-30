@@ -84,4 +84,6 @@
     <string name="daily5">Tag 5</string>
     <string name="daily6">Tag 6</string>
     <string name="daily7">Tag 7</string>
+    <string name="trophies">Cluster %1$d: Bronze-Medaillen: %2$d, Silber-Pokale: %3$d, Gold-Trophäen: %4$d.\nPlatin-Trophäen: %5$d</string>
+    <string name="receivedTrophy">+Planet befreit! Du hast eine Trophäe erhalten. (siehe Datenaustausch)</string>
 </resources>

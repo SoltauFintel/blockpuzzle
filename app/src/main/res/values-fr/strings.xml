@@ -83,4 +83,6 @@
     <string name="daily5">Journée 5</string>
     <string name="daily6">Journée 6</string>
     <string name="daily7">Journée 7</string>
+    <string name="trophies">Amas d\'étoiles %1$d: médailles de bronze: %2$d, coupes en argent: %3$d, trophées d\'or: %4$d.\nDisques de platine: %5$d</string>
+    <string name="receivedTrophy">+Planète libérée! Vous avez reçu un trophée. (voir échange de données)</string>
 </resources>

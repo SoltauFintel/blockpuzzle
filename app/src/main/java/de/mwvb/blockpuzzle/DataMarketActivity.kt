@@ -15,6 +15,7 @@ import de.mwvb.blockpuzzle.game.ResourceService
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.PlanetAccess
 import kotlinx.android.synthetic.main.activity_data_market.*
 
 /**
@@ -38,8 +39,10 @@ class DataMarketActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            dataview.setText(DataService().get(per()))
-            copyBtn.isEnabled = per().loadPlayernameEntered()
+            val per = per()
+            dataview.setText(DataService().get(per))
+            copyBtn.isEnabled = per.loadPlayernameEntered()
+            trophies.setText(getTrophiesText(per))
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -68,6 +71,12 @@ class DataMarketActivity : AppCompatActivity() {
             }
         }
         Toast.makeText(this, resources.getString(R.string.nothingToInsert), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getTrophiesText(persistence: IPersistence): String {
+        val planet = PlanetAccess(persistence).planet
+        val trophies = persistence.loadTrophies(planet)
+        return resources.getString(R.string.trophies, planet.clusterNumber, trophies.bronze, trophies.silver, trophies.golden, trophies.platinum)
     }
 
     private fun per(): IPersistence {

@@ -24,6 +24,7 @@ class DeveloperActivity : AppCompatActivity() {
         saveOtherScore.setOnClickListener { onSaveOther() }
         saveNextRound.setOnClickListener { onSaveNextRound() }
         saveTodayDate.setOnClickListener { onSaveTodayDate() }
+        deleteTrophies.setOnClickListener { onDeleteTrophies() }
 
         resetAllBtn.setOnClickListener { onResetAll() }
         openMap.setOnClickListener { onOpenMap() }
@@ -99,6 +100,20 @@ class DeveloperActivity : AppCompatActivity() {
 
     private fun onSaveTodayDate() {
         Persistence(this).saveTodayDate(todayDate.text.toString())
+        finish()
+    }
+
+    private fun onDeleteTrophies() {
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        dialog.setTitle("Wirklich alle Trophäen auf 0 setzen?")
+        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> deleteAllTrophies() }
+        dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+        dialog.show()
+    }
+
+    private fun deleteAllTrophies() {
+        val pa = pa()
+        (pa.persistence as Persistence).clearAllTrophies(pa.planet)
         finish()
     }
 

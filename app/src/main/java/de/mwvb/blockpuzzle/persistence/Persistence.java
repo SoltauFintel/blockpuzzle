@@ -1,14 +1,12 @@
 package de.mwvb.blockpuzzle.persistence;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
-import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
@@ -23,6 +21,11 @@ public class Persistence implements IPersistence {
     private static final String GLOBAL_PLAYERNAME_ENTERED = "/playernameEntered";
     private static final String GLOBAL_GAME_SOUNDS = "/gameSounds";
     private static final String GLOBAL_CURRENT_PLANET = "/currentPlanet";
+    private static final String GLOBAL_BRONZE_TROPHY = "/trophyBronze_C";   // cluster wide
+    private static final String GLOBAL_SILVER_TROPHY = "/trophySilver_C";   // cluster wide
+    private static final String GLOBAL_GOLDEN_TROPHY = "/trophyGolden_C";   // cluster wide
+    private static final String GLOBAL_PLATINUM_TROPHY = "/trophyPlatinum"; // galaxy wide
+    private static final String GLOBAL_LAST_TROPHY_DATE = "/trophyLastDate";// galaxy wide
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
     private static final String PLANET_VISIBLE = "visible";
@@ -414,6 +417,69 @@ public class Persistence implements IPersistence {
     }
 
     @Override
+    public void addBronzeTrophy(IPlanet planet) {
+        int n = addInt(GLOBAL_BRONZE_TROPHY + planet.getClusterNumber(), 1);
+        if (n > 4) { // 4 bronze trophies become 1 silver trophy (Must have 1 more because it will possibly deleted in addSilverTrophy in the future.)
+            addInt(GLOBAL_BRONZE_TROPHY + planet.getClusterNumber(), -4);
+            addSilverTrophy(planet, false);
+        }
+    }
+
+    @Override
+    public void addSilverTrophy(IPlanet planet, boolean changeBronzeToSilver) {
+        if (changeBronzeToSilver) {
+            addInt(GLOBAL_BRONZE_TROPHY + planet.getClusterNumber(), -1);
+        }
+
+        int n = addInt(GLOBAL_SILVER_TROPHY + planet.getClusterNumber(), 1);
+        if (n > 4) { // 4 silver trophies become 1 golden trophy (Must have 1 more because it will possibly deleted in addGoldenTrophy in the future.)
+            addInt(GLOBAL_SILVER_TROPHY + planet.getClusterNumber(), -4);
+            addGoldenTrophy(planet, false);
+        }
+    }
+
+    @Override
+    public void addGoldenTrophy(IPlanet planet, boolean changeSilverToGolden) {
+        if (changeSilverToGolden) {
+            addInt(GLOBAL_SILVER_TROPHY + planet.getClusterNumber(), -1);
+        }
+
+        int n = addInt(GLOBAL_GOLDEN_TROPHY + planet.getClusterNumber(), 1);
+        if (n >= 13) { // 13 x 7 days = 1 quarter. 13 golden trophies become 1 platinum trophy
+            addInt(GLOBAL_GOLDEN_TROPHY + planet.getClusterNumber(), -13);
+            addInt(GLOBAL_PLATINUM_TROPHY, 1);
+        }
+    }
+
+    @Override
+    public Trophies loadTrophies(IPlanet planet) {
+        Trophies t = new Trophies();
+        int c = planet.getClusterNumber();
+        t.setBronze(getInt(GLOBAL_BRONZE_TROPHY + c, 0));
+        t.setSilver(getInt(GLOBAL_SILVER_TROPHY + c, 0));
+        t.setGolden(getInt(GLOBAL_GOLDEN_TROPHY + c, 0));
+        t.setPlatinum(getInt(GLOBAL_PLATINUM_TROPHY, 0));
+        return t;
+    }
+
+    @Override
+    public String loadLastTrophyDate() {
+        return getString(GLOBAL_LAST_TROPHY_DATE);
+    }
+
+    @Override
+    public void saveLastTrophyDate(String date) {
+        putString(GLOBAL_LAST_TROPHY_DATE, date);
+    }
+
+    public void clearAllTrophies(IPlanet planet) {
+        putInt(GLOBAL_BRONZE_TROPHY + planet.getClusterNumber(), 0);
+        putInt(GLOBAL_SILVER_TROPHY + planet.getClusterNumber(), 0);
+        putInt(GLOBAL_GOLDEN_TROPHY + planet.getClusterNumber(), 0);
+        putInt(GLOBAL_PLATINUM_TROPHY, 0);
+    }
+
+    @Override
     public boolean loadPlayernameEntered() {
         return getBoolean(GLOBAL_PLAYERNAME_ENTERED);
     }
@@ -479,6 +545,19 @@ public class Persistence implements IPersistence {
         SharedPreferences.Editor edit = pref().edit();
         edit.putInt(name(name), val);
         edit.apply();
+    }
+
+    private int addInt(String name, int add) {
+        SharedPreferences thePref = pref();
+        String x = name(name);
+        int n = thePref.getInt(x, 0);
+        if (n + add >= 0) {
+            n += add;
+            SharedPreferences.Editor edit = thePref.edit();
+            edit.putInt(x, n);
+            edit.apply();
+        }
+        return n;
     }
 
     private void putBoolean(String name, boolean val) {

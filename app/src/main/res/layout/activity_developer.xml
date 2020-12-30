@@ -104,6 +104,12 @@
                 android:layout_height="wrap_content"
                 android:text="Speichere Tagesdatum"
                 android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/deleteTrophies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lösche alle Trophäen"
+                android:textAllCaps="false"/>
 
             <Button
                 android:id="@+id/openMap"

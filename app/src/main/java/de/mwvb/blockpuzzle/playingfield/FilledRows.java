@@ -23,6 +23,14 @@ public class FilledRows {
         return ylist.size() + xlist.size();
     }
 
+    public int getYHits() {
+        return ylist.size();
+    }
+
+    public int getXHits() {
+        return xlist.size();
+    }
+
     public boolean containsX(Integer x) {
         return xlist.contains(x);
     }

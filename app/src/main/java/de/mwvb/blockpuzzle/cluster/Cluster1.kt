@@ -43,7 +43,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(41, 7, 27, 0, CleanerGameDefinition(15, 7, 130))) // 105 Moves
 
         // DELTA QUADRANT
-        planets.add(Planet(5, 23, 6, ClassicGameDefinition(16, 10000)))
+        planets.add(Planet(5, 23, 6, ClassicGameDefinition(16, 10000))) // reference planet for delta quadrant
         planets.add(Planet(6, 28, 3, ClassicGameDefinition(24, 12000)))
         planets.add(Planet(7, 34, 4, 4, ClassicGameDefinition(25, 7000)))
         planets.add(Planet(8, 31, 6, ClassicGameDefinition(1, 16000)))
@@ -52,7 +52,7 @@ object Cluster1 : Cluster(1) {
         planets.add(Moon(11, 27, 13, CleanerGameDefinition(26, 9)))
         planets.add(Planet(21, 34, 12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
         planets.add(GiantPlanet(39, 20, 16, 9, ClassicGameDefinition(39, 50000), null, null))
-        planets.add(getDailyPlanet())
+        planets.add(getDailyPlanet()) // new planet in version 5.0
 
         // BETA QUADRANT
         planets.add(Planet(27, 20, 25, CleanerGameDefinition(37, 3)))

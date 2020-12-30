@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.cluster.Cluster1Aufdeckungen
 import de.mwvb.blockpuzzle.cluster.ClusterViewModel
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.persistence.PlanetAccess
@@ -33,5 +34,8 @@ class NavigationActivity : AppCompatActivity() {
         val per = Persistence(this)
         val pa = PlanetAccess(per)
         clusterView.model = ClusterViewModel(pa.planets, pa.planet, per, resources)
+
+        // ensure new daily planet is visible if player is already in delta quadrant ----
+        Cluster1Aufdeckungen(pa.planets).fix(per)
     }
 }

@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.game;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.Trophies;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
@@ -189,6 +190,32 @@ public class PersistenceNoOp implements IPersistence {
 
     @Override
     public void saveDailyDate(IPlanet planet, int gameDefinitionIndex, String date) {
+    }
+
+    @Override
+    public void addBronzeTrophy(IPlanet planet) {
+    }
+
+    @Override
+    public void addSilverTrophy(IPlanet planet, boolean decrementThePredecessor) {
+    }
+
+    @Override
+    public void addGoldenTrophy(IPlanet planet, boolean decrementThePredecessor) {
+    }
+
+    @Override
+    public Trophies loadTrophies(IPlanet planet) {
+        return new Trophies();
+    }
+
+    @Override
+    public String loadLastTrophyDate() {
+        return "";
+    }
+
+    @Override
+    public void saveLastTrophyDate(String date) {
     }
 
     @Override

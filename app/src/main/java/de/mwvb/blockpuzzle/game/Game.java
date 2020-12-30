@@ -212,7 +212,7 @@ public class Game {
 
             // Punktzahl erhöhen
             punkte += teil.getPunkte() + 10 * f.getHits();
-            rowsAdditionalBonus(f.getHits());
+            rowsAdditionalBonus(f.getXHits(), f.getYHits());
 
             punkte += processSpecialBlockTypes(f);
 
@@ -322,16 +322,22 @@ public class Game {
         return 5;
     }
 
-    private void rowsAdditionalBonus(int rows) {
-        switch (rows) {
+    private void rowsAdditionalBonus(int xrows, int yrows) {
+        switch (xrows + yrows) {
             case 0:
             case 1: break; // 0-1 kein Bonus
             // Bonuspunkte wenn mehr als 2 Rows gleichzeitig abgeräumt werden.
             // Fällt mir etwas schwer zu entscheiden wieviel Punkte das jeweils wert ist.
-            case 2: punkte += 12; break;
-            case 3: punkte += 15; break;
-            default: /* >= 4 */ punkte += 22; break;
+            case 2:  punkte += 12; break;
+            case 3:  punkte += 17; break;
+            case 4:  punkte += 31; break;
+            case 5:  punkte += 44; break;
+            default: punkte += 22; break;
         }
+        if (xrows > 0 && yrows > 0) {
+            punkte += 10;
+        }
+        // TODO Reihe mit gleicher Farbe (ohne oldOneColor) könnte weiteren Bonus auslösen.
     }
 
     private void fewGamePiecesOnThePlayingField() {

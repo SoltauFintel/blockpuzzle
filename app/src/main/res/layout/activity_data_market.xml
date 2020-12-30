@@ -61,6 +61,14 @@
             android:textColor="@color/white"
             android:scrollbars="vertical"
             android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/trophies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:scrollbars="vertical"
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <LinearLayout

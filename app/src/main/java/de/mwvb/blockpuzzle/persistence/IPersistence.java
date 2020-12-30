@@ -38,6 +38,12 @@ public interface IPersistence {
      * @param date Datum im Format JJJJ-MM-TT + Konstante DailyPlanet.ACTIVE_GAME oder DailyPlanet.WON_GAME
      */
     void saveDailyDate(IPlanet planet, int gameDefinitionIndex, String date);
+    void addBronzeTrophy(IPlanet planet);
+    void addSilverTrophy(IPlanet planet, boolean changeBronzeToSilver);
+    void addGoldenTrophy(IPlanet planet, boolean changeSilverToGolden);
+    Trophies loadTrophies(IPlanet planet);
+    String loadLastTrophyDate();
+    void saveLastTrophyDate(String date);
 
     void load(PlayingField f);
     void save(PlayingField f);

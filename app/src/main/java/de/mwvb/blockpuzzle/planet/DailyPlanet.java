@@ -10,7 +10,6 @@ import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.Persistence;
 
-// TODO Sieg Trophäen
 /**
  * This is an important outpost of the Orange Union. Every day the Orange Union recaptures the planet.
  */
