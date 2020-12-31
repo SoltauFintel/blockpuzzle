@@ -31,6 +31,11 @@ public class DailyPlanet extends Planet {
         return false;
     }
 
+    @Override
+    public boolean isDataExchangeRelevant() {
+        return false;
+    }
+
     /** Rückgabewert 0 bis 6. Im Zweifelsfall 0. */
     @Override
     public int getCurrentGameDefinitionIndex(IPersistence persistence) {

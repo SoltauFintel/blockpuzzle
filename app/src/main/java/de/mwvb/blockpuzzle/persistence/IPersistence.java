@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.persistence;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public interface IPersistence {
@@ -62,8 +63,8 @@ public interface IPersistence {
 
     // PLANT SPECIFIC ----
 
-    void loadPlanet(IPlanet planet);
-    void savePlanet(IPlanet planet);
+    void loadPlanet(ISpaceObject planet);
+    void savePlanet(ISpaceObject planet);
 
     // GLOBAL DATA ----
 

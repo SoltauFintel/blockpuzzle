@@ -12,26 +12,30 @@ import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.planet.Moon;
 
 public class ClusterViewModel {
-    private final List<IPlanet> planets;
+    private final List<ISpaceObject> spaceObjects;
     /** Das ist der Planet wo das Raumschiff gerade ist. In Bubble gibt es noch einen weiteren Planeten, der null sein kann, falls gerade in der Karte kein Planet gewählt ist. */
     private IPlanet currentPlanet;
     private IPersistence persistence;
 
-    public ClusterViewModel(List<IPlanet> planets, IPlanet planet, IPersistence per, Resources resources) {
-        this.planets = planets;
+    public ClusterViewModel(List<ISpaceObject> spaceObjects, IPlanet planet, IPersistence per, Resources resources) {
+        this.spaceObjects = spaceObjects;
         currentPlanet = planet;
         persistence = per; // for saving the current planet
 
-        for (IPlanet p0 : planets) {
-            AbstractPlanet p = (AbstractPlanet) p0;
+        for (ISpaceObject so : spaceObjects) {
+            if (so instanceof AbstractPlanet) {
+                AbstractPlanet p = (AbstractPlanet) so;
 
-            per.setGameID(p);
-            p.setInfoText1(getName(p, resources) + p.getNumber());
-            p.setInfoText2(createInfoText2(p));
-            p.setInfoText3(createInfoText3(per, p, p.getGameDefinitions().size(), per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves()));
+                per.setGameID(p);
+                p.setInfoText1(getName(p, resources) + p.getNumber());
+                p.setInfoText2(createInfoText2(p));
+                p.setInfoText3(createInfoText3(per, p, p.getGameDefinitions().size(),
+                        per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves()));
+            }
         }
         per.setGameID(currentPlanet);
     }
@@ -87,8 +91,8 @@ public class ClusterViewModel {
         return ((int) (score / 1000)) + "k";
     }
 
-    public List<IPlanet> getPlanets() {
-        return planets;
+    public List<ISpaceObject> getSpaceObjects() {
+        return spaceObjects;
     }
 
     public IPlanet getCurrentPlanet() {

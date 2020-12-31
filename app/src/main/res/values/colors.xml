@@ -71,5 +71,6 @@
     <color name="spaceship">#009900</color>
     <color name="appTitleForecolor">#FFFF00</color>
     <color name="navigationBackground">#000000</color>
+    <color name="spaceNebula">#333344</color>
 
 </resources>

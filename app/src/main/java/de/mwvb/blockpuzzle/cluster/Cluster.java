@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 
 public class Cluster {
     private final int number;
-    private final List<IPlanet> planets = new ArrayList<>();
+    private final List<ISpaceObject> spaceObjects = new ArrayList<>(); // most items are planets
 
     public Cluster(int number) {
         this.number = number;
@@ -17,11 +18,11 @@ public class Cluster {
         return number;
     }
 
-    public List<IPlanet> getPlanets() {
-        return planets;
+    public List<ISpaceObject> getSpaceObjects() {
+        return spaceObjects;
     }
 
-    public static String getQuadrant(IPlanet p) {
+    public static String getQuadrant(ISpaceObject p) {
         return getQuadrant(p.getX(), p.getY());
     }
 

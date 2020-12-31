@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +12,12 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.planet.Moon;
+import de.mwvb.blockpuzzle.planet.Planet;
 import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
@@ -32,7 +34,8 @@ public class ClusterView extends View {
     private Button selectTargetButton;
     /** grid size */
     public static final int w = 40;
-    private Paint planetPaint, giantPlanetPaint, moonPaint, linePaint, line2Paint, quadrantPaint, myPaint, spaceshipPaint;
+    private Paint linePaint, line2Paint, quadrantPaint, spaceshipPaint;
+    private SpaceObjectPaints spaceObjectPaints;
     private Bubble bubble;
 
     public ClusterView(Context context) {
@@ -58,16 +61,6 @@ public class ClusterView extends View {
         setOnTouchListener(new ClusterViewTouchListener(bubble, getResources().getDisplayMetrics().density));
     }
     private void initPaints() {
-        moonPaint = new Paint();
-        moonPaint.setColor(getResources().getColor(R.color.moon));
-        moonPaint.setAntiAlias(true);
-        planetPaint = new Paint();
-        planetPaint.setColor(getResources().getColor(R.color.planet));
-        planetPaint.setAntiAlias(true);
-        giantPlanetPaint = new Paint();
-        giantPlanetPaint.setColor(getResources().getColor(R.color.giantPlanet));
-        giantPlanetPaint.setAntiAlias(true);
-
         linePaint = new Paint();
         linePaint.setColor(getResources().getColor(R.color.quadrant));
         linePaint.setStrokeWidth(4f);
@@ -78,11 +71,10 @@ public class ClusterView extends View {
         quadrantPaint = new Paint();
         quadrantPaint.setColor(getResources().getColor(R.color.quadrant));
         quadrantPaint.setTextSize(60f);
-        myPaint = new Paint();
-        myPaint.setColor(getResources().getColor(R.color.myPlanet));
-        myPaint.setStrokeWidth(6f);
         spaceshipPaint = new Paint();
         spaceshipPaint.setColor(getResources().getColor(R.color.spaceship));
+
+        spaceObjectPaints = new SpaceObjectPaints(getContext());
     }
 
     public void setClusterViewParent(View parent) {
@@ -133,17 +125,13 @@ public class ClusterView extends View {
         canvas.drawText(getResources().getString(R.string.beta), getWidth() / 2f + 30, getHeight() / 2f + 70, quadrantPaint);
 
         // Planets
-        for (IPlanet planet : model.getPlanets()) {
-            if (planet.isVisibleOnMap()) {
-                float xx = planet.getX() * w * f;
-                float yy = planet.getY() * w * f;
-                float rr = planet.getRadius() * f;
-                drawPlanet(canvas, xx, yy, rr, getPlanetPaint(planet));
-                if (planet.isOwner()) {
-                    drawOwnerMark(planet, canvas, f);
-                }
+        spaceObjectPaints.prepare();
+        for (ISpaceObject spaceObject : model.getSpaceObjects()) {
+            if (spaceObject.isVisibleOnMap()) {
+                spaceObject.draw(canvas, f);
             }
         }
+        spaceObjectPaints.cleanup();
 
         // aktuelle Raumschiffposition (erstmal nur ein Kreis, später ein Symbol oder ein Kreuz)
         float ssx = model.getCurrentPlanet().getX();
@@ -155,41 +143,19 @@ public class ClusterView extends View {
         // Speech bubble
         bubble.draw(canvas, selectTargetButton);
     }
-    private void drawPlanet(Canvas canvas, float x, float y, float r, Paint paint) {
-        canvas.drawCircle(x, y, r, paint);
-    }
-    private void drawOwnerMark(IPlanet planet, Canvas canvas, float f) {
-        float ax = planet.getX() * w * f + planet.getRadius() * (planet instanceof Moon ? 1.33f : 1f) * f;
-        float ay = planet.getY() * w * f - planet.getRadius() * .7f * f;
-        float bx = ax + 5 * f;
-        float by = ay + 5 * f;
-        float cx = bx + 5 * f;
-        float cy = ay - 10 * f;
-        canvas.drawLine(ax, ay, bx, by, myPaint);
-        canvas.drawLine(bx, by, cx, cy, myPaint);
-    }
-    private Paint getPlanetPaint(IPlanet planet) {
-        Paint p;
-        if (planet instanceof GiantPlanet) {
-            p = giantPlanetPaint;
-        } else if (planet instanceof Moon) {
-            p = moonPaint;
-        } else {
-            p = planetPaint;
-        }
-        return p;
-    }
 
     public void click(float ix, float iy) {
         final float wf = getResources().getDisplayMetrics().density * w;
         int kx = (int) (ix / wf + .5f);
         int ky = (int) (iy / wf + .5f);
-        for (IPlanet p : model.getPlanets()) {
-            int tolerance = p.getRadius() > 20 ? 1 : 0;
-            if (Math.abs(p.getX() - kx) <= tolerance && Math.abs(p.getY() - ky) <= tolerance) {
-                bubble.setPlanet(p);
-                draw();
-                return;
+        for (ISpaceObject p : model.getSpaceObjects()) {
+            if (p.isSelectable() && p instanceof IPlanet) {
+                int tolerance = p.getRadius() > 20 ? 1 : 0;
+                if (Math.abs(p.getX() - kx) <= tolerance && Math.abs(p.getY() - ky) <= tolerance) {
+                    bubble.setPlanet((IPlanet) p);
+                    draw();
+                    return;
+                }
             }
         }
         // clicked on space (=no planet) -> hide bubble

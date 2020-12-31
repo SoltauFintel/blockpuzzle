@@ -132,7 +132,7 @@ class DeveloperActivity : AppCompatActivity() {
 
     private fun onOpenMap() {
         val pa = pa()
-        pa.planets.forEach { p -> p.isVisibleOnMap = true }
+        pa.spaceObjects.forEach { p -> p.isVisibleOnMap = true }
         pa.savePlanets()
         finish()
     }

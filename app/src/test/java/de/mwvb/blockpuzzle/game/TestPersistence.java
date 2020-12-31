@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 
 public class TestPersistence extends PersistenceNoOp {
     private final Map<String, TestGameState> games = new HashMap<>();
     private String currentGameID;
 
     @Override
-    public void loadPlanet(IPlanet planet) {
+    public void loadPlanet(ISpaceObject planet) {
         super.loadPlanet(planet);
         planet.setVisibleOnMap(true); // Karte aufgedeckt
     }

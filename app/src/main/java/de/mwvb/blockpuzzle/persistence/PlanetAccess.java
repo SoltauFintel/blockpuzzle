@@ -5,6 +5,7 @@ import java.util.List;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.cluster.Cluster1;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 
 /**
  * IPersistence helper especially for accessing the current planet.
@@ -18,20 +19,26 @@ public class PlanetAccess {
         this.persistence = persistence;
 
         int pn = persistence.loadCurrentPlanet();
-        for (IPlanet p : cluster.getPlanets()) {
+        IPlanet first = null;
+        for (ISpaceObject p : cluster.getSpaceObjects()) {
             persistence.loadPlanet(p); // loads VisibleOnMap and Owner
-            if (p.getNumber() == pn) {
-                planet = p;
-                // kein break
+            if (p instanceof IPlanet) {
+                if (p.getNumber() == pn) {
+                    planet = (IPlanet) p;
+                    // kein break
+                }
+                if (first == null) {
+                    first = (IPlanet) p;
+                }
             }
         }
         if (planet == null) {
-           planet = cluster.getPlanets().get(0);
+           planet = first;
         }
     }
 
-    public List<IPlanet> getPlanets() {
-        return cluster.getPlanets();
+    public List<ISpaceObject> getSpaceObjects() {
+        return cluster.getSpaceObjects();
     }
 
     public int getClusterNumber() {
@@ -51,7 +58,7 @@ public class PlanetAccess {
 
     /**
      * Planet setzen wo das Raumschiff aktuell ist
-     * @param planet
+     * @param planet -
      */
     public void setPlanet(IPlanet planet) {
         if (planet == null) return;
@@ -67,7 +74,7 @@ public class PlanetAccess {
     // - visibleOnMap wurde für einige Planeten geändert
     // - Karte komplett aufdecken (Developer)
     public void savePlanets() {
-        for (IPlanet planet : cluster.getPlanets()) {
+        for (ISpaceObject planet : cluster.getSpaceObjects()) {
             persistence.savePlanet(planet);
         }
     }

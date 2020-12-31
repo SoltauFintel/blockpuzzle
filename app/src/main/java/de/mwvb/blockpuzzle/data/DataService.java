@@ -12,6 +12,7 @@ import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 
 /**
  * Multi player game state exchange
@@ -23,26 +24,29 @@ public class DataService {
 
     public String get(IPersistence persistence) {
         PlanetAccess pa = new PlanetAccess(persistence);
-        return get(pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence);
+        return get(pa.getClusterNumber(), pa.getSpaceObjects(), pa.getPlanet(), persistence);
     }
 
-    private String get(int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence) {
+    private String get(int clusterNumber, List<ISpaceObject> spaceObjects, IPlanet currentPlanet, IPersistence persistence) {
         String quadrant = Cluster.getQuadrant(currentPlanet.getX(), currentPlanet.getY());
         String ret = "BP" + VERSION + "/C" + clusterNumber + ("ß".equals(quadrant) ? "b" : quadrant);
-        for (IPlanet p : planets) {
-            if (!p.isVisibleOnMap() || !p.isOwner() || p instanceof DailyPlanet) {
+        for (ISpaceObject so : spaceObjects) {
+            if (!so.isDataExchangeRelevant() || !so.isVisibleOnMap() || !so.isOwner()) {
                 continue;
             }
-            String q = Cluster.getQuadrant(p.getX(), p.getY());
+            String q = Cluster.getQuadrant(so);
             if (!q.equals(quadrant)) {
                 continue;
             }
-            for (int gi = 0; gi < p.getGameDefinitions().size(); gi++) {
-                persistence.setGameID(p, gi);
-                int score = persistence.loadScore();
-                int moves = persistence.loadMoves();
-                if (moves > 0) {
-                    ret += buildString(p.getNumber(), gi, score, moves);
+            if (so instanceof IPlanet) { // Only IPlanets know about game definitions.
+                IPlanet p = (IPlanet) so;
+                for (int gi = 0; gi < p.getGameDefinitions().size(); gi++) {
+                    persistence.setGameID(p, gi);
+                    int score = persistence.loadScore();
+                    int moves = persistence.loadMoves();
+                    if (moves > 0) {
+                        ret += buildString(p.getNumber(), gi, score, moves);
+                    }
                 }
             }
         }
@@ -62,11 +66,11 @@ public class DataService {
 
     public String put(String data, IPersistence persistence, ResourceAccess resources) {
         PlanetAccess pa = new PlanetAccess(persistence);
-        return put(data, pa.getClusterNumber(), pa.getPlanets(), pa.getPlanet(), persistence, resources);
+        return put(data, pa.getClusterNumber(), pa.getSpaceObjects(), pa.getPlanet(), persistence, resources);
     }
 
-    private String put(String data, int clusterNumber, List<IPlanet> planets, IPlanet currentPlanet, IPersistence persistence, ResourceAccess resources) {
-        if (data != null && data.equals(get(clusterNumber, planets, currentPlanet, persistence))) {
+    private String put(String data, int clusterNumber, List<ISpaceObject> spaceObjects, IPlanet currentPlanet, IPersistence persistence, ResourceAccess resources) {
+        if (data != null && data.equals(get(clusterNumber, spaceObjects, currentPlanet, persistence))) {
             return resources.getString(R.string.putData_makesNoSense);
         } else if (data == null || !data.startsWith("BP")) {
             return resources.getString(R.string.putData_formatError1); // unknown data
@@ -98,20 +102,22 @@ public class DataService {
         }
         int newOwnerCount = 0;
         for (int i = 0; i < w.length; i += 4) {
-            newOwnerCount += parse(w[i], w[i + 1], w[i + 2], w[i + 3], name, planets, persistence);
+            newOwnerCount += parse(w[i], w[i + 1], w[i + 2], w[i + 3], name, spaceObjects, persistence);
         }
         return resources.getString(newOwnerCount == 0 ? R.string.putData_okay : R.string.putData_success);
     }
 
-    private int parse(String p0, String gi0, String s, String m, String name, List<IPlanet> planets, IPersistence persistence) {
+    private int parse(String p0, String gi0, String s, String m, String name, List<ISpaceObject> spaceObjects, IPersistence persistence) {
         int newOwnerCount = 0;
         int pl = Integer.parseInt(p0, 16);
         int gi = Integer.parseInt(gi0);
         int otherScore = Integer.parseInt(s, 16);
         int otherMoves = Integer.parseInt(m, 16);
-        for (int i = 0; i < planets.size(); i++) {
-            IPlanet p = planets.get(i);
-            if (p.getNumber() == pl && !(p instanceof DailyPlanet)) {
+        for (int i = 0; i < spaceObjects.size(); i++) {
+            ISpaceObject so = spaceObjects.get(i);
+
+            if (so.isDataExchangeRelevant() && so.getNumber() == pl && so instanceof IPlanet) {
+                IPlanet p = (IPlanet) so;
                 persistence.setGameID(p, gi);
                 int meineScore = persistence.loadScore();
                 int meineMoves = persistence.loadMoves();

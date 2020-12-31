@@ -8,6 +8,7 @@ import java.util.Random;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
@@ -88,7 +89,7 @@ public class Persistence implements IPersistence {
         setGameID(planet, planet.getCurrentGameDefinitionIndex(this));
     }
 
-    private String getPlanetKey(IPlanet planet) {
+    private String getPlanetKey(ISpaceObject planet) {
         // e.g. "/1_16_"
         return "/" + planet.getClusterNumber() + "_" + planet.getNumber() + "_";
     }
@@ -336,7 +337,7 @@ public class Persistence implements IPersistence {
     }
 
     @Override
-    public void savePlanet(IPlanet planet) {
+    public void savePlanet(ISpaceObject planet) {
         String key = getPlanetKey(planet);
         putInt(key + PLANET_VERSION, 1);
         putBoolean(key + PLANET_VISIBLE, planet.isVisibleOnMap());
@@ -344,7 +345,7 @@ public class Persistence implements IPersistence {
     }
 
     @Override
-    public void loadPlanet(IPlanet planet) {
+    public void loadPlanet(ISpaceObject planet) {
         String key = getPlanetKey(planet);
         if (getInt(key + PLANET_VERSION, 0) != 1) {
             return; // There are no planet data.

@@ -1,11 +1,14 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.graphics.Paint;
+
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 
 /**
  * Dwarf planet
  */
 public class Moon extends AbstractPlanet {
+    public static Paint paint; // set during draw action
 
     public Moon(int number, int x, int y) {
         super(number, x, y, 1);
@@ -22,5 +25,15 @@ public class Moon extends AbstractPlanet {
     @Override
     public final int getRadius() {
         return 12;
+    }
+
+    @Override
+    protected float getOwnerMarkXFactor() {
+        return 1.33f;
+    }
+
+    @Override
+    public Paint getPaint() {
+        return paint;
     }
 }

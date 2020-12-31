@@ -33,9 +33,9 @@ class NavigationActivity : AppCompatActivity() {
         // set data ----
         val per = Persistence(this)
         val pa = PlanetAccess(per)
-        clusterView.model = ClusterViewModel(pa.planets, pa.planet, per, resources)
+        clusterView.model = ClusterViewModel(pa.spaceObjects, pa.planet, per, resources)
 
         // ensure new daily planet is visible if player is already in delta quadrant ----
-        Cluster1Aufdeckungen(pa.planets).fix(per)
+        Cluster1Aufdeckungen(pa.spaceObjects).fix(per)
     }
 }

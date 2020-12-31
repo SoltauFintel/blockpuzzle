@@ -1,31 +1,30 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition;
+import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 
-public abstract class AbstractPlanet implements IPlanet {
+public abstract class AbstractPlanet extends AbstractSpaceObject implements IPlanet {
     // Stammdaten
-    private final int number;
-    private final int x;
-    private final int y;
     private final int gravitation;
     private final List<GameDefinition> gameDefinitions = new ArrayList<>();
+    public static Paint ownerMarkerPaint; // set during draw action
     // Bewegungsdaten
-    private boolean visibleOnMap = true;
     private boolean owner = false;
+    // Bewegungsdaten, nicht persistent
     private GameDefinition selectedGame = null;
     private String infoText1;
     private String infoText2;
     private String infoText3;
 
     public AbstractPlanet(int number, int x, int y, int gravitation) {
-        this.number = number;
-        this.x = x;
-        this.y = y;
+        super(number, x, y);
         this.gravitation = gravitation;
     }
 
@@ -35,38 +34,42 @@ public abstract class AbstractPlanet implements IPlanet {
     }
 
     @Override
-    public int getClusterNumber() {
-        return 1;
-    }
-
-    @Override
-    public int getNumber() {
-        return number;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
     public int getGravitation() {
         return gravitation;
     }
 
     @Override
-    public boolean isVisibleOnMap() {
-        return visibleOnMap;
+    public boolean isSelectable() {
+        return true;
     }
 
     @Override
-    public void setVisibleOnMap(boolean visibleOnMap) {
-        this.visibleOnMap = visibleOnMap;
+    public boolean isDataExchangeRelevant() {
+        return true;
+    }
+
+    @Override
+    public void draw(Canvas canvas, float f) {
+        // draw planet
+        canvas.drawCircle(getX() * ClusterView.w * f, getY() * ClusterView.w * f, getRadius() * f, getPaint());
+
+        // draw owner mark
+        if (isOwner()) {
+            float ax = getX() * ClusterView.w * f + getRadius() * getOwnerMarkXFactor() * f;
+            float ay = getY() * ClusterView.w * f - getRadius() * 0.7f * f;
+            float bx = ax + 5 * f;
+            float by = ay + 5 * f;
+            float cx = bx + 5 * f;
+            float cy = ay - 10 * f;
+            canvas.drawLine(ax, ay, bx, by, ownerMarkerPaint);
+            canvas.drawLine(bx, by, cx, cy, ownerMarkerPaint);
+        }
+    }
+
+    protected abstract Paint getPaint();
+
+    protected float getOwnerMarkXFactor() {
+        return 1f;
     }
 
     @Override

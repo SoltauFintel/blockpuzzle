@@ -5,6 +5,7 @@ import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.Trophies;
 import de.mwvb.blockpuzzle.planet.IPlanet;
+import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public class PersistenceNoOp implements IPersistence {
@@ -125,7 +126,7 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
-    public void loadPlanet(IPlanet planet) {
+    public void loadPlanet(ISpaceObject planet) {
     }
 
     @Override
@@ -241,6 +242,6 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
-    public void savePlanet(IPlanet planet) {
+    public void savePlanet(ISpaceObject planet) {
     }
 }
