@@ -93,8 +93,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     private fun initTouchListener(index: Int) {
         getGamePieceView(index).setOnClickListener(null)
         getGamePieceView(index).setOnTouchListener { it, event ->
-            val action = event.action
-            when (action) {
+            when (event.action) {
                 MotionEvent.ACTION_MOVE -> {
                     try {
                         val data = ClipData.newPlainText("index", index.toString())

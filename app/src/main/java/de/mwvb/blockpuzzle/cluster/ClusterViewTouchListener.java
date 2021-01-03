@@ -24,7 +24,7 @@ public class ClusterViewTouchListener implements View.OnTouchListener {
     /** for move action */
     private final PointF start = new PointF();
     private final Bubble bubble;
-    private float density;
+    private final float density;
 
     private long pressStartTime;
     private boolean stayedWithinClickDistance;
