@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.playingfield.PlayingField
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
 /**
@@ -52,7 +51,9 @@ class StartScreenActivity : AppCompatActivity() {
     }
 
     private fun onOldGame() {
-        per().saveOldGame(1)
+        val per = per()
+        per.saveOldGame(1)
+        per.saveDeathStarMode(0)
         startActivity(Intent(this, MainActivity::class.java))
     }
 
