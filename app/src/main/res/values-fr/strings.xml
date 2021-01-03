@@ -95,9 +95,9 @@
     <string name="deathStar">Étoile de la Mort</string>
     <string name="deathStarGames123">Réacteurs 1 - 3</string>
     <string name="score">Score</string>
-    <string name="deathStarDestroyed">+Étoile de la mort détruit!</string>
+    <string name="deathStarDestroyed">+Dernier réacteur détruit!</string>
     <string name="reactorDestroyed">+Réacteur détruit!</string>
-    <string name="backFromDeathStar">Roter Alarm! Captain, wir haben den Todesstern zerstört und die Erde gerettet. Aber wir wurden wieder zurück in die Y Galaxie geschleudert.</string>
+    <string name="backFromDeathStar">Alerte rouge! Capitaine, tous les réacteurs détruits. Cependant, l\'explosion de l\'Étoile de la Mort nous a catapultés dans la galaxie Y. Après tout, nous avons sauvé la Terre. Il se poursuit avec la libération des planètes de l\'Union Orange.</string>
     <string name="giveUpDeathStarGame">Abandonner</string>
     <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>
 </resources>

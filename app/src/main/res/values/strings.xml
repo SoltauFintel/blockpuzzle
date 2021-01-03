@@ -96,8 +96,8 @@
     <string name="deathStarGames123">Reactors 1 - 3</string>
     <string name="score">Score</string>
     <string name="reactorDestroyed">+Reactor destroyed!</string>
-    <string name="deathStarDestroyed">+Death Star destroyed!</string>
-    <string name="backFromDeathStar">Roter Alarm! Captain, wir haben den Todesstern zerstört und die Erde gerettet. Aber wir wurden wieder zurück in die Y Galaxie geschleudert.</string>
+    <string name="deathStarDestroyed">+Last reactor destroyed!</string>
+    <string name="backFromDeathStar">Red alert! Captain, all reactors destroyed. However, the explosion of the Death Star catapulted us back into the Upsilon galaxy. After all, we saved the Earth. Let\'s continue with the liberation of the planets from the Orange Union.</string>
     <string name="giveUpDeathStarGame">Give up</string>
     <string name="giveUpDeathStarGameQuestion">Give up Death Star destruction and go back to the Y galaxy?</string>
 </resources>
