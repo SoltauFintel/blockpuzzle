@@ -7,6 +7,7 @@ import android.content.ClipDescription
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
         newGame.setOnClickListener(onNewGame())
         rotatingMode.setOnClickListener(onRotatingMode())
+        rotatingMode.visibility = View.INVISIBLE
         shakeService.initShakeDetection(this)
     }
 
@@ -93,25 +95,37 @@ class MainActivity : AppCompatActivity(), IGameView {
     @SuppressLint("ClickableViewAccessibility") // click geht nicht, wir brauchen onTouch
     private fun initTouchListener(index: Int) {
         getGamePieceView(index).setOnClickListener(null)
-        getGamePieceView(index).setOnTouchListener { it, _ ->
-            try {
-                val data = ClipData.newPlainText("index", index.toString())
-                val tv = it as GamePieceView
-                if (tv.gamePiece != null && !game.isGameOver) {
-                    tv.startDragMode()
-                    val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
-                        it.startDragAndDrop(data, dragShadowBuilder, it, 0)
-                    } else { // for API level 19 (4.4. Kitkat)
-                        @Suppress("DEPRECATION")
-                        it.startDrag(data, dragShadowBuilder, it, 0)
+        getGamePieceView(index).setOnTouchListener { it, event ->
+            val action = event.action
+            when (action) {
+                MotionEvent.ACTION_MOVE -> {
+                    try {
+                        val data = ClipData.newPlainText("index", index.toString())
+                        val tv = it as GamePieceView
+                        if (tv.gamePiece != null && !game.isGameOver) {
+                            tv.startDragMode()
+                            val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
+                                it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+                            } else { // for API level 19 (4.4. Kitkat)
+                                @Suppress("DEPRECATION")
+                                it.startDrag(data, dragShadowBuilder, it, 0)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
                     }
+                    true
                 }
-            } catch(e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
+                MotionEvent.ACTION_UP -> {
+                    game.rotate(index)
+                    true
+                }
+                else -> {
+                    false
+                }
             }
-            true
         }
         getGamePieceView(index).setDrehmodus(false)
     }
