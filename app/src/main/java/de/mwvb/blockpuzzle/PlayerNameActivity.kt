@@ -3,10 +3,10 @@ package de.mwvb.blockpuzzle
 import android.os.Build
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.cluster.Cluster1
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import kotlinx.android.synthetic.main.activity_player_name.*
@@ -50,10 +50,18 @@ class PlayerNameActivity : AppCompatActivity() {
 
     private fun onSaveBtn() {
         val per = per()
-        val pn = playername.text.toString()
-        if (pn.trim().isEmpty()) return;
-        per.savePlayerName(pn)
-        per.savePlayernameEntered(true)
+        val pn = playername.text.toString().trim()
+        if (pn.isEmpty()) {
+            return
+        } else if (pn == "open_map") {
+            Cluster1.spaceObjects.forEach { planet ->
+                planet.isVisibleOnMap = true
+                per.savePlanet(planet)
+            }
+        } else {
+            per.savePlayerName(pn)
+            per.savePlayernameEntered(true)
+        }
         finish()
     }
 
