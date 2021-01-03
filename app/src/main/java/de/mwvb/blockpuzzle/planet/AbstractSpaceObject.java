@@ -1,10 +1,13 @@
 package de.mwvb.blockpuzzle.planet;
 
+import de.mwvb.blockpuzzle.cluster.Cluster;
+
 public abstract class AbstractSpaceObject implements ISpaceObject {
     private final int number;
     private final int x;
     private final int y;
     private boolean visibleOnMap = true;
+    private Cluster cluster;
 
     public AbstractSpaceObject(int number, int x, int y) {
         this.number = number;
@@ -19,7 +22,17 @@ public abstract class AbstractSpaceObject implements ISpaceObject {
 
     @Override
     public int getClusterNumber() {
-        return 1;
+        return getCluster().getNumber();
+    }
+
+    @Override
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    @Override
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
     }
 
     @Override

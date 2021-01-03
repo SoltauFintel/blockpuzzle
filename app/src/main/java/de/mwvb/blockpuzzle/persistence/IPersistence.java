@@ -10,6 +10,7 @@ public interface IPersistence {
 
     // GAME SPECIFIC ----
 
+    // TODO Die setGameID() Methoden ist ein doofes Konstrukt. Ich sollte die Game-Daten besser zusammenhängend speichern und mich nicht auf eine zuvor gesetzte ID verlassen!
     void setGameID(IPlanet planet, int gameDefinitionIndex);
     /** gameDefinitionIndex: use selected game */
     void setGameID(IPlanet planet);
@@ -83,7 +84,12 @@ public interface IPersistence {
 
     void saveCurrentPlanet(int clusterNumber, int planetNumber);
     int loadCurrentPlanet();
-    int loadCurrentCluster();
+    int loadCurrentCluster(); // will be used later
+    /**
+     * @return 0 = Death star not played, 1 = in Death star game play
+     */
+    int loadDeathStarMode();
+    void saveDeathStarMode(int mode);
 
     /**
      * @param v 0: no selection (show start screen), 1: old game, 2: Stone Wars game

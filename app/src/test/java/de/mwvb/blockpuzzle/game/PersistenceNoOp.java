@@ -153,6 +153,15 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public int loadDeathStarMode() {
+        return 2;
+    }
+
+    @Override
+    public void saveDeathStarMode(int mode) {
+    }
+
+    @Override
     public void saveOldGame(int v) {
     }
 

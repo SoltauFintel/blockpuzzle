@@ -9,30 +9,40 @@
 
     <de.mwvb.blockpuzzle.background.StarsView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/territoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/info"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="@color/white"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/white"/>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/newGame"
@@ -43,78 +53,87 @@
                 android:background="@color/colorHeadlineBackground"
                 android:shadowColor="@android:color/darker_gray"
                 android:text="@string/neuesSpiel"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
+
             <de.mwvb.blockpuzzle.playingfield.PlayingFieldView
                 android:id="@+id/playingField"
                 android:layout_width="300dp"
                 android:layout_height="360dp"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
             <RelativeLayout
                 android:id="@+id/placeholder1"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp" />
+
             <RelativeLayout
                 android:id="@+id/placeholder2"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp" />
+
             <RelativeLayout
                 android:id="@+id/placeholder3"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp" />
+
             <RelativeLayout
                 android:id="@+id/parking"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginStart="10dp"
-                android:background="@color/colorParking"/>
+                android:background="@color/colorParking" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
+
             <LinearLayout
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/infoDisplay"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
-                    android:textColor="@color/white"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
+
                 <Button
                     android:id="@+id/rotatingMode"
-                    android:background="@color/colorHeadlineBackground"
                     android:layout_width="160dp"
                     android:layout_height="35dp"
-                    android:text="@string/drehenAus"
-                    android:layout_marginTop="3dp"
                     android:layout_gravity="end"
-                    android:textAllCaps="false"
-                    android:shadowColor="@android:color/darker_gray"/>
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorHeadlineBackground"
+                    android:shadowColor="@android:color/darker_gray"
+                    android:text="@string/drehenAus"
+                    android:textAllCaps="false" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -122,15 +141,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorHeadlineBackground"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:text="@string/app_name"
             android:textAlignment="center"
-            android:textColor="@color/colorHeadlineForeground"
-            android:text="@string/app_name"/>
+            android:textColor="@color/colorHeadlineForeground" />
     </LinearLayout>
 
 </RelativeLayout>

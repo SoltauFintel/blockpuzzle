@@ -88,4 +88,16 @@
     <string name="theBronx">The Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
+    <string name="deathStarGame1">Death Star reactor 1</string>
+    <string name="deathStarGame2">Death Star reactor 2</string>
+    <string name="deathStarGame3">Death Star reactor 3</string>
+    <string name="milkyWayAlertInfotext">Red alert! Captain, our spaceship was catapulted into the Milky Way by a space anomaly. Warning: our home Solar System is threatened by a Death Star. We have to destroy this one! This only works if we destroy the three reactors simultaneously.</string>
+    <string name="deathStar">Death Star</string>
+    <string name="deathStarGames123">Reactors 1 - 3</string>
+    <string name="score">Score</string>
+    <string name="reactorDestroyed">+Reactor destroyed!</string>
+    <string name="deathStarDestroyed">+Death Star destroyed!</string>
+    <string name="backFromDeathStar">Roter Alarm! Captain, wir haben den Todesstern zerstört und die Erde gerettet. Aber wir wurden wieder zurück in die Y Galaxie geschleudert.</string>
+    <string name="giveUpDeathStarGame">Give up</string>
+    <string name="giveUpDeathStarGameQuestion">Give up Death Star destruction and go back to the Y galaxy?</string>
 </resources>

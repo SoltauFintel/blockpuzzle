@@ -16,6 +16,7 @@ class RowExplosion {
                 view.setFilledRows(null)
                 action?.execute()
             }, 500)
+            // See also time delay in DeathStarGame.deathStarDestroyed()
         }
     }
 }

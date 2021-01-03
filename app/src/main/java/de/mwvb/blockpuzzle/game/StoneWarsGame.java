@@ -1,13 +1,6 @@
 package de.mwvb.blockpuzzle.game;
 
-import android.app.Activity;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
@@ -58,8 +51,8 @@ public class StoneWarsGame extends Game {
     }
 
     @Override
-    protected void loadGame() {
-        super.loadGame();
+    protected void loadGame(boolean loadNextGamePiece) {
+        super.loadGame(loadNextGamePiece);
         if (gape.loadGameOver()) {
             gameOver = true;
             view.showScore(punkte,0, true); // display game over text
@@ -130,7 +123,7 @@ public class StoneWarsGame extends Game {
         }
     }
 
-    private void check4Liberation() {
+    protected void check4Liberation() {
         save();
         if (new GameInfoService().isPlanetFullyLiberated(gape.getPlanet(), gape.getPersistenceOK())) {
             new GameInfoService().executeLiberationFeature(gape.getPlanet(), gape.getPersistenceOK());

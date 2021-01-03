@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.planet;
+package de.mwvb.blockpuzzle.deathstar;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.cluster.ClusterView;
+import de.mwvb.blockpuzzle.planet.AbstractSpaceObject;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
@@ -21,6 +22,10 @@ public class SpaceNebula extends AbstractSpaceObject {
         super(number, soX, soY);
 
         // Generate static nebula
+        // TODO Naja, so wie ich das gemalt habe, sieht's eher nach einem Asteroidenfeld aus. Ich muss mich mal entscheiden, ob Nebel oder "AsteroidField".
+        //      Die Frage ist, ob ich einen Nebel gezeichnet bekomme. Das muss wie mit Spraydose gemalt aussehen.
+        //      Es ist typischer, dass ein Nebel so einen Sprung auslöst. Also irgendwann nen Nebel sprayen.
+        //      https://stackoverflow.com/questions/11938632/creating-a-spray-effect-on-touch-draw-in-android
         final Random random = new Random();
         final int w = ClusterView.w * 6;
         final int h = ClusterView.w * 2;
@@ -41,6 +46,11 @@ public class SpaceNebula extends AbstractSpaceObject {
 
     @Override
     public boolean isDataExchangeRelevant() {
+        return false;
+    }
+
+    @Override
+    public boolean isShowCoordinates() {
         return false;
     }
 

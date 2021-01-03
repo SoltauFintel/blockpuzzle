@@ -8,13 +8,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
-import de.mwvb.blockpuzzle.persistence.GlobalData
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccess
+import de.mwvb.blockpuzzle.persistence.*
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_bridge.*
 import java.util.*
@@ -52,26 +50,10 @@ class BridgeActivity : AppCompatActivity() {
 
     private fun update() {
         val pa = pa()
+        navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode(pa.persistence)
         positionView.text = GameInfoService().getPositionInfo(pa, resources)
         play.isEnabled = isGameBtnEnabled(pa)
-    }
-
-    private fun getOwner(): String {
-        val per = per()
-        val planet = PlanetAccess(per).planet
-
-        val owners = TreeSet<String>()
-        for (gi in 0 until planet.gameDefinitions.size) {
-            per.setGameID(planet, gi)
-            val owner = per.loadOwnerName()
-            if (owner != null && owner.isNotEmpty()) {
-                owners.add(owner)
-            }
-        }
-        if (owners.isEmpty()) return ""
-        var ret = ""
-        owners.forEach { o -> ret += "/$o" }
-        return ret.substring("/".length)
+        newGame.setText(pa.planet.newLiberationAttemptButtonTextResId)
     }
 
     private fun onPlay() {
@@ -88,19 +70,20 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onNewGame() {
-        if (getPlanet().userMustSelectTerritory()) {
+        val planet = getPlanet()
+        if (planet.userMustSelectTerritory()) {
             selectTerritory(1)
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-            dialog.setTitle(R.string.newLiberationAttemptQuestion)
-            dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onResetGame() }
-            dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+            dialog.setTitle(planet.newLiberationAttemptQuestionResId)
+            dialog.setPositiveButton(android.R.string.ok) { _, _ -> onResetGame() }
+            dialog.setNegativeButton(android.R.string.cancel, null)
             dialog.show()
         }
     }
 
     private fun onResetGame() {
-        NewGameService().newGame(per())
+        NewGameService().resetGame(per())
         update()
     }
 
@@ -134,7 +117,7 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun pa(): PlanetAccess {
-        return PlanetAccess(per())
+        return PlanetAccessFactory.getPlanetAccess(per())
     }
 
     private fun per(): IPersistence {

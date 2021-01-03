@@ -36,7 +36,7 @@
     <string name="southernTerritory">Emisfero Sud</string>
     <string name="planet">Pianeta</string>
     <string name="moon">Luna</string>
-    <string name="giantPlanet">Megapianeta</string>
+    <string name="giantPlanet">Mega pianeta</string>
     <string name="liberatedPlanetByYou">pianeta liberato da te</string>
     <string name="liberatedTerritoryByYou">territorio liberato da te</string>
     <string name="planetOccByP1">Pianeta occupato da %1$s</string>
@@ -45,8 +45,8 @@
     <string name="position">Posizione</string>
     <string name="newLiberationAttemptQuestion">Inizia un altro tentativo di salvataggio?</string>
     <string name="planetNeedsNoLiberation">Il pianeta non ha bisogno di liberazione</string>
-    <string name="yourScoreYourMoves">Your score: %1$s, your moves: %2$s</string>
-    <string name="scoreOfMoves">Score of %1$s: %2$s, moves: %3$s</string>
+    <string name="yourScoreYourMoves">Il vostro punteggio: %1$s, le tue mosse: %2$s</string>
+    <string name="scoreOfMoves">Punteggio di %1$s: %2$s, mosse: %3$s</string>
     <string name="newLiberationAttempt">Inizia un altro tentativo di salvataggio</string>
     <string name="territoryLiberated">+Territorio liberato!</string>
     <string name="planetLiberated">+Pianeta liberato!</string>
@@ -88,4 +88,16 @@
     <string name="theBronx">Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
+    <string name="deathStarGame1">Morte Nera reattore 1</string>
+    <string name="deathStarGame2">Morte Nera reattore 2</string>
+    <string name="deathStarGame3">Morte Nera reattore 3</string>
+    <string name="milkyWayAlertInfotext">Allarme rosso! Capitano, la nostra astronave è stata catapultata nella Via Lattea da un\'anomalia spaziale. Attenzione: il nostro sistema solare domestico è minacciato da una stella della morte. Dobbiamo spegnerlo! Funziona solo se distruggiamo i tre reattori contemporaneamente.</string>
+    <string name="deathStar">Morte Nera</string>
+    <string name="deathStarGames123">Reattori 1 - 3</string>
+    <string name="score">Punteggio</string>
+    <string name="deathStarDestroyed">+La Morte Nera distrutta!</string>
+    <string name="reactorDestroyed">+Reattore distrutto!</string>
+    <string name="backFromDeathStar">Roter Alarm! Captain, wir haben den Todesstern zerstört und die Erde gerettet. Aber wir wurden wieder zurück in die Y Galaxie geschleudert.</string>
+    <string name="giveUpDeathStarGame">Arrendersi</string>
+    <string name="giveUpDeathStarGameQuestion">Rinunciare alla distruzione della Morte Nera e tornare nella galassia Y?</string>
 </resources>

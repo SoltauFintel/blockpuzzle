@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
@@ -18,6 +19,7 @@ import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gravitation.ShakeService
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.QPosition
@@ -39,12 +41,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         if (Build.VERSION.SDK_INT >= 21) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
         }
-        val stoneWars = per().isStoneWars
-        if (stoneWars) {
-            game = StoneWarsGame(this)
-        } else {
-            game = Game(this)
-        }
+        game = GameEngineFactory().create(this, per())
         shakeService = ShakeService(game)
 
         // SUPER PHASE
@@ -97,7 +94,7 @@ class MainActivity : AppCompatActivity(), IGameView {
             try {
                 val data = ClipData.newPlainText("index", index.toString())
                 val tv = it as GamePieceView
-                if (tv.gamePiece != null && !game.isGameOver) {
+                if (tv.gamePiece != null && !game.isGameOver && game.isDragAllowed) {
                     tv.startDragMode()
                     val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
@@ -189,6 +186,19 @@ class MainActivity : AppCompatActivity(), IGameView {
         x /= br
         y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
+    }
+
+    override fun getSpecialAction(specialState: Int): Action {
+        if (specialState == 2) { // Death Star destroyed
+            return Action() {
+                val intent = Intent(this, InfoActivity::class.java)
+                val args = Bundle()
+                args.putInt("mode", 2)
+                intent.putExtras(args)
+                startActivity(intent)
+            }
+        }
+        return Action() {}
     }
 
     /** Start new game */
@@ -317,6 +327,20 @@ class MainActivity : AppCompatActivity(), IGameView {
             text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
         }
         infoDisplay.setText(text)
+    }
+
+    override fun onBackPressed() {
+        if (per().loadDeathStarMode() == 1) {
+            if (game.isDragAllowed) { // during wait time back pressing is not allowed, game state could get unstable
+                startActivity(Intent(this, BridgeActivity::class.java))
+            }
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun showTerritoryName(resId: Int) {
+        territoryName.text = resources.getText(resId)
     }
 
     override fun showToast(msg: String) {

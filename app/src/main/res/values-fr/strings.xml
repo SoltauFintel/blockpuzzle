@@ -36,7 +36,7 @@
     <string name="southernTerritory">Hémisphère Sud</string>
     <string name="planet">Planète</string>
     <string name="moon">Lune</string>
-    <string name="giantPlanet">Mégaplanète</string>
+    <string name="giantPlanet">Méga planète</string>
     <string name="liberatedPlanetByYou">planète libérée de toi</string>
     <string name="liberatedTerritoryByYou">territoire libéré de toi</string>
     <string name="planetOccByP1">Planète libérée de %1$s</string>
@@ -45,8 +45,8 @@
     <string name="position">Position</string>
     <string name="newLiberationAttemptQuestion">Lancer une autre tentative de libération?</string>
     <string name="planetNeedsNoLiberation">La planète n\'a pas besoin de libération</string>
-    <string name="yourScoreYourMoves">Your score: %1$s, your moves: %2$s</string>
-    <string name="scoreOfMoves">Score of %1$s: %2$s, moves: %3$s</string>
+    <string name="yourScoreYourMoves">Ton score: %1$s, vos mouvements: %2$s</string>
+    <string name="scoreOfMoves">Score de %1$s: %2$s, mouvements: %3$s</string>
     <string name="newLiberationAttempt">Lancer une autre tentative de libération</string>
     <string name="territoryLiberated">+Territoire libéré!</string>
     <string name="planetLiberated">+Planète libérée!</string>
@@ -88,4 +88,16 @@
     <string name="theBronx">Le Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
+    <string name="deathStarGame1">Étoile de la Mort réacteur UNE</string>
+    <string name="deathStarGame2">Étoile de la Mort réacteur DEUX</string>
+    <string name="deathStarGame3">Étoile de la Mort réacteur TROIS</string>
+    <string name="milkyWayAlertInfotext">Alerte rouge! Capitaine, notre vaisseau spatial a été catapulté dans la Voie lactée par une anomalie spatiale. Attention: notre système solaire domestique est menacé par une étoile de la mort. Nous devons désactiver cela! Cela ne fonctionne que si nous détruisons les trois réacteurs simultanément.</string>
+    <string name="deathStar">Étoile de la Mort</string>
+    <string name="deathStarGames123">Réacteurs 1 - 3</string>
+    <string name="score">Score</string>
+    <string name="deathStarDestroyed">+Étoile de la mort détruit!</string>
+    <string name="reactorDestroyed">+Réacteur détruit!</string>
+    <string name="backFromDeathStar">Roter Alarm! Captain, wir haben den Todesstern zerstört und die Erde gerettet. Aber wir wurden wieder zurück in die Y Galaxie geschleudert.</string>
+    <string name="giveUpDeathStarGame">Abandonner</string>
+    <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>
 </resources>

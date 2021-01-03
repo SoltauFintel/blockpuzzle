@@ -10,6 +10,7 @@ import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.PlanetAccess;
+import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory;
 import de.mwvb.blockpuzzle.planet.DailyPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
@@ -23,7 +24,7 @@ public class DataService {
     public static final String VERSION = "1";
 
     public String get(IPersistence persistence) {
-        PlanetAccess pa = new PlanetAccess(persistence);
+        PlanetAccess pa = PlanetAccessFactory.getPlanetAccess(persistence);
         return get(pa.getClusterNumber(), pa.getSpaceObjects(), pa.getPlanet(), persistence);
     }
 
@@ -65,7 +66,7 @@ public class DataService {
     }
 
     public String put(String data, IPersistence persistence, ResourceAccess resources) {
-        PlanetAccess pa = new PlanetAccess(persistence);
+        PlanetAccess pa = PlanetAccessFactory.getPlanetAccess(persistence);
         return put(data, pa.getClusterNumber(), pa.getSpaceObjects(), pa.getPlanet(), persistence, resources);
     }
 

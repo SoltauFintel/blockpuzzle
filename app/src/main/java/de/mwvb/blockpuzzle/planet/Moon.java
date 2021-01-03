@@ -1,7 +1,9 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.content.res.Resources;
 import android.graphics.Paint;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 
 /**
@@ -9,10 +11,6 @@ import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
  */
 public class Moon extends AbstractPlanet {
     public static Paint paint; // set during draw action
-
-    public Moon(int number, int x, int y) {
-        super(number, x, y, 1);
-    }
 
     public Moon(int number, int x, int y, GameDefinition gameDefinition) {
         this(number, x, y, 1, gameDefinition);
@@ -35,5 +33,10 @@ public class Moon extends AbstractPlanet {
     @Override
     public Paint getPaint() {
         return paint;
+    }
+
+    @Override
+    protected int getPlanetTypeResId() {
+        return R.string.moon;
     }
 }

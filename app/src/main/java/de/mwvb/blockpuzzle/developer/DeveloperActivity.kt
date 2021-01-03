@@ -6,8 +6,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
+import de.mwvb.blockpuzzle.deathstar.MilkyWayCluster
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.persistence.PlanetAccess
+import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory
 import kotlinx.android.synthetic.main.activity_developer.*
 
 class DeveloperActivity : AppCompatActivity() {
@@ -139,7 +141,7 @@ class DeveloperActivity : AppCompatActivity() {
 
     private fun pa(): PlanetAccess {
         val per = Persistence(this)
-        val pa = PlanetAccess(per)
+        val pa = PlanetAccessFactory.getPlanetAccess(per)
         if (pa.planet != null) {
             per.setGameID(pa.planet)
         }

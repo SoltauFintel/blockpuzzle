@@ -91,19 +91,27 @@ public class ClassicGameDefinition extends GameDefinition {
             if (planet.getGameDefinitions().size() == 1) {
                 planet.setOwner(true); // Spiel gewonnen! Planet befreit!
                 persistence.get().savePlanet(planet);
-                return resources.getString(R.string.planetLiberated);
+                return getPlanetLiberatedText(resources);
             } else {
                 persistence.saveScore(score);
                 persistence.saveMoves(moves);
                 if (new GameInfoService().isPlanetFullyLiberated(planet, persistence.getPersistenceOK())) {
                     planet.setOwner(true); // Spiel gewonnen! Planet befreit!
                     persistence.get().savePlanet(planet);
-                    return resources.getString(R.string.planetLiberated);
+                    return getPlanetLiberatedText(resources);
                 }
-                return resources.getString(R.string.territoryLiberated);
+                return getTerritoryLiberatedText(resources);
             }
         }
         return null;
+    }
+
+    protected String getPlanetLiberatedText(ResourceAccess resources) {
+        return resources.getString(R.string.planetLiberated);
+    }
+
+    protected String getTerritoryLiberatedText(ResourceAccess resources) {
+        return resources.getString(R.string.territoryLiberated);
     }
 
     @Override

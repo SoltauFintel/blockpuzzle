@@ -18,8 +18,21 @@ public class Cluster {
         return number;
     }
 
+    public String getShortName() {
+        return "" + number;
+    }
+
+    public String getGalaxyShortName() {
+        return "Y";
+    }
+
     public List<ISpaceObject> getSpaceObjects() {
         return spaceObjects;
+    }
+
+    public void add(ISpaceObject so) {
+        so.setCluster(this);
+        spaceObjects.add(so);
     }
 
     public static String getQuadrant(ISpaceObject p) {

@@ -166,8 +166,10 @@ public class ClusterView extends View {
     public void selectTarget() {
         IPlanet planet = bubble.getPlanet();
         if (planet != null) {
-            model.setCurrentPlanet(planet);
-            soundService.targetSelected(); // Piepton als Bestätigung
+            if (model.getCurrentPlanet() == null || model.getRoute(model.getCurrentPlanet().getNumber(), planet.getNumber()).travel()) {
+                model.setCurrentPlanet(planet);
+                soundService.targetSelected(); // Piepton als Bestätigung
+            }
         }
         draw();
     }

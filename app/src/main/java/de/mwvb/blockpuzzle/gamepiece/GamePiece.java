@@ -64,10 +64,6 @@ public class GamePiece {
         return matrix[x][y];
     }
 
-    protected final void fill(int x, int y) {
-        matrix[x][y] = 1;
-    }
-
     /**
      * @param value 0: leer, 1: Block
      *              weitere Werte für Boni denkbar:
@@ -75,6 +71,16 @@ public class GamePiece {
      */
     public void setBlockType(int x, int y, int value) {
         matrix[x][y] = value;
+    }
+
+    public void color(int newBlockType) {
+        for (int y = 0; y < GamePiece.max; y++) {
+            for (int x = 0; x < GamePiece.max; x++) {
+                if (matrix[x][y] != 0) {
+                    matrix[x][y] = newBlockType;
+                }
+            }
+        }
     }
 
     public GamePiece rotateToLeft() {

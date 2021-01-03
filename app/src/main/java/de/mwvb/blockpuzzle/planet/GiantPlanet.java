@@ -1,15 +1,13 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.content.res.Resources;
 import android.graphics.Paint;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 
 public class GiantPlanet extends AbstractPlanet {
     public static Paint paint; // set during draw action
-
-    public GiantPlanet(int number, int x, int y) {
-        super(number, x, y, 7);
-    }
 
     public GiantPlanet(int number, int x, int y, GameDefinition g1, GameDefinition g2, GameDefinition g3) {
         this(number, x, y, 7, g1, g2, g3);
@@ -33,5 +31,10 @@ public class GiantPlanet extends AbstractPlanet {
     @Override
     public Paint getPaint() {
         return paint;
+    }
+
+    @Override
+    protected int getPlanetTypeResId() {
+        return R.string.giantPlanet;
     }
 }

@@ -10,6 +10,7 @@ import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
 import de.mwvb.blockpuzzle.sound.SoundService
 import kotlinx.android.synthetic.main.activity_info.*
+import java.lang.Class as Class
 
 class InfoActivity : AppCompatActivity() {
     private val soundService = SoundService()
@@ -24,7 +25,23 @@ class InfoActivity : AppCompatActivity() {
 
         soundService.init(this)
 
-        contBtn.setOnClickListener { startActivity(Intent(this, BridgeActivity::class.java)) }
+        val mode = if (intent.extras == null) 0 else intent.extras!!.getInt("mode")
+        val activity: Class<*>
+        activity = when (mode) {
+            1 -> { // Milky Way alert
+                infotext.setText(R.string.milkyWayAlertInfotext)
+                MainActivity::class.java
+            }
+            2 -> { // back from Death Star
+                infotext.setText(R.string.backFromDeathStar)
+                BridgeActivity::class.java
+            }
+            else -> {
+                BridgeActivity::class.java
+            }
+        }
+
+        contBtn.setOnClickListener { startActivity(Intent(this, activity)) }
         muteBtn.setOnClickListener { soundService.alarm(false) }
     }
 

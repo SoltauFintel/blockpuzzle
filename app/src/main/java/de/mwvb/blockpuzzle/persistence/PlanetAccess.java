@@ -11,13 +11,19 @@ import de.mwvb.blockpuzzle.planet.ISpaceObject;
  * IPersistence helper especially for accessing the current planet.
  */
 public class PlanetAccess {
-    private final IPersistence persistence;
-    private Cluster cluster = Cluster1.INSTANCE;
-    private IPlanet planet = null;
+    protected final IPersistence persistence;
+    protected final Cluster cluster;
+    protected IPlanet planet = null;
 
-    public PlanetAccess(IPersistence persistence) {
+    /** should only instantiiated by PlanetAccessFactory */
+    public PlanetAccess(IPersistence persistence, Cluster cluster) {
         this.persistence = persistence;
+        this.cluster = cluster;
+        determinePlanet();
+    }
 
+    protected void determinePlanet() {
+        planet = null;
         int pn = persistence.loadCurrentPlanet();
         IPlanet first = null;
         for (ISpaceObject p : cluster.getSpaceObjects()) {
@@ -33,7 +39,7 @@ public class PlanetAccess {
             }
         }
         if (planet == null) {
-           planet = first;
+            planet = first;
         }
     }
 
@@ -64,10 +70,6 @@ public class PlanetAccess {
         if (planet == null) return;
         this.planet = planet;
         persistence.saveCurrentPlanet(cluster.getNumber(), planet.getNumber());
-    }
-
-    public String getGalaxy() {
-        return "Y";
     }
 
     // Anwendungsfälle:

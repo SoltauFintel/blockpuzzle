@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.game
 
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView
+import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 
 /**
@@ -18,6 +19,8 @@ interface IGameView {
 
     fun showMoves(moves: Int)
 
+    fun showTerritoryName(resId: Int)
+
     fun showToast(msg: String)
 
     fun rotatingModeOff()
@@ -25,4 +28,6 @@ interface IGameView {
     fun shake()
 
     fun playSound(number: Int)
+
+    fun getSpecialAction(specialState: Int): Action
 }

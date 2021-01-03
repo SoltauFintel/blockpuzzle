@@ -14,6 +14,8 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 // Ich möchte das Laden und Speichern an _einer_ Stelle haben, damit ich es schneller finden kann.
 // Ordner: /data/data/YOUR_PACKAGE_NAME/shared_prefs/YOUR_PREFS_NAME.xml
+// TODO Neue Idee für Persistenz: Mehr mit Objekten arbeiten, die per GSON seralisiert werden. Speichern in Files. Denn so komm ich überall an die Persistenz dran.
+//      Ich brauch dann eine Migration beim Programmstart.
 public class Persistence implements IPersistence {
     private static final String NAME = "GAMEDATA_2";
     // Global data ----
@@ -27,6 +29,7 @@ public class Persistence implements IPersistence {
     private static final String GLOBAL_GOLDEN_TROPHY = "/trophyGolden_C";   // cluster wide
     private static final String GLOBAL_PLATINUM_TROPHY = "/trophyPlatinum"; // galaxy wide
     private static final String GLOBAL_LAST_TROPHY_DATE = "/trophyLastDate";// galaxy wide
+    private static final String GLOBAL_DEATH_STAR = "/todesstern";
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
     private static final String PLANET_VISIBLE = "visible";
@@ -323,6 +326,16 @@ public class Persistence implements IPersistence {
     @Override
     public int loadCurrentCluster() {
         return 1; // At this time there's only cluster 1 implemented.
+    }
+
+    @Override
+    public int loadDeathStarMode() {
+        return getInt(GLOBAL_DEATH_STAR, 0);
+    }
+
+    @Override
+    public void saveDeathStarMode(int mode) {
+        putInt(GLOBAL_DEATH_STAR, mode);
     }
 
     @Override

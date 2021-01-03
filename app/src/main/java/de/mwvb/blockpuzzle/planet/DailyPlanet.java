@@ -113,9 +113,7 @@ public class DailyPlanet extends Planet {
         }
 
         persistence.setGameID(this, ret);
-        persistence.saveScore(-1);
-        persistence.saveMoves(0);
-        persistence.saveGameOver(false);
+        persistence.saveScore(-9999);
         persistence.saveNextRound(nextRound);
         persistence.saveDailyDate(this, ret, today + ACTIVE_GAME);
         setOwner(false);

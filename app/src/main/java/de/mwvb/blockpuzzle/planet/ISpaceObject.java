@@ -1,7 +1,8 @@
 package de.mwvb.blockpuzzle.planet;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
+
+import de.mwvb.blockpuzzle.cluster.Cluster;
 
 public interface ISpaceObject {
 
@@ -11,9 +12,14 @@ public interface ISpaceObject {
     int getNumber();
 
     /**
-     * @return unique star cluster number within Upsilon galaxy
+     * @return positive unique star cluster number within Upsilon galaxy.
+     * 0 stands for our sun system in the Milky Way galaxy.
      */
     int getClusterNumber();
+
+    Cluster getCluster();
+
+    void setCluster(Cluster cluster);
 
     /**
      * @return X coordinate from left border of cluster to the right, center of planet
@@ -36,6 +42,8 @@ public interface ISpaceObject {
     boolean isSelectable();
 
     boolean isDataExchangeRelevant();
+
+    boolean isShowCoordinates();
 
     /**
      * @param canvas -

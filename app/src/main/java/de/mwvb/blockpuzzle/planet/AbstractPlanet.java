@@ -1,14 +1,18 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 
 public abstract class AbstractPlanet extends AbstractSpaceObject implements IPlanet {
     // Stammdaten
@@ -44,8 +48,70 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     }
 
     @Override
+    public boolean isSimultan() {
+        return false;
+    }
+
+    @Override
     public boolean isDataExchangeRelevant() {
         return true;
+    }
+
+    @Override
+    public boolean isShowCoordinates() {
+        return true;
+    }
+
+    @Override
+    public String getInfo(IPersistence persistence, Resources resources) {
+        String info = resources.getString(getPlanetTypeResId()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
+        if (getGameDefinitions().size() > 1) {
+            getCurrentGameDefinitionIndex(persistence); // ensure game def is selected
+            info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
+        }
+        return info;
+    }
+
+    protected abstract int getPlanetTypeResId();
+
+    @Override
+    public String getGameInfo(IPersistence per, Resources resources, int gi) {
+        if (hasGames()) {
+            getCurrentGameDefinitionIndex(per);
+            GameDefinition s = gi >= 0 ? getGameDefinitions().get(gi) : getSelectedGame();
+            String info = s.getInfo(); // Game definition
+
+            // Scores
+            per.setGameID(this, gameDefinitions.indexOf(s));
+
+            int score = per.loadScore();
+            int moves = per.loadMoves();
+            if (score > 0) {
+                info += "\n" + resources.getString(R.string.yourScoreYourMoves, thousand(score), thousand(moves));
+            }
+
+            int otherScore = per.loadOwnerScore();
+            int otherMoves = per.loadOwnerMoves();
+            if (otherScore > 0) {
+                info += "\n" + resources.getString(R.string.scoreOfMoves, per.loadOwnerName(), thousand(otherScore), thousand(otherMoves));
+            }
+
+            // Liberated?
+            if (s.isLiberated(score, moves, otherScore, otherMoves, per, true)) {
+                if (userMustSelectTerritory()) {
+                    info += "\n" + resources.getString(R.string.liberatedTerritoryByYou);
+                } else {
+                    info += "\n" + resources.getString(R.string.liberatedPlanetByYou);
+                }
+            }
+            return info;
+        } else {
+            return resources.getString(R.string.planetNeedsNoLiberation);
+        }
+    }
+
+    public static String thousand(int n) {
+        return new DecimalFormat("#,##0").format(n);
     }
 
     @Override
@@ -99,6 +165,16 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     @Override
     public boolean isNextGamePieceResetedForNewGame() {
         return true;
+    }
+
+    @Override
+    public int getNewLiberationAttemptButtonTextResId() {
+        return R.string.newLiberationAttempt;
+    }
+
+    @Override
+    public int getNewLiberationAttemptQuestionResId() {
+        return R.string.newLiberationAttemptQuestion;
     }
 
     @Override

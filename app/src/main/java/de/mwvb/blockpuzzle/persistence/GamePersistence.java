@@ -43,7 +43,7 @@ public class GamePersistence {
 
     @NotNull
     public IPlanet init4StoneWars() {
-        planet = new PlanetAccess(persistence).getPlanet(); // load current planet
+        planet = PlanetAccessFactory.getPlanetAccess(persistence).getPlanet(); // load current planet
         persistence.setGameID(planet);
         oldGame = 2;
         return planet;

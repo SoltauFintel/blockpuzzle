@@ -10,10 +10,7 @@ import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
-import de.mwvb.blockpuzzle.persistence.GlobalData
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccess
+import de.mwvb.blockpuzzle.persistence.*
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_select_territory.*
 
@@ -27,7 +24,7 @@ class SelectTerritoryActivity : AppCompatActivity() {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
         }
 
-        val planet = PlanetAccess(per()).planet
+        val planet = PlanetAccessFactory.getPlanetAccess(per()).planet
 
         territory1.setOnClickListener { selectTerritory(0, planet) }
         territory2.setOnClickListener { selectTerritory(1, planet) }
@@ -55,8 +52,9 @@ class SelectTerritoryActivity : AppCompatActivity() {
         gameInfoView2.text = getGameInfoText(1, planet)
     }
 
-    private fun getGameInfoText(gi: Int, planet: IPlanet): String {
-        return GameInfoService().getSelectedGameInfo(PlanetAccess(per()), resources, planet.gameDefinitions[gi])
+    private fun getGameInfoText(gi: Int, planet: IPlanet): String { // TODO planet not used. Besser hier pa durchschleifen
+        val pa = PlanetAccessFactory.getPlanetAccess(per())
+        return pa.planet.getGameInfo(pa.persistence, resources, gi)
     }
 
     private fun selectTerritory(territoryNumber: Int, planet: IPlanet) {
@@ -83,7 +81,7 @@ class SelectTerritoryActivity : AppCompatActivity() {
     }
 
     private fun onResetGame() {
-        NewGameService().newGame(per())
+        NewGameService().resetGame(per())
         finish()
     }
 

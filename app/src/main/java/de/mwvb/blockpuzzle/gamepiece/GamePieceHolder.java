@@ -4,6 +4,7 @@ import de.mwvb.blockpuzzle.persistence.GamePersistence;
 
 public class GamePieceHolder {
     // Stammdaten
+    /** 1, 2, 3, -1 */
     private final int index;
 
     // Zustand

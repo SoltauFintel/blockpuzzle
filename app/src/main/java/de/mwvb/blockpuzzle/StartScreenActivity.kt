@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.playingfield.PlayingField
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
 /**
@@ -39,8 +40,15 @@ class StartScreenActivity : AppCompatActivity() {
     }
 
     private fun onStoneWars() {
-        per().saveOldGame(2)
-        startActivity(Intent(this, InfoActivity::class.java))
+        val per = per()
+        per.saveOldGame(2)
+        val intent = Intent(this, InfoActivity::class.java)
+        if (per.loadDeathStarMode() == 1) {
+            val args = Bundle()
+            args.putInt("mode", 1)
+            intent.putExtras(args)
+        }
+        startActivity(intent)
     }
 
     private fun onOldGame() {

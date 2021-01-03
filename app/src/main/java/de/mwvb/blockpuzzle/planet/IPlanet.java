@@ -1,9 +1,12 @@
 package de.mwvb.blockpuzzle.planet;
 
+import android.content.res.Resources;
+
 import java.util.List;
 
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 
 public interface IPlanet extends ISpaceObject {
 
@@ -22,6 +25,28 @@ public interface IPlanet extends ISpaceObject {
     boolean userMustSelectTerritory();
     /** @return true: set next game piece index to 0, false: load next game piece index */
     boolean isNextGamePieceResetedForNewGame();
+    int getNewLiberationAttemptButtonTextResId();
+    int getNewLiberationAttemptQuestionResId();
+    /** @return true: play all games simultaneously (Death Star game play), false: default game play */
+    boolean isSimultan(); // TODO raus, wenn nicht benötigt
+
+    // TODO Namen der getInfo, getGameInfo und getInfoText Methoden nicht so aussagekräftig bzw. abgrenzend.
+    /**
+     * @param persistence -
+     * @param resources -
+     * @return planet type, planet number, gravitation and territory name
+     */
+    String getInfo(IPersistence persistence, Resources resources);
+
+    /**
+     * @param per -
+     * @param resources -
+     * @param gi -1 to take selected game.
+     *                  Otherwise it's the 0 based GameDefinition index.
+     *                  gameIndex must not be used by implementation.
+     * @return game type, scores of player, scores of owner, liberated by ... text
+     */
+    String getGameInfo(IPersistence per, Resources resources, int gi);
 
     /**
      * @param lineNumber 1 - 3

@@ -64,6 +64,10 @@ public class TestGameView implements IGameView {
     }
 
     @Override
+    public void showTerritoryName(int resId) {
+    }
+
+    @Override
     public void rotatingModeOff() {
     }
 
@@ -109,5 +113,11 @@ public class TestGameView implements IGameView {
 
     @Override
     public void playSound(int number) {
+    }
+
+    @NotNull
+    @Override
+    public Action getSpecialAction(int specialState) {
+        return null;
     }
 }

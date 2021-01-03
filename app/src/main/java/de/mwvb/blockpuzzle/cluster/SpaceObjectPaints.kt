@@ -1,10 +1,10 @@
 package de.mwvb.blockpuzzle.cluster
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
+import de.mwvb.blockpuzzle.deathstar.SpaceNebula
 import de.mwvb.blockpuzzle.planet.*
 
 class SpaceObjectPaints(context: Context) {

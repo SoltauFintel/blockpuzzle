@@ -11,11 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.data.DataService
+ import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.game.ResourceService
-import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess
 import de.mwvb.blockpuzzle.persistence.IPersistence
 import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccess
+import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory
 import kotlinx.android.synthetic.main.activity_data_market.*
 
 /**
@@ -40,9 +40,13 @@ class DataMarketActivity : AppCompatActivity() {
         super.onResume()
         try {
             val per = per()
-            dataview.setText(DataService().get(per))
-            copyBtn.isEnabled = per.loadPlayernameEntered()
-            trophies.setText(getTrophiesText(per))
+            // Data exchange not possible in Death Star mode
+            val enabled = SpaceNebulaRoute.isNoDeathStarMode(per)
+            pasteBtn.isEnabled = enabled
+            copyBtn.isEnabled = enabled && per.loadPlayernameEntered()
+
+            dataview.text = if (enabled) DataService().get(per) else ""
+            trophies.text = getTrophiesText(per)
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -74,7 +78,7 @@ class DataMarketActivity : AppCompatActivity() {
     }
 
     private fun getTrophiesText(persistence: IPersistence): String {
-        val planet = PlanetAccess(persistence).planet
+        val planet = PlanetAccessFactory.getPlanetAccess(persistence).planet
         val trophies = persistence.loadTrophies(planet)
         return resources.getString(R.string.trophies, planet.clusterNumber, trophies.bronze, trophies.silver, trophies.golden, trophies.platinum)
     }

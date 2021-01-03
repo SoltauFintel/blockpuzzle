@@ -47,6 +47,7 @@ public class Game {
     protected boolean won = false;
     private boolean rotatingMode = false; // wird nicht persistiert
     private final GravitationData gravitation = new GravitationData();
+    private boolean dragAllowed = true;
 
     // Services
     protected GamePersistence gape; // "ga" for game + "pe" for persistence
@@ -71,7 +72,7 @@ public class Game {
 
     // called by MainActivity.onResume()
     public void initGame() {
-        initGameAndPersistence();
+        initGameAndPersistence(); // Bei Stone Wars wird hier der Planet und die GameDefinition festgelegt.
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
         nextGamePiece = getNextGamePieceGenerator();
@@ -85,7 +86,7 @@ public class Game {
         if (punkte < 0) { // Nein
             newGame(); // Neues Spiel starten!
         } else {
-            loadGame(); // Spielstand laden
+            loadGame(true); // Spielstand laden
         }
     }
 
@@ -103,7 +104,13 @@ public class Game {
 
     /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
     public void newGame() {
+        doNewGame();
+        offer();
+        save();
+    }
+    protected void doNewGame() {
         gameOver = false;
+        gape.get().saveGameOver(gameOver);
         punkte = 0;
         gravitation.init();
         gape.saveDelta(0);
@@ -118,8 +125,6 @@ public class Game {
         gape.get().saveEmptyScreenBonusActive(emptyScreenBonusActive);
 
         holders.clearParking();
-        offer();
-        save();
     }
 
     protected void initNextGamePieceForNewGame() {
@@ -130,12 +135,14 @@ public class Game {
         playingField.clear();
     }
 
-    protected void loadGame() {
+    protected void loadGame(boolean loadNextGamePiece) {
         view.showScore(punkte, gape.loadDelta(), gameOver);
         moves = gape.loadMoves();
         emptyScreenBonusActive = gape.get().loadEmptyScreenBonusActive();
         view.showMoves(moves);
-        nextGamePiece.load();
+        if (loadNextGamePiece) {
+            nextGamePiece.load();
+        }
         gravitation.load();
         playingField.load();
         holders.load();
@@ -183,14 +190,18 @@ public class Game {
             ret = place(index, teil, xy);
         }
         if (ret) {
-            if (holders.is123Empty()) {
-                offer();
-            }
-            checkGame();
-            save();
+            postDispatch();
         } else {
             throw new DoesNotWorkException();
         }
+    }
+
+    protected void postDispatch() {
+        if (holders.is123Empty()) {
+            offer();
+        }
+        checkGame();
+        save();
     }
 
     /**
@@ -270,7 +281,7 @@ public class Game {
         }
     }
 
-    private void detectOneColorArea() {
+    protected void detectOneColorArea() {
         List<QPosition> r = new OneColorAreaDetector(playingField, 20).getOneColorArea();
         if (r == null) return;
         playingField.makeOldColor(); // 10 -> 11, plays also one color sound
@@ -370,7 +381,7 @@ public class Game {
     }
 
     /** check for game over */
-    private void checkGame() {
+    protected void checkGame() {
         // es muss ein Spielstein noch rein gehen
         boolean a = moveImpossible(1);
         boolean b = moveImpossible(2);
@@ -484,9 +495,9 @@ public class Game {
 
     public void save() {
         gape.saveScore(punkte);
+        gape.saveMoves(moves);
         playingField.save();
         gravitation.save();
-        gape.saveMoves(moves);
         holders.save();
     }
 
@@ -507,5 +518,13 @@ public class Game {
     // for test
     public Stack<Integer> getExpectedResources() {
         return null;
+    }
+
+    public boolean isDragAllowed() {
+        return dragAllowed;
+    }
+
+    public void setDragAllowed(boolean dragAllowed) {
+        this.dragAllowed = dragAllowed;
     }
 }

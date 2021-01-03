@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.planet;
 
 import android.graphics.Paint;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 
 public class Planet extends AbstractPlanet {
@@ -31,5 +32,10 @@ public class Planet extends AbstractPlanet {
     @Override
     public Paint getPaint() {
         return paint;
+    }
+
+    @Override
+    protected int getPlanetTypeResId() {
+        return R.string.planet;
     }
 }
