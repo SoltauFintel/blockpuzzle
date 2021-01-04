@@ -116,6 +116,11 @@ class MainActivity : AppCompatActivity(), IGameView {
                 }
                 MotionEvent.ACTION_UP -> {
                     game.rotate(index)
+                    // Da ich nicht weiß, welcher ausgeblendet ist, blende ich einfach alle ein.
+                    getGamePieceView(1).endDragMode()
+                    getGamePieceView(2).endDragMode()
+                    getGamePieceView(3).endDragMode()
+                    getGamePieceView(-1).endDragMode()
                     true
                 }
                 else -> {
