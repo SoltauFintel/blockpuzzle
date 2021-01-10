@@ -45,7 +45,6 @@ public class Game {
     protected boolean emptyScreenBonusActive = false;
     protected boolean gameOver = false; // wird nicht persistiert
     protected boolean won = false;
-    private boolean rotatingMode = false; // wird nicht persistiert
     private final GravitationData gravitation = new GravitationData();
     private boolean dragAllowed = true;
 
@@ -76,10 +75,6 @@ public class Game {
         holders.setView(view);
         playingField.setView(view.getPlayingFieldView());
         nextGamePiece = getNextGamePieceGenerator();
-
-        // Drehmodus deaktivieren
-        rotatingMode = false;
-        view.rotatingModeOff();
 
         // Gibt es einen Spielstand?
         punkte = gape.loadScore();
@@ -475,11 +470,6 @@ public class Game {
 
     public int get(int x, int y) {
         return playingField.get(x, y);
-    }
-
-    public boolean toggleRotatingMode() {
-        rotatingMode = !rotatingMode;
-        return rotatingMode;
     }
 
     public int getMoves() {

@@ -1,6 +1,5 @@
 package de.mwvb.blockpuzzle
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipDescription
 import android.content.Intent
@@ -66,8 +65,6 @@ class MainActivity : AppCompatActivity(), IGameView {
             false -> View.INVISIBLE
         }
         newGame.setOnClickListener(onNewGame())
-        rotatingMode.setOnClickListener(onRotatingMode())
-        rotatingMode.visibility = View.INVISIBLE // TODO Button ausbauen
         shakeService.initShakeDetection(this)
     }
 
@@ -91,10 +88,8 @@ class MainActivity : AppCompatActivity(), IGameView {
         super.onPause()
     }
 
-    /** Spielsteinbewegung starten */
-    @SuppressLint("ClickableViewAccessibility") // click geht nicht, wir brauchen onTouch
+    /** Drag or rotate game piece */
     private fun initTouchListener(index: Int) {
-        getGamePieceView(index).setOnClickListener(null)
         getGamePieceView(index).setOnTouchListener(object : GamePieceTouchListener(index, resources) {
             override fun up(view: View?, event: MotionEvent?) {
                 getGamePieceView(index).endDragMode()
@@ -105,10 +100,9 @@ class MainActivity : AppCompatActivity(), IGameView {
                 return !game.isGameOver && game.isDragAllowed
             }
         })
-        getGamePieceView(index).setDrehmodus(false)
     }
 
-    /** Spielstein droppen */
+    /** mainly for dropping the game piece */
     private fun createDragListener(targetIsParking: Boolean): View.OnDragListener {
         return View.OnDragListener { _, event ->
             when (event.action) {
@@ -211,46 +205,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
     }
 
-    /** Turn rotating mode on/off */
-    private fun onRotatingMode(): (View) -> Unit {
-        return {
-            if (!game.isGameOver) {
-                if (game.toggleRotatingMode()) {
-                    // Drehen ist an
-                    rotatingMode.text = resources.getText(R.string.drehenAn)
-                    rotatingMode.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorDrehmodus))
-                    initClickListener(1)
-                    initClickListener(2)
-                    initClickListener(3)
-                    initClickListener(-1)
-                } else {
-                    // Drehen ist aus
-                    rotatingModeOff()
-                }
-            }
-        }
-    }
-
-    /** Spielstein drehen */
-    private fun initClickListener(index: Int) {
-        getGamePieceView(index).setOnTouchListener(null)
-        getGamePieceView(index).setOnClickListener {
-            try {
-                game.rotate(index)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "Fc: " + e.message, Toast.LENGTH_LONG).show()
-            }
-        }
-        getGamePieceView(index).setDrehmodus(true)
-    }
-
-    override fun rotatingModeOff() {
-        rotatingMode.text = resources.getText(R.string.drehenAus)
-        rotatingMode.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorHeadlineBackground))
-        initTouchListeners()
-    }
-
     private fun initTouchListeners() {
         initTouchListener(1)
         initTouchListener(2)
@@ -335,7 +289,9 @@ class MainActivity : AppCompatActivity(), IGameView {
     }
 
     override fun showTerritoryName(resId: Int) {
-        territoryName.text = resources.getText(resId)
+        val text = resources.getText(resId).trim()
+        territoryName.text = text
+        territoryName.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE // hide label to save space
     }
 
     override fun showToast(msg: String) {

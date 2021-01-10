@@ -19,9 +19,9 @@
     <color name="yellow">#FFB618</color>
     <color name="oneColor">#09AEF7</color>
     <color name="oneColorOld">#0D5E9E</color>
-    <color name="colorDrehmodus">#86EA33</color>
     <color name="colorGrey">#888888</color>
     <color name="green">#009900</color>
+    <color name="lightgreen">#86EA33</color>
 
     <color name="brown_i">#85461E</color>
     <color name="red_i">#D70F37</color>
@@ -31,9 +31,9 @@
     <color name="yellow_i">#E39F02</color>
     <color name="oneColor_i">#0F9BD7</color>
     <color name="oneColorOld_i">#0A4C7E</color>
-    <color name="colorDrehmodus_i">#7CD424</color>
     <color name="colorGrey_i">#888888</color>
     <color name="green_i">#007700</color>
+    <color name="lightgreen_i">#7CD424</color>
 
     <color name="brown_ib">#C7682E</color>
     <color name="red_ib">#FE4E71</color>
@@ -43,9 +43,9 @@
     <color name="yellow_ib">#FFC426</color>
     <color name="oneColor_ib">#21BEFF</color>
     <color name="oneColorOld_ib">#0F72BD</color>
-    <color name="colorDrehmodus_ib">#A4F83A</color>
     <color name="colorGrey_ib">#888888</color>
     <color name="green_ib">#00BB00</color>
+    <color name="lightgreen_ib">#A4F83A</color>
 
     <color name="playButtonColor">#00CC00</color>
 

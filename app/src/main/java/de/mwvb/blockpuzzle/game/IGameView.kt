@@ -23,8 +23,6 @@ interface IGameView {
 
     fun showToast(msg: String)
 
-    fun rotatingModeOff()
-
     fun shake()
 
     fun playSound(number: Int)

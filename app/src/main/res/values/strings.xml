@@ -4,8 +4,6 @@
     <string name="startScreenTitle">Version 5.0 by SoltauFintel</string>
     <string name="neuesSpiel">New Game</string>
     <string name="gehtNicht">Does not fit!</string>
-    <string name="drehenAus">Rotating off</string>
-    <string name="drehenAn">Rotating on</string>
     <string name="startNewGame">Start new game?</string>
     <string name="score1">Score: XX</string>
     <string name="score2">Score: XX</string>

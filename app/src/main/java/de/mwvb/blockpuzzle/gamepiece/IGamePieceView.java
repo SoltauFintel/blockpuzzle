@@ -16,6 +16,4 @@ public interface IGamePieceView {
     void startDragMode();
 
     void endDragMode();
-
-    void setDrehmodus(boolean d);
 }

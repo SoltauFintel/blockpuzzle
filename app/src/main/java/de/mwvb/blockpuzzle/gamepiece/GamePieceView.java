@@ -32,12 +32,10 @@ public class GamePieceView extends View implements IGamePieceView {
     private GamePiece gamePiece = null;
     /** grey wenn Teil nicht dem Quadrat hinzugefügt werden kann, weil kein Platz ist */
     private boolean grey = false; // braucht nicht zu persistiert werden
-    private boolean drehmodus = false; // wird nicht persistiert
     private boolean dragMode = false; // wird nicht persistiert
 
     // Services
     private final IBlockDrawer greyBD;
-    private final IBlockDrawer drehmodusBD;
 
     // Paints
     private final Paint p_parking = new Paint();
@@ -51,7 +49,6 @@ public class GamePieceView extends View implements IGamePieceView {
 
         blockTypes = new BlockTypes(this);
         greyBD = ColorBlockDrawer.byRColor(this, R.color.colorGrey, R.color.colorGrey, R.color.colorGrey);
-        drehmodusBD = ColorBlockDrawer.byRColor(this, R.color.colorDrehmodus, R.color.colorDrehmodus_i, R.color.colorDrehmodus_ib);
     }
 
     @Override
@@ -102,8 +99,6 @@ public class GamePieceView extends View implements IGamePieceView {
                     IBlockDrawer blockDrawer;
                     if (grey) {
                         blockDrawer = greyBD;
-                    } else if (drehmodus) {
-                        blockDrawer = drehmodusBD;
                     } else {
                         blockDrawer = blockTypes.getBlockDrawer(blockType);
                     }
@@ -130,12 +125,6 @@ public class GamePieceView extends View implements IGamePieceView {
     public void endDragMode() {
         dragMode = false;
         setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setDrehmodus(boolean d) {
-        drehmodus = d;
-        draw();
     }
 
     @Override
