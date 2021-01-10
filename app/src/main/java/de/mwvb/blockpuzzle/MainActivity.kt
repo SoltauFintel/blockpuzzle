@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                 DragEvent.ACTION_DRAG_STARTED -> {
                     event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
                 }
-                DragEvent.ACTION_DROP -> drop(event, targetIsParking)
+                DragEvent.ACTION_DROP -> dropped(event, targetIsParking)
                 DragEvent.ACTION_DRAG_ENTERED -> {
                     if (targetIsParking) {
                         getGamePieceView(-1).onDragEnter();
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
     }
 
-    private fun drop(event: DragEvent, targetIsParking: Boolean): Boolean {
+    private fun dropped(event: DragEvent, targetIsParking: Boolean): Boolean {
         try {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
