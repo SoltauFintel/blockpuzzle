@@ -57,7 +57,10 @@ class MainActivity : AppCompatActivity(), IGameView {
         (placeholder3 as ViewGroup).addView(GamePieceView(baseContext, 3, false))
         (parking      as ViewGroup).addView(GamePieceView(baseContext, -1, true))
 
-        initTouchListeners() // Zum Auslösen des Drag&Drop Events
+        initTouchListener(1)
+        initTouchListener(2)
+        initTouchListener(3)
+        initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
         newGame.visibility = when (game.isNewGameButtonVisible) {
@@ -203,13 +206,6 @@ class MainActivity : AppCompatActivity(), IGameView {
                 dialog.show()
             }
         }
-    }
-
-    private fun initTouchListeners() {
-        initTouchListener(1)
-        initTouchListener(2)
-        initTouchListener(3)
-        initTouchListener(-1)
     }
 
     override fun showScore(score: Int, delta: Int, gameOver: Boolean) {
