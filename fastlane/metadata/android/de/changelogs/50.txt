@@ -1,3 +1,4 @@
+- Spielstein drehen durch Antippen
 - französische und italienische Versionen
 - Game Sounds Option
 - Spielsteinfarben tlw. geändert

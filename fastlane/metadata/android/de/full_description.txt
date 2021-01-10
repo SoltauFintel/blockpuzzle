@@ -1,10 +1,8 @@
 Block Puzzle ist ein süchtig machender Spieleklassiker! Ein kleiner Zeitvertreib, bei dem es nicht um Geschwindigkeit geht. Neu ist der Multi-Player-Modus "Stone Wars"!
 
-Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen. Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind. Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt. Welche Highscore wirst Du schaffen?
+Unterschiedliche Spielsteine sind in einem 10 x 10 großen Spielfeld einzufügen. Waagrechte Reihen oder senkrechte Spalten werden entfernt sobald sie voll sind. Im weiteren Spielverlauf werden immer wieder weitere Spielstein-Formen hinzugefügt. Spielsteine können durch Antippen gedreht werden. Welche Highscore wirst Du schaffen?
 
 Parken: Ein Spielstein kann im grauen Feld geparkt werden. Jedoch Vorsicht! Sobald kein Spielstein mehr ins Spielfeld oder in die Parkbucht eingefügt werden kann, ist Game over! Also spiele möglichst schnell den geparkten Spielstein!
-
-Drehmodus: Aktiviere jederzeit den Drehmodus (grün), um Spielsteine vor dem Einfügen in 90 Grad Schritten zu drehen.
 
 Gravitation: Werden im unteren Spielfeld waagrechte Reihen abgeräumt, so rutscht der obere Teil nach unten.
 
@@ -12,7 +10,7 @@ Punktesystem:
  - Einfügen: Anzahl Blöcke des Spielsteins
  - Reihe wegräumen: 10 Punkte
  - mehrere Reihen auf einmal wegräumen: Bonuspunkte
- - Spielfeld hat nur noch sehr wenige Blöcke oder ist leer: Extrabonus!
+ - Spielfeld hat nur 1 Block oder ist leer: Extrabonus!
  - 20 zusammenhängende Spielsteine einer Farbe ergeben einen weiteren Extrabonus.
  - Sternblock ergibt 200 Bonuspunkte!
 

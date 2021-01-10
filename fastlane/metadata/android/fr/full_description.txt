@@ -1,10 +1,8 @@
 Block Puzzle est un jeu classique addictif! Un petit passe-temps qui n'a rien à voir avec la vitesse. Avec le nouveau mode multi-joueurs "Stone Wars"!
 
-Différentes pièces de jeu doivent être insérées dans un grand terrain de jeu de 10 x 10. Les lignes horizontales ou les colonnes verticales sont supprimées dès qu'elles sont pleines. Au fur et à mesure que le jeu progresse, plus de formes de tuiles sont ajoutées encore et encore. Quel score obtiendrez-vous?
+Différentes pièces de jeu doivent être insérées dans un grand terrain de jeu de 10 x 10. Les lignes horizontales ou les colonnes verticales sont supprimées dès qu'elles sont pleines. Au fur et à mesure que le jeu progresse, plus de formes de tuiles sont ajoutées encore et encore. Les pièces de jeu peuvent être tournées en tapotant. Quel score obtiendrez-vous?
 
 Parking: Une pièce de jeu peut être garée dans le champ gris. Mais fais attention! Dès que plus aucune pièce ne peut être insérée dans le terrain de jeu ou dans l'aire de stationnement, le jeu est terminé! Alors jouez la pièce de jeu garée le plus rapidement possible!
-
-Mode de rotation: activez le mode de rotation (vert) à tout moment pour faire pivoter les carreaux par pas de 90 degrés avant de les insérer.
 
 Gravitation: Si les lignes horizontales sont effacées dans le terrain de jeu inférieur, la partie supérieure glisse vers le bas.
 

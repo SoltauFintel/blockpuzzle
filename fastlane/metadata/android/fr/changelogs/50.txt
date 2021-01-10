@@ -1,4 +1,5 @@
 - Version française nouveau
+- Tournez la pièce en la tapotant
 - Option de sons de jeu
 - Les couleurs des pièces ont changé
 - Marqueur de planète fixe

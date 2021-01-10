@@ -1,10 +1,8 @@
 Block Puzzle è un gioco classico avvincente! Un piccolo passatempo che non riguarda la velocità. Con la nuova modalità multi-player "Stone Wars"!
 
-Diversi pezzi di gioco devono essere inseriti in un ampio campo di gioco 10 x 10. Le righe orizzontali o le colonne verticali vengono rimosse non appena sono piene. Man mano che il gioco procede, vengono aggiunte sempre più forme di tessere. Quale punteggio più alto otterrai?
+Diversi pezzi di gioco devono essere inseriti in un ampio campo di gioco 10 x 10. Le righe orizzontali o le colonne verticali vengono rimosse non appena sono piene. Man mano che il gioco procede, vengono aggiunte sempre più forme di tessere. I pezzi del gioco possono essere ruotati toccando. Quale punteggio più alto otterrai?
 
 Parcheggio: un pezzo di gioco può essere parcheggiato nel campo grigio. Ma fa attenzione! Non appena non si possono più inserire pezzi nel campo di gioco o nel parcheggio, il gioco è finito! Quindi riproduci il pezzo di gioco parcheggiato il più rapidamente possibile!
-
-Modalità di rotazione: attiva la modalità di rotazione (verde) in qualsiasi momento per ruotare le tessere in passi di 90 gradi prima di inserirle.
 
 Gravitazione: se le file orizzontali vengono rimosse nel campo di gioco inferiore, la parte superiore scivola verso il basso.
 

@@ -1,3 +1,4 @@
+- rotate game piece by tapping
 - French and Italian versions
 - game sounds option
 - some game piece color changes
