@@ -71,7 +71,7 @@ public class DeathStarGame extends StoneWarsGame {
         if (punkte < 0) {
             doNewGame();
         } else {
-            loadGame(false);
+            loadGame(false, false);
         }
         view.showTerritoryName(definition.getTerritoryName());
         return true; // continue

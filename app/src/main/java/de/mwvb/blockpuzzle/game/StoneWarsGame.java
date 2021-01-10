@@ -51,11 +51,10 @@ public class StoneWarsGame extends Game {
     }
 
     @Override
-    protected void loadGame(boolean loadNextGamePiece) {
-        super.loadGame(loadNextGamePiece);
-        if (gape.loadGameOver()) {
-            gameOver = true;
-            view.showScore(punkte,0, true); // display game over text
+    protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
+        super.loadGame(loadNextGamePiece, checkGame);
+        if (gameOver) {
+            view.showScore(punkte,0, gameOver); // display game over text
             playingField.gameOver();
         } else {
             // calculate won [for classic game]

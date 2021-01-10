@@ -81,7 +81,7 @@ public class Game {
         if (punkte < 0) { // Nein
             newGame(); // Neues Spiel starten!
         } else {
-            loadGame(true); // Spielstand laden
+            loadGame(true, true); // Spielstand laden
         }
     }
 
@@ -130,7 +130,8 @@ public class Game {
         playingField.clear();
     }
 
-    protected void loadGame(boolean loadNextGamePiece) {
+    protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
+        gameOver = gape.loadGameOver();
         view.showScore(punkte, gape.loadDelta(), gameOver);
         moves = gape.loadMoves();
         emptyScreenBonusActive = gape.get().loadEmptyScreenBonusActive();
@@ -141,7 +142,9 @@ public class Game {
         gravitation.load();
         playingField.load();
         holders.load();
-        checkGame();
+        if (checkGame) {
+            checkGame();
+        }
     }
 
     /** 3 neue zufällige Spielsteine anzeigen */
