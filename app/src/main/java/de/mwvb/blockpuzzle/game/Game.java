@@ -230,10 +230,10 @@ public class Game {
                 playingField.clearRows(f, new GravitationAction(gravitation, this, playingField, getGravitationStartRow()));
                 // Action wird erst wenige Millisekunden später fertig!
             }
-            if (!emptyScreenBonusActive && playingField.getFilled() > (blocks * blocks * 0.50f)) { // More than 50% filled: fewGamePiecesOnThePlayingField bonus is active
+            if (!emptyScreenBonusActive && playingField.getFilled() > (blocks * blocks * 0.40f)) { // More than 40% filled: fewGamePiecesOnThePlayingField bonus is active
                 emptyScreenBonusActive = true;
                 gape.get().saveEmptyScreenBonusActive(emptyScreenBonusActive);
-                view.playSound(1); // play sound "more than 50%"
+                view.playSound(1); // play sound "more than 40%"
             }
             if (f.getHits() > 0) {
                 fewGamePiecesOnThePlayingField();

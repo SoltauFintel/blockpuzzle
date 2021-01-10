@@ -2,7 +2,6 @@ package de.mwvb.blockpuzzle.sound;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -10,7 +9,6 @@ import android.media.SoundPool;
 import android.os.Build;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.persistence.Persistence;
 
 public class SoundService implements ISoundService {
@@ -24,7 +22,7 @@ public class SoundService implements ISoundService {
     private MediaPlayer applause;
     private int brickdrop2;
     private MediaPlayer alarm;
-    private int moreThan50P;
+    private int moreThan40P;
     private int emptyScreenBonus;
 
     /** init SoundService */
@@ -52,7 +50,7 @@ public class SoundService implements ISoundService {
         applause = MediaPlayer.create(context, R.raw.applause);
         brickdrop2 = soundPool.load(context, R.raw.brickdrop2, 0);
         alarm = MediaPlayer.create(context, R.raw.alarm);
-        moreThan50P = soundPool.load(context, R.raw.more50, 0);
+        moreThan40P = soundPool.load(context, R.raw.more40, 0);
         emptyScreenBonus = soundPool.load(context, R.raw.emptysb, 0);
     }
 
@@ -110,7 +108,7 @@ public class SoundService implements ISoundService {
     public void playSound(int number) {
         switch (number) {
             case 1:
-                play(moreThan50P);
+                play(moreThan40P);
                 break;
             case 2:
                 play(emptyScreenBonus);
