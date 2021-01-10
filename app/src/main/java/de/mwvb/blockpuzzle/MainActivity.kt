@@ -2,7 +2,6 @@ package de.mwvb.blockpuzzle
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Intent
 import android.os.Build
@@ -14,8 +13,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.game.*
+import de.mwvb.blockpuzzle.game.DoesNotWorkException
+import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.game.IGameView
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
+import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gravitation.ShakeService
 import de.mwvb.blockpuzzle.persistence.IPersistence
@@ -92,42 +95,16 @@ class MainActivity : AppCompatActivity(), IGameView {
     @SuppressLint("ClickableViewAccessibility") // click geht nicht, wir brauchen onTouch
     private fun initTouchListener(index: Int) {
         getGamePieceView(index).setOnClickListener(null)
-        getGamePieceView(index).setOnTouchListener { it, event ->
-            when (event.action) {
-                MotionEvent.ACTION_MOVE -> {
-                    try {
-                        val data = ClipData.newPlainText("index", index.toString())
-                        val tv = it as GamePieceView
-                        if (tv.gamePiece != null && !game.isGameOver && game.isDragAllowed) {
-                            tv.startDragMode()
-                            val dragShadowBuilder = MyDragShadowBuilder(tv, resources.displayMetrics.density)
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0 Nougat API level 24
-                                it.startDragAndDrop(data, dragShadowBuilder, it, 0)
-                            } else { // for API level 19 (4.4. Kitkat)
-                                @Suppress("DEPRECATION")
-                                it.startDrag(data, dragShadowBuilder, it, 0)
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Toast.makeText(this, "FT: " + e.message, Toast.LENGTH_LONG).show()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    game.rotate(index)
-                    // Da ich nicht weiß, welcher ausgeblendet ist, blende ich einfach alle ein.
-                    getGamePieceView(1).endDragMode()
-                    getGamePieceView(2).endDragMode()
-                    getGamePieceView(3).endDragMode()
-                    getGamePieceView(-1).endDragMode()
-                    true
-                }
-                else -> {
-                    false
-                }
+        getGamePieceView(index).setOnTouchListener(object : GamePieceTouchListener(index, resources) {
+            override fun up(view: View?, event: MotionEvent?) {
+                getGamePieceView(index).endDragMode()
+                game.rotate(index)
             }
-        }
+
+            override fun isDragAllowed(): Boolean {
+                return !game.isGameOver && game.isDragAllowed
+            }
+        })
         getGamePieceView(index).setDrehmodus(false)
     }
 
@@ -327,10 +304,10 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun getGamePieceView(index: Int): GamePieceView {
         return when (index) {
-             1 -> (placeholder1 as ViewGroup).getChildAt(0) as GamePieceView
-             2 -> (placeholder2 as ViewGroup).getChildAt(0) as GamePieceView
-             3 -> (placeholder3 as ViewGroup).getChildAt(0) as GamePieceView
-            -1 -> (parking      as ViewGroup).getChildAt(0) as GamePieceView
+            1 -> (placeholder1 as ViewGroup).getChildAt(0) as GamePieceView
+            2 -> (placeholder2 as ViewGroup).getChildAt(0) as GamePieceView
+            3 -> (placeholder3 as ViewGroup).getChildAt(0) as GamePieceView
+            -1 -> (parking     as ViewGroup).getChildAt(0) as GamePieceView
             else -> throw RuntimeException()
         }
     }
