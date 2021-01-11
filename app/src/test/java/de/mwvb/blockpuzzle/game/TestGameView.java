@@ -67,10 +67,6 @@ public class TestGameView implements IGameView {
     public void showTerritoryName(int resId) {
     }
 
-    @Override
-    public void rotatingModeOff() {
-    }
-
     @NotNull
     @Override
     public IGamePieceView getGamePieceView(int index) {
@@ -103,10 +99,6 @@ public class TestGameView implements IGameView {
 
             @Override
             public void endDragMode() {
-            }
-
-            @Override
-            public void setDrehmodus(boolean d) {
             }
         };
     }
