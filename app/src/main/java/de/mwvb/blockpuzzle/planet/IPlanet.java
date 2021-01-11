@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 
 public interface IPlanet extends ISpaceObject {
 
@@ -27,8 +26,6 @@ public interface IPlanet extends ISpaceObject {
     boolean isNextGamePieceResetedForNewGame();
     int getNewLiberationAttemptButtonTextResId();
     int getNewLiberationAttemptQuestionResId();
-    /** @return true: play all games simultaneously (Death Star game play), false: default game play */
-    boolean isSimultan(); // TODO raus, wenn nicht benötigt
 
     // TODO Namen der getInfo, getGameInfo und getInfoText Methoden nicht so aussagekräftig bzw. abgrenzend.
     /**

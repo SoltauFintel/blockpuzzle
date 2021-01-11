@@ -141,11 +141,6 @@ public class DeathStar implements IPlanet {
     }
 
     @Override
-    public boolean isSimultan() {
-        return true;
-    }
-
-    @Override
     public String getInfo(IPersistence persistence, Resources resources) {
         return resources.getString(R.string.deathStar) + ", " + resources.getString(R.string.gravitation) + " " + getGravitation() + "\n" + resources.getString(R.string.deathStarGames123);
     }

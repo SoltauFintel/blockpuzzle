@@ -12,7 +12,6 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.PlanetAccess;
 
 public abstract class AbstractPlanet extends AbstractSpaceObject implements IPlanet {
     // Stammdaten
@@ -45,11 +44,6 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     @Override
     public boolean isSelectable() {
         return true;
-    }
-
-    @Override
-    public boolean isSimultan() {
-        return false;
     }
 
     @Override
