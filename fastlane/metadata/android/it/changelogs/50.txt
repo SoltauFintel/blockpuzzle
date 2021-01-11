@@ -1,5 +1,6 @@
 - Versione italiana
 - Gira il pezzo toccandolo
+- Nuovi contenuti di gioco
 - I toni di gioco possono essere disattivati
 - I colori dei pezzi sono cambiati
 - Marcatore del pianeta fisso

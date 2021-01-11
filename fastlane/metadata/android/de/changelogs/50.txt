@@ -1,8 +1,9 @@
 - Spielstein drehen durch Antippen
+- neue Spielinhalte, z.B. OneColor Game, Daily Planet
 - französische und italienische Versionen
 - Game Sounds Option
 - Spielsteinfarben tlw. geändert
 - Haken am Planeten korrigiert
 - Sternfeld Hintergrund
-- Rasterlinien
-- Leerer Bildschirm Bonus nur wenn Spielfeld zuvor >50% gefüllt war
+- Rasterlinien in der Karte
+- Leerer Bildschirm Bonus nur wenn Spielfeld zuvor >40% gefüllt war
