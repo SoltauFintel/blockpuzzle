@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
-import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.NewGameService
 import de.mwvb.blockpuzzle.persistence.*
 import de.mwvb.blockpuzzle.planet.IPlanet
@@ -24,7 +23,8 @@ class SelectTerritoryActivity : AppCompatActivity() {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
         }
 
-        val planet = PlanetAccessFactory.getPlanetAccess(per()).planet
+        val pa = PlanetAccessFactory.getPlanetAccess(per())
+        val planet = pa.planet
 
         territory1.setOnClickListener { selectTerritory(0, planet) }
         territory2.setOnClickListener { selectTerritory(1, planet) }
@@ -32,28 +32,27 @@ class SelectTerritoryActivity : AppCompatActivity() {
 
         val n = planet.gameDefinitions.size
         if (n == 2) {
-            set12(planet)
+            set12(planet, pa)
             territory3.visibility = View.INVISIBLE
             gameInfoView3.visibility = View.INVISIBLE
         } else if (n == 3) {
-            set12(planet)
+            set12(planet, pa)
             territory3.text = resources.getString(planet.gameDefinitions[2].territoryName)
-            gameInfoView3.text = getGameInfoText(2, planet)
+            gameInfoView3.text = getGameInfoText(2, pa)
         } else { // wrong value
             finish()
             return
         }
     }
 
-    private fun set12(planet: IPlanet) {
+    private fun set12(planet: IPlanet, pa: PlanetAccess) {
         territory1.text = resources.getString(planet.gameDefinitions[0].territoryName)
         territory2.text = resources.getString(planet.gameDefinitions[1].territoryName)
-        gameInfoView1.text = getGameInfoText(0, planet)
-        gameInfoView2.text = getGameInfoText(1, planet)
+        gameInfoView1.text = getGameInfoText(0, pa)
+        gameInfoView2.text = getGameInfoText(1, pa)
     }
 
-    private fun getGameInfoText(gi: Int, planet: IPlanet): String { // TODO planet not used. Besser hier pa durchschleifen
-        val pa = PlanetAccessFactory.getPlanetAccess(per())
+    private fun getGameInfoText(gi: Int, pa: PlanetAccess): String { // TODO planet not used. Besser hier pa durchschleifen
         return pa.planet.getGameInfo(pa.persistence, resources, gi)
     }
 
