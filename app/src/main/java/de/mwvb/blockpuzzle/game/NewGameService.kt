@@ -19,6 +19,7 @@ class NewGameService {
             }
             MilkyWayCluster.get().resetGame()
             per.saveDeathStarMode(0)
+            per.saveDeathStarReactor(0)
             per.saveCurrentPlanet(1, 1) // Spaceship is catapulted to planet 1 again.
             // TODO Man könnte InfoAc anzeigen: "Roter Alarm. Captain, wir wurde erneut in die Y G. katapultiert. Wie konnte das erneut passieren? Hat jemand einen
             //      falschen Button gedrückt? ;-) Ein vollständiger Systemcheck wäre gut."

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.gamedefinition.LiberatedFeature;
 import de.mwvb.blockpuzzle.persistence.IPersistence;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -99,7 +100,9 @@ public class Cluster1Aufdeckungen {
         makeVisible(23, per, alpha); // fix for v5.0 | one color
         makeVisible(26, per, alpha); // fix for v5.0 | one color
 
-        makeVisible(90, per, beta);  // fix for v5.0 | space nebula
+        if (Features.deathStar) {
+            makeVisible(90, per, beta);  // fix for v5.0 | space nebula
+        }
         makeVisible(34, per, beta);  // fix for v5.0 | one color
 
         makeVisible(42, per, delta); // fix for v5.0 | daily planet

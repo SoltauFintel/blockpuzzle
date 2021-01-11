@@ -9,4 +9,6 @@ public interface Features {
     boolean shakeForGravitation = false;
 
     boolean developerMode = false;
+
+    boolean deathStar = false;
 }

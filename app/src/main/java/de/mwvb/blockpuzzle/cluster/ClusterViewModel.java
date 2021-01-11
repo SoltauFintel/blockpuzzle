@@ -4,10 +4,10 @@ import android.content.res.Resources;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
@@ -31,8 +31,10 @@ public class ClusterViewModel {
         currentPlanet = planet;
         persistence = per; // for saving the current planet
 
-        routes.add(new SpaceNebulaRoute(33, 35, per, infoAction));
-        routes.add(new SpaceNebulaRoute(35, 33, per, infoAction));
+        if (Features.deathStar) {
+            routes.add(new SpaceNebulaRoute(33, 35, per, infoAction));
+            routes.add(new SpaceNebulaRoute(35, 33, per, infoAction));
+        }
 
         for (ISpaceObject so : spaceObjects) {
             if (so instanceof AbstractPlanet) {

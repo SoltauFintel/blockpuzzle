@@ -30,6 +30,7 @@ public class Persistence implements IPersistence {
     private static final String GLOBAL_PLATINUM_TROPHY = "/trophyPlatinum"; // galaxy wide
     private static final String GLOBAL_LAST_TROPHY_DATE = "/trophyLastDate";// galaxy wide
     private static final String GLOBAL_DEATH_STAR = "/todesstern";
+    private static final String GLOBAL_DEATH_STAR_REACTOR = "/reaktor";
     // Planet specific data ----
     private static final String PLANET_VERSION = "version";
     private static final String PLANET_VISIBLE = "visible";
@@ -336,6 +337,16 @@ public class Persistence implements IPersistence {
     @Override
     public void saveDeathStarMode(int mode) {
         putInt(GLOBAL_DEATH_STAR, mode);
+    }
+
+    @Override
+    public int loadDeathStarReactor() {
+        return getInt(GLOBAL_DEATH_STAR_REACTOR, 0);
+    }
+
+    @Override
+    public void saveDeathStarReactor(int index) {
+        putInt(GLOBAL_DEATH_STAR_REACTOR, index);
     }
 
     @Override

@@ -16,7 +16,7 @@ import de.mwvb.blockpuzzle.planet.IPlanet;
 
 public class DeathStar implements IPlanet {
     private final List<GameDefinition> gameDefinitions = new ArrayList<>();
-    private int index; // TODO persistieren (wenn App beendet wird, darf man nicht im falschen Reaktor stehen wo dann holder123empty sein könnte)
+    private int index;
     private Cluster cluster;
     private GameDefinition selectedGame;
 
@@ -49,6 +49,9 @@ public class DeathStar implements IPlanet {
     }
     public int getGameIndex() {
         return index;
+    }
+    public void setGameIndex(int v) {
+        index = v;
     }
 
     public GameDefinition nextGame() {

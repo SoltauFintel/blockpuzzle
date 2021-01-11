@@ -7,7 +7,10 @@ import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.OneColorGameDefinition
-import de.mwvb.blockpuzzle.planet.*
+import de.mwvb.blockpuzzle.planet.DailyPlanet
+import de.mwvb.blockpuzzle.planet.GiantPlanet
+import de.mwvb.blockpuzzle.planet.Moon
+import de.mwvb.blockpuzzle.planet.Planet
 
 /**
  * Star cluster 1 of unknown Upsilon galaxy
@@ -64,7 +67,9 @@ object Cluster1 : Cluster(1) {
         add(getGiantPlanet4())
         add(Planet(37, 33, 33, CleanerGameDefinition(33, 7, 200)))
         add(Planet(38, 25, 36, CleanerGameDefinition(34, 8, 200)))
-        add(SpaceNebula(90, 27, 28))
+        if (Features.deathStar) {
+            add(SpaceNebula(90, 27, 28))
+        }
 
         // AUFDECKUNGEN
         Cluster1Aufdeckungen(spaceObjects).aufdeckungen()

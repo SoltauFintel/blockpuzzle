@@ -26,6 +26,15 @@ public class DeathStarGame extends StoneWarsGame {
     }
 
     @Override
+    protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
+        super.loadGame(loadNextGamePiece, checkGame);
+        if (loadNextGamePiece) {
+            getDeathStar().setGameIndex(gape.getPersistenceOK().loadDeathStarReactor());
+            super.offer();
+        }
+    }
+
+    @Override
     protected void postDispatch() {
         if (holders.is123Empty() && moves > 0) {
             setDragAllowed(false); // Don't allow player to drag something during wait time.
@@ -62,6 +71,7 @@ public class DeathStarGame extends StoneWarsGame {
         // Andernfalls weiterschalten:
         if (ds.getGameIndex() > 0 || punkte > 0) {
             definition = ds.nextGame(); // gape Zugriffe zeigen nun auf diese GameDefinition
+            gape.getPersistenceOK().saveDeathStarReactor(ds.getGameIndex());
             // definition is null at this point if Death Star is  destroyed.
             if (deathStarDestroyed()) {
                 return false; // abort
@@ -86,6 +96,7 @@ public class DeathStarGame extends StoneWarsGame {
                 @Override
                 public void run() {
                     per.saveDeathStarMode(0); // deactivate Death Star game play
+                    per.saveDeathStarReactor(0);
                     per.saveCurrentPlanet(1, 1); // Spaceship is catapulted to planet 1 again.
                     view.getSpecialAction(2).execute(); // leave Death Star game (show info activity and then bridge)
                 }

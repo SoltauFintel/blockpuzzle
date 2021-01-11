@@ -162,6 +162,15 @@ public class PersistenceNoOp implements IPersistence {
     }
 
     @Override
+    public int loadDeathStarReactor() {
+        return 0;
+    }
+
+    @Override
+    public void saveDeathStarReactor(int index) {
+    }
+
+    @Override
     public void saveOldGame(int v) {
     }
 

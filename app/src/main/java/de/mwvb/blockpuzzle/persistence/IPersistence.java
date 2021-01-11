@@ -90,6 +90,8 @@ public interface IPersistence {
      */
     int loadDeathStarMode();
     void saveDeathStarMode(int mode);
+    int loadDeathStarReactor();
+    void saveDeathStarReactor(int index);
 
     /**
      * @param v 0: no selection (show start screen), 1: old game, 2: Stone Wars game
