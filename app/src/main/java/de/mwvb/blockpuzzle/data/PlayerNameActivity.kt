@@ -38,7 +38,7 @@ class PlayerNameActivity : AppCompatActivity() {
         super.onResume()
         try {
             val gd = GlobalData.get()
-            playername.setText(gd.playername)
+            playername.setText(gd.playername?:"")
             gameSounds.isChecked = gd.isGameSounds
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()

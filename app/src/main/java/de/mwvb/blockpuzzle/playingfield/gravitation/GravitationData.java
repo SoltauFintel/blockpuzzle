@@ -52,14 +52,14 @@ public class GravitationData {
         clear();
 
         String d = ss.getGravitationRows();
-        if (!d.isEmpty() && !d.contains("/")/*because of bug*/) {
+        if (d != null && !d.isEmpty()) {
             for (String w : d.split(",")) {
                 getRows().add(Integer.parseInt(w));
             }
         }
 
         d = ss.getGravitationExclusions();
-        if (!d.isEmpty()) {
+        if (d != null && !d.isEmpty()) {
             for (String w : d.split(",")) {
                 String[] k = w.split("/");
                 getExclusions().add(new QPosition(Integer.parseInt(k[0]), Integer.parseInt(k[1])));

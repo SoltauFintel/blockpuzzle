@@ -58,7 +58,11 @@ public class DataService {
         sb.append("/");
         sb.append(code6(sb.toString()));
         sb.append("//");
-        sb.append(GlobalData.get().getPlayername().replace(" ", "_"));
+        String pn = GlobalData.get().getPlayername();
+        if (pn == null) {
+            pn = "";
+        }
+        sb.append(pn.replace(" ", "_"));
         return splitLines(sb);
     }
 
