@@ -81,7 +81,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
                 s = getSelectedGame();
                 gi = getCurrentGameDefinitionIndex();
             }
-            String info = s.getInfo(); // Game definition
+            String info = s.getDescription(true); // Game definition
 
             // Scores
             Spielstand ss = spielstandDAO.load(this, gi);

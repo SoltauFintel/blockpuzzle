@@ -57,7 +57,7 @@ public class ClusterViewModel {
 
     private String createInfoText2(AbstractPlanet p) {
         if (p.getGameDefinitions() != null && !p.getGameDefinitions().isEmpty()) {
-            return getFirstGameDefinition(p).getClusterViewInfo();
+            return getFirstGameDefinition(p).getDescription(false);
         } else {
             return "";
         }

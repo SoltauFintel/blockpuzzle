@@ -180,7 +180,7 @@ public class DeathStar implements IPlanet {
     @Override
     public String getGameInfo(Resources resources, int gi) {
         StringBuilder info = new StringBuilder();
-        info.append(getGameDefinitions().get(0).getInfo());
+        info.append(getGameDefinitions().get(0).getDescription(true));
         info.append("\n");
         info.append(resources.getString(R.string.score));
         info.append(": ");

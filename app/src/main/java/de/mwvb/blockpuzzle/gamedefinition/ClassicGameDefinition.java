@@ -51,29 +51,17 @@ public class ClassicGameDefinition extends GameDefinition {
     // DISPLAY ----
 
     @Override
-    public String getInfo() {
-        String info = "";
+    public String getDescription(boolean longDisplay) {
         if (Features.developerMode) {
-            info = "Z" + getGamePieceSetNumber() + " ";
+            return "Z" + getGamePieceSetNumber() + " "
+                    + getShortGameName() + (longDisplay ? " Game" : "") + (getMinimumLiberationScore() > 0 ? " MLS" + (getMinimumLiberationScore() / 1000) + "k" : "");
+        } else {
+            return getShortGameName() + (longDisplay ? " Game" : "") + (getMinimumLiberationScore() > 0 ? " MLS" + (getMinimumLiberationScore() / 1000) + "k" : "");
         }
-        info += getShortGameName() + " Game";
-        if (getMinimumLiberationScore() > 0) {
-            info += " MLS" + (getMinimumLiberationScore() / 1000) + "k";
-        }
-        return info;
     }
 
     protected String getShortGameName() {
         return "Classic";
-    }
-
-    @Override
-    public String getClusterViewInfo() {
-        if (Features.developerMode) {
-            return "Z" + getGamePieceSetNumber() + " " + getShortGameName() + " MLS" + (getMinimumLiberationScore() / 1000) + "k";
-        } else {
-            return getShortGameName() + " MLS" + (getMinimumLiberationScore() / 1000) + "k";
-        }
     }
 
 

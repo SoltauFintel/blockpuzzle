@@ -53,25 +53,17 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // DISPLAY ----
 
-    override fun getInfo(): String {
+    override fun getDescription(longDisplay: Boolean): String {
         var ret = ""
         if (Features.developerMode) {
             ret = "Z$gamePieceSetNumber "
         }
-        ret += "Cleaner Game L$level"
-        if (maximumLiberationMoves > 0) {
-            ret += " XLM$maximumLiberationMoves"
+        ret += "Cleaner"
+        if (longDisplay) {
+            ret += " Game"
         }
-        return ret
-    }
-
-    override fun getClusterViewInfo(): String {
-        var ret = ""
-        if (Features.developerMode) {
-            ret = "Z$gamePieceSetNumber "
-        }
-        ret += "Cleaner L$level"
-        if (maximumLiberationMoves > 0) {
+        ret += " L$level"
+        if (longDisplay && maximumLiberationMoves > 0) {
             ret += " XLM$maximumLiberationMoves"
         }
         return ret

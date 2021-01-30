@@ -71,13 +71,13 @@ public abstract class GameDefinition {
 
 
     // DISPLAY ----
-    // TODO Die Ausgabe von diesen beiden Methoden ist zu ähnlich. Was kann man da machen?
 
-    /** Game definition info for select-territory and planet activity */
-    public abstract String getInfo();
-
-    /** info for cluster view */
-    public abstract String getClusterViewInfo();
+    /**
+     * Returns short game description
+     * @param longDisplay true: normal length, false: a bit shorter
+     * @return e.g. "CLassic Game MLS8k"
+     */
+    public abstract String getDescription(boolean longDisplay);
 
 
     // QUESTIONS AND EVENTS ----
