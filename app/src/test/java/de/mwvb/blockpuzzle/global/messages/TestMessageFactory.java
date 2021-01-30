@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.messages;
+package de.mwvb.blockpuzzle.global.messages;
 
 public final class TestMessageFactory extends MessageFactory {
 

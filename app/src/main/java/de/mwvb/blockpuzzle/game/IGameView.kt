@@ -2,7 +2,7 @@ package de.mwvb.blockpuzzle.game
 
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView
 import de.mwvb.blockpuzzle.gamestate.Spielstand
-import de.mwvb.blockpuzzle.messages.MessageFactory
+import de.mwvb.blockpuzzle.global.messages.MessageFactory
 import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 

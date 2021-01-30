@@ -1,8 +1,8 @@
 package de.mwvb.blockpuzzle.game.stonewars.deathstar;
 
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition;
-import de.mwvb.blockpuzzle.messages.MessageFactory;
-import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
+import de.mwvb.blockpuzzle.global.messages.MessageFactory;
+import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
 
 public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     private boolean won = false; // TO-DO persistieren

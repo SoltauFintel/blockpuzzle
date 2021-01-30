@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.gravitation;
+package de.mwvb.blockpuzzle.playingfield.gravitation;
 
 import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.GameEngineInterface;

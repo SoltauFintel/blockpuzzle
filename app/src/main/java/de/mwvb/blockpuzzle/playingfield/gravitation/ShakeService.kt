@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.gravitation
+package de.mwvb.blockpuzzle.playingfield.gravitation
 
 import android.app.Activity
 import android.content.Context

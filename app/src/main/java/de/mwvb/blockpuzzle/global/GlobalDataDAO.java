@@ -1,7 +1,5 @@
 package de.mwvb.blockpuzzle.global;
 
-import de.mwvb.blockpuzzle.persistence.AbstractDAO;
-
 public final class GlobalDataDAO extends AbstractDAO<GlobalData> {
     private static final String ID = "1";
 

@@ -20,9 +20,9 @@ import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
-import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
+import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
 
 /**
  * Block Puzzle game logic

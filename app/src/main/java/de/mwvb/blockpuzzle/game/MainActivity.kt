@@ -18,16 +18,16 @@ import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gamestate.GamePlayState
 import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.BridgeActivity
 import de.mwvb.blockpuzzle.global.GlobalData
 import de.mwvb.blockpuzzle.global.InfoActivity
-import de.mwvb.blockpuzzle.gravitation.ShakeService
-import de.mwvb.blockpuzzle.messages.MessageFactory
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
+import de.mwvb.blockpuzzle.global.messages.MessageFactory
 import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.QPosition
+import de.mwvb.blockpuzzle.playingfield.gravitation.ShakeService
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 

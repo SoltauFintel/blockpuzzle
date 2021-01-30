@@ -2,7 +2,7 @@ package de.mwvb.blockpuzzle.gamestate;
 
 import androidx.annotation.NonNull;
 
-import de.mwvb.blockpuzzle.persistence.AbstractDAO;
+import de.mwvb.blockpuzzle.global.AbstractDAO;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
 

@@ -1,6 +1,6 @@
-package de.mwvb.blockpuzzle.developer;
+package de.mwvb.blockpuzzle.global.developer;
 
-import de.mwvb.blockpuzzle.persistence.AbstractDAO;
+import de.mwvb.blockpuzzle.global.AbstractDAO;
 
 public class DeveloperDataDAO extends AbstractDAO<DeveloperData> {
     private static final String ID = "1";

@@ -6,11 +6,11 @@ import de.mwvb.blockpuzzle.game.IGameView
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamestate.GameState
-import de.mwvb.blockpuzzle.gravitation.GravitationData
-import de.mwvb.blockpuzzle.messages.MessageFactory
+import de.mwvb.blockpuzzle.global.messages.MessageFactory
 import de.mwvb.blockpuzzle.playingfield.FilledRows
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 import de.mwvb.blockpuzzle.playingfield.QPosition
+import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData
 
 data class PlaceInfo(val index: Int,
                      val gamePiece: GamePiece,

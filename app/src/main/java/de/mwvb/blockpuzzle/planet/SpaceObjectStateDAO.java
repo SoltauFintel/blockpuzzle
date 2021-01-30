@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.planet;
 
-import de.mwvb.blockpuzzle.persistence.AbstractDAO;
+import de.mwvb.blockpuzzle.global.AbstractDAO;
 
 public final class SpaceObjectStateDAO extends AbstractDAO<SpaceObjectState> {
 

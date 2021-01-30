@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
+import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.GlobalData
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateService
 import kotlinx.android.synthetic.main.activity_player_name.*
 

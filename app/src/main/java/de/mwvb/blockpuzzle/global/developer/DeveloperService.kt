@@ -1,11 +1,11 @@
-package de.mwvb.blockpuzzle.developer
+package de.mwvb.blockpuzzle.global.developer
 
 import de.mwvb.blockpuzzle.cluster.Cluster1
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.gamestate.TrophiesDAO
 import de.mwvb.blockpuzzle.global.GlobalDataDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateDAO
-import de.mwvb.blockpuzzle.trophy.TrophiesDAO
 import kotlin.system.exitProcess
 
 class DeveloperService {

@@ -1,6 +1,6 @@
-package de.mwvb.blockpuzzle.trophy;
+package de.mwvb.blockpuzzle.gamestate;
 
-import de.mwvb.blockpuzzle.persistence.AbstractDAO;
+import de.mwvb.blockpuzzle.global.AbstractDAO;
 
 public final class TrophiesDAO extends AbstractDAO<Trophies> {
 

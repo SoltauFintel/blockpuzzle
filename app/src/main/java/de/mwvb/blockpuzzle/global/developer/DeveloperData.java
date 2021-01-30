@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.developer;
+package de.mwvb.blockpuzzle.global.developer;
 
 public class DeveloperData {
     private String today;

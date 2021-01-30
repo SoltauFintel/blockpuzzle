@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.gamestate;
 
-import de.mwvb.blockpuzzle.messages.MessageFactory;
+import de.mwvb.blockpuzzle.global.messages.MessageFactory;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateService;
 

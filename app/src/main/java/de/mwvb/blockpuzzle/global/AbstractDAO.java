@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.persistence;
+package de.mwvb.blockpuzzle.global;
 
 import android.app.Activity;
 

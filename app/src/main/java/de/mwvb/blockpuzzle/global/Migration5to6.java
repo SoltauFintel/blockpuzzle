@@ -9,12 +9,12 @@ import de.mwvb.blockpuzzle.cluster.Cluster1;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.gamestate.Trophies;
+import de.mwvb.blockpuzzle.gamestate.TrophiesDAO;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
 import de.mwvb.blockpuzzle.planet.SpaceObjectState;
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateDAO;
-import de.mwvb.blockpuzzle.trophy.Trophies;
-import de.mwvb.blockpuzzle.trophy.TrophiesDAO;
 
 /**
  * Data migration from V5 to V6. From SharedPrefs to JSON files. From IPersistence to AbstractDAO. From API controlled to object oriented.

@@ -1,11 +1,11 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
+import de.mwvb.blockpuzzle.gamestate.TrophiesDAO
 import de.mwvb.blockpuzzle.global.GlobalData
-import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState
+import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState
 import de.mwvb.blockpuzzle.planet.DailyPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
-import de.mwvb.blockpuzzle.trophy.TrophiesDAO
 import java.util.*
 
 /**

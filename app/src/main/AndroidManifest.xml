@@ -40,7 +40,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".developer.DeveloperActivity"
+            android:name="de.mwvb.blockpuzzle.global.developer.DeveloperActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

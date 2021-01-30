@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.background;
+package de.mwvb.blockpuzzle.global;
 
 import android.content.Context;
 import android.graphics.Canvas;

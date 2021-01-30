@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.messages;
+package de.mwvb.blockpuzzle.global.messages;
 
 /**
  * This represents a concrete displayable message.

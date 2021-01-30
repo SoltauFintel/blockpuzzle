@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.gravitation;
+package de.mwvb.blockpuzzle.playingfield.gravitation;
 
 import java.util.ArrayList;
 import java.util.HashSet;

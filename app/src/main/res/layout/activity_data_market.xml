@@ -7,7 +7,7 @@
     android:background="@color/black"
     tools:context=".data.DataMarketActivity">
 
-    <de.mwvb.blockpuzzle.background.StarsView
+    <de.mwvb.blockpuzzle.global.StarsView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

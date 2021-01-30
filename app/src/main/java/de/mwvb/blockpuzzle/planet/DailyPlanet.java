@@ -6,10 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import de.mwvb.blockpuzzle.developer.DeveloperService;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 import de.mwvb.blockpuzzle.global.Features;
+import de.mwvb.blockpuzzle.global.developer.DeveloperService;
 
 /**
  * This is an important outpost of the Orange Union. Every day the Orange Union recaptures the planet.

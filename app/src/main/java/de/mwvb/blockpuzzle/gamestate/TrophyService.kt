@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.trophy
+package de.mwvb.blockpuzzle.gamestate
 
 import de.mwvb.blockpuzzle.global.GlobalData
 

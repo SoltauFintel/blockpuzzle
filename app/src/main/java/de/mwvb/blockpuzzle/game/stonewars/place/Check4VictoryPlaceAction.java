@@ -8,7 +8,7 @@ import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
-import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
+import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**

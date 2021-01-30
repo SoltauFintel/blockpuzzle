@@ -8,10 +8,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.game.MainActivity
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
+import de.mwvb.blockpuzzle.global.AbstractDAO
+import de.mwvb.blockpuzzle.global.developer.DeveloperActivity
 import kotlinx.android.synthetic.main.activity_select_territory.*
 
 class SelectTerritoryActivity : AppCompatActivity() {

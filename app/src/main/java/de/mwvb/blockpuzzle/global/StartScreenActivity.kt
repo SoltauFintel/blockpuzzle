@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.game.MainActivity
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
 /**

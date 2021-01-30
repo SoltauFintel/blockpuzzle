@@ -13,10 +13,10 @@ import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebulaRoute
+import de.mwvb.blockpuzzle.gamestate.TrophiesDAO
+import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.GlobalData
-import de.mwvb.blockpuzzle.messages.MessageFactory
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
-import de.mwvb.blockpuzzle.trophy.TrophiesDAO
+import de.mwvb.blockpuzzle.global.messages.MessageFactory
 import kotlinx.android.synthetic.main.activity_data_market.*
 
 /**

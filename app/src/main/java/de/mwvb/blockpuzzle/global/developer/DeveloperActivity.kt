@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.developer
+package de.mwvb.blockpuzzle.global.developer
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -8,12 +8,12 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.gamestate.Spielstand
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.gamestate.TrophyService
+import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.Features
-import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateDAO
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateService
-import de.mwvb.blockpuzzle.trophy.TrophyService
 import kotlinx.android.synthetic.main.activity_developer.*
 
 class DeveloperActivity : AppCompatActivity() {
