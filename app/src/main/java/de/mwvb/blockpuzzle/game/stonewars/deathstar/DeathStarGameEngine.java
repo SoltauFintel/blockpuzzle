@@ -51,7 +51,7 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
                 @Override
                 public void run() {
                     offer();
-                    if (!gs.isGameOver()) { // TO-DO evtl. Prüfung auf PLAYING
+                    if (!gs.isLostGame()) { // TO-DO evtl. Prüfung auf PLAYING
                         checkGame();
                         save();
                     }

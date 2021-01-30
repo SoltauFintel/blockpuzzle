@@ -33,7 +33,7 @@ public class GameState {
     /**
      * @return true if lost game, false if game goes on or won game
      */
-    public boolean isGameOver() { // TODO rename: isLostGame
+    public boolean isLostGame() {
         return ss.getState() == GamePlayState.LOST_GAME;
     }
 

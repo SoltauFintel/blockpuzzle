@@ -127,7 +127,7 @@ public class GameEngine implements GameEngineInterface {
             holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
         }
 
-        if (!gs.isGameOver() && holders.is123Empty()) {
+        if (!gs.isLostGame() && holders.is123Empty()) {
             // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
             // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
             // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
@@ -153,7 +153,7 @@ public class GameEngine implements GameEngineInterface {
      * Throws DoesNotWorkException
      */
     public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
-        if (gs.isGameOver()) {
+        if (gs.isLostGame()) {
             return;
         }
         boolean ret;
@@ -345,7 +345,7 @@ public class GameEngine implements GameEngineInterface {
     }
 
     public boolean isGameOver() {
-        return gs.isGameOver();
+        return gs.isLostGame();
     }
 
     public int get(int x, int y) {
@@ -353,7 +353,7 @@ public class GameEngine implements GameEngineInterface {
     }
 
     public void rotate(int index) {
-        if (!gs.isGameOver()) {
+        if (!gs.isLostGame()) {
             holders.get(index).rotate();
             moveImpossible(index);
         }

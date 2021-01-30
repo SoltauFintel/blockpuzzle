@@ -62,7 +62,7 @@ public class StoneWarsGameEngine extends GameEngine {
     @Override
     protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
         super.loadGame(loadNextGamePiece, checkGame);
-        if (gs.isGameOver()) {
+        if (gs.isLostGame()) {
             view.showScoreAndMoves(gs.get()); // display game over text
             playingField.gameOver();
         }
