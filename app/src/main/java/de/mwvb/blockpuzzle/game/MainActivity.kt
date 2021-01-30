@@ -278,18 +278,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         territoryName.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE // hide label to save space
     }
 
-    override fun showToast(msg: String) {
-        var msg2 = msg
-        if (msg.startsWith("+")) {
-            msg2 = msg.substring(1)
-            playingField.soundService.youWon()
-        } else if (msg.startsWith("-")) {
-            msg2 = msg.substring(1)
-            playingField.soundService.gameOver()
-        }
-        Toast.makeText(this, msg2, Toast.LENGTH_LONG).show()
-    }
-
     override fun shake() {
         playingField.soundService.shake()
     }

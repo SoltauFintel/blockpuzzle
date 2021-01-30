@@ -21,8 +21,6 @@ interface IGameView {
 
     fun showTerritoryName(resId: Int)
 
-    fun showToast(msg: String)
-
     fun shake()
 
     fun playSound(number: Int)
