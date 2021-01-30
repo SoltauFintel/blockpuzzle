@@ -70,6 +70,9 @@ public class Migration5to6 {
     public void migrate(Context context) {
         System.out.println("-------------------MIGRATION---------------------");
         pref = context.getSharedPreferences("GAMEDATA_2", Context.MODE_PRIVATE);
+        if (pref.getAll() == null || pref.getAll().isEmpty()) {
+            return; // not necessary because first use of app
+        }
 
         GlobalData g = new GlobalData();
         g.setCurrentPlanet(getInt(GLOBAL_CURRENT_PLANET, 1));
