@@ -51,7 +51,7 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
                 @Override
                 public void run() {
                     offer();
-                    if (!gs.isGameOver()) { // TODO evtl. Prüfung auf PLAYING
+                    if (!gs.isGameOver()) { // TO-DO evtl. Prüfung auf PLAYING
                         checkGame();
                         save();
                     }
@@ -151,7 +151,7 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
         // nichts machen, der NextGamePiece Index soll über alle Reaktoren weiter laufen
     }
 
-// TODO
+// TO-DO
 //  check4Liberation wird glaubich immer aufgerufen wenn ich gewonnen habe. Wenn ich das DeathStar Game teste, muss ich das hier reparieren.
 //    @Override
 //    protected void check4Liberation() {

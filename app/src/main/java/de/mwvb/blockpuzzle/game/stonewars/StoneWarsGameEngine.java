@@ -14,13 +14,14 @@ import de.mwvb.blockpuzzle.game.stonewars.place.StoneWarsScorePlaceAction;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
+import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
  * Stone Wars game engine
  */
-public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars package machen
+public class StoneWarsGameEngine extends GameEngine {
 
     public StoneWarsGameEngine(IGameView view, StoneWarsGameState gs) {
         super(view, gs);
@@ -64,35 +65,15 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
         if (gs.isGameOver()) {
             view.showScoreAndMoves(gs.get()); // display game over text
             playingField.gameOver();
-//        } else {
-            // TODO Dieser Part hier sollte nach GameDefinition verschoben werden bzw. der WON/LOST state sollte ja persistiert sein.
-//            // calculate won [for classic game]
-//            ScoreChangeInfo info = new ScoreChangeInfo((StoneWarsGameState) gs, view.getMessages()).forceCalculation();
-//            MessageObjectWithGameState msg = getDefinition().scoreChanged(info);
-//            if (msg.isWonGame()) {
-//                gs.get().setState(GamePlayState.WON_GAME); // old code: set won = ...
-//            }
-//
-//            // calculate game over [for cleaner game]
-//            if (playingField.getFilled() == 0 && getDefinition().onEmptyPlayingField()) {
-//                gs.get().setState(GamePlayState.WON_GAME); // old code: gameOver=true
-//            }
         }
     }
 
     @Override
     protected void offer() {
-        switch (gs.get().getState()) {
-            case LOST_GAME: // do nothing
-                break;
-            case WON_GAME:
-                if (getDefinition().gameGoesOnAfterWonGame()) {
-                    super.offer();
-                }
-                break;
-            case PLAYING:
-                super.offer();
-                break;
+        GamePlayState state = gs.get().getState();
+        if (state == GamePlayState.PLAYING
+                || (state == GamePlayState.WON_GAME && getDefinition().gameGoesOnAfterWonGame())) {
+            super.offer();
         }
     }
 
@@ -103,8 +84,8 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
     }
 
     @Override
-    public void onGameOver() {
-        super.onGameOver();
+    public void onLostGame() {
+        super.onLostGame();
         ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
     }
 
