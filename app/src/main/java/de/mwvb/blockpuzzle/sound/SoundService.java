@@ -65,6 +65,25 @@ public class SoundService implements ISoundService {
         soundPool.play(soundId, 1, 1, 0, 0, 1f);
     }
 
+    private void quiet() {
+        if (off()) return;
+        quiet(jeqa);
+        quiet(explosion);
+    }
+
+    private void quiet(MediaPlayer mp) {
+        if (off()) return;
+        mp.stop();
+        try {
+            mp.prepare(); // direkt wieder startfähig machen
+        } catch (Throwable ignore) {
+        }
+    }
+
+    private boolean off() {
+        return !on;
+    }
+
     @Override
     public void clear(boolean big) {
         if (big) {
@@ -135,24 +154,5 @@ public class SoundService implements ISoundService {
         } else {
             quiet(alarm);
         }
-    }
-
-    private void quiet() {
-        if (off()) return;
-        quiet(jeqa);
-        quiet(explosion);
-    }
-
-    private void quiet(MediaPlayer mp) {
-        if (off()) return;
-        mp.stop();
-        try {
-            mp.prepare(); // direkt wieder startfähig machen
-        } catch (Throwable ignore) {
-        }
-    }
-
-    private boolean off() {
-        return !on;
     }
 }
