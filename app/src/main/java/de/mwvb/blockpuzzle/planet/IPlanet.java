@@ -26,18 +26,19 @@ public interface IPlanet extends ISpaceObject {
     int getNewLiberationAttemptButtonTextResId();
     int getNewLiberationAttemptQuestionResId();
 
-    // TODO Namen der getInfo und getGameInfo Methoden nicht so aussagekräftig bzw. abgrenzend.
     /**
+     * Returns planet and territory info. Plus game info. Used by bridge.
      * @param resources -
      * @return planet type, planet number, gravitation and territory name
+     *         plus game info
      */
     String getInfo(Resources resources);
-
     /**
+     * Returns game description with scores. Used by SelectTerritory and by getInfo().
      * @param resources -
      * @param gi -1 to take selected game.
-     *                  Otherwise it's the 0 based GameDefinition index.
-     *                  gameIndex must not be used by implementation.
+     *           Otherwise it's the 0 based GameDefinition index.
+     *           gi must not be used by implementation.
      * @return game type, scores of player, scores of owner, liberated by ... text
      */
     String getGameInfo(Resources resources, int gi);

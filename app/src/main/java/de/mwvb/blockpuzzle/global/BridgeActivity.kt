@@ -12,7 +12,6 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.cluster.NavigationActivity
 import de.mwvb.blockpuzzle.data.DataMarketActivity
 import de.mwvb.blockpuzzle.game.GameEngineFactory
-import de.mwvb.blockpuzzle.game.GameInfoService
 import de.mwvb.blockpuzzle.game.MainActivity
 import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.global.developer.DeveloperActivity
@@ -55,7 +54,7 @@ class BridgeActivity : AppCompatActivity() {
     private fun update() {
         val planet = getPlanet()
         navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode()
-        positionView.text = GameInfoService().getPositionInfo(planet, resources)
+        positionView.text = planet.getInfo(resources) // all lines under Navigation button
         play.isEnabled = isGameBtnEnabled(planet)
         newGame.setText(planet.newLiberationAttemptButtonTextResId)
     }

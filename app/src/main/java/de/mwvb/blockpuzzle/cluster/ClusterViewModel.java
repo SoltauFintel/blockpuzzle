@@ -42,17 +42,12 @@ public class ClusterViewModel {
             if (so instanceof AbstractPlanet) {
                 AbstractPlanet p = (AbstractPlanet) so;
 
-                String infoText1 = getName(p, resources) + p.getNumber();
+                String infoText1 = resources.getString(p.getName()) + " #" + p.getNumber();
                 String infoText2 = createInfoText2(p);
                 String infoText3 = createInfoText3(p, dao.load(p));
                 infos.put(p, new SpaceObjectInfo(infoText1, infoText2, infoText3));
             }
         }
-    }
-
-    @NotNull
-    private String getName(AbstractPlanet p, Resources resources) {
-        return resources.getString(p.getName()) + " #";
     }
 
     private String createInfoText2(AbstractPlanet p) {
@@ -65,6 +60,7 @@ public class ClusterViewModel {
 
     @NotNull
     private String createInfoText3(AbstractPlanet p, Spielstand ss) {
+        // TODO NLS
         String ret = "";
         int n = p.getGameDefinitions().size();
         if (n == 1 && getFirstGameDefinition(p).showMoves()) {

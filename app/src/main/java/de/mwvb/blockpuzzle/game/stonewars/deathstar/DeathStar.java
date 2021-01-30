@@ -174,7 +174,9 @@ public class DeathStar implements IPlanet {
 
     @Override
     public String getInfo(Resources resources) {
-        return resources.getString(R.string.deathStar) + ", " + resources.getString(R.string.gravitation) + " " + getGravitation() + "\n" + resources.getString(R.string.deathStarGames123);
+        return resources.getString(getName()) + ", " + resources.getString(R.string.gravitation) + " " + getGravitation()
+                + "\n" + resources.getString(R.string.deathStarGames123)
+                + "\n" + getGameInfo(resources, -1);
     }
 
     @Override

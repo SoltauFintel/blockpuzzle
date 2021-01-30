@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.R;
+import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
@@ -62,18 +63,28 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
     @Override
     public String getInfo(Resources resources) {
-        String info = resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
+        // Position
+        Cluster cluster = this.getCluster();
+        String info = resources.getString(R.string.position) + ":   G=" + cluster.getGalaxyShortName() + "  C=" + cluster.getShortName() +
+                "  Q=" + Cluster.getQuadrant(this);
+        if (isShowCoordinates()) {
+            info += "  X=" + getX() + "  Y=" + getY();
+        }
+
+        // Planet
+        info += "\n" + resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
         if (getGameDefinitions().size() > 1) {
-            // Was soll das? -> getCurrentGameDefinitionIndex(); // ensure game def is selected
             info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
         }
-        return info;
+
+        // Plus game info
+        return info + "\n" + getGameInfo(resources, -1);
     }
 
     @Override
     public String getGameInfo(Resources resources, int gi) {
         if (hasGames()) {
-            // Was soll das? -> getCurrentGameDefinitionIndex();
+            // Game description
             GameDefinition s;
             if (gi >= 0) {
                 s = getGameDefinitions().get(gi);
@@ -81,7 +92,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
                 s = getSelectedGame();
                 gi = getCurrentGameDefinitionIndex();
             }
-            String info = s.getDescription(true); // Game definition
+            String info = s.getDescription(true);
 
             // Scores
             Spielstand ss = spielstandDAO.load(this, gi);
