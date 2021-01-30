@@ -50,6 +50,7 @@ public abstract class AbstractDAO<T> {
         return file(id).delete();
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected boolean exists(String id) {
         return file(id).exists();
     }

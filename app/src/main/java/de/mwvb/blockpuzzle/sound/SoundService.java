@@ -132,6 +132,12 @@ public class SoundService implements ISoundService {
             case 2:
                 play(emptyScreenBonus);
                 break;
+            case 3:
+                youWon();
+                break;
+            case 4:
+                gameOver();
+                break;
         }
     }
 

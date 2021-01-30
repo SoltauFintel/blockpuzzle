@@ -36,6 +36,11 @@ public class ClassicGameDefinition extends GameDefinition {
         return minimumLiberationScore;
     }
 
+    @Override
+    public boolean gameGoesOnAfterWonGame() {
+        return true;
+    }
+
     @NotNull
     @Override
     public String toString() {
@@ -84,7 +89,9 @@ public class ClassicGameDefinition extends GameDefinition {
     @Override
     public MessageObjectWithGameState scoreChanged(ScoreChangeInfo info) {
         int score = info.getScore();
-        if (info.isWon() || score < getMinimumLiberationScore()) return info.getMessages().getNoMessage();
+        if (score < getMinimumLiberationScore()) {
+            return info.getMessages().getNoMessage();
+        }
 
         int ownerScore = info.getOwnerScore();
         if (ownerScore > 0 && score > ownerScore) { // Planet war von Gegner besetzt

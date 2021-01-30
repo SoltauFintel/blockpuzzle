@@ -1,7 +1,6 @@
 package de.mwvb.blockpuzzle.gamestate
 
 import de.mwvb.blockpuzzle.game.stonewars.deathstar.MilkyWayCluster
-import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
 import de.mwvb.blockpuzzle.global.GlobalData
 
 // TODO Entweder mehr Code hier rein oder Klasse auflösen.
@@ -23,25 +22,5 @@ class SpielstandService {
             ss.gamePieceViewP = "" // clear parking
             dao.save(planet, i, ss)
         }
-    }
-
-    fun setSpielstandState(ss: Spielstand, state: GamePlayState, definition: GameDefinition) {
-        if (state == GamePlayState.PLAYING) {
-            ss.state = state // game goes on
-        } else if (state == GamePlayState.LOST_GAME) {
-            ss.state = state // game ends (e.g. playing field full)
-        } else if (state == GamePlayState.WON_GAME) {
-            if (definition.gameCanBeWon()) {
-                ss.state = state // game ends (e.g. playing field empty in Cleaner game)
-            } // else: game goes on
-        } else {
-            throw IllegalArgumentException("Illegal argument: $state")
-        }
-    }
-    fun setSpielstandStatePlaying(ss: Spielstand) {
-        ss.state = GamePlayState.PLAYING
-    }
-    fun setSpielstandStateLostGame(ss: Spielstand) {
-        ss.state = GamePlayState.LOST_GAME
     }
 }

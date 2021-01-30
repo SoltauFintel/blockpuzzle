@@ -217,12 +217,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     // TODO Das ist eher Fachlogik. inkl. getScoreText()
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
-
-        if (ss.state == GamePlayState.LOST_GAME) {
-            playingField.soundService.gameOver()
-        } else if (ss.state == GamePlayState.WON_GAME) {
-            playingField.soundService.youWon()
-        } else if (ss.delta > 0) {
+        if (ss.delta > 0) {
             text += " (" + DecimalFormat("+#,##0").format(ss.delta) + ")"
         }
         info.text = text
@@ -235,14 +230,10 @@ class MainActivity : AppCompatActivity(), IGameView {
     }
 
     private fun getScoreText(ss: Spielstand): String {
-        val ret: Int = if (ss.state != GamePlayState.PLAYING) { // old: gameOver
-            if (gameEngine.gameCanBeWon() && gameEngine.isWon) {
-                if (ss.score == 1) R.string.winScore1 else R.string.winScore2
-            } else {
-                if (ss.score == 1) R.string.gameOverScore1 else R.string.gameOverScore2
-            }
-        } else {
-            if (ss.score == 1) R.string.score1 else R.string.score2
+        val ret = when (ss.state) {
+            GamePlayState.LOST_GAME -> if (ss.score == 1) R.string.gameOverScore1 else R.string.gameOverScore2
+            GamePlayState.WON_GAME  -> if (ss.score == 1) R.string.winScore1 else R.string.winScore2
+            else/*PLAYING*/         -> if (ss.score == 1) R.string.score1 else R.string.score2
         }
         return resources.getString(ret).replace("XX", DecimalFormat("#,##0").format(ss.score))
     }

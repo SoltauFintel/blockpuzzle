@@ -1,15 +1,17 @@
 package de.mwvb.blockpuzzle.gamestate;
 
+import androidx.annotation.NonNull;
+
 /**
  * Game state entity
  *
  * ID: "C" + cluster number + "_" + planet number + "_" + 0 based game definition index
  */
 public class Spielstand {
-    private int score;
-    private int moves;
+    private int score = -9999;
+    private int moves = 0;
     private int delta;
-    private GamePlayState state;
+    private GamePlayState state = GamePlayState.PLAYING;
     private int nextRound;
     private boolean emptyScreenBonusActive;
     private int highscore;
@@ -62,10 +64,7 @@ public class Spielstand {
         return state;
     }
 
-    /**
-     * This method is only allowed to be called by SpielstandService!
-     */
-    public void setState(GamePlayState state) {
+    public void setState(@NonNull GamePlayState state) {
         this.state = state;
     }
 

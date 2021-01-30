@@ -14,7 +14,6 @@ import de.mwvb.blockpuzzle.game.stonewars.place.StoneWarsScorePlaceAction;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
-import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
@@ -83,8 +82,17 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
 
     @Override
     protected void offer() {
-        if (gs.get().getState() == GamePlayState.PLAYING || getDefinition().offerNewGamePiecesAfterGameOver()) {
-            super.offer();
+        switch (gs.get().getState()) {
+            case LOST_GAME: // do nothing
+                break;
+            case WON_GAME:
+                if (getDefinition().gameGoesOnAfterWonGame()) {
+                    super.offer();
+                }
+                break;
+            case PLAYING:
+                super.offer();
+                break;
         }
     }
 
@@ -116,10 +124,5 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
     @Override
     protected ClearRowsPlaceAction getClearRowsPlaceAction() {
         return new ClearRowsPlaceAction(getPlanet().getGravitation());
-    }
-
-    @Override
-    public boolean gameCanBeWon() {
-        return getDefinition().gameCanBeWon();
     }
 }

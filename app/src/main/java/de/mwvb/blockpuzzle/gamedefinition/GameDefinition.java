@@ -35,16 +35,7 @@ public abstract class GameDefinition {
     /**
      * @return true: Sieg, false: nicht relevant oder kein Sieg
      */
-    public boolean onEmptyPlayingField() {
-        return false;
-    }
-
-    // TODO Prüfen ob benötigt, da ein ClassicGame nicht auf WON_GAME geschaltet wird.
-    public boolean offerNewGamePiecesAfterGameOver() {
-        return true;
-    }
-
-    public boolean gameCanBeWon() {
+    public boolean onEmptyPlayingField() { // TODO bescheuerter Name
         return false;
     }
 
@@ -59,6 +50,8 @@ public abstract class GameDefinition {
     public boolean isRowsAdditionalBonusEnabled() {
         return true;
     }
+
+    public abstract boolean gameGoesOnAfterWonGame();
 
     /**
      * @return true: Die Moves-Anzeige der Score-Anzeige bevorzugen. false: andersrum

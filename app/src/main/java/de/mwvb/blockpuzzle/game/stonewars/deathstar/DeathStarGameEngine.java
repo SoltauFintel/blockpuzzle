@@ -15,7 +15,6 @@ import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceAdapter;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
-import de.mwvb.blockpuzzle.gamestate.SpielstandService;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.global.GlobalData;
 
@@ -100,7 +99,7 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
     }
 
     private void deathStarIsDestroyed() {
-        new SpielstandService().setSpielstandState(gs.get(), GamePlayState.WON_GAME, getDefinition()); // old code: load(ds), state=WON_GAME
+        gs.get().setState(GamePlayState.WON_GAME); // old code: load(ds), state=WON_GAME
         //noinspection Convert2Lambda
         new Handler().postDelayed(new Runnable() {
             @Override

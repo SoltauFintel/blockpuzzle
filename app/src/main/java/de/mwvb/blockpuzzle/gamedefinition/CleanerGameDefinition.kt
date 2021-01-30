@@ -40,14 +40,9 @@ class CleanerGameDefinition @JvmOverloads constructor(
         return true // Sieg
     }
 
-    override fun gameCanBeWon(): Boolean {
-        return true
-    }
-
-    override fun offerNewGamePiecesAfterGameOver(): Boolean {
+    override fun gameGoesOnAfterWonGame(): Boolean {
         return false
     }
-
 
     // INIT PHASE ----
 

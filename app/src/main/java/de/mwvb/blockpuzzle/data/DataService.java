@@ -8,6 +8,7 @@ import java.util.zip.CRC32;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.game.GameEngineFactory;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
+import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 import de.mwvb.blockpuzzle.global.Features;
@@ -152,6 +153,15 @@ public class DataService {
                 GameDefinition gd = p.getGameDefinitions().get(gi);
                 if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves, false, p, gi)) {
                     System.out.println("NEW OWNER for planet #" + p.getNumber() + "/" + gi + ": " + name + " with score: " + otherScore + ", moves: " + otherMoves);
+                    if (ss.getState() == GamePlayState.WON_GAME) {
+                        if (gd.gameGoesOnAfterWonGame()) {
+                            ss.setState(GamePlayState.PLAYING);
+                            System.out.println("  set state from WON_GAME to PLAYING");
+                        } else {
+                            ss.setState(GamePlayState.LOST_GAME);
+                            System.out.println("  set state from WON_GAME to LOST_GAME");
+                        }
+                    } // else: state stays the same
                     ss.setOwnerScore(otherScore);
                     ss.setOwnerMoves(otherMoves);
                     ss.setOwnerName(name);

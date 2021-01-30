@@ -20,7 +20,6 @@ import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
-import de.mwvb.blockpuzzle.gamestate.SpielstandService;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
@@ -154,7 +153,7 @@ public class GameEngine implements GameEngineInterface {
      * Throws DoesNotWorkException
      */
     public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
-        if (gs.isWonOrLostGame()) {
+        if (gs.isGameOver()) {
             return;
         }
         boolean ret;
@@ -265,12 +264,16 @@ public class GameEngine implements GameEngineInterface {
     @Override
     public void onGameOver() {
         Spielstand ss = gs.get();
-        new SpielstandService().setSpielstandStateLostGame(ss); // old code: gameOver = true;
+        final GamePlayState oldState = ss.getState();
+        ss.setState(GamePlayState.LOST_GAME); // old code: gameOver = true;
         updateHighScore();
         ss.setDelta(0);
         gs.save();
         view.showScoreAndMoves(ss); // display game over text
         playingField.gameOver();    // if park() has been the last action
+        if (oldState != ss.getState()) { // play only if state has changed
+            view.playSound(4);
+        }
     }
 
     // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
@@ -350,7 +353,7 @@ public class GameEngine implements GameEngineInterface {
     }
 
     public void rotate(int index) {
-        if (gs.get().getState() == GamePlayState.PLAYING) {
+        if (!gs.isGameOver()) {
             holders.get(index).rotate();
             moveImpossible(index);
         }
@@ -363,10 +366,6 @@ public class GameEngine implements GameEngineInterface {
         gravitation.save(ss);
         holders.save(ss);
         gs.save();
-    }
-
-    public boolean gameCanBeWon() {
-        return false;
     }
 
     public boolean isWon() {

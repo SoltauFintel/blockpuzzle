@@ -23,7 +23,7 @@ public class GameState {
     }
 
     public void newGame() {
-        new SpielstandService().setSpielstandStatePlaying(ss);
+        ss.setState(GamePlayState.PLAYING);
         ss.setScore(0);
         ss.setDelta(0);
         ss.setMoves(0);
@@ -33,8 +33,7 @@ public class GameState {
     /**
      * @return true if lost game, false if game goes on or won game
      */
-    public boolean isGameOver() {
-//        return ss.getState() != GamePlayState.PLAYING;   testhalber mal so:
+    public boolean isGameOver() { // TODO rename: isLostGame
         return ss.getState() == GamePlayState.LOST_GAME;
     }
 

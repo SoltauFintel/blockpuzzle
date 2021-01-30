@@ -8,7 +8,6 @@ import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
-import de.mwvb.blockpuzzle.gamestate.SpielstandService;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -24,20 +23,27 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
     public void perform(PlaceInfo info) {
         // check4Victory: // Spielsiegprüfung (showScore erst danach)
         StoneWarsGameState swgs = (StoneWarsGameState) info.getGs();
+        final GamePlayState oldState = swgs.get().getState();
         ScoreChangeInfo scInfo = new ScoreChangeInfo(swgs, info.getMessages());
+
+        // 1st verification ----
         MessageObjectWithGameState msg = swgs.getDefinition().scoreChanged(scInfo);
-        if (!msg.isLostGame()) {
+        if (oldState == GamePlayState.PLAYING) {
             msg.show();
             if (msg.isWonGame()) {
-                new SpielstandService().setSpielstandState(info.getGs().get(), GamePlayState.WON_GAME, swgs.getDefinition());
+                info.getGs().get().setState(GamePlayState.WON_GAME);
                 check4Liberation(info.getGameEngineInterface(), swgs);
+                info.playSound(3); // ggf. einmalig beim Statuswechsel einen Sound abspielen
+            } else if (msg.isLostGame()) {
+                info.getGameEngineInterface().onGameOver();
+                info.playSound(4); // ggf. einmalig beim Statuswechsel einen Sound abspielen
+                return;
             }
         }
+
+        // 2nd verification ----
         if (info.getPlayingField().getFilled() == 0 && swgs.getDefinition().onEmptyPlayingField()) {
             gameOverOnEmptyPlayingField(info);
-        } else if (msg.isLostGame()) { // Game over?
-            msg.show();
-            info.getGameEngineInterface().onGameOver();
         }
     }
 
@@ -45,7 +51,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
         Spielstand ss = gs.get();
         GameDefinition definition = gs.getDefinition();
         if (definition.isWonAfterNoGamePieces(ss)) {
-            new SpielstandService().setSpielstandState(ss, GamePlayState.WON_GAME, definition);
+            ss.setState(GamePlayState.WON_GAME);
         }
         if (ss.getState() == GamePlayState.WON_GAME && gs.getPlanet().getGameDefinitions().size() == 1) {
             // Player has liberated planet.
@@ -65,7 +71,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
     private void gameOverOnEmptyPlayingField(PlaceInfo info) {
         StoneWarsGameState swgs = (StoneWarsGameState) info.getGs();
         info.getGameEngineInterface().clearAllHolders();
-        new SpielstandService().setSpielstandState(info.getGs().get(), GamePlayState.WON_GAME, swgs.getDefinition());
+        swgs.get().setState(GamePlayState.WON_GAME);
         info.getPlayingField().gameOver();
         Spielstand ss = info.getGs().get();
         if (swgs.getDefinition().isLiberated(ss.getScore(), ss.getMoves(), ss.getOwnerScore(), ss.getOwnerMoves(),
@@ -75,6 +81,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
             swgs.setOwnerToMe();
             check4Liberation(info.getGameEngineInterface(), swgs);
         }
+        info.playSound(3);
         info.getMessages().getPlanetLiberated().show();
     }
 }
