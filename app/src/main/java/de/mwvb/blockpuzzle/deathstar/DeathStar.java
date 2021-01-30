@@ -6,13 +6,13 @@ import android.graphics.Canvas;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;

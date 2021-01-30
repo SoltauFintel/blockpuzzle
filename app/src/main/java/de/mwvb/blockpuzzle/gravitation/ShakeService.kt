@@ -6,8 +6,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.game.GameEngine
+import de.mwvb.blockpuzzle.global.Features
 import kotlin.math.sqrt
 
 class ShakeService(gameEngine: GameEngine) {

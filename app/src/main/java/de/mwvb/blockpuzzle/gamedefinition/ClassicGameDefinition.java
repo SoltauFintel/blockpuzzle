@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.messages.MessageFactory;
 import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;

@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.gamestate.Spielstand
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.global.Features
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateDAO

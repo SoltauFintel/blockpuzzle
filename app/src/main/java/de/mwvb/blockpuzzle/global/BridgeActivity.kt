@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.global
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -8,16 +8,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.cluster.NavigationActivity
 import de.mwvb.blockpuzzle.data.DataMarketActivity
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.game.GameInfoService
-import de.mwvb.blockpuzzle.global.GameType
-import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.game.MainActivity
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
+import de.mwvb.blockpuzzle.planet.SelectTerritoryActivity
 import kotlinx.android.synthetic.main.activity_bridge.*
 
 class BridgeActivity : AppCompatActivity() {

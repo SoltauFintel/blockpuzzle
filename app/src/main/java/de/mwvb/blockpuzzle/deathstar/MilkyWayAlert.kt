@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
-import de.mwvb.blockpuzzle.InfoActivity
+import de.mwvb.blockpuzzle.global.InfoActivity
 import de.mwvb.blockpuzzle.playingfield.Action
 
 /**

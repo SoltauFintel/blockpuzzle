@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.global
 
 import android.content.Intent
 import android.os.Build
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.R
+import de.mwvb.blockpuzzle.game.MainActivity
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.sound.SoundService
 import kotlinx.android.synthetic.main.activity_info.*

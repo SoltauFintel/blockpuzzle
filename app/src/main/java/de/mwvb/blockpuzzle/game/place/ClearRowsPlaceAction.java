@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.game.place;
 
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.game.GameEngineInterface;
+import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.gravitation.GravitationAction;
 import de.mwvb.blockpuzzle.gravitation.GravitationData;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;

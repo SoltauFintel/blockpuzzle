@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;

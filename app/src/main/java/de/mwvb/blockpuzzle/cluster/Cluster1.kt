@@ -1,12 +1,12 @@
 package de.mwvb.blockpuzzle.cluster
 
-import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.deathstar.SpaceNebula
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.OneColorGameDefinition
+import de.mwvb.blockpuzzle.global.Features
 import de.mwvb.blockpuzzle.planet.DailyPlanet
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon

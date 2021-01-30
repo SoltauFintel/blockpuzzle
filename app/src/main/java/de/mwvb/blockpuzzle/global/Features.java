@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle;
+package de.mwvb.blockpuzzle.global;
 
 public interface Features {
 

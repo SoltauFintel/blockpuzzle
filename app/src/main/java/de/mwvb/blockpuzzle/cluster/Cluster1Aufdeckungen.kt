@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.cluster
 
-import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
+import de.mwvb.blockpuzzle.global.Features
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.planet.ISpaceObject
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateService

@@ -1,10 +1,10 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
-import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.game.GameEngine
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
 import de.mwvb.blockpuzzle.gamestate.Spielstand
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.global.Features
 import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField

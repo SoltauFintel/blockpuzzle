@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.planet
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
 import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.game.MainActivity
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
-import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_select_territory.*
 
 class SelectTerritoryActivity : AppCompatActivity() {

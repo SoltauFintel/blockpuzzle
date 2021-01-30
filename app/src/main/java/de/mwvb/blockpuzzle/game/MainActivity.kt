@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.game
 
 import android.app.AlertDialog
 import android.content.ClipDescription
@@ -12,16 +12,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.game.DoesNotWorkException
-import de.mwvb.blockpuzzle.game.GameEngine
-import de.mwvb.blockpuzzle.game.GameEngineFactory
-import de.mwvb.blockpuzzle.game.IGameView
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gamestate.GamePlayState
 import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.global.BridgeActivity
 import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.global.InfoActivity
 import de.mwvb.blockpuzzle.gravitation.ShakeService
 import de.mwvb.blockpuzzle.messages.MessageFactory
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
