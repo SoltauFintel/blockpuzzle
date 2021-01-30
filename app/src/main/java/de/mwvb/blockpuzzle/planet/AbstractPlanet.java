@@ -64,7 +64,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     public String getInfo(Resources resources) {
         String info = resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
         if (getGameDefinitions().size() > 1) {
-            getCurrentGameDefinitionIndex(); // ensure game def is selected
+            // Was soll das? -> getCurrentGameDefinitionIndex(); // ensure game def is selected
             info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
         }
         return info;
@@ -73,12 +73,18 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     @Override
     public String getGameInfo(Resources resources, int gi) {
         if (hasGames()) {
-            getCurrentGameDefinitionIndex();
-            GameDefinition s = gi >= 0 ? getGameDefinitions().get(gi) : getSelectedGame();
+            // Was soll das? -> getCurrentGameDefinitionIndex();
+            GameDefinition s;
+            if (gi >= 0) {
+                s = getGameDefinitions().get(gi);
+            } else {
+                s = getSelectedGame();
+                gi = getCurrentGameDefinitionIndex();
+            }
             String info = s.getInfo(); // Game definition
 
             // Scores
-            Spielstand ss = spielstandDAO.load(this, gameDefinitions.indexOf(s));
+            Spielstand ss = spielstandDAO.load(this, gi);
 
             int score = ss.getScore();
             int moves = ss.getMoves();
@@ -185,7 +191,8 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     @Override
     public void resetGame() {
         SpielstandDAO dao = new SpielstandDAO();
-        Spielstand ss = dao.load(this, getCurrentGameDefinitionIndex());
+        int gi = getCurrentGameDefinitionIndex();
+        Spielstand ss = dao.load(this, gi);
         if (ss.getScore() < 0 && ss.getMoves() == 0) {
             ss.setScore(ss.getScore() - 1);
             if (ss.getScore() > -9999 && ss.getScore() <= -3) {
@@ -196,8 +203,9 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
             }
         } else {
             ss.setScore(-1);
+            ss.setMoves(0);
         }
-        dao.save(this, getCurrentGameDefinitionIndex(), ss);
+        dao.save(this, gi, ss);
 
         new SpaceObjectStateService().saveOwner(this, false);
     }

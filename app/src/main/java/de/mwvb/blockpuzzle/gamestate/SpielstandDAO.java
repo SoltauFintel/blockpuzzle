@@ -29,6 +29,10 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
      */
     @NonNull
     public Spielstand load(IPlanet planet, int gameDefinitionIndex) {
+        if (gameDefinitionIndex < 0) {
+            throw new RuntimeException("Tried to load Spielstand with illegal game definition index: " + gameDefinitionIndex);
+            // TODO besser eine Methode für Index Aufbau machen und dort alle Args prüfen und dann thrown.
+        }
         return load(planet.getId() + "_" + gameDefinitionIndex);
     }
 
