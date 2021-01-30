@@ -93,10 +93,10 @@ public class Migration5to6 {
         t.setGolden(getInt(GLOBAL_GOLDEN_TROPHY + cn));
         trophiesDAO.save(cn, t);
 
-        Spielstand s0 = new Spielstand();
+        Spielstand ss0 = new Spielstand();
         prefix = "";
-        mapSpielstand(s0);
-        spielstandDAO.saveOldGame(s0);
+        mapSpielstand(ss0);
+        spielstandDAO.saveOldGame(ss0);
 
         for (ISpaceObject so : Cluster1.INSTANCE.getSpaceObjects()) {
             if (so instanceof IPlanet) {
@@ -145,32 +145,32 @@ public class Migration5to6 {
         planetDAO.save(p, ps);
     }
 
-    private void mapSpielstand(Spielstand s) { // TODO rename to "ss"
+    private void mapSpielstand(Spielstand ss) {
         // TODO Spiele durchrechnen um den Status sicher zu bekommen. Eine GameDefinition müsste ja zu einem Spielstand sagen können,
         //      ob PLAYING, LOST oder WON. Und das ohne View Komponenten.
-        s.setState(getBoolean(GAME_OVER) ? GamePlayState.LOST_GAME : GamePlayState.PLAYING);
+        ss.setState(getBoolean(GAME_OVER) ? GamePlayState.LOST_GAME : GamePlayState.PLAYING);
 
-        s.setScore(getInt(SCORE, -9999));
-        s.setMoves(getInt(MOVES));
-        s.setDelta(getInt(DELTA));
-        s.setEmptyScreenBonusActive(getBoolean(EMPTY_SCREEN_BONUS_ACTIVE));
-        s.setDailyDate(getString(DAILY_DATE));
-        s.setHighscore(getInt(HIGHSCORE_SCORE));
-        s.setHighscoreMoves(getInt(HIGHSCORE_MOVES));
-        s.setGamePieceView1(getString(GAMEPIECEVIEW + 1));
-        s.setGamePieceView2(getString(GAMEPIECEVIEW + 2));
-        s.setGamePieceView3(getString(GAMEPIECEVIEW + 3));
-        s.setGamePieceViewP(getString(GAMEPIECEVIEW + -1));
-        s.setPlayingField(getString(PLAYINGFIELD));
+        ss.setScore(getInt(SCORE, -9999));
+        ss.setMoves(getInt(MOVES));
+        ss.setDelta(getInt(DELTA));
+        ss.setEmptyScreenBonusActive(getBoolean(EMPTY_SCREEN_BONUS_ACTIVE));
+        ss.setDailyDate(getString(DAILY_DATE));
+        ss.setHighscore(getInt(HIGHSCORE_SCORE));
+        ss.setHighscoreMoves(getInt(HIGHSCORE_MOVES));
+        ss.setGamePieceView1(getString(GAMEPIECEVIEW + 1));
+        ss.setGamePieceView2(getString(GAMEPIECEVIEW + 2));
+        ss.setGamePieceView3(getString(GAMEPIECEVIEW + 3));
+        ss.setGamePieceViewP(getString(GAMEPIECEVIEW + -1));
+        ss.setPlayingField(getString(PLAYINGFIELD));
         String rows = getString(GRAVITATION_ROWS);
         if (rows != null && rows.contains("/")) rows = ""; // alten bug fixen
-        s.setGravitationRows(rows);
-        s.setGravitationExclusions(getString(GRAVITATION_EXCLUSIONS));
-        s.setGravitationPlayedSound(getBoolean(GRAVITATION_PLAYED_SOUND));
-        s.setOwnerName(getString(OWNER_NAME));
-        s.setOwnerScore(getInt(OWNER_SCORE));
-        s.setOwnerMoves(getInt(OWNER_MOVES));
-        s.setNextRound(getInt(NEXT_ROUND));
+        ss.setGravitationRows(rows);
+        ss.setGravitationExclusions(getString(GRAVITATION_EXCLUSIONS));
+        ss.setGravitationPlayedSound(getBoolean(GRAVITATION_PLAYED_SOUND));
+        ss.setOwnerName(getString(OWNER_NAME));
+        ss.setOwnerScore(getInt(OWNER_SCORE));
+        ss.setOwnerMoves(getInt(OWNER_MOVES));
+        ss.setNextRound(getInt(NEXT_ROUND));
     }
 
     private String getString(String name) {
