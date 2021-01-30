@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.gravitation;
 
-import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.GameEngineInterface;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -22,9 +22,9 @@ public class GravitationAction implements Action {
     @Override
     public void execute() {
         for (int i = startRow; i >= 1; i--) {
-            if (hasToBeRemoved(i) && data.getRows().contains(Game.blocks - i)) {
+            if (hasToBeRemoved(i) && data.getRows().contains(GameEngine.blocks - i)) {
                 // Row war voll und wurde geleert -> Gravitation auslösen
-                playingField.gravitation(Game.blocks - i, !data.isFirstGravitationPlayed());
+                playingField.gravitation(GameEngine.blocks - i, !data.isFirstGravitationPlayed());
                 data.setFirstGravitationPlayed(true);
             }
         }
@@ -34,7 +34,7 @@ public class GravitationAction implements Action {
 
     private boolean hasToBeRemoved(int i) {
         for (QPosition k : data.getExclusions()) {
-            if (k.getY() == Game.blocks - i) {
+            if (k.getY() == GameEngine.blocks - i) {
                 return false;
             }
         }

@@ -9,7 +9,7 @@ import de.mwvb.blockpuzzle.game.GameEngineFactory;
 import de.mwvb.blockpuzzle.game.IGameView;
 import de.mwvb.blockpuzzle.game.place.DoNothingPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
-import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGame;
+import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGameEngine;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceAdapter;
@@ -21,9 +21,9 @@ import de.mwvb.blockpuzzle.global.GlobalData;
 /**
  * Death Star game play as a Stone Wars variant
  */
-public class DeathStarGame extends StoneWarsGame {
+public class DeathStarGameEngine extends StoneWarsGameEngine {
 
-    public DeathStarGame(IGameView view, StoneWarsGameState gs) {
+    public DeathStarGameEngine(IGameView view, StoneWarsGameState gs) {
         super(view, gs);
     }
 

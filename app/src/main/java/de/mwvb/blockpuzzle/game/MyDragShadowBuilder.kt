@@ -8,7 +8,7 @@ import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 class MyDragShadowBuilder(view: GamePieceView, private val f: Float) : View.DragShadowBuilder(view) {
 
     override fun onProvideShadowMetrics(outShadowSize: Point?, outShadowTouchPoint: Point?) {
-        val br = PlayingFieldView.w / Game.blocks
+        val br = PlayingFieldView.w / GameEngine.blocks
         val brh = br / 2
         val tv = this.view as GamePieceView
         if (tv.gamePiece == null) return // Programmschutz

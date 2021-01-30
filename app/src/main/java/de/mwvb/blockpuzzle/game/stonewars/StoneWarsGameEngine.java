@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.IGameView;
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
@@ -23,9 +23,9 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 /**
  * Stone Wars game engine
  */
-public class StoneWarsGame extends Game { // TODO game.stonewars package machen
+public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars package machen
 
-    public StoneWarsGame(IGameView view, StoneWarsGameState gs) {
+    public StoneWarsGameEngine(IGameView view, StoneWarsGameState gs) {
         super(view, gs);
     }
 

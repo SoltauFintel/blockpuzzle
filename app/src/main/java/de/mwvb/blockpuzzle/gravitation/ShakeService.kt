@@ -7,10 +7,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import de.mwvb.blockpuzzle.Features
-import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.game.GameEngine
 import kotlin.math.sqrt
 
-class ShakeService(game: Game) {
+class ShakeService(gameEngine: GameEngine) {
     private val mSensorListener: SensorEventListener
     private var mSensorManager: SensorManager? = null
     private var mAccel = 0f // acceleration apart from gravity
@@ -27,7 +27,7 @@ class ShakeService(game: Game) {
                 mAccelCurrent = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
                 val delta = mAccelCurrent - mAccelLast
                 mAccel = mAccel * 0.9f + delta // perform low-cut filter
-                if (mAccel > 14) game.shaked() // value is how hard you have to shake
+                if (mAccel > 14) gameEngine.shaked() // value is how hard you have to shake
             }
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { //

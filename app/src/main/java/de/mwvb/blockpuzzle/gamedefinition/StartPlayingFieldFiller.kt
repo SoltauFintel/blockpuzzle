@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
 import de.mwvb.blockpuzzle.block.BlockTypes
-import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.game.GameEngine
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
 /**
@@ -16,8 +16,8 @@ class StartPlayingFieldFiller {
             def = def.substring(1)
         }
         val lines = def.split("\n")
-        for (y in 0 until Game.blocks) {
-            for (x in 0 until Game.blocks) {
+        for (y in 0 until GameEngine.blocks) {
+            for (x in 0 until GameEngine.blocks) {
                 val c = lines[y][x]
                 if (c != '_') {
                     val blockType = blockTypes.getBlockTypeNumber(c)

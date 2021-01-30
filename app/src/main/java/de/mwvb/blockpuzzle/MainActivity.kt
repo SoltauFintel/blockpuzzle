@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.game.DoesNotWorkException
-import de.mwvb.blockpuzzle.game.Game
+import de.mwvb.blockpuzzle.game.GameEngine
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.game.IGameView
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
@@ -39,7 +39,7 @@ import java.text.DecimalFormat
  * without destroying everything.
  */
 class MainActivity : AppCompatActivity(), IGameView {
-    private lateinit var game: Game
+    private lateinit var gameEngine: GameEngine
     private lateinit var messages: MessageFactory
     private lateinit var shakeService : ShakeService
 
@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity(), IGameView {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
         messages = MessageFactory(this)
-        game = GameEngineFactory().create(this)
-        shakeService = ShakeService(game)
+        gameEngine = GameEngineFactory().create(this)
+        shakeService = ShakeService(gameEngine)
 
         // SUPER PHASE
         super.onCreate(savedInstanceState)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        newGame.visibility = when (game.isNewGameButtonVisible) {
+        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
             true -> View.VISIBLE
             false -> View.INVISIBLE
         }
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         super.onResume()
         try {
             shakeService.setActive(true)
-            game.initGame()
+            gameEngine.initGame()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     // Activity goes sleeping
     override fun onPause() {
-        game.save()
+        gameEngine.save()
 
         shakeService.setActive(false)
 
@@ -103,11 +103,11 @@ class MainActivity : AppCompatActivity(), IGameView {
         getGamePieceView(index).setOnTouchListener(object : GamePieceTouchListener(index, resources) {
             override fun up(view: View?, event: MotionEvent?) {
                 getGamePieceView(index).endDragMode()
-                game.rotate(index)
+                gameEngine.rotate(index)
             }
 
             override fun isDragAllowed(): Boolean {
-                return !game.isGameOver && game.isDragAllowed
+                return !gameEngine.isGameOver && gameEngine.isDragAllowed
             }
         })
     }
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                 // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
                 xy = calculatePlayingFieldCoordinates(event, gamePiece)
             }
-            game.dispatch(targetIsParking, index, gamePiece, xy)
+            gameEngine.dispatch(targetIsParking, index, gamePiece, xy)
         } catch (e: DoesNotWorkException) {
             playingField.soundService.doesNotWork()
             Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         var x = event.x / f // px -> dp
         var y = event.y / f
         // jetzt in Spielfeld Koordinaten umrechnen
-        val br = PlayingFieldView.w / Game.blocks
+        val br = PlayingFieldView.w / GameEngine.blocks
         x /= br
         y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
@@ -203,12 +203,12 @@ class MainActivity : AppCompatActivity(), IGameView {
     /** Start new game */
     private fun onNewGame(): (View) -> Unit {
         return {
-            if (game.isGameOver || game.lessScore()) {
-                game.newGame()
+            if (gameEngine.isGameOver || gameEngine.lessScore()) {
+                gameEngine.newGame()
             } else {
                 val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
                 dialog.setTitle(resources.getString(R.string.startNewGame))
-                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> game.newGame() }
+                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> gameEngine.newGame() }
                 dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
                 dialog.show()
             }
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
         if (ss.state != GamePlayState.PLAYING) { // old: gameOver
-            if (game.gameCanBeWon() && game.isWon) {
+            if (gameEngine.gameCanBeWon() && gameEngine.isWon) {
                 playingField.soundService.youWon()
             } else {
                 playingField.soundService.gameOver()
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     private fun getScoreText(ss: Spielstand): String {
         val ret: Int = if (ss.state != GamePlayState.PLAYING) { // old: gameOver
-            if (game.gameCanBeWon() && game.isWon) {
+            if (gameEngine.gameCanBeWon() && gameEngine.isWon) {
                 if (ss.score == 1) R.string.winScore1 else R.string.winScore2
             } else {
                 if (ss.score == 1) R.string.gameOverScore1 else R.string.gameOverScore2
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun onBackPressed() {
         if (GlobalData.get().todesstern == 1) {
-            if (game.isDragAllowed) { // during wait time back pressing is not allowed, game state could get unstable
+            if (gameEngine.isDragAllowed) { // during wait time back pressing is not allowed, game state could get unstable
                 startActivity(Intent(this, BridgeActivity::class.java))
             }
         } else {

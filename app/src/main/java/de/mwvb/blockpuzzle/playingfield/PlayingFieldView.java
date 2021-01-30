@@ -16,7 +16,7 @@ import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.EmptyBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
-import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
@@ -113,10 +113,10 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
         p.setCanvas(canvas);
         p.setDragMode(true);
         p.setF(getResources().getDisplayMetrics().density);
-        p.setBr(w / Game.blocks); // 60px
+        p.setBr(w / GameEngine.blocks); // 60px
         final BlockDrawerStrategy m = getMatrixGet();
-        for (int x = 0; x < Game.blocks; x++) {
-            for (int y = 0; y < Game.blocks; y++) {
+        for (int x = 0; x < GameEngine.blocks; x++) {
+            for (int y = 0; y < GameEngine.blocks; y++) {
                 m.get(x, y).draw(x * p.getBr(), y * p.getBr(), p);
             }
         }

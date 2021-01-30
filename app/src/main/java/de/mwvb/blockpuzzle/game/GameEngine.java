@@ -31,7 +31,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
  */
 // Eigentlich ist das eine GameEngine.
 // Zu unübersichtlich, weil zu viele Methoden. Vll kann man ein Core-GameEngine machen und Listener? Vll auch die Initialisierung rausziehen?
-public class Game implements GameEngineInterface {
+public class GameEngine implements GameEngineInterface {
     // Stammdaten (read only)
     public static final int blocks = 10;
     private final BlockTypes blockTypes = new BlockTypes(null);
@@ -49,7 +49,7 @@ public class Game implements GameEngineInterface {
 
     // Spielaufbau ----
 
-    public Game(IGameView view, GameState gs) {
+    public GameEngine(IGameView view, GameState gs) {
         this.view = view;
         this.gs = gs;
     }
