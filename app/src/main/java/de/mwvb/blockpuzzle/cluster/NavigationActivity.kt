@@ -1,13 +1,11 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.cluster
 
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.cluster.Cluster1
-import de.mwvb.blockpuzzle.cluster.Cluster1Aufdeckungen
-import de.mwvb.blockpuzzle.cluster.ClusterViewModel
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.deathstar.MilkyWayAlert
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
