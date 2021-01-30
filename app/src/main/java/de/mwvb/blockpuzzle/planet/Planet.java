@@ -35,7 +35,7 @@ public class Planet extends AbstractPlanet {
     }
 
     @Override
-    protected int getPlanetTypeResId() {
+    public int getName() {
         return R.string.planet;
     }
 }

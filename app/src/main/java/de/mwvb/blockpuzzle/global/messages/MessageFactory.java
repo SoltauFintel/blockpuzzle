@@ -13,7 +13,7 @@ public class MessageFactory {
         }
     };
 
-    // normal messages-
+    // normal messages ----
     private final MessageObject putData_makesNoSense = new MessageObject(this, R.string.putData_makesNoSense);
     private final MessageObject putData_formatError1 = new MessageObject(this, R.string.putData_formatError1);
     private final MessageObject putData_formatError2 = new MessageObject(this, R.string.putData_formatError2);
@@ -45,7 +45,9 @@ public class MessageFactory {
         this.activity = activity;
     }
 
-    /** Should only be called by MessageObject class. */
+    /**
+     * Should only be called by MessageObject class.
+     */
     public void show(int id) {
         Toast.makeText(activity, activity.getResources().getString(id), Toast.LENGTH_LONG).show();
     }

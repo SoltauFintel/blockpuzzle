@@ -61,15 +61,13 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
     @Override
     public String getInfo(Resources resources) {
-        String info = resources.getString(getPlanetTypeResId()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
+        String info = resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
         if (getGameDefinitions().size() > 1) {
             getCurrentGameDefinitionIndex(); // ensure game def is selected
             info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
         }
         return info;
     }
-
-    protected abstract int getPlanetTypeResId();
 
     @Override
     public String getGameInfo(Resources resources, int gi) {

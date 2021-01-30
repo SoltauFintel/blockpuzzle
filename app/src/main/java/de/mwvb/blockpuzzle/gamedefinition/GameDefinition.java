@@ -10,8 +10,8 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 public abstract class GameDefinition {
     private final int gamePieceSetNumber;
-    /** R.string constant, -1=use standard names */
-    private int territoryName = -1;
+    /** R.string constant */
+    private int territoryName;
     private LiberatedFeature libf = null;
 
     public GameDefinition(int gamePieceSetNumber) {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.planet.AbstractSpaceObject;
@@ -65,5 +66,10 @@ public class SpaceNebula extends AbstractSpaceObject {
         for (QPosition dot : dots) {
             canvas.drawCircle(getX() * ClusterView.w * f + dot.getX(), getY() * ClusterView.w * f + dot.getY(), 3, paint);
         }
+    }
+
+    @Override
+    public int getName() {
+        return R.string.empty; // name not needed
     }
 }

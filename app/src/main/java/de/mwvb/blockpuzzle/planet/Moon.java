@@ -30,12 +30,12 @@ public class Moon extends AbstractPlanet {
     }
 
     @Override
-    public Paint getPaint() {
-        return paint;
+    public int getName() {
+        return R.string.moon;
     }
 
     @Override
-    protected int getPlanetTypeResId() {
-        return R.string.moon;
+    public Paint getPaint() {
+        return paint;
     }
 }

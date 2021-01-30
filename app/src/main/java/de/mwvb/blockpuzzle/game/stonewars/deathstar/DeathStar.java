@@ -228,4 +228,9 @@ public class DeathStar implements IPlanet {
     @Override
     public void draw(Canvas canvas, float f, SpaceObjectStates info) { //
     }
+
+    @Override
+    public int getName() {
+        return R.string.deathStar;
+    }
 }

@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
     }
 
-    // TO-DO Das ist eher Fachlogik. inkl. getScoreText()
+    // TODO Das ist eher Fachlogik. inkl. getScoreText()
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
         if (ss.state != GamePlayState.PLAYING) { // old: gameOver

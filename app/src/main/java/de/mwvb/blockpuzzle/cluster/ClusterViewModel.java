@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebulaRoute;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
@@ -17,10 +16,8 @@ import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
-import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
-import de.mwvb.blockpuzzle.planet.Moon;
 import de.mwvb.blockpuzzle.playingfield.Action;
 
 public class ClusterViewModel {
@@ -55,15 +52,7 @@ public class ClusterViewModel {
 
     @NotNull
     private String getName(AbstractPlanet p, Resources resources) {
-        String name;
-        if (p instanceof Moon) {
-            name = resources.getString(R.string.moon);
-        } else if (p instanceof GiantPlanet) {
-            name = resources.getString(R.string.giantPlanet);
-        } else {
-            name = resources.getString(R.string.planet);
-        }
-        return name + " #";
+        return resources.getString(p.getName()) + " #";
     }
 
     private String createInfoText2(AbstractPlanet p) {

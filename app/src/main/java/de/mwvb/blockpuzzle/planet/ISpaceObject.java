@@ -55,4 +55,10 @@ public interface ISpaceObject {
      * @param info access to PlanetState objects
      */
     void draw(Canvas canvas, float f, SpaceObjectStates info);
+
+    /**
+     * Returns type name of space object, e.g. Moon
+     * @return resource constant
+     */
+    int getName();
 }
