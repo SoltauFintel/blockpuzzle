@@ -217,12 +217,11 @@ class MainActivity : AppCompatActivity(), IGameView {
     // TODO Das ist eher Fachlogik. inkl. getScoreText()
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
-        if (ss.state != GamePlayState.PLAYING) { // old: gameOver
-            if (gameEngine.gameCanBeWon() && gameEngine.isWon) {
-                playingField.soundService.youWon()
-            } else {
-                playingField.soundService.gameOver()
-            }
+
+        if (ss.state == GamePlayState.LOST_GAME) {
+            playingField.soundService.gameOver()
+        } else if (ss.state == GamePlayState.WON_GAME) {
+            playingField.soundService.youWon()
         } else if (ss.delta > 0) {
             text += " (" + DecimalFormat("+#,##0").format(ss.delta) + ")"
         }

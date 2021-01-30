@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import de.mwvb.blockpuzzle.cluster.Cluster1;
-import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.gamestate.SpielstandService;
 import de.mwvb.blockpuzzle.gamestate.Trophies;
 import de.mwvb.blockpuzzle.gamestate.TrophiesDAO;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -148,7 +148,11 @@ public class Migration5to6 {
     private void mapSpielstand(Spielstand s) {
         // TODO Spiele durchrechnen um den Status sicher zu bekommen. Eine GameDefinition müsste ja zu einem Spielstand sagen können,
         //      ob PLAYING, LOST oder WON. Und das ohne View Komponenten.
-        s.setState(getBoolean(GAME_OVER) ? GamePlayState.LOST_GAME : GamePlayState.PLAYING);
+        if (getBoolean(GAME_OVER) ) {
+            new SpielstandService().setSpielstandStateLostGame(s);
+        } else {
+            new SpielstandService().setSpielstandStatePlaying(s);
+        }
 
         s.setScore(getInt(SCORE, -9999));
         s.setMoves(getInt(MOVES));

@@ -39,6 +39,7 @@ public abstract class GameDefinition {
         return false;
     }
 
+    // TODO Prüfen ob benötigt, da ein ClassicGame nicht auf WON_GAME geschaltet wird.
     public boolean offerNewGamePiecesAfterGameOver() {
         return true;
     }

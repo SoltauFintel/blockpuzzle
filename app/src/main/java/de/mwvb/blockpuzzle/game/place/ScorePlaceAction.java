@@ -11,11 +11,9 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
  * Punktzahl erhöhen
  */
 public class ScorePlaceAction implements IPlaceAction {
-    protected PlaceInfo info;
 
     @Override
     public void perform(PlaceInfo info) {
-        this.info = info;
         GameState gs = info.getGs();
         FilledRows f = info.getFilledRows();
 

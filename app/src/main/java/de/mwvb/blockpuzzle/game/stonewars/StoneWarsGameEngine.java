@@ -8,17 +8,15 @@ import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.IGameView;
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
-import de.mwvb.blockpuzzle.game.place.PlaceInfo;
 import de.mwvb.blockpuzzle.game.place.ScorePlaceAction;
 import de.mwvb.blockpuzzle.game.stonewars.place.Check4VictoryPlaceAction;
 import de.mwvb.blockpuzzle.game.stonewars.place.StoneWarsScorePlaceAction;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
+import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
-import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
  * Stone Wars game engine
@@ -85,7 +83,7 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
 
     @Override
     protected void offer() {
-        if (!gs.isGameOver() || getDefinition().offerNewGamePiecesAfterGameOver()) {
+        if (gs.get().getState() == GamePlayState.PLAYING || getDefinition().offerNewGamePiecesAfterGameOver()) {
             super.offer();
         }
     }
@@ -100,14 +98,6 @@ public class StoneWarsGameEngine extends GameEngine { // TODO game.stonewars pac
     public void onGameOver() {
         super.onGameOver();
         ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
-    }
-
-    @NotNull
-    @Override
-    protected PlaceInfo createInfo(int index, GamePiece gamePiece, QPosition pos) {
-        PlaceInfo info = super.createInfo(index, gamePiece, pos);
-        info.setDefinition(getDefinition());
-        return info;
     }
 
     @Override

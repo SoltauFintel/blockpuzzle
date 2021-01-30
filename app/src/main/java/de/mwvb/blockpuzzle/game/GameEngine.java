@@ -20,6 +20,7 @@ import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandService;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
@@ -153,7 +154,7 @@ public class GameEngine implements GameEngineInterface {
      * Throws DoesNotWorkException
      */
     public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
-        if (gs.isGameOver()) {
+        if (gs.isWonOrLostGame()) {
             return;
         }
         boolean ret;
@@ -264,7 +265,7 @@ public class GameEngine implements GameEngineInterface {
     @Override
     public void onGameOver() {
         Spielstand ss = gs.get();
-        ss.setState(GamePlayState.LOST_GAME); // old code: gameOver = true;
+        new SpielstandService().setSpielstandStateLostGame(ss); // old code: gameOver = true;
         updateHighScore();
         ss.setDelta(0);
         gs.save();

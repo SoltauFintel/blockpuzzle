@@ -3,7 +3,6 @@ package de.mwvb.blockpuzzle.game.place
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.GameEngineInterface
 import de.mwvb.blockpuzzle.game.IGameView
-import de.mwvb.blockpuzzle.gamedefinition.GameDefinition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamestate.GameState
 import de.mwvb.blockpuzzle.global.messages.MessageFactory
@@ -12,6 +11,9 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField
 import de.mwvb.blockpuzzle.playingfield.QPosition
 import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData
 
+/**
+ * All data needed by an IPlaceAction
+ */
 data class PlaceInfo(val index: Int,
                      val gamePiece: GamePiece,
                      val pos: QPosition,
@@ -25,15 +27,6 @@ data class PlaceInfo(val index: Int,
                      private val view: IGameView, // <- TODO das hier loswerden. Sound abspielen anders lösen
                      val gameEngineInterface: GameEngineInterface
 ) {
-    private var definition: GameDefinition? = null
-
-    fun getDefinition(): GameDefinition {
-        return definition!!
-    }
-
-    fun setDefinition(definition: GameDefinition) {
-        this.definition = definition
-    }
 
     fun playSound(number: Int) {
         view.playSound(number)

@@ -48,7 +48,6 @@ public class StoneWarsGameState extends GameState {
 
     public void setOwnerToMe() {
         Spielstand ss = get();
-        ss.setState(GamePlayState.WON_GAME);
         ss.setOwnerName("");
         ss.setOwnerScore(0);
         ss.setOwnerMoves(0);

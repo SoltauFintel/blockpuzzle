@@ -62,13 +62,11 @@ public class Spielstand {
         return state;
     }
 
+    /**
+     * This method is only allowed to be called by SpielstandService!
+     */
     public void setState(GamePlayState state) {
-        if (state != GamePlayState.PLAYING && state != GamePlayState.WON_GAME && state != GamePlayState.LOST_GAME) {
-            this.state = GamePlayState.PLAYING;
-            System.err.println("setState with illegal value, set to PLAYING");
-        } else {
-            this.state = state;
-        }
+        this.state = state;
     }
 
     public int getNextRound() {
