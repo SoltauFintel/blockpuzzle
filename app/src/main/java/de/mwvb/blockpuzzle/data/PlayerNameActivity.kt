@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.data
 
 import android.os.Build
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.global.GlobalData
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.SpaceObjectStateService

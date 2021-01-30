@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle
+package de.mwvb.blockpuzzle.data
 
 import android.content.ClipData
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.data.DataService
+import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.global.GlobalData
