@@ -1,9 +1,9 @@
 package de.mwvb.blockpuzzle.game
 
 import de.mwvb.blockpuzzle.cluster.Cluster1
-import de.mwvb.blockpuzzle.deathstar.DeathStarGameEngine
-import de.mwvb.blockpuzzle.deathstar.MilkyWayCluster
 import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGameEngine
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.DeathStarGameEngine
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.MilkyWayCluster
 import de.mwvb.blockpuzzle.gamestate.GameState
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState
 import de.mwvb.blockpuzzle.global.GameType

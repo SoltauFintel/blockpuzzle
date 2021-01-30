@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.deathstar.MilkyWayAlert
 import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.MilkyWayAlert
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import kotlinx.android.synthetic.main.activity_start.*
 

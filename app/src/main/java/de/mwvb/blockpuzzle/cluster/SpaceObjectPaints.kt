@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.deathstar.SpaceNebula
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebula
 import de.mwvb.blockpuzzle.planet.AbstractPlanet
 import de.mwvb.blockpuzzle.planet.GiantPlanet
 import de.mwvb.blockpuzzle.planet.Moon

@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.deathstar;
+package de.mwvb.blockpuzzle.game.stonewars.deathstar;
 
 import de.mwvb.blockpuzzle.cluster.AbstractRoute;
 import de.mwvb.blockpuzzle.gamestate.SpielstandService;

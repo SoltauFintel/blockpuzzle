@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.gamestate
 
-import de.mwvb.blockpuzzle.deathstar.MilkyWayCluster
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.MilkyWayCluster
 import de.mwvb.blockpuzzle.global.GlobalData
 
 // TODO Entweder mehr Code hier rein oder Klasse auflösen.

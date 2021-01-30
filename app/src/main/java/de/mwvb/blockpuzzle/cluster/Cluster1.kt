@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.cluster
 
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.deathstar.SpaceNebula
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebula
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition

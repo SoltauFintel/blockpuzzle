@@ -1,4 +1,4 @@
-package de.mwvb.blockpuzzle.deathstar;
+package de.mwvb.blockpuzzle.game.stonewars.deathstar;
 
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition;
 import de.mwvb.blockpuzzle.messages.MessageFactory;

@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.global.GlobalData
 import de.mwvb.blockpuzzle.messages.MessageFactory
 import de.mwvb.blockpuzzle.persistence.AbstractDAO
