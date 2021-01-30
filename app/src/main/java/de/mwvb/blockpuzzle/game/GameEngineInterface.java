@@ -12,7 +12,7 @@ public interface GameEngineInterface {
 
     void checkPossibleMoves();
 
-    void onGameOver(); // TODO rename onLostGame
+    void onLostGame();
 
     void clearAllHolders();
 }

@@ -35,7 +35,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
                 check4Liberation(info.getGameEngineInterface(), swgs);
                 info.playSound(3); // ggf. einmalig beim Statuswechsel einen Sound abspielen
             } else if (msg.isLostGame()) {
-                info.getGameEngineInterface().onGameOver();
+                info.getGameEngineInterface().onLostGame();
                 info.playSound(4); // ggf. einmalig beim Statuswechsel einen Sound abspielen
                 return;
             }

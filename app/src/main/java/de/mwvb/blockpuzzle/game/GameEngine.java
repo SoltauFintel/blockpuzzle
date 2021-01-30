@@ -137,7 +137,7 @@ public class GameEngine implements GameEngineInterface {
             // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
             view.getMessages().getNoMoreGamePieces().show();
             handleNoGamePieces();
-            onGameOver();
+            onLostGame();
         }
     }
 
@@ -256,13 +256,13 @@ public class GameEngine implements GameEngineInterface {
         boolean c = moveImpossible(3);
         boolean d = moveImpossible(-1);
         if (a && b && c && d && !holders.isParkingFree()) {
-            onGameOver();
+            onLostGame();
         }
     }
 
     /** lost game, game over */
     @Override
-    public void onGameOver() {
+    public void onLostGame() {
         Spielstand ss = gs.get();
         final GamePlayState oldState = ss.getState();
         ss.setState(GamePlayState.LOST_GAME); // old code: gameOver = true;
