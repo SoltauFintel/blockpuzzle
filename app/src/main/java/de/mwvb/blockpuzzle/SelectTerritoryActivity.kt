@@ -8,63 +8,73 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
-import de.mwvb.blockpuzzle.game.NewGameService
-import de.mwvb.blockpuzzle.persistence.*
+import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_select_territory.*
 
 class SelectTerritoryActivity : AppCompatActivity() {
+
+    companion object {
+        const val MODE = "selectTerritoryMode"
+        const val CONTINUE_WITH_PLAY_GAME = 0
+        const val CONTINUE_WITH_RESET_GAME = 1
+        const val CONTINUE_WITH_DEVELOPER_ACTIVITY = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_territory)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
-        val pa = PlanetAccessFactory.getPlanetAccess(per())
-        val planet = pa.planet
+        val planet = GameEngineFactory().getPlanet()
 
         territory1.setOnClickListener { selectTerritory(0, planet) }
         territory2.setOnClickListener { selectTerritory(1, planet) }
         territory3.setOnClickListener { selectTerritory(2, planet) }
 
-        val n = planet.gameDefinitions.size
-        if (n == 2) {
-            set12(planet, pa)
-            territory3.visibility = View.INVISIBLE
-            gameInfoView3.visibility = View.INVISIBLE
-        } else if (n == 3) {
-            set12(planet, pa)
-            territory3.text = resources.getString(planet.gameDefinitions[2].territoryName)
-            gameInfoView3.text = getGameInfoText(2, pa)
-        } else { // wrong value
-            finish()
-            return
+        when (planet.gameDefinitions.size) {
+            2 -> {
+                set12(planet)
+                territory3.visibility = View.INVISIBLE
+                gameInfoView3.visibility = View.INVISIBLE
+            }
+            3 -> {
+                set12(planet)
+                territory3.text = resources.getString(planet.gameDefinitions[2].territoryName)
+                gameInfoView3.text = getGameInfoText(2, planet)
+            }
+            else -> { // wrong value
+                finish()
+                return
+            }
         }
     }
 
-    private fun set12(planet: IPlanet, pa: PlanetAccess) {
+    private fun set12(planet: IPlanet) {
         territory1.text = resources.getString(planet.gameDefinitions[0].territoryName)
         territory2.text = resources.getString(planet.gameDefinitions[1].territoryName)
-        gameInfoView1.text = getGameInfoText(0, pa)
-        gameInfoView2.text = getGameInfoText(1, pa)
+        gameInfoView1.text = getGameInfoText(0, planet)
+        gameInfoView2.text = getGameInfoText(1, planet)
     }
 
-    private fun getGameInfoText(gi: Int, pa: PlanetAccess): String { // TODO planet not used. Besser hier pa durchschleifen
-        return pa.planet.getGameInfo(pa.persistence, resources, gi)
+    private fun getGameInfoText(gi: Int, planet: IPlanet): String {
+        return planet.getGameInfo(resources, gi)
     }
 
     private fun selectTerritory(territoryNumber: Int, planet: IPlanet) {
         planet.selectedGame = planet.gameDefinitions[territoryNumber]
-        when (GlobalData.selectTerritoryMode) {
-            1 -> onNewLiberationAttemptQuestion()
-            2 -> {
+        when (intent.extras?.getInt(MODE)) {
+            CONTINUE_WITH_RESET_GAME -> onNewLiberationAttemptQuestion()
+            CONTINUE_WITH_DEVELOPER_ACTIVITY -> {
                 finish()
                 startActivity(Intent(this, DeveloperActivity::class.java))
             }
-            else -> {
+            else -> { // CONTINUE_WITH_PLAY_GAME
                 finish()
                 startActivity(Intent(this, MainActivity::class.java))
             }
@@ -80,11 +90,7 @@ class SelectTerritoryActivity : AppCompatActivity() {
     }
 
     private fun onResetGame() {
-        NewGameService().resetGame(per())
+        GameEngineFactory().getPlanet().resetGame()
         finish()
-    }
-
-    private fun per(): IPersistence {
-        return Persistence(this)
     }
 }

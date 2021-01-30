@@ -1,10 +1,11 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
-import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.persistence.GamePersistence
+import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
+import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState
 import de.mwvb.blockpuzzle.planet.DailyPlanet
-import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
+import de.mwvb.blockpuzzle.trophy.TrophiesDAO
 import java.util.*
 
 /**
@@ -36,34 +37,37 @@ class DailyClassicGameDefinition(private val day: Int) : ClassicGameDefinition(1
     }
 
     /** Check for classic game victory */
-    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resources: ResourceAccess?): String? {
-        if (won || score < minimumLiberationScore) return null
-        val per = persistence!!.persistenceOK
+    override fun scoreChanged(info: ScoreChangeInfo): MessageObjectWithGameState {
+        if (info.isWon || info.score < minimumLiberationScore) return info.messages.noMessage
 
-        // Game gewonnen!
-        // Gegnerdaten spielen hier keine Rolle.
+        // Won game!
+        // Enemy score does not play a role here.
 
-        // Siegstatus speichern
-        per.saveDailyDate(planet!!, day - 1, DailyPlanet.getToday(per) + DailyPlanet.WON_GAME)
+        // Save won game state
+        val today = DailyPlanet.getToday()
+        info.saveDailyDate(day - 1, today + DailyPlanet.WON_GAME)
 
-        // Haken setzen
-        planet.isOwner = true
-        per.savePlanet(planet)
+        // Set and save planet owner marker
+        info.saveOwner(true)
 
         // Save trophy
-        var withTrophy = false;
-        val today = DailyPlanet.getToday(per)
-        if (!today.equals(per.loadLastTrophyDate())) { // prevents cheating: prevents that the player restart the game and gets the trophy more than once.
-            per.saveLastTrophyDate(today)
+        var withTrophy = false
+        val gd = GlobalData.get()
+        if (today != gd.lastTrophyDate) { // prevents cheating: prevents that the player restart the game and gets the trophy more than once.
+            gd.lastTrophyDate = today
+            gd.save()
+            val dao = TrophiesDAO()
+            val trophies = dao.load(info.planet.clusterNumber)
             when (day) {
-                5 -> per.addBronzeTrophy(planet)
-                6 -> per.addSilverTrophy(planet, true)
-                7 -> per.addGoldenTrophy(planet, true)
+                3 -> trophies.bronze++
+                5 -> trophies.silver++
+                7 -> trophies.golden++
             }
-            withTrophy = day >= 5
+            withTrophy = (day == 3 || day == 5 || day == 7)
+            dao.save(info.planet.clusterNumber, trophies)
         }
         // Planet liberated!
-        return resources!!.getString(if (withTrophy) /*with trophy*/ R.string.receivedTrophy else R.string.planetLiberated)
+        return if (withTrophy) info.messages.receivedTrophy else info.messages.planetLiberated
     }
 
     override fun fillStartPlayingField(pf: PlayingField?) {
@@ -95,7 +99,7 @@ __32667744
 __32677455
 __326745__
 __326745__
-        """;
+        """
     }
 
     private fun getDay2(): String {
@@ -110,7 +114,7 @@ ___oo_____
 __oo______
 _oooooo___
 __________
-        """;
+        """
     }
 
     private fun getDay3(): String {
@@ -125,7 +129,7 @@ ________o_
 ___o____o_
 ____oooo__
 __________
-        """;
+        """
     }
 
     private fun getDay4(): String {
@@ -140,7 +144,7 @@ _ooooSooo_
 _____o____
 _____o____
 _____o____
-        """;
+        """
     }
 
     private fun getDay5(): String {
@@ -155,7 +159,7 @@ _______o__
 __o____o__
 ___oooo___
 __________
-        """;
+        """
     }
 
     private fun getDay6(): String {
@@ -170,7 +174,7 @@ _o____o___
 _o____o___
 __oooo__L_
 __________
-        """;
+        """
     }
 
     private fun getDay7(): String {
@@ -185,6 +189,6 @@ __66L666__
 __6L6666__
 __L66663__
 __________
-        """;
+        """
     }
 }

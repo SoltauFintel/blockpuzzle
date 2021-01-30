@@ -1,16 +1,16 @@
 package de.mwvb.blockpuzzle
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import de.mwvb.blockpuzzle.cluster.Cluster1
 import de.mwvb.blockpuzzle.cluster.Cluster1Aufdeckungen
 import de.mwvb.blockpuzzle.cluster.ClusterViewModel
 import de.mwvb.blockpuzzle.deathstar.MilkyWayAlert
-import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory
+import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import kotlinx.android.synthetic.main.activity_start.*
 
 /**
@@ -24,8 +24,9 @@ class NavigationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
         // build view ----
         clusterView.clusterViewParent = clusterViewParent
@@ -33,11 +34,9 @@ class NavigationActivity : AppCompatActivity() {
         selectTarget.setOnClickListener { clusterView.selectTarget() }
 
         // set data ----
-        val per = Persistence(this)
-        val pa = PlanetAccessFactory.getPlanetAccess(per)
-        clusterView.model = ClusterViewModel(pa.spaceObjects, pa.planet, per, resources, MilkyWayAlert(this))
+        clusterView.setModel(ClusterViewModel(Cluster1.spaceObjects, GameEngineFactory().getPlanet(), resources, MilkyWayAlert(this)))
 
         // ensure new daily planet is visible if player is already in delta quadrant ----
-        Cluster1Aufdeckungen(pa.spaceObjects).fix(per)
+        Cluster1Aufdeckungen(Cluster1.spaceObjects).fix()
     }
 }

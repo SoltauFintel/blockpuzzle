@@ -7,8 +7,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import de.mwvb.blockpuzzle.Features;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
-import de.mwvb.blockpuzzle.persistence.Persistence;
+import de.mwvb.blockpuzzle.developer.DeveloperService;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 
 /**
  * This is an important outpost of the Orange Union. Every day the Orange Union recaptures the planet.
@@ -38,14 +39,14 @@ public class DailyPlanet extends Planet {
 
     /** Rückgabewert 0 bis 6. Im Zweifelsfall 0. */
     @Override
-    public int getCurrentGameDefinitionIndex(IPersistence persistence) {
+    public int getCurrentGameDefinitionIndex() {
         // Gibt es für heute ein Spiel?
-        String today = getToday(persistence);
-        int ret = findIndexForDate(persistence, today + ACTIVE_GAME, today + WON_GAME); // find any game
+        String today = getToday();
+        int ret = findIndexForDate(today + ACTIVE_GAME, today + WON_GAME); // find any game
         if (ret == -1) { // not found
             // Gibt es für gestern ein gewonnenes Spiel?
             String dayM1 = calculateDayBefore(today);
-            ret = findIndexForDate(persistence, dayM1 + WON_GAME, dayM1 + WON_GAME); // only won game counts
+            ret = findIndexForDate(dayM1 + WON_GAME, dayM1 + WON_GAME); // only won game counts
             if (ret >= 0 && ret < 6) {
                 ret++;
             } else {
@@ -53,7 +54,7 @@ public class DailyPlanet extends Planet {
                 //  6: es wurde Tag 7 gewonnen -> es geht wieder bei Tag 1 los
                 ret = 0;
             }
-            createNewGame(persistence, ret, today);
+            createNewGame(ret, today);
         }
 
         // Das bestimmte Spiel als gewählt einstellen, damit getSelectedGame() Zugriffe korrekt funktionieren.
@@ -62,12 +63,11 @@ public class DailyPlanet extends Planet {
     }
 
     /**
-     * @param persistence falls ich das für den Developer Mode brauche
      * @return Tagesdatum im Format JJJJ-MM-TT
      */
-    public static String getToday(IPersistence persistence) {
+    public static String getToday() {
         if (Features.developerMode) {
-            String ret = ((Persistence) persistence).loadTodayDate();
+            String ret = new DeveloperService().loadToday();
             if (ret != null && "2020-10-10".length() == ret.length()) {
                 return ret;
             }
@@ -75,9 +75,9 @@ public class DailyPlanet extends Planet {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    private int findIndexForDate(IPersistence persistence, String xdate1, String xdate2) {
+    private int findIndexForDate(String xdate1, String xdate2) {
         for (int i = 6; i >= 0; i--) {
-            String date = persistence.loadDailyDate(this, i);
+            String date = new SpielstandDAO().load(this, i).getDailyDate();
             if (xdate1.equals(date) || xdate2.equals(date)) {
                 return i;
             }
@@ -102,21 +102,24 @@ public class DailyPlanet extends Planet {
     }
 
     /** Neues Game anlegen (inkl. Spielstand reseten) */
-    private void createNewGame(IPersistence persistence, int ret, String today) {
+    private void createNewGame(int ret, String today) {
+        SpielstandDAO dao = new SpielstandDAO();
+
         int nextRound = 0;
         if (ret > 0) {
-            persistence.setGameID(this, ret - 1);
-            nextRound = persistence.loadNextRound() - 1;
+            Spielstand ss = dao.load(this, ret - 1);
+            nextRound = ss.getNextRound() - 1;
             if (nextRound < 0) {
                 nextRound = 0;
             }
         }
 
-        persistence.setGameID(this, ret);
-        persistence.saveScore(-9999);
-        persistence.saveNextRound(nextRound);
-        persistence.saveDailyDate(this, ret, today + ACTIVE_GAME);
-        setOwner(false);
-        persistence.savePlanet(this);
+        Spielstand ss = dao.load(this, ret);
+        ss.setScore(-9999);
+        ss.setNextRound(nextRound);
+        ss.setDailyDate(today + ACTIVE_GAME);
+        dao.save(this, ret, ss);
+
+        new SpaceObjectStateService().saveOwner(this, false);
     }
 }

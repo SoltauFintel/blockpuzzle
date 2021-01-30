@@ -10,21 +10,19 @@ import java.util.List;
 
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
+import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 
 public abstract class AbstractPlanet extends AbstractSpaceObject implements IPlanet {
+    private final SpielstandDAO spielstandDAO = new SpielstandDAO();
     // Stammdaten
     private final int gravitation;
     private final List<GameDefinition> gameDefinitions = new ArrayList<>();
     public static Paint ownerMarkerPaint; // set during draw action
-    // Bewegungsdaten
-    private boolean owner = false;
     // Bewegungsdaten, nicht persistent
     private GameDefinition selectedGame = null;
-    private String infoText1;
-    private String infoText2;
-    private String infoText3;
 
     public AbstractPlanet(int number, int x, int y, int gravitation) {
         super(number, x, y);
@@ -34,6 +32,11 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     public AbstractPlanet(int number, int x, int y, int gravitation, GameDefinition gameDefinition) {
         this(number, x, y, gravitation);
         gameDefinitions.add(gameDefinition);
+    }
+
+    @Override
+    public String getId() {
+        return "C" + getClusterNumber() + "_" + getNumber();
     }
 
     @Override
@@ -57,10 +60,10 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     }
 
     @Override
-    public String getInfo(IPersistence persistence, Resources resources) {
+    public String getInfo(Resources resources) {
         String info = resources.getString(getPlanetTypeResId()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
         if (getGameDefinitions().size() > 1) {
-            getCurrentGameDefinitionIndex(persistence); // ensure game def is selected
+            getCurrentGameDefinitionIndex(); // ensure game def is selected
             info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
         }
         return info;
@@ -69,29 +72,29 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     protected abstract int getPlanetTypeResId();
 
     @Override
-    public String getGameInfo(IPersistence per, Resources resources, int gi) {
+    public String getGameInfo(Resources resources, int gi) {
         if (hasGames()) {
-            getCurrentGameDefinitionIndex(per);
+            getCurrentGameDefinitionIndex();
             GameDefinition s = gi >= 0 ? getGameDefinitions().get(gi) : getSelectedGame();
             String info = s.getInfo(); // Game definition
 
             // Scores
-            per.setGameID(this, gameDefinitions.indexOf(s));
+            Spielstand ss = spielstandDAO.load(this, gameDefinitions.indexOf(s));
 
-            int score = per.loadScore();
-            int moves = per.loadMoves();
+            int score = ss.getScore();
+            int moves = ss.getMoves();
             if (score > 0) {
                 info += "\n" + resources.getString(R.string.yourScoreYourMoves, thousand(score), thousand(moves));
             }
 
-            int otherScore = per.loadOwnerScore();
-            int otherMoves = per.loadOwnerMoves();
+            int otherScore = ss.getOwnerScore();
+            int otherMoves = ss.getOwnerMoves();
             if (otherScore > 0) {
-                info += "\n" + resources.getString(R.string.scoreOfMoves, per.loadOwnerName(), thousand(otherScore), thousand(otherMoves));
+                info += "\n" + resources.getString(R.string.scoreOfMoves, ss.getOwnerName(), thousand(otherScore), thousand(otherMoves));
             }
 
             // Liberated?
-            if (s.isLiberated(score, moves, otherScore, otherMoves, per, true)) {
+            if (s.isLiberated(score, moves, otherScore, otherMoves, true, this, gi)) {
                 if (userMustSelectTerritory()) {
                     info += "\n" + resources.getString(R.string.liberatedTerritoryByYou);
                 } else {
@@ -109,12 +112,12 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     }
 
     @Override
-    public void draw(Canvas canvas, float f) {
+    public void draw(Canvas canvas, float f, SpaceObjectStates info) {
         // draw planet
         canvas.drawCircle(getX() * ClusterView.w * f, getY() * ClusterView.w * f, getRadius() * f, getPaint());
 
         // draw owner mark
-        if (isOwner()) {
+        if (info.isOwner(this)) {
             float ax = getX() * ClusterView.w * f + getRadius() * getOwnerMarkXFactor() * f;
             float ay = getY() * ClusterView.w * f - getRadius() * 0.7f * f;
             float bx = ax + 5 * f;
@@ -130,16 +133,6 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
     protected float getOwnerMarkXFactor() {
         return 1f;
-    }
-
-    @Override
-    public boolean isOwner() {
-        return owner;
-    }
-
-    @Override
-    public void setOwner(boolean owner) {
-        this.owner = owner;
     }
 
     public List<GameDefinition> getGameDefinitions() {
@@ -172,7 +165,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     }
 
     @Override
-    public int getCurrentGameDefinitionIndex(IPersistence persistence) {
+    public int getCurrentGameDefinitionIndex() {
         return getGameDefinitions().indexOf(getSelectedGame());
     }
 
@@ -190,22 +183,22 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
     }
 
     @Override
-    public String getInfoText(int lineNumber) {
-        if (lineNumber == 1) return infoText1;
-        if (lineNumber == 2) return infoText2;
-        if (lineNumber == 3) return infoText3;
-        return "";
-    }
+    public void resetGame() {
+        SpielstandDAO dao = new SpielstandDAO();
+        Spielstand ss = dao.load(this, getCurrentGameDefinitionIndex());
+        if (ss.getScore() < 0 && ss.getMoves() == 0) {
+            ss.setScore(ss.getScore() - 1);
+            if (ss.getScore() > -9999 && ss.getScore() <= -3) {
+                // also clear enemy. It's for the case that the player thinks he has no chance to beat the enemy.
+                ss.setOwnerName("");
+                ss.setOwnerScore(0);
+                ss.setOwnerMoves(0);
+            }
+        } else {
+            ss.setScore(-1);
+        }
+        dao.save(this, getCurrentGameDefinitionIndex(), ss);
 
-    public void setInfoText1(String infoText1) {
-        this.infoText1 = infoText1;
-    }
-
-    public void setInfoText2(String infoText2) {
-        this.infoText2 = infoText2;
-    }
-
-    public void setInfoText3(String infoText3) {
-        this.infoText3 = infoText3;
+        new SpaceObjectStateService().saveOwner(this, false);
     }
 }

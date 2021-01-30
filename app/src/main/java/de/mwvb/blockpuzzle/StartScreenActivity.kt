@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.global.GameType
+import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.global.Migration5to6
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import kotlinx.android.synthetic.main.activity_start_screen.*
 
 /**
@@ -20,7 +22,16 @@ class StartScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start_screen)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorHeadlineBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorHeadlineBackground)
+        }
+        AbstractDAO.init(this)
+
+        val migration = Migration5to6()
+        if (migration.isNecessary) {
+            println("Data migration to version 6 is necessary.")
+            migration.migrate(this)
+            // IF the migration crashes it's better also to crash the app, because we don't want to loose the old game state.
+            println("Migration finished.")
         }
 
         stoneWars.setOnClickListener { onStoneWars() }
@@ -30,7 +41,7 @@ class StartScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            if (per().loadOldGame() == 2) {
+            if (GlobalData.get().gameType == GameType.STONE_WARS) {
                 startActivity(Intent(this, BridgeActivity::class.java))
             }
         } catch (e: Exception) {
@@ -39,25 +50,23 @@ class StartScreenActivity : AppCompatActivity() {
     }
 
     private fun onStoneWars() {
-        val per = per()
-        per.saveOldGame(2)
+        val gd = GlobalData.get()
+        gd.gameType = GameType.STONE_WARS
         val intent = Intent(this, InfoActivity::class.java)
-        if (per.loadDeathStarMode() == 1) {
+        if (gd.todesstern == 1) {
             val args = Bundle()
-            args.putInt("mode", 1)
+            args.putInt(InfoActivity.MODE, InfoActivity.MILKY_WAY_ALERT)
             intent.putExtras(args)
         }
+        gd.save()
         startActivity(intent)
     }
 
     private fun onOldGame() {
-        val per = per()
-        per.saveOldGame(1)
-        per.saveDeathStarMode(0)
+        val gd = GlobalData.get()
+        gd.gameType = GameType.OLD_GAME
+        gd.todesstern = 0
+        gd.save()
         startActivity(Intent(this, MainActivity::class.java))
-    }
-
-    private fun per(): IPersistence {
-        return Persistence(this)
     }
 }

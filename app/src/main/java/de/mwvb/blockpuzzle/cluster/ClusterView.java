@@ -12,12 +12,8 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.planet.AbstractPlanet;
-import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
-import de.mwvb.blockpuzzle.planet.Moon;
-import de.mwvb.blockpuzzle.planet.Planet;
 import de.mwvb.blockpuzzle.sound.SoundService;
 
 /**
@@ -90,9 +86,6 @@ public class ClusterView extends View {
         this.model = model;
         bubble.setModel(model);
     }
-    public ClusterViewModel getModel() {
-        return model;
-    }
 
     public void draw() {
         invalidate();
@@ -127,8 +120,8 @@ public class ClusterView extends View {
         // Planets
         spaceObjectPaints.prepare();
         for (ISpaceObject spaceObject : model.getSpaceObjects()) {
-            if (spaceObject.isVisibleOnMap()) {
-                spaceObject.draw(canvas, f);
+            if (model.getInfo().isVisibleOnMap(spaceObject)) {
+                spaceObject.draw(canvas, f, model.getInfo());
             }
         }
         spaceObjectPaints.cleanup();

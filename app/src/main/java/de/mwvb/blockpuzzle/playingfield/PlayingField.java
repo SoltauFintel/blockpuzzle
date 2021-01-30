@@ -2,7 +2,7 @@ package de.mwvb.blockpuzzle.playingfield;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
 
 public class PlayingField {
     // Stammdaten
@@ -10,12 +10,11 @@ public class PlayingField {
 
     // Zustand
     /** 1: x (nach rechts), 2: y (nach unten) */
-    private int[][] matrix;
+    private final int[][] matrix;
     private boolean gameOver = false;
 
     // Services
     private IPlayingFieldView view;
-    private GamePersistence persistence;
 
     // TO-DO Idee: Jeder Block sollte ein Objekt sein, welches Eigenschaften (z.B. Farbe) und Verhalten (z.B. LockBlock) hat.
 
@@ -29,16 +28,12 @@ public class PlayingField {
         this.view.setPlayingField(this);
     }
 
-    public void setPersistence(GamePersistence persistence) {
-        this.persistence = persistence;
-    }
-
     public int get(int x, int y) {
         return matrix[x][y];
     }
 
     // Soll private bleiben, da nur die Game Engine die Matrix verändern darf.
-    // -> Hab ich jetzt aber public machen müssen, damit Persistence darauf zugreifen kann.
+    // -> Hab ich jetzt aber public dmachen müssen, damit Persistence darauf zugreifen kann.
     public void set(int x, int y, int value) {
         matrix[x][y] = value;
     }
@@ -49,12 +44,15 @@ public class PlayingField {
 
     public void clear() {
         gameOver = false;
+        doClear();
+        view.draw();
+    }
+    private void doClear() {
         for (int x = 0; x < blocks; x++) {
             for (int y = 0; y < blocks; y++) {
                 set(x, y, 0);
             }
         }
-        view.draw();
     }
 
     public boolean match(GamePiece teil, QPosition pos) {
@@ -176,13 +174,36 @@ public class PlayingField {
         return gameOver;
     }
 
-    public void load() {
-        persistence.get().load(this);
+    public void load(Spielstand ss) {
+        doLoad(ss);
         view.draw();
     }
+    public void doLoad(Spielstand ss) {
+        String d = ss.getPlayingField();
+        if (d == null || d.isEmpty()) {
+            doClear();
+        } else {
+            String[] w = d.split(",");
+            int i = 0;
+            for (int x = 0; x < blocks; x++) {
+                for (int y = 0; y < blocks; y++) {
+                    set(x, y, Integer.parseInt(w[i++]));
+                }
+            }
+        }
+    }
 
-    public void save() {
-        persistence.get().save(this);
+    public void save(Spielstand ss) {
+        StringBuilder d = new StringBuilder();
+        String k = "";
+        for (int x = 0; x < blocks; x++) {
+            for (int y = 0; y < blocks; y++) {
+                d.append(k);
+                k = ",";
+                d.append(get(x, y));
+            }
+        }
+        ss.setPlayingField(d.toString());
     }
 
     public int getBlocks() {

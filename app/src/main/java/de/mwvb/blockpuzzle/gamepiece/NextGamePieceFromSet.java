@@ -1,30 +1,30 @@
 package de.mwvb.blockpuzzle.gamepiece;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+import java.util.Locale;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.sets.AllGamePieceSets;
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
+import de.mwvb.blockpuzzle.gamestate.GameState;
 
 public class NextGamePieceFromSet implements INextGamePiece {
     private final List<GamePiece> allGamePieces = GamePiecesDefinition.INSTANCE.get();
     private final BlockTypes blockTypes = new BlockTypes(null);
     private final int number;
-    private final GamePersistence persistence;
+    private final GameState gs;
     private final String[] set;
     private int nextRound = 0;
     private int nextGamePieceInRound = 0;
 
-    public NextGamePieceFromSet(int number, GamePersistence persistence) {
-        if (number <= 0 || number > 9999 || persistence == null) {
+    public NextGamePieceFromSet(int number, GameState gs) {
+        if (number <= 0 || number > 9999 || gs == null) {
             throw new IllegalArgumentException();
         }
         this.number = number;
-        this.persistence = persistence;
-        String a = "" + number;
-        while (a.length() < 4) {
-            a = "0" + a;
-        }
+        this.gs = gs;
+        final String a = get4DigitNumber(number);
         for (IGamePieceSet set : AllGamePieceSets.sets) {
             if (set.getClass().getSimpleName().endsWith(a)) {
                 this.set = set.getGamePieceSet();
@@ -32,6 +32,11 @@ public class NextGamePieceFromSet implements INextGamePiece {
             }
         }
         throw new RuntimeException("Game piece set with number " + number + " does not exist!");
+    }
+
+    @NotNull
+    private String get4DigitNumber(int number) {
+        return String.format(Locale.GERMAN, "%04d", number);
     }
 
     @Override
@@ -44,7 +49,8 @@ public class NextGamePieceFromSet implements INextGamePiece {
         if (nextGamePieceInRound == 3) {
             nextGamePieceInRound = 0;
             nextRound++;
-            persistence.get().saveNextRound(nextRound);
+            gs.get().setNextRound(nextRound);
+            gs.save();
         }
         return ret;
     }
@@ -56,24 +62,25 @@ public class NextGamePieceFromSet implements INextGamePiece {
 
     private GamePiece fetch(int round, int piece) {
         String line = set[round];
-        String current = "";
+        StringBuilder current = new StringBuilder();
         int index = -1;
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
 
             if (c == '#' || c == ':') { // begin of game piece
-                if (!current.isEmpty() && index == piece) {
-                    return fetch(current);
+                if (current.length() > 0 && index == piece) {
+                    return fetch(current.toString());
                 }
                 index++;
-                current = "";
+                current = new StringBuilder();
             }
-            current += c;
+            current.append(c);
         }
-        if (!current.isEmpty() && index == piece) {
-            return fetch(current);
+        if (current.length() > 0 && index == piece) {
+            return fetch(current.toString());
         }
-        throw new RuntimeException("GamePieceSet line parse error! [B]\nround=" + round + ", piece=" + piece + ", game piece set number=" + number + ", c=" + current);
+        throw new RuntimeException("GamePieceSet line parse error! [B]\nround=" + round + ", piece=" + piece
+                + ", game piece set number=" + number + ", c=" + current.toString());
     }
 
     private GamePiece fetch(String current) {
@@ -82,7 +89,8 @@ public class NextGamePieceFromSet implements INextGamePiece {
         } else if (current.startsWith(":") && current.length() == 5 * 5 + 1) {
             return byPlan(current.substring(1));
         } else {
-            throw new RuntimeException("GamePieceSet line parse error! [A]\nround=" + nextRound + ", piece=" + nextGamePieceInRound + ", game piece set number=" + number + ", c=" + current);
+            throw new RuntimeException("GamePieceSet line parse error! [A]\nround=" + nextRound
+                    + ", piece=" + nextGamePieceInRound + ", game piece set number=" + number + ", c=" + current);
         }
     }
 
@@ -119,13 +127,14 @@ public class NextGamePieceFromSet implements INextGamePiece {
     @Override
     public void reset() {
         nextRound = 0;
-        persistence.get().saveNextRound(0);
+        gs.get().setNextRound(0);
+        gs.save();
         nextGamePieceInRound = 0;
     }
 
     @Override
     public void load() {
-        nextRound = persistence.get().loadNextRound();
+        nextRound = gs.get().getNextRound();
         nextGamePieceInRound = 0;
     }
 }

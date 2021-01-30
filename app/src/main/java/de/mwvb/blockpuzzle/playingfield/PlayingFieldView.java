@@ -41,7 +41,7 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
     private IBlockDrawer bd30;
     private IBlockDrawer bd31;
     private IBlockDrawer bd32;
-    private BlockTypes blockTypes = new BlockTypes(this);
+    private final BlockTypes blockTypes = new BlockTypes(this);
     private PlayingField playingField;
     private final BlockDrawParameters p = new BlockDrawParameters();
 

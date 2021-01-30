@@ -14,17 +14,7 @@ object GamePiecesDefinition {
         return allGamePieces!!
     }
 
-    fun find(name: String): GamePiece? {
-        val ret = get()
-        for (p in ret) {
-            if (p.name == name) {
-                return p
-            }
-        }
-        throw RuntimeException("Game piece '$name' doesn't exist!")
-    }
-
-    val gamePieces =
+    private const val gamePieces =
 """
 // Jede Spielsteinart standardmäßig 4x dabei.
 // Je nach Schwierigkeitsgrad wird das zum Teil abhängig von der Punktzahl variiert.

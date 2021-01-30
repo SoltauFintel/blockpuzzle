@@ -47,9 +47,9 @@
     <string name="yourScoreYourMoves">Deine Punkte: %1$s, deine Moves: %2$s</string>
     <string name="scoreOfMoves">Score von %1$s: %2$s, Moves: %3$s</string>
     <string name="newLiberationAttempt">Erneuten Befreiungsversuch starten</string>
-    <string name="territoryLiberated">+Territorium befreit!</string>
-    <string name="planetLiberated">+Planet befreit!</string>
-    <string name="defeatedEnemy">+Gegner geschlagen! Territorium befreit!</string>
+    <string name="territoryLiberated">Territorium befreit!</string>
+    <string name="planetLiberated">Planet befreit!</string>
+    <string name="defeatedEnemy">Gegner geschlagen! Territorium befreit!</string>
     <string name="quitGame">Spiel beenden</string>
     <string name="continue1">Weiter</string>
     <string name="infotext">Roter Alarm! Captain, unser Raumschiff wurde durch eine Weltraumanomalie in eine unbekannte Galaxie katapultiert. Wie finden wir nur zurück? Aber erst müssen wir die Planeten von der Orange Union befreien. In unserem friedlichen Zeitalter werden Konflikte durchs Spielen von Block Puzzle ausgetragen. Los geht\'s.</string>
@@ -73,7 +73,7 @@
     <string name="beta">beta</string>
     <string name="gamma">gamma</string>
     <string name="delta">delta</string>
-    <string name="tooManyMoves">-Zu viele Spielzüge!</string>
+    <string name="tooManyMoves">Zu viele Spielzüge!</string>
     <string name="noMoreGamePieces">Spielsteine aufgebraucht! (Spielende)</string>
     <string name="daily1">Tag 1</string>
     <string name="daily2">Tag 2</string>
@@ -83,7 +83,7 @@
     <string name="daily6">Tag 6</string>
     <string name="daily7">Tag 7</string>
     <string name="trophies">Cluster %1$d: Bronze-Medaillen: %2$d, Silber-Pokale: %3$d, Gold-Trophäen: %4$d.\nPlatin-Trophäen: %5$d</string>
-    <string name="receivedTrophy">+Planet befreit! Du hast eine Trophäe erhalten. (siehe Datenaustausch)</string>
+    <string name="receivedTrophy">Planet befreit! Du hast eine Trophäe erhalten. (siehe Datenaustausch)</string>
     <string name="theBronx">Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
@@ -94,8 +94,8 @@
     <string name="deathStar">Todesstern</string>
     <string name="deathStarGames123">Reaktoren 1 - 3</string>
     <string name="score">Score</string>
-    <string name="deathStarDestroyed">+Letzter Reaktor zerstört!</string>
-    <string name="reactorDestroyed">+Reaktor zerstört!</string>
+    <string name="deathStarDestroyed">Letzter Reaktor zerstört!</string>
+    <string name="reactorDestroyed">Reaktor zerstört!</string>
     <string name="backFromDeathStar">Roter Alarm! Captain, alle Reaktoren zerstört. Die Explosion des Todessterns hat uns jedoch wieder in die Y Galaxie katapultiert. Immerhin haben wir die Erde gerettet. Weiter geht\'s mit der Befreiung der Planeten von der Orange Union.</string>
     <string name="giveUpDeathStarGame">Aufgeben</string>
     <string name="giveUpDeathStarGameQuestion">Todessternzerstörung aufgeben und zurück in die Y Galaxie?</string>

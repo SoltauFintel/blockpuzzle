@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
@@ -15,11 +15,6 @@ public class GravitationData {
     /** blocks that must not be cleared */
     private final Set<QPosition> exclusions = new HashSet<>();
     private boolean firstGravitationPlayed;
-    private GamePersistence persistence;
-
-    public void setPersistence(GamePersistence persistence) {
-        this.persistence = persistence;
-    }
 
     public List<Integer> getRows() {
         return rows;
@@ -48,15 +43,50 @@ public class GravitationData {
     }
 
     public void set(FilledRows f) {
+        clear();
         rows.addAll(f.getYlist());
         exclusions.addAll(f.getExclusions());
     }
 
-    public void load() {
-        persistence.get().load(this);
+    public void load(Spielstand ss) {
+        clear();
+
+        String d = ss.getGravitationRows();
+        if (!d.isEmpty() && !d.contains("/")/*because of bug*/) {
+            for (String w : d.split(",")) {
+                getRows().add(Integer.parseInt(w));
+            }
+        }
+
+        d = ss.getGravitationExclusions();
+        if (!d.isEmpty()) {
+            for (String w : d.split(",")) {
+                String[] k = w.split("/");
+                getExclusions().add(new QPosition(Integer.parseInt(k[0]), Integer.parseInt(k[1])));
+            }
+        }
+
+        setFirstGravitationPlayed(ss.isGravitationPlayedSound());
     }
 
-    public void save() {
-        persistence.get().save(this);
+    public void save(Spielstand ss) {
+        StringBuilder d = new StringBuilder();
+        String k = "";
+        for (int y : getRows()) {
+            d.append(k).append(y);
+            k = ",";
+        }
+        ss.setGravitationRows(d.toString());
+
+        d = new StringBuilder();
+        k = "";
+        for (QPosition p : getExclusions()) {
+            d.append(k);
+            k = ",";
+            d.append(p.getX()).append("/").append(p.getY());
+        }
+        ss.setGravitationExclusions(d.toString());
+
+        ss.setGravitationPlayedSound(isFirstGravitationPlayed());
     }
 }

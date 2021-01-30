@@ -7,12 +7,12 @@ import de.mwvb.blockpuzzle.planet.IPlanet
 /**
  * Planet speech bubble for cluster view
  */
-class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
-    val rectanglePaint = Paint()
-    val trianglePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    val textPaint = Paint()
+class Bubble(val background: Int, private val backgroundForTarget: Int, val f: Float) {
+    private val rectanglePaint = Paint()
+    private val trianglePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val textPaint = Paint()
     /** speech bubble visibility  */
-    var isVisible = false
+    private var isVisible = false
     /**
      * Das ist der Planet, der in der Map gewählt ist. Ist null wenn gerade kein Planet gewählt ist.
      * Abzugrenzen von ClusterViewModel.planet, der nie null ist und die aktuelle Raumschiffposition darstellt!
@@ -51,7 +51,7 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
         if (markedPlanetOnMap == null || !isVisible) {
             selectTargetButton.isEnabled = false
             return
-        };
+        }
         val p = markedPlanetOnMap!!
         val myX: Float = p.x * ClusterView.w * f
         val myY: Float = p.y * ClusterView.w * f - p.radius * f
@@ -72,10 +72,11 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
             trianglePaint.color = background
         }
 
+        val info = model!!.getInfo(p)
         for (i in 1..3) {
             val xx = rx + 8.5f * f
             val yy = ry + 3f * f + i * 23f * f
-            canvas.drawText(p.getInfoText(i), xx, yy, textPaint)
+            canvas.drawText(info.getInfoText(i), xx, yy, textPaint)
         }
         selectTargetButton.isEnabled = true
     }
@@ -93,5 +94,9 @@ class Bubble(val background: Int, val backgroundForTarget: Int, val f: Float) {
     fun hide() {
         isVisible = false
         // Important: Keep x and y value! (-> keep this.planet)
+    }
+
+    fun isVisible(): Boolean {
+        return this.isVisible
     }
 }

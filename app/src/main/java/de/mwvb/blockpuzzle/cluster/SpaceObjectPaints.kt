@@ -5,7 +5,10 @@ import android.graphics.Paint
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.deathstar.SpaceNebula
-import de.mwvb.blockpuzzle.planet.*
+import de.mwvb.blockpuzzle.planet.AbstractPlanet
+import de.mwvb.blockpuzzle.planet.GiantPlanet
+import de.mwvb.blockpuzzle.planet.Moon
+import de.mwvb.blockpuzzle.planet.Planet
 
 class SpaceObjectPaints(context: Context) {
     private val planet = Paint()

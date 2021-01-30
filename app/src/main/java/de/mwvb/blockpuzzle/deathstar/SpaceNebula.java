@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.mwvb.blockpuzzle.cluster.ClusterView;
+import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.planet.AbstractSpaceObject;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
@@ -22,7 +23,7 @@ public class SpaceNebula extends AbstractSpaceObject {
         super(number, soX, soY);
 
         // Generate static nebula
-        // TODO Naja, so wie ich das gemalt habe, sieht's eher nach einem Asteroidenfeld aus. Ich muss mich mal entscheiden, ob Nebel oder "AsteroidField".
+        // TO-DO Naja, so wie ich das gemalt habe, sieht's eher nach einem Asteroidenfeld aus. Ich muss mich mal entscheiden, ob Nebel oder "AsteroidField".
         //      Die Frage ist, ob ich einen Nebel gezeichnet bekomme. Das muss wie mit Spraydose gemalt aussehen.
         //      Es ist typischer, dass ein Nebel so einen Sprung auslöst. Also irgendwann nen Nebel sprayen.
         //      https://stackoverflow.com/questions/11938632/creating-a-spray-effect-on-touch-draw-in-android
@@ -32,6 +33,11 @@ public class SpaceNebula extends AbstractSpaceObject {
         for (int i = 0; i < 100; i++) {
             dots.add(new QPosition(random.nextInt(w), random.nextInt(h)));
         }
+    }
+
+    @Override
+    public String getId() {
+        return "C" + getClusterNumber() + "_" + getNumber();
     }
 
     @Override
@@ -55,18 +61,9 @@ public class SpaceNebula extends AbstractSpaceObject {
     }
 
     @Override
-    public void draw(Canvas canvas, float f) {
+    public void draw(Canvas canvas, float f, SpaceObjectStates info) {
         for (QPosition dot : dots) {
             canvas.drawCircle(getX() * ClusterView.w * f + dot.getX(), getY() * ClusterView.w * f + dot.getY(), 3, paint);
         }
-    }
-
-    @Override
-    public boolean isOwner() {
-        return false;
-    }
-
-    @Override
-    public void setOwner(boolean v) { //
     }
 }

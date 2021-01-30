@@ -1,6 +1,5 @@
 package de.mwvb.blockpuzzle.planet;
 
-import android.content.res.Resources;
 import android.graphics.Paint;
 
 import de.mwvb.blockpuzzle.R;

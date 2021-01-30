@@ -1,12 +1,15 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 import de.mwvb.blockpuzzle.Features;
-import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.game.GameInfoService;
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.messages.MessageFactory;
+import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
@@ -72,61 +75,62 @@ public class ClassicGameDefinition extends GameDefinition {
     // QUESTIONS AND EVENTS ----
 
     @Override
-    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence, boolean playerIsPlayer1) {
+    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, boolean playerIsPlayer1, IPlanet planet, int index) {
         return player1Score > 0 && player1Score >= getMinimumLiberationScore() &&
                 (player1Score > player2Score || (player1Score == player2Score && player1Moves < player2Moves));
     }
 
+    @NonNull
     @Override
-    public String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resources) {
-        if (won || score < getMinimumLiberationScore()) return null;
+    public MessageObjectWithGameState scoreChanged(ScoreChangeInfo info) {
+        int score = info.getScore();
+        if (info.isWon() || score < getMinimumLiberationScore()) return info.getMessages().getNoMessage();
 
-        int ownerScore = persistence.loadOwnerScore();
+        int ownerScore = info.getOwnerScore();
         if (ownerScore > 0 && score > ownerScore) { // Planet war von Gegner besetzt
-            persistence.get().clearOwner(); // Gegner geschlagen!
-            planet.setOwner(true); // Spiel gewonnen! Territorium befreit!
-            persistence.get().savePlanet(planet);
-            return resources.getString(R.string.defeatedEnemy);
+            info.clearOwner(); // Gegner geschlagen!
+            info.saveOwner(true); // Spiel gewonnen! Territorium befreit!
+            return info.getMessages().getDefeatedEnemy();
+
         } else if (ownerScore <= 0) { // Planet war von Orange Union besetzt
-            if (planet.getGameDefinitions().size() == 1) {
-                planet.setOwner(true); // Spiel gewonnen! Planet befreit!
-                persistence.get().savePlanet(planet);
-                return getPlanetLiberatedText(resources);
+
+            if (info.getPlanet().getGameDefinitions().size() == 1) {
+                info.saveOwner(true); // Spiel gewonnen! Planet befreit!
+                return getPlanetLiberatedText(info.getMessages());
             } else {
-                persistence.saveScore(score);
-                persistence.saveMoves(moves);
-                if (new GameInfoService().isPlanetFullyLiberated(planet, persistence.getPersistenceOK())) {
-                    planet.setOwner(true); // Spiel gewonnen! Planet befreit!
-                    persistence.get().savePlanet(planet);
-                    return getPlanetLiberatedText(resources);
+                // Sicherstellen, dass score+moves gespeichert sind, da isPlanetFullyLiberated() das braucht. (TO-DO Das ist noch so eine Designschwäche, die ich bereinigen muss.)
+                info.saveScoreAndMoves();
+                if (new GameInfoService().isPlanetFullyLiberated(info.getPlanet())) {
+                    info.saveOwner(true); // Spiel gewonnen! Planet befreit!
+                    return getPlanetLiberatedText(info.getMessages());
                 }
-                return getTerritoryLiberatedText(resources);
+                return getTerritoryLiberatedText(info.getMessages());
             }
         }
-        return null;
+        return info.getMessages().getNoMessage();
     }
 
-    protected String getPlanetLiberatedText(ResourceAccess resources) {
-        return resources.getString(R.string.planetLiberated);
+    protected MessageObjectWithGameState getPlanetLiberatedText(MessageFactory messages) {
+        return messages.getPlanetLiberated();
     }
 
-    protected String getTerritoryLiberatedText(ResourceAccess resources) {
-        return resources.getString(R.string.territoryLiberated);
+    protected MessageObjectWithGameState getTerritoryLiberatedText(MessageFactory messages) {
+        return messages.getTerritoryLiberated();
     }
 
     @Override
-    public boolean isWonAfterNoGamePieces(int punkte, int moves, GamePersistence gape) {
-        if (punkte <= 0) { // Sicherstellen, dass ein Sieg ohne Punkte nicht möglich ist.
+    public boolean isWonAfterNoGamePieces(Spielstand ss) {
+        if (ss.getScore() <= 0) { // Sicherstellen, dass ein Sieg ohne Punkte nicht möglich ist.
             return false;
         }
         // Entweder hat man's geschafft mehr Punkte als der Gegner zu bekommen oder nicht.
         // MEHR (ODER FALLS KEIN GEGNER): Planet befreit. Das müsste schon zuvor bekannt gewesen sein. Spielsieg.
         // WENIGER:                       Planet nicht befreit. Spiel verloren.
-        if (getMinimumLiberationScore() <= 0 || punkte >= getMinimumLiberationScore()) {
-            int ownerScore = gape.loadOwnerScore();
+        if (getMinimumLiberationScore() <= 0 || ss.getScore() >= getMinimumLiberationScore()) {
+            int ownerScore = ss.getOwnerScore();
             return ownerScore <= 0 // Es gibt kein Gegner
-                    || punkte > ownerScore // oder man ist besser als der Gegner
-                    || (punkte == ownerScore && moves <= gape.loadOwnerMoves()); // oder man ist gleich gut wie der Gegner, hat aber nicht mehr Moves
+                    || ss.getScore() > ownerScore // oder man ist besser als der Gegner
+                    || (ss.getScore() == ownerScore && ss.getMoves() <= ss.getOwnerMoves()); // oder man ist gleich gut wie der Gegner, hat aber nicht mehr Moves
         }
         return false;
     }

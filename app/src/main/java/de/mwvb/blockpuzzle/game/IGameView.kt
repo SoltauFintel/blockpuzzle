@@ -1,6 +1,8 @@
 package de.mwvb.blockpuzzle.game
 
 import de.mwvb.blockpuzzle.gamepiece.IGamePieceView
+import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.messages.MessageFactory
 import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 
@@ -15,9 +17,7 @@ interface IGameView {
     // init phase (and internal use)
     fun getGamePieceView(index: Int): IGamePieceView
 
-    fun showScore(score: Int, delta: Int, gameOver: Boolean)
-
-    fun showMoves(moves: Int)
+    fun showScoreAndMoves(ss: Spielstand)
 
     fun showTerritoryName(resId: Int)
 
@@ -28,4 +28,6 @@ interface IGameView {
     fun playSound(number: Int)
 
     fun getSpecialAction(specialState: Int): Action
+
+    fun getMessages(): MessageFactory
 }

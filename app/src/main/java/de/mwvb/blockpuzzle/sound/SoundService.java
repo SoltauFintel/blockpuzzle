@@ -9,7 +9,7 @@ import android.media.SoundPool;
 import android.os.Build;
 
 import de.mwvb.blockpuzzle.R;
-import de.mwvb.blockpuzzle.persistence.Persistence;
+import de.mwvb.blockpuzzle.global.GlobalData;
 
 public class SoundService implements ISoundService {
     private boolean on;
@@ -28,7 +28,7 @@ public class SoundService implements ISoundService {
     /** init SoundService */
     @SuppressLint("ObsoleteSdkInt") // falls ich das API Level senken sollte
     public void init(Context context) {
-        on = new Persistence(context).isGameSoundOn();
+        on = GlobalData.get().isGameSounds();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_GAME)

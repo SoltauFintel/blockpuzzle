@@ -19,9 +19,12 @@ import de.mwvb.blockpuzzle.game.IGameView
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
+import de.mwvb.blockpuzzle.gamestate.GamePlayState
+import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.global.GlobalData
 import de.mwvb.blockpuzzle.gravitation.ShakeService
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.messages.MessageFactory
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.playingfield.Action
 import de.mwvb.blockpuzzle.playingfield.IPlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
@@ -37,19 +40,22 @@ import java.text.DecimalFormat
  */
 class MainActivity : AppCompatActivity(), IGameView {
     private lateinit var game: Game
+    private lateinit var messages: MessageFactory
     private lateinit var shakeService : ShakeService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
-        game = GameEngineFactory().create(this, per())
+        messages = MessageFactory(this)
+        game = GameEngineFactory().create(this)
         shakeService = ShakeService(game)
 
         // SUPER PHASE
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        AbstractDAO.init(this)
 
         // REST OF METHOD PHASE
         (placeholder1 as ViewGroup).addView(GamePieceView(baseContext, 1, false))
@@ -78,13 +84,14 @@ class MainActivity : AppCompatActivity(), IGameView {
             shakeService.setActive(true)
             game.initGame()
         } catch (e: Exception) {
+            e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
     }
 
     // Activity goes sleeping
     override fun onPause() {
-        game.save();
+        game.save()
 
         shakeService.setActive(false)
 
@@ -115,21 +122,21 @@ class MainActivity : AppCompatActivity(), IGameView {
                 DragEvent.ACTION_DROP -> dropped(event, targetIsParking)
                 DragEvent.ACTION_DRAG_ENTERED -> {
                     if (targetIsParking) {
-                        getGamePieceView(-1).onDragEnter();
+                        getGamePieceView(-1).onDragEnter()
                     }
                     true
                 }
                 DragEvent.ACTION_DRAG_LOCATION -> true
                 DragEvent.ACTION_DRAG_EXITED -> {
                     if (targetIsParking) {
-                        getGamePieceView(-1).onDragLeave();
+                        getGamePieceView(-1).onDragLeave()
                     }
                     true
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
                     try {
                         if (targetIsParking) {
-                            getGamePieceView(-1).onDragLeave();
+                            getGamePieceView(-1).onDragLeave()
                         }
                         // Da ich nicht weiß, welcher ausgeblendet ist, blende ich einfach alle ein.
                         getGamePieceView(1).endDragMode()
@@ -182,15 +189,15 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     override fun getSpecialAction(specialState: Int): Action {
         if (specialState == 2) { // Death Star destroyed
-            return Action() {
+            return Action {
                 val intent = Intent(this, InfoActivity::class.java)
                 val args = Bundle()
-                args.putInt("mode", 2)
+                args.putInt(InfoActivity.MODE, InfoActivity.BACK_FROM_DEATH_STAR)
                 intent.putExtras(args)
                 startActivity(intent)
             }
         }
-        return Action() {}
+        return Action {}
     }
 
     /** Start new game */
@@ -208,44 +215,38 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
     }
 
-    override fun showScore(score: Int, delta: Int, gameOver: Boolean) {
-        var text = getScoreText(score, gameOver)
-        if (gameOver) {
+    // TO-DO Das ist eher Fachlogik. inkl. getScoreText()
+    override fun showScoreAndMoves(ss: Spielstand) {
+        var text = getScoreText(ss)
+        if (ss.state != GamePlayState.PLAYING) { // old: gameOver
             if (game.gameCanBeWon() && game.isWon) {
                 playingField.soundService.youWon()
             } else {
                 playingField.soundService.gameOver()
             }
-        } else if (delta > 0) {
-            text += " (" + DecimalFormat("+#,##0").format(delta) + ")";
+        } else if (ss.delta > 0) {
+            text += " (" + DecimalFormat("+#,##0").format(ss.delta) + ")"
         }
         info.text = text
+
+        infoDisplay.text = when (ss.moves) {
+            0    -> ""
+            1    -> DecimalFormat("#,##0").format(ss.moves) + " " + resources.getString(R.string.move)
+            else -> DecimalFormat("#,##0").format(ss.moves) + " " + resources.getString(R.string.moves)
+        }
     }
 
-    private fun getScoreText(score: Int, gameOver: Boolean): String {
-        val ret: String
-        if (gameOver) {
+    private fun getScoreText(ss: Spielstand): String {
+        val ret: Int = if (ss.state != GamePlayState.PLAYING) { // old: gameOver
             if (game.gameCanBeWon() && game.isWon) {
-                if (score == 1) {
-                    ret = resources.getString(R.string.winScore1)
-                } else {
-                    ret = resources.getString(R.string.winScore2)
-                }
+                if (ss.score == 1) R.string.winScore1 else R.string.winScore2
             } else {
-                if (score == 1) {
-                    ret = resources.getString(R.string.gameOverScore1)
-                } else {
-                    ret = resources.getString(R.string.gameOverScore2)
-                }
+                if (ss.score == 1) R.string.gameOverScore1 else R.string.gameOverScore2
             }
         } else {
-            if (score == 1) {
-                ret = resources.getString(R.string.score1)
-            } else {
-                ret = resources.getString(R.string.score2)
-            }
+            if (ss.score == 1) R.string.score1 else R.string.score2
         }
-        return ret.replace("XX", DecimalFormat("#,##0").format(score))
+        return resources.getString(ret).replace("XX", DecimalFormat("#,##0").format(ss.score))
     }
 
     override fun getPlayingFieldView(): IPlayingFieldView {
@@ -262,20 +263,8 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
     }
 
-    override fun showMoves(moves: Int) {
-        val text: String
-        if (moves == 0) {
-            text = ""
-        } else if (moves == 1) {
-            text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.move)
-        } else {
-            text = DecimalFormat("#,##0").format(moves) + " " + resources.getString(R.string.moves)
-        }
-        infoDisplay.setText(text)
-    }
-
     override fun onBackPressed() {
-        if (per().loadDeathStarMode() == 1) {
+        if (GlobalData.get().todesstern == 1) {
             if (game.isDragAllowed) { // during wait time back pressing is not allowed, game state could get unstable
                 startActivity(Intent(this, BridgeActivity::class.java))
             }
@@ -310,7 +299,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         playingField.soundService.playSound(number)
     }
 
-    private fun per(): IPersistence {
-        return Persistence(this)
+    override fun getMessages(): MessageFactory {
+        return messages
     }
 }

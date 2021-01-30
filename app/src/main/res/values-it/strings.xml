@@ -46,9 +46,9 @@
     <string name="yourScoreYourMoves">Il vostro punteggio: %1$s, le tue mosse: %2$s</string>
     <string name="scoreOfMoves">Punteggio di %1$s: %2$s, mosse: %3$s</string>
     <string name="newLiberationAttempt">Inizia un altro tentativo di salvataggio</string>
-    <string name="territoryLiberated">+Territorio liberato!</string>
-    <string name="planetLiberated">+Pianeta liberato!</string>
-    <string name="defeatedEnemy">+Avversario sconfitto! Territorio liberato!</string>
+    <string name="territoryLiberated">Territorio liberato!</string>
+    <string name="planetLiberated">Pianeta liberato!</string>
+    <string name="defeatedEnemy">Avversario sconfitto! Territorio liberato!</string>
     <string name="quitGame">Esci dal gioco</string>
     <string name="continue1">Continua</string>
     <string name="infotext">Allarme rosso! Capitano, la nostra astronave è stata catapultata in una galassia sconosciuta da un\'anomalia spaziale. Come ritroviamo la via del ritorno? Ma prima dobbiamo liberare i pianeti dall\'Unione Orange. Nella nostra età pacifica, i conflitti vengono risolti giocando a Block Puzzle. Eccoci qui.</string>
@@ -72,7 +72,7 @@
     <string name="gamma">gamma</string>
     <string name="delta">delta</string>
     <string name="alpha">alfa</string>
-    <string name="tooManyMoves">-Too many moves!</string>
+    <string name="tooManyMoves">Too many moves!</string>
     <string name="noMoreGamePieces">Game over: No more game pieces!</string>
     <string name="daily1">Giorno 1</string>
     <string name="daily2">Giorno 2</string>
@@ -82,7 +82,7 @@
     <string name="daily6">Giorno 6</string>
     <string name="daily7">Giorno 7</string>
     <string name="trophies">Ammasso stellare %1$d: medaglie di bronzo: %2$d, coppe d\'argento: %3$d, trofei d\'oro: %4$d.\nTrofei di platino: %5$d</string>
-    <string name="receivedTrophy">+Pianeta liberato! Hai ricevuto un trofeo. (vedi scambio dati)</string>
+    <string name="receivedTrophy">Pianeta liberato! Hai ricevuto un trofeo. (vedi scambio dati)</string>
     <string name="theBronx">Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
@@ -93,8 +93,8 @@
     <string name="deathStar">Morte Nera</string>
     <string name="deathStarGames123">Reattori 1 - 3</string>
     <string name="score">Punteggio</string>
-    <string name="deathStarDestroyed">+Ultimo reattore distrutto!</string>
-    <string name="reactorDestroyed">+Reattore distrutto!</string>
+    <string name="deathStarDestroyed">Ultimo reattore distrutto!</string>
+    <string name="reactorDestroyed">Reattore distrutto!</string>
     <string name="backFromDeathStar">Allarme rosso! Capitano, tutti i reattori distrutti. Tuttavia, l\'esplosione della Morte Nera ci ha catapultati di nuovo nella galassia Y. Dopo tutto, abbiamo salvato la Terra. Continua con la liberazione dei pianeti dall\'Unione Orange.</string>
     <string name="giveUpDeathStarGame">Arrendersi</string>
     <string name="giveUpDeathStarGameQuestion">Rinunciare alla distruzione della Morte Nera e tornare nella galassia Y?</string>

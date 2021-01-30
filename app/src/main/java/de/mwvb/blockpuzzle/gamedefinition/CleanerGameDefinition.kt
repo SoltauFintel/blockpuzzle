@@ -1,10 +1,11 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
 import de.mwvb.blockpuzzle.Features
-import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.game.Game
-import de.mwvb.blockpuzzle.persistence.GamePersistence
-import de.mwvb.blockpuzzle.persistence.IPersistence
+import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
+import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState
 import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
@@ -20,9 +21,9 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField
 class CleanerGameDefinition @JvmOverloads constructor(
     gamePieceSetNumber: Int,
     /** L: Aus dem Level ergibt sich die initiale Spielfeldbelegung  */
-    val level: Int,
+    private val level: Int,
     /** XLM: 0: no limit  */
-    val maximumLiberationMoves: Int = 0
+    private val maximumLiberationMoves: Int = 0
 ) : GameDefinition(gamePieceSetNumber) {
 
     // GAME DEFINITION ----
@@ -70,19 +71,15 @@ class CleanerGameDefinition @JvmOverloads constructor(
     }
 
     override fun getClusterViewInfo(): String {
-        if (!Features.developerMode) {
-            var ret = "Cleaner L$level"
-            if (maximumLiberationMoves > 0) {
-                ret += " XLM" + maximumLiberationMoves
-            }
-            return ret
-        } else {
-            var ret = "Z" + getGamePieceSetNumber() + " Cleaner L$level"
-            if (maximumLiberationMoves > 0) {
-                ret += " XLM" + maximumLiberationMoves
-            }
-            return ret
+        var ret = ""
+        if (Features.developerMode) {
+            ret = "Z$gamePieceSetNumber "
         }
+        ret += "Cleaner L$level"
+        if (maximumLiberationMoves > 0) {
+            ret += " XLM$maximumLiberationMoves"
+        }
+        return ret
     }
 
 
@@ -91,35 +88,36 @@ class CleanerGameDefinition @JvmOverloads constructor(
     /**
      * @param playerIsPlayer1 true if player 1 is the playing player or it is sure that the playing field is empty
      */
-    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, persistence: IPersistence, playerIsPlayer1: Boolean): Boolean {
+    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, playerIsPlayer1: Boolean, planet: IPlanet, index: Int): Boolean {
         val ret = player1Moves > 0 &&
                 (maximumLiberationMoves <= 0 || player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX
                 (player2Moves <= 0 || // entweder kein Gegner
                         player1Moves < player2Moves || // oder ich bin besser (d.h. weniger Moves)
                         (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
         if (ret && playerIsPlayer1) {
-            return isPlayingFieldEmpty(persistence)
+            return isPlayingFieldEmpty(planet, index)
         }
         return ret
     }
 
-    private fun isPlayingFieldEmpty(persistence: IPersistence): Boolean {
+    private fun isPlayingFieldEmpty(planet: IPlanet, index: Int): Boolean {
+        val ss = SpielstandDAO().load(planet, index)
         val pf = PlayingField(Game.blocks)
-        persistence.load(pf)
+        pf.doLoad(ss)
         return pf.filled == 0
     }
 
-    override fun scoreChanged(score: Int, moves: Int, planet: IPlanet?, won: Boolean, persistence: GamePersistence?, resources: ResourceAccess): String? {
-        val currentMoveNumber = moves + 1 // has not been incremented yet
+    override fun scoreChanged(info: ScoreChangeInfo): MessageObjectWithGameState {
+        val currentMoveNumber = info.moves + 1 // has not been incremented yet
         if (maximumLiberationMoves > 0) { // Is XLM feature active?
             if (currentMoveNumber > maximumLiberationMoves) {
-                return resources.getString(R.string.tooManyMoves)
+                return info.messages.tooManyMoves
             }
         }
-        return null
+        return info.messages.noMessage
     }
 
-    override fun isWonAfterNoGamePieces(punkte: Int, moves: Int, gape: GamePersistence): Boolean {
+    override fun isWonAfterNoGamePieces(ss: Spielstand): Boolean {
         // XLM muss ja 0 sein, sonst wäre vorher schon Game over. Spielfeld wird nicht leer sein, man hat also verloren.
         return false
     }

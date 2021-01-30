@@ -6,19 +6,29 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import de.mwvb.blockpuzzle.Features
 import de.mwvb.blockpuzzle.R
-import de.mwvb.blockpuzzle.deathstar.MilkyWayCluster
-import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccess
-import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory
+import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
+import de.mwvb.blockpuzzle.planet.IPlanet
+import de.mwvb.blockpuzzle.planet.SpaceObjectStateDAO
+import de.mwvb.blockpuzzle.planet.SpaceObjectStateService
+import de.mwvb.blockpuzzle.trophy.TrophyService
 import kotlinx.android.synthetic.main.activity_developer.*
 
 class DeveloperActivity : AppCompatActivity() {
+    private val spielstandDAO = SpielstandDAO()
+    private val sosDAO = SpaceObjectStateDAO()
+    private var planet: IPlanet? = null
+    private var index: Int = 0
+    private var ss: Spielstand? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer)
 
         if (!Features.developerMode) throw RuntimeException("Not allowed")
+        AbstractDAO.init(this)
 
         saveScore.setOnClickListener { onSave() }
         liberated.setOnClickListener { onLiberated() }
@@ -36,8 +46,7 @@ class DeveloperActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val pa = pa()
-        val planet = pa.planet
+        load()
 
         saveScore.isEnabled = (planet != null)
         liberated.isEnabled = (planet != null)
@@ -49,59 +58,83 @@ class DeveloperActivity : AppCompatActivity() {
         ownername.text = " "
         otherScore.setText("")
         otherMoves.setText("")
-        if (planet != null) {
-            score.setText("" + pa.persistence.loadScore())
-            ownername.text = pa.persistence.loadOwnerName()
-            otherScore.setText("" + pa.persistence.loadOwnerScore())
-            otherMoves.setText("" + pa.persistence.loadOwnerMoves())
-            nextRound.setText("" + pa.persistence.loadNextRound())
+        if (ss != null) {
+            score.setText("" + ss!!.score)
+            ownername.text = ss!!.ownerName
+            otherScore.setText("" + ss!!.ownerScore)
+            otherMoves.setText("" + ss!!.ownerMoves)
+            nextRound.setText("" + ss!!.nextRound)
         }
-        todayDate.setText(Persistence(this).loadTodayDate())
+        todayDate.setText(DeveloperService().loadToday())
+    }
+
+    private fun load() {
+        planet = GameEngineFactory().getPlanet()
+        if (planet == null) {
+            index = 0
+            ss = null
+        } else {
+            index = planet!!.gameDefinitions.indexOf(planet!!.selectedGame)
+            ss = SpielstandDAO().load(planet)
+        }
+    }
+
+    private fun save() {
+        spielstandDAO.save(planet, index, ss)
     }
 
     private fun onSave() {
-        val pa = pa()
-        val score = Integer.parseInt(score.text.toString())
-        pa.persistence.saveScore(score)
-        if (score <= 0) {
-            pa.persistence.saveMoves(0)
+        if (ss != null) {
+            ss!!.score = Integer.parseInt(score.text.toString())
+            if (ss!!.score <= 0) {
+                ss!!.moves = 0
+            }
+            save()
+            finish()
         }
-        finish()
     }
 
     private fun onLiberated() {
-        val pa = pa()
-        pa.planet.isOwner = true
-        pa.persistence.savePlanet(pa.planet)
-        finish()
+        if (planet != null) {
+            val sos = sosDAO.load(planet)
+            sos.isOwner = true
+            sosDAO.save(planet, sos)
+            finish()
+        }
     }
 
     private fun onConquered() {
-        val pa = pa()
-        pa.planet.isOwner = false
-        pa.persistence.savePlanet(pa.planet)
-        pa.persistence.saveScore(-1)
-        pa.persistence.saveMoves(0)
-        finish()
+        if (ss != null) {
+            val sos = sosDAO.load(planet)
+            sos.isOwner = false
+            sosDAO.save(planet, sos)
+            ss!!.unsetScore()
+            ss!!.moves = 0
+            save()
+            finish()
+        }
     }
 
     private fun onSaveOther() {
-        val pa = pa()
-        val score = Integer.parseInt(otherScore.text.toString())
-        val moves = Integer.parseInt(otherMoves.text.toString())
-        pa.persistence.saveOwner(score, moves, "Detlef")
-        finish()
+        if (ss != null) {
+            ss!!.ownerScore = Integer.parseInt(otherScore.text.toString())
+            ss!!.ownerMoves = Integer.parseInt(otherMoves.text.toString())
+            ss!!.ownerName = "Detlef"
+            save()
+            finish()
+        }
     }
 
     private fun onSaveNextRound() {
-        val pa = pa()
-        val index = Integer.parseInt(nextRound.text.toString())
-        pa.persistence.saveNextRound(index)
-        finish()
+        if (ss != null) {
+            ss!!.nextRound =  Integer.parseInt(nextRound.text.toString())
+            save()
+            finish()
+        }
     }
 
     private fun onSaveTodayDate() {
-        Persistence(this).saveTodayDate(todayDate.text.toString())
+        DeveloperService().saveToday(todayDate.text.toString())
         finish()
     }
 
@@ -114,37 +147,20 @@ class DeveloperActivity : AppCompatActivity() {
     }
 
     private fun deleteAllTrophies() {
-        val pa = pa()
-        (pa.persistence as Persistence).clearAllTrophies(pa.planet)
+        TrophyService().clear()
+        finish()
+    }
+
+    private fun onOpenMap() {
+        SpaceObjectStateService().openMap()
         finish()
     }
 
     private fun onResetAll() {
         val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        dialog.setTitle("ACHTUNG: Wirklich alle Daten löschen?")
-        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> onReallyResetAll() }
+        dialog.setTitle("ACHTUNG: Wirklich ALLE Daten löschen?")
+        dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> DeveloperService().resetAll() }
         dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
         dialog.show()
-    }
-
-    private fun onReallyResetAll() {
-        pa().persistence.resetAll()
-        System.exit(0)
-    }
-
-    private fun onOpenMap() {
-        val pa = pa()
-        pa.spaceObjects.forEach { p -> p.isVisibleOnMap = true }
-        pa.savePlanets()
-        finish()
-    }
-
-    private fun pa(): PlanetAccess {
-        val per = Persistence(this)
-        val pa = PlanetAccessFactory.getPlanetAccess(per)
-        if (pa.planet != null) {
-            per.setGameID(pa.planet)
-        }
-        return pa
     }
 }

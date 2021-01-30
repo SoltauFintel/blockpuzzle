@@ -3,7 +3,6 @@ package de.mwvb.blockpuzzle.cluster;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.planet.ISpaceObject;
 
 public class Cluster {
@@ -22,6 +21,7 @@ public class Cluster {
         return "" + number;
     }
 
+    @SuppressWarnings("SameReturnValue")
     public String getGalaxyShortName() {
         return "Y";
     }

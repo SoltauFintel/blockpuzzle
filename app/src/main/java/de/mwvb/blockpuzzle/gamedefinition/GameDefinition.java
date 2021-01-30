@@ -1,11 +1,10 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
-import java.util.List;
+import androidx.annotation.NonNull;
 
-import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.game.Game;
-import de.mwvb.blockpuzzle.persistence.GamePersistence;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
@@ -49,24 +48,15 @@ public abstract class GameDefinition {
     }
 
     public int getGamePieceBlocksScoreFactor() {
-        return Game.GPB_SCORE_FACTOR;
+        return 1;
     }
 
     public int getHitsScoreFactor() {
-        return Game.HITS_SCORE_FACTOR;
+        return 10;
     }
 
     public boolean isRowsAdditionalBonusEnabled() {
         return true;
-    }
-
-    /**
-     * @param specialBlocks -
-     * @param mode "placed" or "cleared"
-     * @return specialBlocks
-     */
-    public List<ISpecialBlock> filterSpecialBlockTypes(List<ISpecialBlock> specialBlocks, String mode) {
-        return specialBlocks;
     }
 
     /**
@@ -82,11 +72,12 @@ public abstract class GameDefinition {
     /**
      * call p.draw() after filling something in
      */
-    public void fillStartPlayingField(PlayingField p) {
+    public void fillStartPlayingField(PlayingField p) { // Template method
     }
 
 
     // DISPLAY ----
+    // TODO Die Ausgabe von diesen beiden Methoden ist zu ähnlich. Was kann man da machen?
 
     /** Game definition info for select-territory and planet activity */
     public abstract String getInfo();
@@ -97,19 +88,21 @@ public abstract class GameDefinition {
 
     // QUESTIONS AND EVENTS ----
 
+    // TODO Diese Methode ist zu überdenken! (Parameterübergabe vs. Daten laden)
+    //      Statt die Werte zu übergeben, könnte man Supplier (Provider?) übergeben, die just-in-time liefern - und zwar dann entweder statisch oder die Daten laden.
     /**
-     * @param persistence fertig eingestellt für das Game
      * @return true if planet or territory was liberated by player 1
      */
-    public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, IPersistence persistence, boolean playerIsPlayer1);
+    public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, boolean playerIsPlayer1, IPlanet planet, int gameDefinitionIndex);
 
     /**
-     * @param planet must be persistence.getPlanet()
-     * @return null, or message text for Toast, prefix "+" if victory (play applause sound), prefix "-" for game over (play laughing)
+     * @param info data and services
+     * @return MessageObjectWithGameState; info.messages.noMessage if there's no message to be displayed; not null
      */
-    public abstract String scoreChanged(int score, int moves, IPlanet planet, boolean won, GamePersistence persistence, ResourceAccess resouces);
+    @NonNull
+    public abstract MessageObjectWithGameState scoreChanged(ScoreChangeInfo info);
 
-    public LiberatedFeature getFeatureOnLiberation() {
+    public LiberatedFeature getLiberatedFeature() {
         return libf;
     }
 
@@ -121,7 +114,7 @@ public abstract class GameDefinition {
      * If there are no game pieces anymore the player has lost the game by default.
      * If you return true here you can let the player win the game.
      */
-    public boolean isWonAfterNoGamePieces(int punkte, int moves, GamePersistence gape) {
+    public boolean isWonAfterNoGamePieces(Spielstand ss) {
         return false;
     }
 }

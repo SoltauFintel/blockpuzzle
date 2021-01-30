@@ -29,6 +29,7 @@ public class GamePieceParser {
     }
 
     private void parseLine(String line, GPParseData data) {
+        //noinspection StatementWithEmptyBody
         if (line.isEmpty() || line.startsWith("//")) {
             // ignore
         } else if ("/*".equals(line)) {

@@ -46,9 +46,9 @@
     <string name="yourScoreYourMoves">Ton score: %1$s, vos mouvements: %2$s</string>
     <string name="scoreOfMoves">Score de %1$s: %2$s, mouvements: %3$s</string>
     <string name="newLiberationAttempt">Lancer une autre tentative de libération</string>
-    <string name="territoryLiberated">+Territoire libéré!</string>
-    <string name="planetLiberated">+Planète libérée!</string>
-    <string name="defeatedEnemy">+Adversaire battu! Territoire libéré!</string>
+    <string name="territoryLiberated">Territoire libéré!</string>
+    <string name="planetLiberated">Planète libérée!</string>
+    <string name="defeatedEnemy">Adversaire battu! Territoire libéré!</string>
     <string name="quitGame">Quitter le jeu</string>
     <string name="continue1">Continuer</string>
     <string name="infotext">Alerte rouge! Capitaine, notre vaisseau spatial a été catapulté dans une galaxie inconnue par une anomalie spatiale. Comment retrouver le chemin du retour? Mais d\'abord, nous devons libérer les planètes de l\'Union Orange. À notre époque pacifique, les conflits sont résolus en jouant des Block Puzzle. C\'est parti.</string>
@@ -72,7 +72,7 @@
     <string name="beta">bêta</string>
     <string name="gamma">gamma</string>
     <string name="delta">delta</string>
-    <string name="tooManyMoves">-Trop de mouvements!</string>
+    <string name="tooManyMoves">Trop de mouvements!</string>
     <string name="noMoreGamePieces">Pièces de jeu épuisées! (Game over)</string>
     <string name="daily1">Journée 1</string>
     <string name="daily2">Journée 2</string>
@@ -82,7 +82,7 @@
     <string name="daily6">Journée 6</string>
     <string name="daily7">Journée 7</string>
     <string name="trophies">Amas d\'étoiles %1$d: médailles de bronze: %2$d, coupes en argent: %3$d, trophées d\'or: %4$d.\nDisques de platine: %5$d</string>
-    <string name="receivedTrophy">+Planète libérée! Vous avez reçu un trophée. (voir échange de données)</string>
+    <string name="receivedTrophy">Planète libérée! Vous avez reçu un trophée. (voir échange de données)</string>
     <string name="theBronx">Le Bronx</string>
     <string name="beverlyHills">Beverly Hills</string>
     <string name="queens">Queens</string>
@@ -93,8 +93,8 @@
     <string name="deathStar">Étoile de la Mort</string>
     <string name="deathStarGames123">Réacteurs 1 - 3</string>
     <string name="score">Score</string>
-    <string name="deathStarDestroyed">+Dernier réacteur détruit!</string>
-    <string name="reactorDestroyed">+Réacteur détruit!</string>
+    <string name="deathStarDestroyed">Dernier réacteur détruit!</string>
+    <string name="reactorDestroyed">Réacteur détruit!</string>
     <string name="backFromDeathStar">Alerte rouge! Capitaine, tous les réacteurs détruits. Cependant, l\'explosion de l\'Étoile de la Mort nous a catapultés dans la galaxie Y. Après tout, nous avons sauvé la Terre. Il se poursuit avec la libération des planètes de l\'Union Orange.</string>
     <string name="giveUpDeathStarGame">Abandonner</string>
     <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>

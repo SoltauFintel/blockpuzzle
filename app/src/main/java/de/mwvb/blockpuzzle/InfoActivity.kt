@@ -6,33 +6,38 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.sound.SoundService
 import kotlinx.android.synthetic.main.activity_info.*
-import java.lang.Class as Class
 
 class InfoActivity : AppCompatActivity() {
     private val soundService = SoundService()
+
+    companion object {
+        const val MODE = "mode"
+        const val MILKY_WAY_ALERT = 1
+        const val BACK_FROM_DEATH_STAR = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
         soundService.init(this)
 
-        val mode = if (intent.extras == null) 0 else intent.extras!!.getInt("mode")
+        val mode = intent.extras?.getInt(MODE)
         val activity: Class<*>
         activity = when (mode) {
-            1 -> { // Milky Way alert
+            MILKY_WAY_ALERT -> {
                 infotext.setText(R.string.milkyWayAlertInfotext)
                 MainActivity::class.java
             }
-            2 -> { // back from Death Star
+            BACK_FROM_DEATH_STAR -> {
                 infotext.setText(R.string.backFromDeathStar)
                 BridgeActivity::class.java
             }
@@ -61,9 +66,5 @@ class InfoActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         // Wenn ich das hier nicht verhindern würde, würde die App zur Bridge gehen und der Alarm geht nie mehr aus.
-    }
-
-    private fun per(): IPersistence {
-        return Persistence(this)
     }
 }

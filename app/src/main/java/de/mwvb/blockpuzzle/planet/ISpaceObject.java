@@ -3,8 +3,11 @@ package de.mwvb.blockpuzzle.planet;
 import android.graphics.Canvas;
 
 import de.mwvb.blockpuzzle.cluster.Cluster;
+import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 
 public interface ISpaceObject {
+
+    String getId();
 
     /**
      * @return positive unique space object number within star cluster
@@ -46,19 +49,10 @@ public interface ISpaceObject {
     boolean isShowCoordinates();
 
     /**
+     * Implementation must check itself if it is visible. No drawing if it's not.
      * @param canvas -
      * @param f dp -> px factor
+     * @param info access to PlanetState objects
      */
-    void draw(Canvas canvas, float f);
-
-    // Ist eigentlich etwas heikel vom Design her, dass diese Entity fixe Daten und variable Daten enthält.
-
-    boolean isVisibleOnMap();
-    void setVisibleOnMap(boolean v);
-
-    /**
-     * @return true if current player is the Liberator ("owner") of this planet
-     */
-    boolean isOwner();
-    void setOwner(boolean v);
+    void draw(Canvas canvas, float f, SpaceObjectStates info);
 }

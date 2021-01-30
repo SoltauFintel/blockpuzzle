@@ -10,12 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
 import de.mwvb.blockpuzzle.developer.DeveloperActivity
+import de.mwvb.blockpuzzle.game.GameEngineFactory
 import de.mwvb.blockpuzzle.game.GameInfoService
-import de.mwvb.blockpuzzle.game.NewGameService
-import de.mwvb.blockpuzzle.persistence.*
+import de.mwvb.blockpuzzle.global.GameType
+import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
 import de.mwvb.blockpuzzle.planet.IPlanet
 import kotlinx.android.synthetic.main.activity_bridge.*
-import java.util.*
 
 class BridgeActivity : AppCompatActivity() {
 
@@ -24,8 +25,9 @@ class BridgeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_bridge)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
         navigation.setOnClickListener { startActivity(Intent(this, NavigationActivity::class.java)) }
         play.setOnClickListener { onPlay() }
@@ -49,30 +51,33 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        val pa = pa()
-        navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode(pa.persistence)
-        positionView.text = GameInfoService().getPositionInfo(pa, resources)
-        play.isEnabled = isGameBtnEnabled(pa)
-        newGame.setText(pa.planet.newLiberationAttemptButtonTextResId)
+        val planet = getPlanet()
+        navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode()
+        positionView.text = GameInfoService().getPositionInfo(planet, resources)
+        play.isEnabled = isGameBtnEnabled(planet)
+        newGame.setText(planet.newLiberationAttemptButtonTextResId)
     }
 
     private fun onPlay() {
         if (getPlanet().userMustSelectTerritory()) {
-            selectTerritory(0)
+            selectTerritory(SelectTerritoryActivity.CONTINUE_WITH_PLAY_GAME)
         } else {
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
     private fun selectTerritory(mode: Int) {
-        GlobalData.selectTerritoryMode = mode
-        startActivity(Intent(this, SelectTerritoryActivity::class.java))
+        val intent = Intent(this, SelectTerritoryActivity::class.java)
+        val args = Bundle()
+        args.putInt(SelectTerritoryActivity.MODE, mode)
+        intent.putExtras(args)
+        startActivity(intent)
     }
 
     private fun onNewGame() {
         val planet = getPlanet()
         if (planet.userMustSelectTerritory()) {
-            selectTerritory(1)
+            selectTerritory(SelectTerritoryActivity.CONTINUE_WITH_RESET_GAME)
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle(planet.newLiberationAttemptQuestionResId)
@@ -83,13 +88,11 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onResetGame() {
-        NewGameService().resetGame(per())
+        GameEngineFactory().getPlanet().resetGame()
         update()
     }
 
-    private fun isGameBtnEnabled(pa: PlanetAccess): Boolean {
-        return pa.planet.hasGames()
-    }
+    private fun isGameBtnEnabled(planet: IPlanet) = planet.hasGames()
 
     private fun onQuitGame() {
         val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -100,27 +103,19 @@ class BridgeActivity : AppCompatActivity() {
     }
 
     private fun onQuitGame2() {
-        per().saveOldGame(0)
+        val gd = GlobalData.get()
+        gd.gameType = GameType.NOT_SELECTED
+        gd.save()
         finishAffinity() // App beenden
     }
 
     private fun onDeveloper() {
         if (getPlanet().userMustSelectTerritory()) {
-            selectTerritory(2)
+            selectTerritory(SelectTerritoryActivity.CONTINUE_WITH_DEVELOPER_ACTIVITY)
         } else {
             startActivity(Intent(this, DeveloperActivity::class.java))
         }
     }
 
-    private fun getPlanet(): IPlanet {
-        return pa().planet
-    }
-
-    private fun pa(): PlanetAccess {
-        return PlanetAccessFactory.getPlanetAccess(per())
-    }
-
-    private fun per(): IPersistence {
-        return Persistence(this)
-    }
+    private fun getPlanet() = GameEngineFactory().getPlanet()
 }

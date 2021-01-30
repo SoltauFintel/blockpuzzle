@@ -2,47 +2,56 @@ package de.mwvb.blockpuzzle.deathstar;
 
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
 import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.game.GameEngineFactory;
 import de.mwvb.blockpuzzle.game.IGameView;
-import de.mwvb.blockpuzzle.game.StoneWarsGame;
+import de.mwvb.blockpuzzle.game.place.DoNothingPlaceAction;
+import de.mwvb.blockpuzzle.game.place.IPlaceAction;
+import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGame;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceAdapter;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.GamePlayState;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
+import de.mwvb.blockpuzzle.global.GlobalData;
 
 /**
  * Death Star game play as a Stone Wars variant
  */
 public class DeathStarGame extends StoneWarsGame {
 
-    public DeathStarGame(IGameView view) {
-        super(view);
+    public DeathStarGame(IGameView view, StoneWarsGameState gs) {
+        super(view, gs);
     }
 
     @Override
     public void initGame() {
         super.initGame();
-        view.showTerritoryName(definition.getTerritoryName());
+        view.showTerritoryName(getDefinition().getTerritoryName());
     }
 
     @Override
     protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
         super.loadGame(loadNextGamePiece, checkGame);
         if (loadNextGamePiece) {
-            getDeathStar().setGameIndex(gape.getPersistenceOK().loadDeathStarReactor());
+            getDeathStar().setGameIndex(GlobalData.get().getTodessternReaktor());
             super.offer();
         }
     }
 
     @Override
     protected void postDispatch() {
-        if (holders.is123Empty() && moves > 0) {
+        if (holders.is123Empty() && gs.get().getMoves() > 0) {
             setDragAllowed(false); // Don't allow player to drag something during wait time.
+            //noinspection Convert2Lambda
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     offer();
-                    if (!gameOver) {
+                    if (!gs.isGameOver()) {
                         checkGame();
                         save();
                     }
@@ -69,45 +78,44 @@ public class DeathStarGame extends StoneWarsGame {
         DeathStar ds = getDeathStar();
         // Wenn ich im 1. Reaktor bin und die aktuelle Score 0 ist, bleibe ich in dem aktuellen Game.
         // Andernfalls weiterschalten:
-        if (ds.getGameIndex() > 0 || punkte > 0) {
-            definition = ds.nextGame(); // gape Zugriffe zeigen nun auf diese GameDefinition
-            gape.getPersistenceOK().saveDeathStarReactor(ds.getGameIndex());
-            // definition is null at this point if Death Star is  destroyed.
-            if (deathStarDestroyed()) {
+        if (ds.getGameIndex() > 0 || gs.get().getScore() > 0) {
+            if (ds.nextGame()) {
+                gs = StoneWarsGameState.create();
+                GlobalData gd = GlobalData.get();
+                gd.setTodessternReaktor(ds.getGameIndex());
+                gd.save();
+            } else {
+                deathStarIsDestroyed();
                 return false; // abort
             }
         }
-        punkte = gape.loadScore();
-        if (punkte < 0) {
-            doNewGame();
-        } else {
+        if (new SpielstandDAO().load(ds).getScore() >= 0) { // Is there a game state?
             loadGame(false, false);
+        } else {
+            doNewGame();
         }
-        view.showTerritoryName(definition.getTerritoryName());
+        view.showTerritoryName(getDefinition().getTerritoryName());
         return true; // continue
     }
 
-    private boolean deathStarDestroyed() {
-        if (definition == null) { // looks like Death Star is destroyed
-            IPersistence per = gape.get();
-            gameOver = true;
-            per.saveGameOver(gameOver);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    per.saveDeathStarMode(0); // deactivate Death Star game play
-                    per.saveDeathStarReactor(0);
-                    per.saveCurrentPlanet(1, 1); // Spaceship is catapulted to planet 1 again.
-                    view.getSpecialAction(2).execute(); // leave Death Star game (show info activity and then bridge)
-                }
-            }, 1500); // wait a bit for applause
-            return true;
-        }
-        return false;
+    private void deathStarIsDestroyed() {
+        gs.get().setState(GamePlayState.WON_GAME); // old code: load(ds), state=WON_GAME
+        //noinspection Convert2Lambda
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GlobalData gd = GlobalData.get();
+                gd.setTodesstern(0); // deactivate Death Star game play
+                gd.setTodessternReaktor(0);
+                gd.setCurrentPlanet(1); // Spaceship is catapulted to planet 1 again.
+                gd.save();
+                view.getSpecialAction(2).execute(); // leave Death Star game (show info activity and then bridge)
+            }
+        }, 1500); // wait a bit for applause
     }
 
     private DeathStar getDeathStar() {
-        return (DeathStar) gape.getPlanet();
+        return (DeathStar) new GameEngineFactory().getPlanet();
     }
 
     // Change color of all game pieces. Each reactor has its own color.
@@ -131,8 +139,11 @@ public class DeathStarGame extends StoneWarsGame {
         };
     }
 
+    @NonNull
     @Override
-    protected void detectOneColorArea() { // no OneColor bonus
+    protected IPlaceAction getDetectOneColorAreaAction() {
+        // no OneColor bonus
+        return new DoNothingPlaceAction();
     }
 
     @Override
@@ -140,9 +151,11 @@ public class DeathStarGame extends StoneWarsGame {
         // nichts machen, der NextGamePiece Index soll über alle Reaktoren weiter laufen
     }
 
-    @Override
-    protected void check4Liberation() {
-        holders.clearAll(); // Spieler soll keine Spielsteine mehr setzen können. Das bewirkt außerdem auch, dass offer() aufgerufen
-        // wird und somit nextGame().
-    }
+// TODO
+//  check4Liberation wird glaubich immer aufgerufen wenn ich gewonnen habe. Wenn ich das DeathStar Game teste, muss ich das hier reparieren.
+//    @Override
+//    protected void check4Liberation() {
+//        holders.clearAll(); // Spieler soll keine Spielsteine mehr setzen können. Das bewirkt außerdem auch, dass offer() aufgerufen
+//        // wird und somit nextGame().
+//    }
 }

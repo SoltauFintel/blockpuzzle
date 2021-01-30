@@ -127,9 +127,10 @@ public class GamePieceView extends View implements IGamePieceView {
         setVisibility(View.VISIBLE);
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public boolean performClick() {
-        // wegen Warning in MainActivity.initClickListener()
+        // because of warning in MainActivity.initClickListener()
         return super.performClick();
     }
 

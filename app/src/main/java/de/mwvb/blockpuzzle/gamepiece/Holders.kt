@@ -1,7 +1,7 @@
 package de.mwvb.blockpuzzle.gamepiece
 
 import de.mwvb.blockpuzzle.game.IGameView
-import de.mwvb.blockpuzzle.persistence.GamePersistence
+import de.mwvb.blockpuzzle.gamestate.Spielstand
 
 /**
  * 4 GamePieceHolder objects
@@ -15,27 +15,23 @@ class Holders {
     )
 
     fun get(index: Int): GamePieceHolder {
-        return holders.get(index)!!
+        return holders[index] ?: error("Illegal holder index")
     }
 
     fun setView(view: IGameView) {
         holders.values.forEach { it.setView(view.getGamePieceView(it.index)) }
     }
 
-    fun setPersistence(persistence: GamePersistence) {
-        holders.values.forEach { it.setPersistence(persistence) }
+    fun load(ss: Spielstand) {
+        holders.values.forEach { it.load(ss) }
     }
 
-    fun load() {
-        holders.values.forEach { it.load() }
-    }
-
-    fun save() {
-        holders.values.forEach { it.save() }
+    fun save(ss: Spielstand) {
+        holders.values.forEach { it.save(ss) }
     }
 
     fun is123Empty(): Boolean {
-        return get(1).gamePiece == null && get(2).gamePiece == null && get(3).gamePiece == null;
+        return get(1).gamePiece == null && get(2).gamePiece == null && get(3).gamePiece == null
     }
 
     fun clearParking() {
@@ -50,7 +46,7 @@ class Holders {
     }
 
     fun isParkingFree(): Boolean {
-        return get(-1).gamePiece == null;
+        return get(-1).gamePiece == null
     }
 
     /** Drop Aktion für Parking Area */

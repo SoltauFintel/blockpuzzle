@@ -69,6 +69,7 @@ public class BlockTypes {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public int toBlockType(char defChar, String definition) {
         String key = "" + defChar;
         if (charMap.containsKey(key)) {

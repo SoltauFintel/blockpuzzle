@@ -6,9 +6,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import de.mwvb.blockpuzzle.cluster.Cluster1
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
+import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
+import de.mwvb.blockpuzzle.planet.SpaceObjectStateService
 import kotlinx.android.synthetic.main.activity_player_name.*
 
 class PlayerNameActivity : AppCompatActivity() {
@@ -18,8 +18,9 @@ class PlayerNameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_player_name)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
         playername.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -35,9 +36,9 @@ class PlayerNameActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            val per = per()
-            playername.setText(per.loadPlayerName())
-            gameSounds.isChecked = per.isGameSoundOn
+            val gd = GlobalData.get()
+            playername.setText(gd.playername)
+            gameSounds.isChecked = gd.isGameSounds
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -45,27 +46,25 @@ class PlayerNameActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        per().saveGameSound(gameSounds.isChecked)
+        val gd = GlobalData.get()
+        gd.isGameSounds = gameSounds.isChecked
+        gd.save()
     }
 
     private fun onSaveBtn() {
-        val per = per()
         val pn = playername.text.toString().trim()
-        if (pn.isEmpty()) {
-            return
-        } else if (pn == "open_map") {
-            Cluster1.spaceObjects.forEach { planet ->
-                planet.isVisibleOnMap = true
-                per.savePlanet(planet)
-            }
-        } else {
-            per.savePlayerName(pn)
-            per.savePlayernameEntered(true)
+        when {
+            pn.isEmpty() -> return
+            pn == "open_map" -> SpaceObjectStateService().openMap()
+            else -> savePlayername(pn)
         }
         finish()
     }
 
-    private fun per(): IPersistence {
-        return Persistence(this)
+    private fun savePlayername(pn: String) {
+        val gd = GlobalData.get()
+        gd.playername = pn
+        gd.isPlayernameEntered = true
+        gd.save()
     }
 }

@@ -1,19 +1,20 @@
 package de.mwvb.blockpuzzle.gravitation;
 
 import de.mwvb.blockpuzzle.game.Game;
+import de.mwvb.blockpuzzle.game.GameEngineInterface;
 import de.mwvb.blockpuzzle.playingfield.Action;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 public class GravitationAction implements Action {
     private final GravitationData data;
-    private final Game game;
+    private final GameEngineInterface possibleMovesChecker;
     private final PlayingField playingField;
     private final int startRow;
 
-    public GravitationAction(GravitationData gravitationData, Game game, PlayingField playingField, int startRow) {
+    public GravitationAction(GravitationData gravitationData, GameEngineInterface possibleMovesChecker, PlayingField playingField, int startRow) {
         this.data = gravitationData;
-        this.game = game;
+        this.possibleMovesChecker = possibleMovesChecker;
         this.playingField = playingField;
         this.startRow = startRow;
     }
@@ -28,7 +29,7 @@ public class GravitationAction implements Action {
             }
         }
         data.clear(); // clear after use
-        game.checkPossibleMoves();
+        possibleMovesChecker.checkPossibleMoves();
     }
 
     private boolean hasToBeRemoved(int i) {

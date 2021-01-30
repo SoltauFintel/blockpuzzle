@@ -28,14 +28,14 @@ public interface ISpecialBlock {
 
     /**
      * Usually random decides whether true will be returned.
-     * @param p
+     * @param p game piece
      * @return true if process() shall be called
      */
     boolean isRelevant(GamePiece p);
 
     /**
      * Modify if game piece if all rules are met.
-     * @param p
+     * @param p game piece
      * @return true if no other SpecialBlock should be called, false continue
      */
     boolean process(GamePiece p);
@@ -51,7 +51,7 @@ public interface ISpecialBlock {
     int CLEAR_MAX_MODE = 1;
 
     /**
-     * @param playingField
+     * @param playingField -
      * @param k playing field position of that special block type instance
      * @return 0: do nothing, 1: don't remove block at position k.
      * Eine Zahl größer CLEAR_MAX_MODE wird als Bonuspunkteaufschlag gewertet.

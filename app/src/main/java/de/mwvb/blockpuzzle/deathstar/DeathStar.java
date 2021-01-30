@@ -9,8 +9,11 @@ import java.util.List;
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.Cluster;
+import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
@@ -25,7 +28,7 @@ public class DeathStar implements IPlanet {
     }
 
     private void init() {
-        int gpsn = 23;  // TODO speziellen Spielsteinsatz machen
+        int gpsn = 23;  // TO-DO speziellen Spielsteinsatz machen
         int mls = 2000;
         if (Features.developerMode) {
             mls = 10;
@@ -36,14 +39,36 @@ public class DeathStar implements IPlanet {
         index = 0;
     }
 
-    public void resetGame() {
-        gameDefinitions.clear();
-        init();
-        selectedGame = gameDefinitions.get(index);
+    @Override
+    public String getId() {
+        return "C" + cluster.getNumber() + "_" + getNumber();
     }
 
     @Override
-    public int getCurrentGameDefinitionIndex(IPersistence persistence) {
+    public void resetGame() {
+        SpielstandDAO dao = new SpielstandDAO();
+        for (int i = 0; i < getGameDefinitions().size(); i++) {
+            Spielstand ss = dao.load(this, i);
+            ss.setScore(-9999);
+            ss.setNextRound(0);
+            dao.save(this, i, ss);
+        }
+
+        gameDefinitions.clear();
+        init();
+        selectedGame = gameDefinitions.get(index);
+
+        GlobalData gd = GlobalData.get();
+        gd.setTodesstern(0);
+        gd.setTodessternReaktor(0);
+        gd.setCurrentPlanet(1); // Spaceship is catapulted to planet 1 again.
+        gd.save();
+        // TO-DO Man könnte InfoAc anzeigen: "Roter Alarm. Captain, wir wurde erneut in die Y G. katapultiert. Wie konnte das erneut passieren? Hat jemand einen
+        //       falschen Button gedrückt? ;-) Ein vollständiger Systemcheck wäre gut."
+    }
+
+    @Override
+    public int getCurrentGameDefinitionIndex() {
         selectedGame = gameDefinitions.get(index);
         return index;
     }
@@ -54,7 +79,11 @@ public class DeathStar implements IPlanet {
         index = v;
     }
 
-    public GameDefinition nextGame() {
+    /**
+     * @return true: switch to next alive reactor was successfully,
+     *         false: no more reactor alive. Death Star destroyed!
+     */
+    public boolean nextGame() {
         DeathStarClassicGameDefinition g = null;
         if (!wonAll()) {
             // Find next not won game
@@ -64,7 +93,7 @@ public class DeathStar implements IPlanet {
             } while (g.isWon()); // jump over already destroyed reactors
         }
         selectedGame = g;
-        return selectedGame;
+        return selectedGame != null;
     }
 
     private boolean wonAll() {
@@ -86,6 +115,9 @@ public class DeathStar implements IPlanet {
         return !gameDefinitions.isEmpty();
     }
 
+    /**
+     * @return null if game over
+     */
     @Override
     public GameDefinition getSelectedGame() {
         return selectedGame;
@@ -141,26 +173,25 @@ public class DeathStar implements IPlanet {
     }
 
     @Override
-    public String getInfo(IPersistence persistence, Resources resources) {
+    public String getInfo(Resources resources) {
         return resources.getString(R.string.deathStar) + ", " + resources.getString(R.string.gravitation) + " " + getGravitation() + "\n" + resources.getString(R.string.deathStarGames123);
     }
 
     @Override
-    public String getGameInfo(IPersistence per, Resources resources, int gi) {
+    public String getGameInfo(Resources resources, int gi) {
         StringBuilder info = new StringBuilder();
         info.append(getGameDefinitions().get(0).getInfo());
         info.append("\n");
         info.append(resources.getString(R.string.score));
         info.append(": ");
+        SpielstandDAO dao = new SpielstandDAO();
         for (int i = 0; i < getGameDefinitions().size(); i++) {
             if (i > 0) {
                 info.append(" | ");
             }
-            per.setGameID(this, i);
-            int score = per.loadScore();
-            info.append(AbstractPlanet.thousand(score < 0 ? 0 : score));
+            int score = dao.load(this, i).getScore();
+            info.append(AbstractPlanet.thousand(Math.max(score, 0)));
         }
-        per.setGameID(this, index);
         return info.toString();
     }
 
@@ -180,11 +211,6 @@ public class DeathStar implements IPlanet {
     }
 
     @Override
-    public String getInfoText(int lineNumber) {
-        return "";
-    }
-
-    @Override
     public boolean isSelectable() {
         return false;
     }
@@ -200,24 +226,6 @@ public class DeathStar implements IPlanet {
     }
 
     @Override
-    public void draw(Canvas canvas, float f) { //
-    }
-
-    @Override
-    public boolean isVisibleOnMap() {
-        return false;
-    }
-
-    @Override
-    public void setVisibleOnMap(boolean v) { // do nothing
-    }
-
-    @Override
-    public boolean isOwner() {
-        return false;
-    }
-
-    @Override
-    public void setOwner(boolean v) { // do nothing
+    public void draw(Canvas canvas, float f, SpaceObjectStates info) { //
     }
 }

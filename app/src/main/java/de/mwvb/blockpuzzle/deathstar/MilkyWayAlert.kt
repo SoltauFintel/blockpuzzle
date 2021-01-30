@@ -15,7 +15,7 @@ class MilkyWayAlert(base: Context?) : ContextWrapper(base), Action {
     override fun execute() {
         val intent = Intent(this, InfoActivity::class.java)
         val args = Bundle()
-        args.putInt("mode", 1)
+        args.putInt(InfoActivity.MODE, InfoActivity.MILKY_WAY_ALERT)
         intent.putExtras(args)
         startActivity(intent)
     }

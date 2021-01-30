@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
@@ -15,9 +14,9 @@ public class GamePiece {
     /** maximum width and height */
     public static final int max = 5;
     /** 1: x (to right), 2: y (to bottom) */
-    private int[][] matrix = new int[max][max];
+    private final int[][] matrix = new int[max][max];
     /** rotate temp matrix */
-    private int[][] neu = new int[max][max];
+    private final int[][] neu = new int[max][max];
     private int minimumMoves = 0; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im GamePieceView gelandet ist.
     private String name; // Wird nicht persistiert, da dieser Wert nicht mehr von Bedeutung ist, sobald der Spielstein im GamePieceView gelandet ist.
 
@@ -49,11 +48,6 @@ public class GamePiece {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    // 3x3 and X game pieces are called big blocks
-    public boolean isBigBlock() {
-        return name.startsWith("3x3") || name.startsWith("X");
     }
 
     public boolean filled(int x, int y) {
@@ -191,7 +185,6 @@ public class GamePiece {
     }
 
     public int getMinX() {
-        int ret = 0;
         for (int x = 0; x < max; x++) {
             for (int y = 0; y < max; y++) {
                 if (filled(x, y)) {
@@ -274,16 +267,6 @@ public class GamePiece {
             }
         }
         return filledBlocks;
-    }
-
-    public boolean hasSpecialBlock() {
-        for (QPosition k : getAllFilledBlocks()) {
-            int blockType = getBlockType(k.getX(), k.getY());
-            if (blockType >= BlockTypes.MIN_SPECIAL && blockType <= BlockTypes.MAX_SPECIAL) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @NotNull

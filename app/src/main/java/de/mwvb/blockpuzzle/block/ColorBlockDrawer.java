@@ -20,7 +20,7 @@ public class ColorBlockDrawer implements IBlockDrawer {
 
         /**
          * Auf Dauer soll das raus fliegen und nur noch mit R color constant gearbeitet werden.
-         * @param view
+         * @param view -
          * @param color effective color, außen
          * @param color_i effective color, innen
          * @param color_ib effective color, Rahmen von innen

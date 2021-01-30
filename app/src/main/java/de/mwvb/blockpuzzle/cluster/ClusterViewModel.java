@@ -5,13 +5,17 @@ import android.content.res.Resources;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.mwvb.blockpuzzle.Features;
 import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.persistence.IPersistence;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.GiantPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -22,32 +26,31 @@ import de.mwvb.blockpuzzle.playingfield.Action;
 public class ClusterViewModel {
     private final List<ISpaceObject> spaceObjects;
     private final List<IRoute> routes = new ArrayList<>();
+    private final SpaceObjectStates info = new SpaceObjectStates();
     /** Das ist der Planet wo das Raumschiff gerade ist. In Bubble gibt es noch einen weiteren Planeten, der null sein kann, falls gerade in der Karte kein Planet gewählt ist. */
     private IPlanet currentPlanet;
-    private IPersistence persistence;
+    private final Map<IPlanet, SpaceObjectInfo> infos = new HashMap<>();
 
-    public ClusterViewModel(List<ISpaceObject> spaceObjects, IPlanet planet, IPersistence per, Resources resources, Action infoAction) {
+    public ClusterViewModel(List<ISpaceObject> spaceObjects, IPlanet planet, Resources resources, Action infoAction) {
         this.spaceObjects = spaceObjects;
         currentPlanet = planet;
-        persistence = per; // for saving the current planet
 
         if (Features.deathStar) {
-            routes.add(new SpaceNebulaRoute(33, 35, per, infoAction));
-            routes.add(new SpaceNebulaRoute(35, 33, per, infoAction));
+            routes.add(new SpaceNebulaRoute(33, 35, infoAction));
+            routes.add(new SpaceNebulaRoute(35, 33, infoAction));
         }
 
+        SpielstandDAO dao = new SpielstandDAO();
         for (ISpaceObject so : spaceObjects) {
             if (so instanceof AbstractPlanet) {
                 AbstractPlanet p = (AbstractPlanet) so;
 
-                per.setGameID(p);
-                p.setInfoText1(getName(p, resources) + p.getNumber());
-                p.setInfoText2(createInfoText2(p));
-                p.setInfoText3(createInfoText3(per, p, p.getGameDefinitions().size(),
-                        per.loadScore(), per.loadMoves(), per.loadOwnerScore(), per.loadOwnerMoves()));
+                String infoText1 = getName(p, resources) + p.getNumber();
+                String infoText2 = createInfoText2(p);
+                String infoText3 = createInfoText3(p, dao.load(p));
+                infos.put(p, new SpaceObjectInfo(infoText1, infoText2, infoText3));
             }
         }
-        per.setGameID(currentPlanet);
     }
 
     @NotNull
@@ -71,27 +74,28 @@ public class ClusterViewModel {
         }
     }
 
-    private GameDefinition getFirstGameDefinition(IPlanet planet) {
-        return planet.getGameDefinitions().get(0);
-    }
-
     @NotNull
-    private String createInfoText3(IPersistence per, AbstractPlanet p, int n, int score, int moves, int ownerScore, int ownerMoves) {
-        String i3 = "";
+    private String createInfoText3(AbstractPlanet p, Spielstand ss) {
+        String ret = "";
+        int n = p.getGameDefinitions().size();
         if (n == 1 && getFirstGameDefinition(p).showMoves()) {
-            if (moves > 0) {
-                i3 = "Moves: " + moves;
+            if (ss.getMoves() > 0) {
+                ret = "Moves: " + ss.getMoves();
             }
-            if (ownerMoves > 0) {
-                i3 = "Moves: " + ownerMoves + " " + per.loadOwnerName();
+            if (ss.getOwnerMoves() > 0) {
+                ret = "Moves: " + ss.getOwnerMoves() + " " + ss.getOwnerName();
             }
-        } else if (score > 0) {
-            i3 = "Score: " + formatScore(score);
-            if (ownerScore > 0) {
-                i3 = "Score: " + formatScore(ownerScore) + " " + per.loadOwnerName();
+        } else if (ss.getScore() > 0) {
+            ret = "Score: " + formatScore(ss.getScore());
+            if (ss.getOwnerScore() > 0) {
+                ret = "Score: " + formatScore(ss.getOwnerScore()) + " " + ss.getOwnerName();
             }
         }
-        return i3;
+        return ret;
+    }
+
+    private GameDefinition getFirstGameDefinition(IPlanet planet) {
+        return planet.getGameDefinitions().get(0);
     }
 
     private String formatScore(int score) {
@@ -109,10 +113,16 @@ public class ClusterViewModel {
         return currentPlanet;
     }
 
+    public SpaceObjectInfo getInfo(IPlanet p) {
+        return infos.get(p);
+    }
+
     public void setCurrentPlanet(IPlanet currentPlanet) {
         this.currentPlanet = currentPlanet;
         if (currentPlanet != null) {
-            persistence.saveCurrentPlanet(currentPlanet.getClusterNumber(), currentPlanet.getNumber());
+            GlobalData gd = GlobalData.get();
+            gd.setCurrentPlanet(currentPlanet.getNumber());
+            gd.save();
         }
     }
 
@@ -140,5 +150,9 @@ public class ClusterViewModel {
                 return true;
             }
         };
+    }
+
+    public SpaceObjectStates getInfo() {
+        return info;
     }
 }

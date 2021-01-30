@@ -1,11 +1,11 @@
 package de.mwvb.blockpuzzle.deathstar;
 
-import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition;
-import de.mwvb.blockpuzzle.gamedefinition.ResourceAccess;
+import de.mwvb.blockpuzzle.messages.MessageFactory;
+import de.mwvb.blockpuzzle.messages.MessageObjectWithGameState;
 
 public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
-    private boolean won = false; // TODO persistieren
+    private boolean won = false; // TO-DO persistieren
 
     public DeathStarClassicGameDefinition(int gamePieceSetNumber, int minimumLiberationScore, int name) {
         super(gamePieceSetNumber, minimumLiberationScore);
@@ -13,15 +13,15 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     }
 
     @Override
-    protected String getPlanetLiberatedText(ResourceAccess resources) {
+    protected MessageObjectWithGameState getPlanetLiberatedText(MessageFactory messages) {
         won = true;
-        return resources.getString(R.string.deathStarDestroyed);
+        return messages.getDeathStarDestroyed();
     }
 
     @Override
-    protected String getTerritoryLiberatedText(ResourceAccess resources) {
+    protected MessageObjectWithGameState getTerritoryLiberatedText(MessageFactory messages) {
         won = true;
-        return resources.getString(R.string.reactorDestroyed);
+        return messages.getReactorDestroyed();
     }
 
     public boolean isWon() {

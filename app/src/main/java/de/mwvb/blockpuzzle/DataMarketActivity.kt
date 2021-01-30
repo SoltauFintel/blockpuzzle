@@ -11,11 +11,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.data.DataService
- import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
-import de.mwvb.blockpuzzle.game.ResourceService
-import de.mwvb.blockpuzzle.persistence.IPersistence
-import de.mwvb.blockpuzzle.persistence.Persistence
-import de.mwvb.blockpuzzle.persistence.PlanetAccessFactory
+import de.mwvb.blockpuzzle.deathstar.SpaceNebulaRoute
+import de.mwvb.blockpuzzle.game.GameEngineFactory
+import de.mwvb.blockpuzzle.global.GlobalData
+import de.mwvb.blockpuzzle.messages.MessageFactory
+import de.mwvb.blockpuzzle.persistence.AbstractDAO
+import de.mwvb.blockpuzzle.trophy.TrophiesDAO
 import kotlinx.android.synthetic.main.activity_data_market.*
 
 /**
@@ -28,8 +29,9 @@ class DataMarketActivity : AppCompatActivity() {
         setContentView(R.layout.activity_data_market)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground);
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
+        AbstractDAO.init(this)
 
         pasteBtn.setOnClickListener { onPaste() }
         copyBtn.setOnClickListener { onCopy() }
@@ -39,14 +41,13 @@ class DataMarketActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            val per = per()
             // Data exchange not possible in Death Star mode
-            val enabled = SpaceNebulaRoute.isNoDeathStarMode(per)
+            val enabled = SpaceNebulaRoute.isNoDeathStarMode()
             pasteBtn.isEnabled = enabled
-            copyBtn.isEnabled = enabled && per.loadPlayernameEntered()
+            copyBtn.isEnabled = enabled && GlobalData.get().isPlayernameEntered
 
-            dataview.text = if (enabled) DataService().get(per) else ""
-            trophies.text = getTrophiesText(per)
+            dataview.text = if (enabled) DataService().get() else ""
+            trophies.text = getTrophiesText()
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -54,36 +55,31 @@ class DataMarketActivity : AppCompatActivity() {
 
     private fun onCopy() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val o = ClipData.newPlainText("BlockPuzzleDataPacket", DataService().get(per()))
+        val o = ClipData.newPlainText("BlockPuzzleDataPacket", DataService().get())
         clipboard.setPrimaryClip(o)
         Toast.makeText(this, resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
     }
 
     private fun onPaste() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val messages = MessageFactory(this)
         if (clipboard.hasPrimaryClip()) {
             if (clipboard.primaryClipDescription!!.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
                 val item = clipboard.primaryClip!!.getItemAt(0)
                 val pasteData = item.text
                 if (pasteData != null) {
-                    val msg = DataService().put(pasteData.toString(), per(), ResourceService().getResourceAccess(this, null));
-                    if (msg != null && !msg.isEmpty()) {
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-                    }
+                    DataService().put(pasteData.toString(), messages).show()
                     return // success
                 }
             }
         }
-        Toast.makeText(this, resources.getString(R.string.nothingToInsert), Toast.LENGTH_SHORT).show()
+        messages.nothingToInsert.show()
     }
 
-    private fun getTrophiesText(persistence: IPersistence): String {
-        val planet = PlanetAccessFactory.getPlanetAccess(persistence).planet
-        val trophies = persistence.loadTrophies(planet)
-        return resources.getString(R.string.trophies, planet.clusterNumber, trophies.bronze, trophies.silver, trophies.golden, trophies.platinum)
-    }
-
-    private fun per(): IPersistence {
-        return Persistence(this)
+    private fun getTrophiesText(): String {
+        val planet = GameEngineFactory().getPlanet()
+        val trophies = TrophiesDAO().load(planet.clusterNumber)
+        val platinum = GlobalData.get().platinumTrophies
+        return resources.getString(R.string.trophies, planet.clusterNumber, trophies.bronze, trophies.silver, trophies.golden, platinum)
     }
 }
