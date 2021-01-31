@@ -14,18 +14,21 @@ import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData
 /**
  * All data needed by an IPlaceAction
  */
-data class PlaceInfo(val index: Int,
-                     val gamePiece: GamePiece,
-                     val pos: QPosition,
-                     val gs: GameState,
-                     val filledRows: FilledRows,
-                     val blockTypes: BlockTypes,
-                     val playingField: PlayingField,
-                     val gravitation: GravitationData,
-                     val blocks: Int,
-                     val messages: MessageFactory,
-                     private val view: IGameView, // <- TODO das hier loswerden. Sound abspielen anders lösen
-                     val gameEngineInterface: GameEngineInterface
+data class PlaceInfo(
+    val index: Int,
+    val gamePiece: GamePiece,
+    val pos: QPosition,
+    val gs: GameState,
+    val filledRows: FilledRows,
+    val blockTypes: BlockTypes,
+    val playingField: PlayingField,
+    val gravitation: GravitationData,
+    val blocks: Int,
+    val messages: MessageFactory,
+    private val view: IGameView, // <- TODO das hier loswerden. Sound abspielen anders lösen
+    val gameEngineInterface: GameEngineInterface,
+    var gamePieceBlocksScoreFactor: Int, // 1
+    var hitsScoreFactor: Int // 10
 ) {
 
     fun playSound(number: Int) {

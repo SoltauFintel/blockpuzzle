@@ -9,10 +9,12 @@ import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.DetectOneColorAreaAction;
 import de.mwvb.blockpuzzle.game.place.EmptyScreenBonusPlaceAction;
+import de.mwvb.blockpuzzle.game.place.GamePieceScorePlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
+import de.mwvb.blockpuzzle.game.place.IncMovesPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceInfo;
-import de.mwvb.blockpuzzle.game.place.ScorePlaceAction;
 import de.mwvb.blockpuzzle.game.place.SendPlacedEventAction;
+import de.mwvb.blockpuzzle.game.place.SpecialBlockBonusPlaceAction;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
@@ -214,14 +216,17 @@ public class GameEngine implements GameEngineInterface {
     @NotNull
     protected PlaceInfo createInfo(int index, GamePiece gamePiece, QPosition pos) {
         return new PlaceInfo(index, gamePiece, pos, gs, playingField.getFilledRows(), blockTypes, playingField, gravitation,
-                blocks, view.getMessages(), view, this);
+                blocks, view.getMessages(), view, this, 1, 10);
     }
 
+    // TODO früher instantiieren, da die Klassen stateless sind
     protected List<IPlaceAction> getPlaceActions() {
         List<IPlaceAction> ret = new ArrayList<>();
         ret.add(new SendPlacedEventAction());
         ret.add(getDetectOneColorAreaAction());
-        ret.add(getScorePlaceAction());
+        ret.add(new IncMovesPlaceAction());
+        ret.add(new GamePieceScorePlaceAction());
+        ret.add(new SpecialBlockBonusPlaceAction());
         ret.add(getClearRowsPlaceAction());
         ret.add(new EmptyScreenBonusPlaceAction());
         return ret;
@@ -230,11 +235,6 @@ public class GameEngine implements GameEngineInterface {
     @NotNull
     protected IPlaceAction getDetectOneColorAreaAction() {
         return new DetectOneColorAreaAction();
-    }
-
-    @NotNull
-    protected ScorePlaceAction getScorePlaceAction() {
-        return new ScorePlaceAction();
     }
 
     @NotNull

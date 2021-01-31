@@ -3,63 +3,19 @@ package de.mwvb.blockpuzzle.game.place;
 import java.util.List;
 
 import de.mwvb.blockpuzzle.block.special.ISpecialBlock;
-import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 /**
- * Punktzahl erhöhen
+ * Bonus score for clearing special blocks
  */
-public class ScorePlaceAction implements IPlaceAction {
+public class SpecialBlockBonusPlaceAction implements IPlaceAction {
 
     @Override
     public void perform(PlaceInfo info) {
-        GameState gs = info.getGs();
-        FilledRows f = info.getFilledRows();
-
-        // TODO create a class per part ?
-        // Part 1
-        gs.addScore(info.getGamePiece().getPunkte() * getGamePieceBlocksScoreFactor() + f.getHits() * getHitsScoreFactor());
-        gs.incMoves();
-
-        // Part 2
-        rowsAdditionalBonus(f.getXHits(), f.getYHits(), gs);
-
-        // Part 3
-        gs.addScore(processSpecialBlockTypes(f, info));
-    }
-
-    protected int getGamePieceBlocksScoreFactor() {
-        return 1;
-    }
-
-    protected int getHitsScoreFactor() {
-        return 10;
-    }
-
-    protected void rowsAdditionalBonus(int xrows, int yrows, GameState gs) {
-        int bonus = 0;
-        switch (xrows + yrows) {
-            case 0:
-            case 1: break; // 0-1 kein Bonus
-            // Bonuspunkte wenn mehr als 2 Rows gleichzeitig abgeräumt werden.
-            // Fällt mir etwas schwer zu entscheiden wieviel Punkte das jeweils wert ist.
-            case 2:  bonus = 12; break;
-            case 3:  bonus = 17; break;
-            case 4:  bonus = 31; break;
-            case 5:  bonus = 44; break;
-            default: bonus = 22; break;
-        }
-        if (xrows > 0 && yrows > 0) {
-            bonus += 10;
-        }
-        gs.addScore(bonus);
-        // TO-DO Reihe mit gleicher Farbe (ohne oldOneColor) könnte weiteren Bonus auslösen.
-    }
-
-    private int processSpecialBlockTypes(FilledRows f, PlaceInfo info) {
         int bonus = 0;
         List<ISpecialBlock> specialBlocks = info.getBlockTypes().getSpecialBlockTypes();
+        FilledRows f = info.getFilledRows();
 
         // Rows ----
         for (int y : f.getYlist()) {
@@ -95,6 +51,6 @@ public class ScorePlaceAction implements IPlaceAction {
             }
         }
 
-        return bonus;
+        info.getGs().addScore(bonus);
     }
 }
