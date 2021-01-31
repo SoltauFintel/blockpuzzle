@@ -7,6 +7,6 @@ public class GamePieceScorePlaceAction implements IPlaceAction {
 
     @Override
     public void perform(PlaceInfo info) {
-        info.getGs().addScore(info.getGamePiece().getPunkte() * info.getGamePieceBlocksScoreFactor());
+        info.getGs().addScore(info.getGamePiece().getScore() * info.getGamePieceBlocksScoreFactor());
     }
 }

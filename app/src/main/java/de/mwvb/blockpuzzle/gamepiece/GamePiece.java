@@ -230,16 +230,16 @@ public class GamePiece {
         return -1;
     }
 
-    public int getPunkte() { // TODO rename getScore
-        int ret = 0;
+    public int getScore() {
+        int score = 0;
         for (int x = 0; x < max; x++) {
             for (int y = 0; y < max; y++) {
                 if (filled(x, y)) {
-                    ret++;
+                    score++;
                 }
             }
         }
-        return ret;
+        return score;
     }
 
     public int getMinimumMoves() {
