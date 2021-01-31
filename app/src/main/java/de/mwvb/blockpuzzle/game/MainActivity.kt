@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity(), IGameView {
                 // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
                 xy = calculatePlayingFieldCoordinates(event, gamePiece)
             }
-            gameEngine.dispatch(targetIsParking, index, gamePiece, xy)
+            gameEngine.dispatch(targetIsParking, DropActionModel(index, gamePiece, xy))
         } catch (e: DoesNotWorkException) {
             playingField.soundService.doesNotWork()
             Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()

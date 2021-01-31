@@ -18,7 +18,7 @@ public class SendPlacedEventAction implements IPlaceAction {
                     int bt = gamePiece.getBlockType(x, y);
                     for (ISpecialBlock s : specialBlocks) {
                         if (s.getBlockType() == bt) {
-                            s.placed(gamePiece, info.getPos(), new QPosition(x, y));
+                            s.placed(gamePiece, info.getPosition(), new QPosition(x, y));
                         }
                     }
                 }

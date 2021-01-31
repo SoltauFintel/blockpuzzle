@@ -1,29 +1,29 @@
 package de.mwvb.blockpuzzle.game.place
 
+import de.mwvb.blockpuzzle.game.DropActionModel
 import de.mwvb.blockpuzzle.game.GameEngineInterface
 import de.mwvb.blockpuzzle.game.GameEngineModel
-import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.playingfield.FilledRows
-import de.mwvb.blockpuzzle.playingfield.QPosition
 
 /**
  * All data needed by an IPlaceAction
  */
 data class PlaceActionModel(
-    val index: Int,
-    val gamePiece: GamePiece,
-    val pos: QPosition,
     // static data:
+    val gameEngineInterface: GameEngineInterface,
     private val model: GameEngineModel, // view is private
-    val gameEngineInterface: GameEngineInterface
+    // dynamic data:
+    private val dropActionModel: DropActionModel
 ) {
-    fun getFilledRows(): FilledRows = model.playingField.filledRows
-    fun getGs() = model.gs
+    fun getBlocks() = model.blocks
     fun getBlockTypes() = model.blockTypes
+    fun getMessages() = model.view.getMessages()
+    fun getGs() = model.gs
+    fun getDefinition() = model.definition
     fun getPlayingField() = model.playingField
     fun getGravitation() = model.gravitation
-    fun getBlocks() = model.blocks
-    fun getMessages() = model.view.getMessages()
-    fun getDefinition() = model.definition
+    fun getFilledRows(): FilledRows = model.playingField.filledRows
     fun playSound(number: Int) = model.view.playSound(number)
+    fun getGamePiece() = dropActionModel.gamePiece
+    fun getPosition() = dropActionModel.xy
 }

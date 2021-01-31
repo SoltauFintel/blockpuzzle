@@ -1,8 +1,5 @@
 package de.mwvb.blockpuzzle.game;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
@@ -13,7 +10,6 @@ import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
-import de.mwvb.blockpuzzle.playingfield.QPosition;
 
 import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.FITS_ROTATED;
 import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.NO_GAME_PIECE;
@@ -44,20 +40,18 @@ public class GameEngine implements GameEngineInterface {
      *
      * @param targetIsParking true: player moved game piece onto the parking area,
      *                        false: player moved game piece onto the playing field
-     * @param index game piece holder index (1, 2, 3, -1)
-     * @param gamePiece the game piece to move
-     * @param xy target position in playing field, null if targetIsParking is true
+     * @param dropActionModel data
      * @throws DoesNotWorkException if game piece can not be placed
      */
-    public void dispatch(boolean targetIsParking, int index, GamePiece gamePiece, @Nullable QPosition xy) {
+    public void dispatch(boolean targetIsParking, DropActionModel dropActionModel) {
         if (gs.isLostGame()) {
             return;
         }
         boolean ret;
         if (targetIsParking) {
-            ret = model.getHolders().park(index); // Drop action for parking area
+            ret = model.getHolders().park(dropActionModel.getIndex()); // Drop action for parking area
         } else {
-            ret = place(index, gamePiece, xy);
+            ret = place(dropActionModel);
         }
         if (ret) {
             postDispatch();
@@ -76,14 +70,12 @@ public class GameEngine implements GameEngineInterface {
 
     /**
      * Drop action for playing field. Most important method of game.
-     * @param index game piece holder index
-     * @param gamePiece game piece to place to playing field
-     * @param pos coordinates in the playing field where the user wants the game piece to be placed
+     * @param dropActionModel drop action data
      * @return true if game piece has been placed, false if that is not possible
      */
-    private boolean place(int index, GamePiece gamePiece, @NotNull QPosition pos) {
+    private boolean place(DropActionModel dropActionModel) {
         // Move possible? ----
-        if (!playingField.match(gamePiece, pos)) {
+        if (!playingField.match(dropActionModel.getGamePiece(), dropActionModel.getXy())) {
             return false;
         }
 
@@ -92,11 +84,11 @@ public class GameEngine implements GameEngineInterface {
         final int scoreBefore = ss.getScore();
 
         // Main placing part ----
-        playingField.place(gamePiece, pos);
-        model.getHolders().get(index).setGamePiece(null);
+        playingField.place(dropActionModel.getGamePiece(), dropActionModel.getXy());
+        model.getHolders().get(dropActionModel.getIndex()).setGamePiece(null);
 
         // Actions ----
-        PlaceActionModel info = createPlaceInfo(index, gamePiece, pos);
+        PlaceActionModel info = new PlaceActionModel(this, model, dropActionModel);
         for (IPlaceAction action : model.getPlaceActions()) {
             action.perform(info);
         }
@@ -106,11 +98,6 @@ public class GameEngine implements GameEngineInterface {
         model.getView().showScoreAndMoves(ss);
         gs.save();
         return true;
-    }
-
-    @NotNull
-    protected PlaceActionModel createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
-        return new PlaceActionModel(index, gamePiece, pos, model, this);
     }
 
     public void rotate(int index) {
