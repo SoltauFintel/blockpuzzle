@@ -6,7 +6,7 @@ import de.mwvb.blockpuzzle.gamestate.Spielstand
 /**
  * 4 GamePieceHolder objects
  */
-class Holders {
+class Holders(view: IGameView) {
     private val holders = mapOf(
                  1 to GamePieceHolder(1),
                  2 to GamePieceHolder(2),
@@ -18,7 +18,7 @@ class Holders {
         return holders[index] ?: error("Illegal holder index")
     }
 
-    fun setView(view: IGameView) {
+    init {
         holders.values.forEach { it.setView(view.getGamePieceView(it.index)) }
     }
 

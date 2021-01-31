@@ -48,4 +48,16 @@ public class GameState {
     public void incMoves() {
         ss.setMoves(ss.getMoves() + 1);
     }
+
+    // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
+    public void updateHighScore() {
+        if (ss.getScore() > ss.getHighscore() || ss.getHighscore() <= 0) {
+            ss.setHighscore(ss.getScore());
+            ss.setHighscoreMoves(ss.getMoves());
+            save();
+        } else if (ss.getScore() == ss.getHighscore() && (ss.getMoves() < ss.getHighscoreMoves() || ss.getHighscoreMoves() <= 0)) {
+            ss.setHighscoreMoves(ss.getMoves());
+            save();
+        }
+    }
 }

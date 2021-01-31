@@ -1,16 +1,10 @@
 package de.mwvb.blockpuzzle.game.place
 
-import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.GameEngineInterface
-import de.mwvb.blockpuzzle.game.IGameView
-import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition
+import de.mwvb.blockpuzzle.game.GameEngineModel
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
-import de.mwvb.blockpuzzle.gamestate.GameState
-import de.mwvb.blockpuzzle.global.messages.MessageFactory
 import de.mwvb.blockpuzzle.playingfield.FilledRows
-import de.mwvb.blockpuzzle.playingfield.PlayingField
 import de.mwvb.blockpuzzle.playingfield.QPosition
-import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData
 
 /**
  * All data needed by an IPlaceAction
@@ -19,19 +13,17 @@ data class PlaceInfo(
     val index: Int,
     val gamePiece: GamePiece,
     val pos: QPosition,
-    val gs: GameState,
     val filledRows: FilledRows,
-    val blockTypes: BlockTypes,
-    val playingField: PlayingField,
-    val gravitation: GravitationData,
-    val blocks: Int,
-    val messages: MessageFactory,
-    private val view: IGameView, // <- TODO das hier loswerden. Sound abspielen anders lösen
-    val gameEngineInterface: GameEngineInterface,
-    val definition: OldGameDefinition
+    // static data:
+    private val model: GameEngineModel, // view is private
+    val gameEngineInterface: GameEngineInterface
 ) {
-
-    fun playSound(number: Int) {
-        view.playSound(number)
-    }
+    fun getGs() = model.gs
+    fun getBlockTypes() = model.blockTypes
+    fun getPlayingField() = model.playingField
+    fun getGravitation() = model.gravitation
+    fun getBlocks() = model.blocks
+    fun getMessages() = model.view.getMessages()
+    fun getDefinition() = model.definition
+    fun playSound(number: Int) = model.view.playSound(number)
 }

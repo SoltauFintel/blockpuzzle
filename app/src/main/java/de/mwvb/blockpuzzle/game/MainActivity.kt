@@ -1,6 +1,5 @@
 package de.mwvb.blockpuzzle.game
 
-import android.app.AlertDialog
 import android.content.ClipDescription
 import android.content.Intent
 import android.os.Build
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        newGame.setOnClickListener(onNewGame())
+// TODO Baustelle       newGame.setOnClickListener(onNewGame())
     }
 
     // Activity reactivated
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity(), IGameView {
             }
 
             override fun isDragAllowed(): Boolean {
-                return !gameEngine.isGameOver && gameEngine.isDragAllowed
+                return !gameEngine.isLostGame && gameEngine.isDragAllowed
             }
         })
     }
@@ -180,7 +179,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         var x = event.x / f // px -> dp
         var y = event.y / f
         // jetzt in Spielfeld Koordinaten umrechnen
-        val br = PlayingFieldView.w / GameEngine.blocks
+        val br = PlayingFieldView.w / gameEngine.blocks
         x /= br
         y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
@@ -199,20 +198,21 @@ class MainActivity : AppCompatActivity(), IGameView {
         return Action {}
     }
 
-    /** Start new game */
-    private fun onNewGame(): (View) -> Unit {
-        return {
-            if (gameEngine.isGameOver || gameEngine.lessScore()) {
-                gameEngine.newGame()
-            } else {
-                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                dialog.setTitle(resources.getString(R.string.startNewGame))
-                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> gameEngine.newGame() }
-                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-                dialog.show()
-            }
-        }
-    }
+// TODO Baustelle
+//    /** Start new game */
+//    private fun onNewGame(): (View) -> Unit {
+//        return {
+//            if (gameEngine.isLostGame || gameEngine.lessScore()) {
+//                gameEngine.newGame()
+//            } else {
+//                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+//                dialog.setTitle(resources.getString(R.string.startNewGame))
+//                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> gameEngine.newGame() }
+//                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+//                dialog.show()
+//            }
+//        }
+//    }
 
     // TODO Das ist eher Fachlogik. inkl. getScoreText()
     override fun showScoreAndMoves(ss: Spielstand) {
