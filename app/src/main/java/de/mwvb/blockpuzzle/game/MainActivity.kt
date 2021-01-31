@@ -39,17 +39,14 @@ import java.text.DecimalFormat
  */
 class MainActivity : AppCompatActivity(), IGameView {
     private lateinit var gameEngine: GameEngine
-    private lateinit var messages: MessageFactory
     private lateinit var shakeService : ShakeService
+    private var messages: MessageFactory? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
         if (Build.VERSION.SDK_INT >= 21) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
-        messages = MessageFactory(this)
-        gameEngine = GameEngineFactory().create(this)
-        shakeService = ShakeService(gameEngine)
 
         // SUPER PHASE
         super.onCreate(savedInstanceState)
@@ -68,20 +65,23 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
-            true -> View.VISIBLE
-            false -> View.INVISIBLE
-        }
         newGame.setOnClickListener(onNewGame())
-        shakeService.initShakeDetection(this)
     }
 
     // Activity reactivated
     override fun onResume() {
         super.onResume()
         try {
+            gameEngine = GameEngineFactory().create(this)
+
+            shakeService = ShakeService(gameEngine) // TODO Diese 3 Zeilen zsf.
             shakeService.setActive(true)
-            gameEngine.initGame()
+            shakeService.initShakeDetection(this)
+
+            newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
+                true  -> View.VISIBLE
+                false -> View.INVISIBLE
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
@@ -277,6 +277,9 @@ class MainActivity : AppCompatActivity(), IGameView {
     }
 
     override fun getMessages(): MessageFactory {
-        return messages
+        if (messages == null) {
+            messages = MessageFactory(this)
+        }
+        return messages!!
     }
 }
