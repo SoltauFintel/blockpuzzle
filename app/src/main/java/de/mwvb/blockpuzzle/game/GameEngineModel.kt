@@ -10,9 +10,10 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField
 import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData
 
 /**
- * Static game engine model
+ * Game engine model
  */
 data class GameEngineModel(
+    // Immutable properties only!
     val blocks: Int,
     val blockTypes: BlockTypes,
     val view: IGameView,
@@ -23,4 +24,13 @@ data class GameEngineModel(
     val placeActions: List<IPlaceAction>,
     val gravitation: GravitationData,
     val nextGamePiece: INextGamePiece
-)
+) {
+
+    fun save() {
+        val ss = gs.get()
+        playingField.save(ss)
+        gravitation.save(ss)
+        holders.save(ss)
+        gs.save()
+    }
+}

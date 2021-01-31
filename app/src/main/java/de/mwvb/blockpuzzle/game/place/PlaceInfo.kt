@@ -13,11 +13,11 @@ data class PlaceInfo(
     val index: Int,
     val gamePiece: GamePiece,
     val pos: QPosition,
-    val filledRows: FilledRows,
     // static data:
     private val model: GameEngineModel, // view is private
     val gameEngineInterface: GameEngineInterface
 ) {
+    fun getFilledRows(): FilledRows = model.playingField.filledRows
     fun getGs() = model.gs
     fun getBlockTypes() = model.blockTypes
     fun getPlayingField() = model.playingField

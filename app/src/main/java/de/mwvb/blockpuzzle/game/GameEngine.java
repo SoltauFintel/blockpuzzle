@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.game;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
@@ -36,12 +37,100 @@ public class GameEngine implements GameEngineInterface {
         playingField = model.getPlayingField();
     }
 
-    public boolean isNewGameButtonVisible() {
+    // Game play actions (dispatch, rotate, shaked) ----
+
+    /**
+     * Drop action for playing field or parking area
+     *
+     * @param targetIsParking true: player moved game piece onto the parking area,
+     *                        false: player moved game piece onto the playing field
+     * @param index game piece holder index (1, 2, 3, -1)
+     * @param gamePiece the game piece to move
+     * @param xy target position in playing field, null if targetIsParking is true
+     * @throws DoesNotWorkException if game piece can not be placed
+     */
+    public void dispatch(boolean targetIsParking, int index, GamePiece gamePiece, @Nullable QPosition xy) {
+        if (gs.isLostGame()) {
+            return;
+        }
+        boolean ret;
+        if (targetIsParking) {
+            ret = model.getHolders().park(index); // Drop action for parking area
+        } else {
+            ret = place(index, gamePiece, xy);
+        }
+        if (ret) {
+            postDispatch();
+        } else {
+            throw new DoesNotWorkException();
+        }
+    }
+
+    protected void postDispatch() {
+        if (model.getHolders().is123Empty()) {
+            offer();
+        }
+        checkGame();
+        save();
+    }
+
+    /**
+     * Drop action for playing field. Most important method of game.
+     * @param index game piece holder index
+     * @param gamePiece game piece to place to playing field
+     * @param pos coordinates in the playing field where the user wants the game piece to be placed
+     * @return true if game piece has been placed, false if that is not possible
+     */
+    private boolean place(int index, GamePiece gamePiece, @NotNull QPosition pos) {
+        // Move possible? ----
+        if (!playingField.match(gamePiece, pos)) {
+            return false;
+        }
+
+        // Remember old score ----
+        final Spielstand ss = gs.get();
+        final int scoreBefore = ss.getScore();
+
+        // Main placing part ----
+        playingField.place(gamePiece, pos);
+        model.getHolders().get(index).setGamePiece(null);
+
+        // Actions ----
+        PlaceInfo info = createPlaceInfo(index, gamePiece, pos);
+        for (IPlaceAction action : model.getPlaceActions()) {
+            action.perform(info);
+        }
+
+        // Display and save ----
+        ss.setDelta(ss.getScore() - scoreBefore);
+        model.getView().showScoreAndMoves(ss);
+        gs.save();
         return true;
     }
 
-    protected OldGameDefinition getDefinition() {
-        return model.getDefinition();
+    @NotNull
+    protected PlaceInfo createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
+        return new PlaceInfo(index, gamePiece, pos, model, this);
+    }
+
+    public void rotate(int index) {
+        if (!gs.isLostGame()) {
+            model.getHolders().get(index).rotate();
+            moveImpossible(index);
+        }
+    }
+
+    /** Player has shaked smartphone */
+    public void shaked() {
+        for (IPlaceAction action : model.getPlaceActions()) {
+            if (action instanceof ClearRowsPlaceAction) {
+                ((ClearRowsPlaceAction) action).executeGravitation(model.getGravitation(),
+                        this, playingField, getDefinition().getGravitationStartRow());
+                model.getView().shake();
+                return;
+            }
+        }
+        throw new RuntimeException("Missing ClearRowsPlaceAction");
     }
 
     // Show new game pieces ----
@@ -78,89 +167,7 @@ public class GameEngine implements GameEngineInterface {
         // Keine Spielsteine mehr, kann hier nicht passieren, da die Spielsteine endlos per Zufall generiert werden.
     }
 
-    // Spielaktionen ----
-
-    /**
-     * Drop Aktion für Spielfeld oder Parking
-     *
-     * Throws DoesNotWorkException
-     */
-    public void dispatch(boolean targetIsParking, int index, GamePiece teil, QPosition xy) {
-        if (gs.isLostGame()) {
-            return;
-        }
-        boolean ret;
-        if (targetIsParking) {
-            ret = model.getHolders().park(index); // Drop Aktion für Parking Area
-        } else {
-            ret = place(index, teil, xy);
-        }
-        if (ret) {
-            postDispatch();
-        } else {
-            throw new DoesNotWorkException();
-        }
-    }
-
-    protected void postDispatch() {
-        if (model.getHolders().is123Empty()) {
-            offer();
-        }
-        checkGame();
-        save();
-    }
-
-    /**
-     * Drop action for playing field
-     * @param index game piece holder index
-     * @param gamePiece game piece to place to playing field
-     * @param pos coordinates in the playing field where the user wants the game piece to be placed
-     * @return true if game piece has been placed, false if that is not possible
-     */
-    private boolean place(int index, GamePiece gamePiece, QPosition pos) {
-        // Move possible? ----
-        if (!playingField.match(gamePiece, pos)) {
-            return false;
-        }
-
-        // Remember old score ----
-        final Spielstand ss = gs.get();
-        final int scoreBefore = ss.getScore();
-
-        // Main placing part ----
-        playingField.place(gamePiece, pos);
-        model.getHolders().get(index).setGamePiece(null);
-
-        // Actions ----
-        PlaceInfo info = createPlaceInfo(index, gamePiece, pos);
-        for (IPlaceAction action : model.getPlaceActions()) {
-            action.perform(info);
-        }
-
-        // Display and save ----
-        ss.setDelta(ss.getScore() - scoreBefore);
-        model.getView().showScoreAndMoves(ss);
-        gs.save();
-        return true;
-    }
-
-    @NotNull
-    protected PlaceInfo createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
-        return new PlaceInfo(index, gamePiece, pos, playingField.getFilledRows(), model, this);
-    }
-
-    /** Player has shaked smartphone */
-    public void shaked() {
-        for (IPlaceAction action : model.getPlaceActions()) {
-            if (action instanceof ClearRowsPlaceAction) {
-                ((ClearRowsPlaceAction) action).executeGravitation(model.getGravitation(),
-                        this, playingField, getDefinition().getGravitationStartRow());
-                model.getView().shake();
-                return;
-            }
-        }
-        throw new RuntimeException("Missing ClearRowsPlaceAction");
-    }
+    // Game state checks ----
 
     /** Check game: player lost game if no game piece can be moved into the playing field */
     public void checkGame() {
@@ -207,6 +214,32 @@ public class GameEngine implements GameEngineInterface {
         }
     }
 
+    @Override
+    public void clearAllHolders() {
+        model.getHolders().clearAll();
+    }
+
+    // Persistence ----
+
+    @Override
+    public void save() {
+        model.save();
+    }
+
+    // Properties ----
+
+    public boolean isNewGameButtonVisible() {
+        return true;
+    }
+
+    protected OldGameDefinition getDefinition() {
+        return model.getDefinition();
+    }
+
+    public int getBlocks() {
+        return model.getBlocks();
+    }
+
     public boolean lessScore() {
         return gs.get().getScore() < 10;
     }
@@ -215,36 +248,11 @@ public class GameEngine implements GameEngineInterface {
         return gs.isLostGame();
     }
 
-    public void rotate(int index) {
-        if (!gs.isLostGame()) {
-            model.getHolders().get(index).rotate();
-            moveImpossible(index);
-        }
-    }
-
-    @Override
-    public void save() {
-        Spielstand ss = gs.get();
-        playingField.save(ss);
-        model.getGravitation().save(ss);
-        model.getHolders().save(ss);
-        gs.save();
-    }
-
     public boolean isDragAllowed() {
         return dragAllowed;
     }
 
     public void setDragAllowed(boolean dragAllowed) {
         this.dragAllowed = dragAllowed;
-    }
-
-    @Override
-    public void clearAllHolders() {
-        model.getHolders().clearAll();
-    }
-
-    public int getBlocks() {
-        return model.getBlocks();
     }
 }
