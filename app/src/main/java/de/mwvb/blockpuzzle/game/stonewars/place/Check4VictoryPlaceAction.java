@@ -50,7 +50,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
     public void handleNoGamePieces(StoneWarsGameState gs, GameEngineInterface gameEngineInterface) {
         Spielstand ss = gs.get();
         GameDefinition definition = gs.getDefinition();
-        if (definition.isWonAfterNoGamePieces(ss)) {
+        if (definition.isWonAfterNoGamePieces(ss)) { // TODO Das testen, und zwar im Zusammenhang mit gameGoesOnAfterWonGame=true
             ss.setState(GamePlayState.WON_GAME);
         }
         if (ss.getState() == GamePlayState.WON_GAME && gs.getPlanet().getGameDefinitions().size() == 1) {

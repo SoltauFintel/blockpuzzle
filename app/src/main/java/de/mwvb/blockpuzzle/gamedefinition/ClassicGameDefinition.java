@@ -36,11 +36,6 @@ public class ClassicGameDefinition extends GameDefinition {
         return minimumLiberationScore;
     }
 
-    @Override
-    public boolean gameGoesOnAfterWonGame() {
-        return true;
-    }
-
     @NotNull
     @Override
     public String toString() {

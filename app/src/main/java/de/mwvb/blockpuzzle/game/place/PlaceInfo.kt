@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.game.place
 import de.mwvb.blockpuzzle.block.BlockTypes
 import de.mwvb.blockpuzzle.game.GameEngineInterface
 import de.mwvb.blockpuzzle.game.IGameView
+import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamestate.GameState
 import de.mwvb.blockpuzzle.global.messages.MessageFactory
@@ -27,8 +28,7 @@ data class PlaceInfo(
     val messages: MessageFactory,
     private val view: IGameView, // <- TODO das hier loswerden. Sound abspielen anders lösen
     val gameEngineInterface: GameEngineInterface,
-    var gamePieceBlocksScoreFactor: Int, // 1
-    var hitsScoreFactor: Int // 10
+    val definition: OldGameDefinition
 ) {
 
     fun playSound(number: Int) {

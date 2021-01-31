@@ -12,11 +12,6 @@ import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
  * Clear rows: add score and prepare or execute clearing of rows
  */
 public class ClearRowsPlaceAction implements IPlaceAction {
-    private final int gravitationStartRow;
-
-    public ClearRowsPlaceAction(int gravitationStartRow) {
-        this.gravitationStartRow = gravitationStartRow;
-    }
 
     @Override
     public void perform(PlaceInfo info) {
@@ -31,11 +26,14 @@ public class ClearRowsPlaceAction implements IPlaceAction {
     protected void addScoreForClearedRows(PlaceInfo info) {
         GameState gs = info.getGs();
         FilledRows f = info.getFilledRows();
-        gs.addScore(f.getHits() * info.getHitsScoreFactor());
-        rowsAdditionalBonus(f.getXHits(), f.getYHits(), gs);
+        gs.addScore(f.getHits() * info.getDefinition().getHitsScoreFactor());
+        rowsAdditionalBonus(f.getXHits(), f.getYHits(), info);
     }
 
-    protected void rowsAdditionalBonus(int xrows, int yrows, GameState gs) {
+    protected void rowsAdditionalBonus(int xrows, int yrows, PlaceInfo info) {
+        if (!info.getDefinition().isRowsAdditionalBonusEnabled()) {
+            return;
+        }
         int bonus = 0;
         switch (xrows + yrows) {
             case 0:
@@ -51,7 +49,7 @@ public class ClearRowsPlaceAction implements IPlaceAction {
         if (xrows > 0 && yrows > 0) {
             bonus += 10;
         }
-        gs.addScore(bonus);
+        info.getGs().addScore(bonus);
         // TO-DO Reihe mit gleicher Farbe (ohne oldOneColor) könnte weiteren Bonus auslösen.
     }
 
@@ -62,12 +60,13 @@ public class ClearRowsPlaceAction implements IPlaceAction {
 
     protected void executeClearingOfRows(PlaceInfo info) {
         info.getGravitation().set(info.getFilledRows());
-        GravitationAction gravitationAction = new GravitationAction(info.getGravitation(), info.getGameEngineInterface(), info.getPlayingField(), gravitationStartRow);
+        GravitationAction gravitationAction = new GravitationAction(info.getGravitation(), info.getGameEngineInterface(), info.getPlayingField(),
+                info.getDefinition().getGravitationStartRow());
         info.getPlayingField().clearRows(info.getFilledRows(), gravitationAction);
         // Action wird erst wenige Millisekunden später fertig!
     }
 
-    public void executeGravitation(GravitationData gravitation, GameEngineInterface possibleMovesChecker, PlayingField playingField) {
+    public void executeGravitation(GravitationData gravitation, GameEngineInterface possibleMovesChecker, PlayingField playingField, int gravitationStartRow) {
         new GravitationAction(gravitation, possibleMovesChecker, playingField, gravitationStartRow).execute();
     }
 }

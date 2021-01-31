@@ -8,7 +8,10 @@ import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
-public abstract class GameDefinition {
+/**
+ * Stone Wars game definition
+ */
+public abstract class GameDefinition extends OldGameDefinition {
     private final int gamePieceSetNumber;
     /** R.string constant */
     private int territoryName;
@@ -38,20 +41,6 @@ public abstract class GameDefinition {
     public boolean onEmptyPlayingField() { // TODO bescheuerter Name
         return false;
     }
-
-    public int getGamePieceBlocksScoreFactor() {
-        return 1;
-    }
-
-    public int getHitsScoreFactor() {
-        return 10;
-    }
-
-    public boolean isRowsAdditionalBonusEnabled() {
-        return true;
-    }
-
-    public abstract boolean gameGoesOnAfterWonGame();
 
     /**
      * @return true: Die Moves-Anzeige der Score-Anzeige bevorzugen. false: andersrum

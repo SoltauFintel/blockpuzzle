@@ -15,6 +15,7 @@ import de.mwvb.blockpuzzle.game.place.IncMovesPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceInfo;
 import de.mwvb.blockpuzzle.game.place.SendPlacedEventAction;
 import de.mwvb.blockpuzzle.game.place.SpecialBlockBonusPlaceAction;
+import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
@@ -39,9 +40,12 @@ public class GameEngine implements GameEngineInterface {
     private final BlockTypes blockTypes = new BlockTypes(null);
 
     // Zustand
+    /** Access only by getDefinition()! */
+    protected OldGameDefinition definition = null;
     protected GameState gs; // not final
     protected final PlayingField playingField = new PlayingField(blocks);
     protected final Holders holders = new Holders();
+    private List<IPlaceAction> placeActions = null;
     private final GravitationData gravitation = new GravitationData(); // überlegen, ob ich die Daten nicht im Spielstand halten kann
     private boolean dragAllowed = true;
 
@@ -123,24 +127,39 @@ public class GameEngine implements GameEngineInterface {
         }
     }
 
+    protected OldGameDefinition getDefinition() {
+        if (definition == null) {
+            definition = new OldGameDefinition();
+        }
+        return definition;
+    }
+
     /** 3 neue zufällige Spielsteine anzeigen */
     protected void offer() { // old German method name: vorschlag
-        for (int i = 1; i <= 3; i++) {
-            holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
-        }
+        if (offerAllowed()) {
+            for (int i = 1; i <= 3; i++) {
+                holders.get(i).setGamePiece(nextGamePiece.next(blockTypes));
+            }
 
-        if (!gs.isLostGame() && holders.is123Empty()) {
-            // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
-            // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
-            // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
-            // Unvorteilhaft weil man mit dem letzten Stein noch ein Spielfeld-voll-Game-over erzielen könnte.
-            holders.clearParking();
+            if (!gs.isLostGame() && holders.is123Empty()) {
+                // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
+                // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
+                // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
+                // Unvorteilhaft weil man mit dem letzten Stein noch ein Spielfeld-voll-Game-over erzielen könnte.
+                holders.clearParking();
 
-            // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
-            view.getMessages().getNoMoreGamePieces().show();
-            handleNoGamePieces();
-            onLostGame();
+                // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
+                view.getMessages().getNoMoreGamePieces().show();
+                handleNoGamePieces();
+                onLostGame();
+            }
         }
+    }
+
+    private boolean offerAllowed() {
+        GamePlayState state = gs.get().getState();
+        return (state == GamePlayState.PLAYING
+                || (state == GamePlayState.WON_GAME && getDefinition().gameGoesOnAfterWonGame()));
     }
 
     protected void handleNoGamePieces() { // Template method
@@ -201,7 +220,7 @@ public class GameEngine implements GameEngineInterface {
         holders.get(index).setGamePiece(null);
 
         // Actions ----
-        PlaceInfo info = createInfo(index, gamePiece, pos);
+        PlaceInfo info = createPlaceInfo(index, gamePiece, pos);
         for (IPlaceAction action : getPlaceActions()) {
             action.perform(info);
         }
@@ -214,13 +233,19 @@ public class GameEngine implements GameEngineInterface {
     }
 
     @NotNull
-    protected PlaceInfo createInfo(int index, GamePiece gamePiece, QPosition pos) {
+    protected PlaceInfo createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
         return new PlaceInfo(index, gamePiece, pos, gs, playingField.getFilledRows(), blockTypes, playingField, gravitation,
-                blocks, view.getMessages(), view, this, 1, 10);
+                blocks, view.getMessages(), view, this, getDefinition());
     }
 
-    // TODO früher instantiieren, da die Klassen stateless sind
-    protected List<IPlaceAction> getPlaceActions() {
+    private List<IPlaceAction> getPlaceActions() {
+        if (placeActions == null) {
+            placeActions = createPlaceActions();
+        }
+        return placeActions;
+    }
+
+    protected List<IPlaceAction> createPlaceActions() {
         List<IPlaceAction> ret = new ArrayList<>();
         ret.add(new SendPlacedEventAction());
         ret.add(getDetectOneColorAreaAction());
@@ -238,13 +263,13 @@ public class GameEngine implements GameEngineInterface {
     }
 
     @NotNull
-    protected ClearRowsPlaceAction getClearRowsPlaceAction() {
-        return new ClearRowsPlaceAction(5);
+    private ClearRowsPlaceAction getClearRowsPlaceAction() {
+        return new ClearRowsPlaceAction();
     }
 
     /** Player has shaked smartphone */
     public void shaked() {
-        getClearRowsPlaceAction().executeGravitation(gravitation, this, playingField);
+        getClearRowsPlaceAction().executeGravitation(gravitation, this, playingField, getDefinition().getGravitationStartRow());
         view.shake();
     }
 
