@@ -58,6 +58,7 @@ public class GameEngine implements GameEngineInterface {
     public GameEngine(IGameView view, GameState gs) {
         this.view = view;
         this.gs = gs;
+        // TODO eigentlich ist die definition hier auch schon fest. Beim Todesstern muss ich in MainActivity (bzw. durch Service) die GameEngine austauschen.
     }
 
     // New Game ----
