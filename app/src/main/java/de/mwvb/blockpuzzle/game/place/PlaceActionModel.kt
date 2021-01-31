@@ -9,7 +9,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition
 /**
  * All data needed by an IPlaceAction
  */
-data class PlaceInfo(
+data class PlaceActionModel(
     val index: Int,
     val gamePiece: GamePiece,
     val pos: QPosition,

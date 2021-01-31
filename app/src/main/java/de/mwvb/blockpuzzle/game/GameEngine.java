@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
-import de.mwvb.blockpuzzle.game.place.PlaceInfo;
+import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
 import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
@@ -96,7 +96,7 @@ public class GameEngine implements GameEngineInterface {
         model.getHolders().get(index).setGamePiece(null);
 
         // Actions ----
-        PlaceInfo info = createPlaceInfo(index, gamePiece, pos);
+        PlaceActionModel info = createPlaceInfo(index, gamePiece, pos);
         for (IPlaceAction action : model.getPlaceActions()) {
             action.perform(info);
         }
@@ -109,8 +109,8 @@ public class GameEngine implements GameEngineInterface {
     }
 
     @NotNull
-    protected PlaceInfo createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
-        return new PlaceInfo(index, gamePiece, pos, model, this);
+    protected PlaceActionModel createPlaceInfo(int index, GamePiece gamePiece, QPosition pos) {
+        return new PlaceActionModel(index, gamePiece, pos, model, this);
     }
 
     public void rotate(int index) {

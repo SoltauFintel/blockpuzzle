@@ -14,7 +14,7 @@ import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
 public class ClearRowsPlaceAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         addScoreForClearedRows(info);
         if (Features.shakeForGravitation) { // gravity needs phone shaking
             prepareClearingOfRows(info);
@@ -23,14 +23,14 @@ public class ClearRowsPlaceAction implements IPlaceAction {
         }
     }
 
-    protected void addScoreForClearedRows(PlaceInfo info) {
+    protected void addScoreForClearedRows(PlaceActionModel info) {
         GameState gs = info.getGs();
         FilledRows f = info.getFilledRows();
         gs.addScore(f.getHits() * info.getDefinition().getHitsScoreFactor());
         rowsAdditionalBonus(f.getXHits(), f.getYHits(), info);
     }
 
-    protected void rowsAdditionalBonus(int xrows, int yrows, PlaceInfo info) {
+    protected void rowsAdditionalBonus(int xrows, int yrows, PlaceActionModel info) {
         if (!info.getDefinition().isRowsAdditionalBonusEnabled()) {
             return;
         }
@@ -53,12 +53,12 @@ public class ClearRowsPlaceAction implements IPlaceAction {
         // TO-DO Reihe mit gleicher Farbe (ohne oldOneColor) könnte weiteren Bonus auslösen.
     }
 
-    protected void prepareClearingOfRows(PlaceInfo info) {
+    protected void prepareClearingOfRows(PlaceActionModel info) {
         info.getGravitation().set(info.getFilledRows());
         info.getPlayingField().clearRows(info.getFilledRows(), null);
     }
 
-    protected void executeClearingOfRows(PlaceInfo info) {
+    protected void executeClearingOfRows(PlaceActionModel info) {
         info.getGravitation().set(info.getFilledRows());
         GravitationAction gravitationAction = new GravitationAction(info.getGravitation(), info.getGameEngineInterface(), info.getPlayingField(),
                 info.getDefinition().getGravitationStartRow());

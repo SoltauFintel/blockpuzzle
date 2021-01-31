@@ -9,7 +9,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 public class SendPlacedEventAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         GamePiece gamePiece = info.getGamePiece();
         List<ISpecialBlock> specialBlocks = info.getBlockTypes().getSpecialBlockTypes();
         for (int x = gamePiece.getMinX(); x <= gamePiece.getMaxX(); x++) {
