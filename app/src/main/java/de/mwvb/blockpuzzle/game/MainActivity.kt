@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-// TODO Baustelle       newGame.setOnClickListener(onNewGame())
+// TODO Baustelle       newGame.setOnClickListener(onNewGame())          rebuild feature könnte man hier nutzen
     }
 
     // Activity reactivated
@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 //        }
 //    }
 
-    // TODO Das ist eher Fachlogik. inkl. getScoreText()
+    // TODO Das ist eher Fachlogik. inkl. getScoreText() | R.string.moves|score2 wird auch woanders genutzt. (Bubble infoText)
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
         if (ss.delta > 0) {

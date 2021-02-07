@@ -26,7 +26,7 @@ public class DeathStar implements IPlanet {
     }
 
     private void init() {
-        int gpsn = 23;  // TODO speziellen Spielsteinsatz machen
+        int gpsn = 23;  // TODO speziellen Spielsteinsatz machen, direkt mit allen Spielsteinen, Ich brauch den Generatorcode wieder
         int mls = 2000;
         if (Features.developerMode) {
             mls = 15;
