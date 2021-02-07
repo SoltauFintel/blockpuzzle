@@ -13,7 +13,8 @@ data class PlaceActionModel(
     val gameEngineInterface: GameEngineInterface,
     private val model: GameEngineModel, // view is private
     // dynamic data:
-    private val dropActionModel: DropActionModel
+    private val dropActionModel: DropActionModel,
+    private val filledRows: FilledRows // must be a val, must not be calculated here
 ) {
     fun getBlocks() = model.blocks
     fun getBlockTypes() = model.blockTypes
@@ -22,7 +23,7 @@ data class PlaceActionModel(
     fun getDefinition() = model.definition
     fun getPlayingField() = model.playingField
     fun getGravitation() = model.gravitation
-    fun getFilledRows(): FilledRows = model.playingField.filledRows
+    fun getFilledRows(): FilledRows = filledRows
     fun playSound(number: Int) = model.view.playSound(number)
     fun getGamePiece() = dropActionModel.gamePiece
     fun getPosition() = dropActionModel.xy

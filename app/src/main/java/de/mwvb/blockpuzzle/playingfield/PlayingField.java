@@ -124,7 +124,7 @@ public class PlayingField {
         view.draw();
     }
 
-    public FilledRows getFilledRows() {
+    public FilledRows createFilledRows() {
         FilledRows ret = new FilledRows();
         for (int y = 0; y < blocks; y++) {
             if (x_filled(y)) {

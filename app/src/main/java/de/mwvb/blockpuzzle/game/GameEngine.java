@@ -89,7 +89,7 @@ public class GameEngine implements GameEngineInterface {
         model.getHolders().get(dropActionModel.getIndex()).setGamePiece(null);
 
         // Actions ----
-        PlaceActionModel info = new PlaceActionModel(this, model, dropActionModel);
+        PlaceActionModel info = new PlaceActionModel(this, model, dropActionModel, playingField.createFilledRows());
         for (IPlaceAction action : model.getPlaceActions()) {
             action.perform(info);
         }
