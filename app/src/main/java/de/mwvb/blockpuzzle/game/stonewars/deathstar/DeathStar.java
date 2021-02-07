@@ -10,10 +10,8 @@ import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
 import de.mwvb.blockpuzzle.global.Features;
-import de.mwvb.blockpuzzle.global.GlobalData;
 import de.mwvb.blockpuzzle.planet.AbstractPlanet;
 import de.mwvb.blockpuzzle.planet.IPlanet;
 
@@ -28,10 +26,10 @@ public class DeathStar implements IPlanet {
     }
 
     private void init() {
-        int gpsn = 23;  // TO-DO speziellen Spielsteinsatz machen
+        int gpsn = 23;  // TODO speziellen Spielsteinsatz machen
         int mls = 2000;
         if (Features.developerMode) {
-            mls = 10;
+            mls = 15;
         }
         gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame1));
         gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame2));
@@ -45,32 +43,16 @@ public class DeathStar implements IPlanet {
     }
 
     @Override
-    public void resetGame() {
-        SpielstandDAO dao = new SpielstandDAO();
-        for (int i = 0; i < getGameDefinitions().size(); i++) {
-            Spielstand ss = dao.load(this, i);
-            ss.setScore(-9999);
-            ss.setNextRound(0);
-            dao.save(this, i, ss);
-        }
-
-        gameDefinitions.clear();
-        init();
-        selectedGame = gameDefinitions.get(index);
-
-        GlobalData gd = GlobalData.get();
-        gd.setTodesstern(0);
-        gd.setTodessternReaktor(0);
-        gd.setCurrentPlanet(1); // Spaceship is catapulted to planet 1 again.
-        gd.save();
-        // TO-DO Man könnte InfoAc anzeigen: "Roter Alarm. Captain, wir wurde erneut in die Y G. katapultiert. Wie konnte das erneut passieren? Hat jemand einen
-        //       falschen Button gedrückt? ;-) Ein vollständiger Systemcheck wäre gut."
-    }
-
-    @Override
     public int getCurrentGameDefinitionIndex() {
         selectedGame = gameDefinitions.get(index);
         return index;
+    }
+    @Override
+    public GameDefinition getSelectedGame() {
+        if (selectedGame == null) {
+            getCurrentGameDefinitionIndex(); // set selectedGame
+        }
+        return selectedGame;
     }
     public int getGameIndex() {
         return index;
@@ -113,14 +95,6 @@ public class DeathStar implements IPlanet {
     @Override
     public boolean hasGames() {
         return !gameDefinitions.isEmpty();
-    }
-
-    /**
-     * @return null if game over
-     */
-    @Override
-    public GameDefinition getSelectedGame() {
-        return selectedGame;
     }
 
     @Override
@@ -234,5 +208,12 @@ public class DeathStar implements IPlanet {
     @Override
     public int getName() {
         return R.string.deathStar;
+    }
+
+    @Override
+    public void resetGame() {
+        new DeathStarReseter().resetGame();
+        // TO-DO Man könnte InfoAc anzeigen: "Roter Alarm. Captain, wir wurde erneut in die Y G. katapultiert. Wie konnte das erneut passieren? Hat jemand einen
+        //       falschen Button gedrückt? ;-) Ein vollständiger Systemcheck wäre gut."
     }
 }

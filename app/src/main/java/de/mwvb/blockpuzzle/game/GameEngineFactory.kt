@@ -33,8 +33,11 @@ class GameEngineFactory {
     fun getPlanet(): IPlanet {
         val gd = GlobalData.get()
         if  (gd.todesstern == 1) { // Death Star game active
-            return MilkyWayCluster.get()
+            val planet = MilkyWayCluster.get()
+            planet.selectedGame = planet.gameDefinitions[0]
+            return planet
         }
+        if (gd.currentPlanet == 100) gd.currentPlanet = 1 // HACK
         return Cluster1.spaceObjects.first { it.number == gd.currentPlanet } as IPlanet
     }
 }

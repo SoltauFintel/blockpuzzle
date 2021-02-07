@@ -2,10 +2,8 @@ package de.mwvb.blockpuzzle.game.stonewars.deathstar;
 
 import android.os.Handler;
 
-import de.mwvb.blockpuzzle.game.GameEngineFactory;
 import de.mwvb.blockpuzzle.game.GameEngineModel;
 import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGameEngine;
-import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.global.GlobalData;
 
@@ -16,32 +14,13 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
 
     public DeathStarGameEngine(GameEngineModel model) {
         super(model);
+        DeathStarClassicGameDefinition definition = (DeathStarClassicGameDefinition) model.getDefinition();
+        model.getView().showTerritoryName(definition.getTerritoryName());
     }
 
     @Override
-    protected void postDispatch() {
-        if (model.getHolders().is123Empty() && gs.get().getMoves() > 0) {
-            setDragAllowed(false); // Don't allow player to drag something during wait time.
-            //noinspection Convert2Lambda
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    offer();
-                    if (!gs.isLostGame()) { // TO-DO evtl. Prüfung auf PLAYING
-                        checkGame();
-                        save();
-                    }
-                    setDragAllowed(true);
-                }
-            }, 1200); // let the player see his last move and see the row explosion
-        } else {
-            super.postDispatch();
-        }
-    }
-
-    @Override
-    protected boolean offerAllowed() {
-        return nextGame() && super.offerAllowed();
+    protected boolean offerAllowed(boolean newGameMode) {
+        return (newGameMode || nextGame()) && super.offerAllowed(newGameMode);
     }
 
     private boolean nextGame() {
@@ -54,23 +33,16 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
         // Andernfalls weiterschalten:
         if (ds.getGameIndex() > 0 || gs.get().getScore() > 0) {
             if (ds.nextGame()) {
-// TODO
-//                gs = StoneWarsGameState.create();
+                // nächstes Game!
                 GlobalData gd = GlobalData.get();
                 gd.setTodessternReaktor(ds.getGameIndex());
                 gd.save();
+                rebuild = true; // Der MainAc sagen, dass sie erneut Builder aufrufen soll.
             } else {
                 deathStarIsDestroyed();
-                return false; // abort
             }
+            return false; // abort
         }
-// TODO
-//        if (new SpielstandDAO().load(ds).getScore() >= 0) { // Is there a game state?
-//            loadGame(false, false);
-//        } else {
-//            doNewGame();
-//        }
-        model.getView().showTerritoryName(((GameDefinition) getDefinition()).getTerritoryName());
         return true; // continue
     }
 
@@ -91,14 +63,6 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
     }
 
     private DeathStar getDeathStar() {
-        return (DeathStar) new GameEngineFactory().getPlanet();
+        return MilkyWayCluster.INSTANCE.get();
     }
-
-// TO-DO
-//  check4Liberation wird glaubich immer aufgerufen wenn ich gewonnen habe. Wenn ich das DeathStar Game teste, muss ich das hier reparieren.
-//    @Override
-//    protected void check4Liberation() {
-//        holders.clearAll(); // Spieler soll keine Spielsteine mehr setzen können. Das bewirkt außerdem auch, dass offer() aufgerufen
-//        // wird und somit nextGame().
-//    }
 }

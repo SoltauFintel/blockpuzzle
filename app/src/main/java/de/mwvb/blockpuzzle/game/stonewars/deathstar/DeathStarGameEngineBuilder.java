@@ -9,15 +9,24 @@ import de.mwvb.blockpuzzle.game.GameEngineModel;
 import de.mwvb.blockpuzzle.game.place.DoNothingPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.stonewars.StoneWarsGameEngineBuilder;
+import de.mwvb.blockpuzzle.game.stonewars.deathstar.place.DeathStarCheck4VictoryPlaceAction;
+import de.mwvb.blockpuzzle.game.stonewars.place.Check4VictoryPlaceAction;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
+import de.mwvb.blockpuzzle.gamepiece.INextRound;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceAdapter;
-import de.mwvb.blockpuzzle.global.GlobalData;
+import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
+import de.mwvb.blockpuzzle.global.Features;
 
 /**
  * Initialization of DeathStarGameEngine
  */
 public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
+    private static final SpielstandDAO dao = new SpielstandDAO();
+    private static final int NEXTROUND_INDEX = 99; // Ich will eine eigene Datei für den Todesstern-NextRound-Wert.
+    private static final Spielstand nextRoundSS = new Spielstand();
 
     // create data ----
 
@@ -28,10 +37,29 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
         return new DoNothingPlaceAction();
     }
 
+    public static void writeNextRound(int val) {
+        nextRoundSS.setNextRound(val);
+        dao.save(MilkyWayCluster.INSTANCE.get(), NEXTROUND_INDEX, nextRoundSS);
+    }
+
     @Override
     protected INextGamePiece getNextGamePieceGenerator() {
+        // Spielsteine sollen nicht pro Reaktor sein, sondern für Todesstern.
+        final DeathStar planet = getDeathStar();
+        INextRound persistence = new INextRound() {
+            @Override
+            public void saveNextRound(int val) {
+                writeNextRound(val);
+            }
+
+            @Override
+            public int getNextRound() {
+                return dao.load(planet, NEXTROUND_INDEX).getNextRound();
+            }
+        };
+        NextGamePieceFromSet nextGamePiece = new NextGamePieceFromSet(planet.getGameDefinitions().get(0).getGamePieceSetNumber(), persistence);
         // Change color of all game pieces. Each reactor has its own color.
-        return new NextGamePieceAdapter(super.getNextGamePieceGenerator()) {
+        return new NextGamePieceAdapter(nextGamePiece) {
             @Override
             public GamePiece next(BlockTypes blockTypes) {
                 GamePiece gp = super.next(blockTypes);
@@ -41,12 +69,22 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
 
             private int getColor() {
                 switch (getDeathStar().getGameIndex()) {
-                    case 0:  return 11; // dark blue
-                    case 1:  return  4; // blue
-                    default: return  5; // pink  for case 2
+                    case 0:
+                        if (Features.developerMode) return 6; // yellow
+                        return 11; // dark blue for 1st reactor
+                    case 1:  return  4; // blue for 2nd reactor
+                    default:
+                        if (Features.developerMode) return 3; // red
+                        return  5; // pink for last reactor
                 }
             }
         };
+    }
+
+    @NotNull
+    @Override
+    protected Check4VictoryPlaceAction getCheck4VictoryPlaceAction() {
+        return new DeathStarCheck4VictoryPlaceAction(); // Bei Sieg die Holders clearen.
     }
 
     // create game engine ----
@@ -57,18 +95,11 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
         return new DeathStarGameEngine(model);
     }
 
-    // init game ----
-
-    /*
-     TODO nach initgame:            Vielleicht in die DeathStarGameEngine einbauen?
-          view.showTerritoryName(getDefinition().getTerritoryName());
-     */
-
     // new game ----
 
     @Override
     protected void initNextGamePieceForNewGame() {
-        // nichts machen, der NextGamePiece Index soll über alle Reaktoren weiter laufen
+        nextGamePiece.load();
     }
 
     // load game ----
@@ -77,8 +108,9 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
     protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
         super.loadGame(loadNextGamePiece, checkGame);
         if (loadNextGamePiece) {
-            getDeathStar().setGameIndex(GlobalData.get().getTodessternReaktor());
-// TODO            super.offer();
+            if (holders.is123Empty()) {
+                gameEngine.offer(true/*hier ausnahmsweise true!*/);
+            }
         }
     }
 

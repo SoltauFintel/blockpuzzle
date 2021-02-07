@@ -26,6 +26,7 @@ public class GameEngine implements GameEngineInterface {
     protected final PlayingField playingField; // for convenience
 
     private boolean dragAllowed = true;
+    public boolean rebuild = false;
 
     public GameEngine(GameEngineModel model) {
         this.model = model;
@@ -62,7 +63,7 @@ public class GameEngine implements GameEngineInterface {
 
     protected void postDispatch() {
         if (model.getHolders().is123Empty()) {
-            offer();
+            offer(false);
         }
         checkGame();
         save();
@@ -123,8 +124,8 @@ public class GameEngine implements GameEngineInterface {
     // Show new game pieces ----
 
     /** 3 neue zufällige Spielsteine anzeigen */
-    public void offer() { // old German method name: vorschlag
-        if (offerAllowed()) {
+    public void offer(boolean newGameMode) { // old German method name: vorschlag
+        if (offerAllowed(newGameMode)) {
             for (int i = 1; i <= 3; i++) {
                 model.getHolders().get(i).setGamePiece(model.getNextGamePiece().next(model.getBlockTypes()));
             }
@@ -144,7 +145,7 @@ public class GameEngine implements GameEngineInterface {
         }
     }
 
-    protected boolean offerAllowed() {
+    protected boolean offerAllowed(boolean newGameMode) {
         GamePlayState state = gs.get().getState();
         return (state == GamePlayState.PLAYING
                 || (state == GamePlayState.WON_GAME && getDefinition().gameGoesOnAfterWonGame()));

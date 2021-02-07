@@ -1,9 +1,11 @@
 package de.mwvb.blockpuzzle.gamestate;
 
+import de.mwvb.blockpuzzle.gamepiece.INextRound;
+
 /**
  * GameState classes are immutable Spielstand wrapper. If something would change a new object would be created.
  */
-public class GameState {
+public class GameState implements INextRound {
     private final Spielstand ss;
 
     protected GameState(Spielstand ss) {
@@ -59,5 +61,16 @@ public class GameState {
             ss.setHighscoreMoves(ss.getMoves());
             save();
         }
+    }
+
+    @Override
+    public void saveNextRound(int nextRound) {
+        get().setNextRound(nextRound);
+        save();
+    }
+
+    @Override
+    public int getNextRound() {
+        return get().getNextRound();
     }
 }

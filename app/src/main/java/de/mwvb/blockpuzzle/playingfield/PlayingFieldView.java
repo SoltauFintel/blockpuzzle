@@ -104,6 +104,9 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (playingField == null) {
+            return;
+        }
         setBackgroundColor(getResources().getColor(R.color.black));
         drawBlocks(canvas);
         super.onDraw(canvas);

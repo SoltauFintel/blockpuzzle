@@ -4,6 +4,7 @@ import android.content.ClipDescription
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
@@ -71,19 +72,23 @@ class MainActivity : AppCompatActivity(), IGameView {
     override fun onResume() {
         super.onResume()
         try {
-            gameEngine = GameEngineFactory().create(this)
-
-            shakeService = ShakeService(gameEngine) // TODO Diese 3 Zeilen zsf.
-            shakeService.setActive(true)
-            shakeService.initShakeDetection(this)
-
-            newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
-                true  -> View.VISIBLE
-                false -> View.INVISIBLE
-            }
+            initGameEngine()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun initGameEngine() {
+        gameEngine = GameEngineFactory().create(this)
+
+        shakeService = ShakeService(gameEngine) // TODO Diese 3 Zeilen zsf.
+        shakeService.setActive(true)
+        shakeService.initShakeDetection(this)
+
+        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
+            true  -> View.VISIBLE
+            false -> View.INVISIBLE
         }
     }
 
@@ -164,6 +169,13 @@ class MainActivity : AppCompatActivity(), IGameView {
                 xy = calculatePlayingFieldCoordinates(event, gamePiece)
             }
             gameEngine.dispatch(targetIsParking, DropActionModel(index, gamePiece, xy))
+
+            if (gameEngine.rebuild) {
+                gameEngine.rebuild = false;
+                gameEngine.isDragAllowed = false // will be set to true in GameEngine construction
+                @Suppress("DEPRECATION")
+                Handler().postDelayed({ initGameEngine() }, 1200)
+            }
         } catch (e: DoesNotWorkException) {
             playingField.soundService.doesNotWork()
             Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()

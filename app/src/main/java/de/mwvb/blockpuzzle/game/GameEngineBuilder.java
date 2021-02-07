@@ -37,7 +37,7 @@ public class GameEngineBuilder {
     protected Holders holders;
     protected INextGamePiece nextGamePiece;
 
-    private GameEngine gameEngine;
+    protected GameEngine gameEngine;
 
     public final GameEngine build(final IGameView pView) {
         view = pView;
@@ -49,10 +49,13 @@ public class GameEngineBuilder {
         playingField = new PlayingField(blocks);
         playingField.setView(view.getPlayingFieldView());
 
+        holders = new Holders(view);
+        gravitation = new GravitationData();
+
         nextGamePiece = getNextGamePieceGenerator();
 
         // Create game engine ----
-        GameEngineModel model = new GameEngineModel(blocks, blockTypes, view, gs, definition, playingField, new Holders(view), createPlaceActions(), new GravitationData(), nextGamePiece);
+        GameEngineModel model = new GameEngineModel(blocks, blockTypes, view, gs, definition, playingField, holders, createPlaceActions(), gravitation, nextGamePiece);
         gameEngine = createGameEngine(model);
 
         // init game ----
@@ -111,7 +114,7 @@ public class GameEngineBuilder {
     /** Benutzer startet freiwillig oder nach GameOver neues Spiel. */
     protected void newGame() {
         doNewGame();
-        gameEngine.offer();
+        gameEngine.offer(true);
         gameEngine.save(); // TO-DO gs.save() in doNewGame() und save() hier; schauen ob das anders geht
     }
     protected void doNewGame() {
@@ -136,6 +139,7 @@ public class GameEngineBuilder {
 
     // load game ----
 
+    // TODO später (wenn DeathStar Game funktioniert) mal prüfen, ob loadNextGamePiece wirklich benötigt wird, d.h. irgendwo false ist
     protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
         Spielstand ss = gs.get();
         view.showScoreAndMoves(ss);

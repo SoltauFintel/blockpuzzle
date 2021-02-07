@@ -56,12 +56,12 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
         if (ss.getState() == GamePlayState.WON_GAME && gs.getPlanet().getGameDefinitions().size() == 1) {
             // Player has liberated planet.
             gs.setOwnerToMe();
-            new Check4VictoryPlaceAction().check4Liberation(gameEngineInterface, (StoneWarsGameState) gs);
+            check4Liberation(gameEngineInterface, (StoneWarsGameState) gs);
         } // TODO Muss der else Zweig behandelt werden? also gewonnen bei MultiTerritoriumPlanet?
     }
 
-    private void check4Liberation(GameEngineInterface gei, StoneWarsGameState gs) {
-        gei.save();
+    protected void check4Liberation(GameEngineInterface game, StoneWarsGameState gs) {
+        game.save();
         IPlanet planet = gs.getPlanet();
         if (new GameInfoService().isPlanetFullyLiberated(planet)) {
             new GameInfoService().executeLiberationFeature(planet);

@@ -37,8 +37,13 @@ public class StoneWarsGameEngineBuilder extends GameEngineBuilder {
     @Override
     protected List<IPlaceAction> createPlaceActions() {
         List<IPlaceAction> list = super.createPlaceActions();
-        list.add(new Check4VictoryPlaceAction());
+        list.add(getCheck4VictoryPlaceAction());
         return list;
+    }
+
+    @NotNull
+    protected Check4VictoryPlaceAction getCheck4VictoryPlaceAction() {
+        return new Check4VictoryPlaceAction();
     }
 
     @Override
