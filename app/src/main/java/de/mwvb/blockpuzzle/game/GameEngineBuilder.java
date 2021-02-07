@@ -63,7 +63,7 @@ public class GameEngineBuilder {
         if (gs.get().getScore() < 0) { // Nein
             newGame(); // Neues Spiel starten!
         } else {
-            loadGame(true, true); // Spielstand laden
+            loadGame(); // Spielstand laden
         }
         return gameEngine;
     }
@@ -139,20 +139,15 @@ public class GameEngineBuilder {
 
     // load game ----
 
-    // TODO später (wenn DeathStar Game funktioniert) mal prüfen, ob loadNextGamePiece wirklich benötigt wird, d.h. irgendwo false ist
-    protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
+    protected void loadGame() {
         Spielstand ss = gs.get();
         view.showScoreAndMoves(ss);
 
-        if (loadNextGamePiece) {
-            nextGamePiece.load();
-        }
+        nextGamePiece.load();
         gravitation.load(ss);
         playingField.load(ss);
         holders.load(ss);
 
-        if (checkGame) {
-            gameEngine.checkGame();
-        }
+        gameEngine.checkGame();
     }
 }

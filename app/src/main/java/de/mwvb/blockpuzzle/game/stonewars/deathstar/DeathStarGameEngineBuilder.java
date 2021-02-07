@@ -105,12 +105,10 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
     // load game ----
 
     @Override
-    protected void loadGame(boolean loadNextGamePiece, boolean checkGame) {
-        super.loadGame(loadNextGamePiece, checkGame);
-        if (loadNextGamePiece) {
-            if (holders.is123Empty()) {
-                gameEngine.offer(true/*hier ausnahmsweise true!*/);
-            }
+    protected void loadGame() {
+        super.loadGame();
+        if (holders.is123Empty()) {
+            gameEngine.offer(true/*hier ausnahmsweise true!*/);
         }
     }
 
