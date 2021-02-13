@@ -2,6 +2,9 @@ package de.mwvb.blockpuzzle.gamedefinition;
 
 import androidx.annotation.NonNull;
 
+import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
+import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
+import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
@@ -22,6 +25,11 @@ public abstract class GameDefinition extends OldGameDefinition {
     }
 
     // GAME DEFINITION ----
+
+    @Override
+    public INextGamePiece createNextGamePieceGenerator(GameState gs) {
+        return new NextGamePieceFromSet(gamePieceSetNumber, gs);
+    }
 
     public int getGamePieceSetNumber() {
         return gamePieceSetNumber;

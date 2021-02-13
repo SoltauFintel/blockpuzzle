@@ -32,18 +32,21 @@ class DeathStarReseter() {
     private fun resetGameState() {
         val dao = SpielstandDAO()
         for (i in planet.gameDefinitions.indices) {
+            val definition = planet.gameDefinitions[i] as DeathStarClassicGameDefinition
+
             val ss: Spielstand = dao.load(planet, i)
             ss.state = GamePlayState.PLAYING
-            (planet.gameDefinitions[i] as DeathStarClassicGameDefinition).isWon = false
+            definition.isWon = false
             ss.unsetScore()
             ss.moves = 0
             ss.delta = 0
             ss.playingField = ""   // clear playing field
             ss.gamePieceViewP = "" // clear parking
             dao.save(planet, i, ss)
+            if (i == 0) { // reset once is enough
+                definition.writeNextRound(0, dao)
+            }
         }
-
-        DeathStarGameEngineBuilder.writeNextRound(0)
 
         planet.gameIndex = 0
     }

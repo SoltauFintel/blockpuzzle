@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.gamestate;
 
+import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextRound;
 
 /**
@@ -14,6 +15,10 @@ public class GameState implements INextRound {
 
     public static GameState create() {
         return new GameState(new SpielstandDAO().loadOldGame());
+    }
+
+    public OldGameDefinition createGameDefinition() {
+        return new OldGameDefinition();
     }
 
     public Spielstand get() {

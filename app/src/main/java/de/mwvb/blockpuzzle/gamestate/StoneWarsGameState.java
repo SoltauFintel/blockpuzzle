@@ -30,6 +30,11 @@ public class StoneWarsGameState extends GameState {
         return new StoneWarsGameState(planet, index, ss);
     }
 
+    @Override
+    public GameDefinition createGameDefinition() {
+        return getDefinition();
+    }
+
     public IPlanet getPlanet() {
         return planet;
     }

@@ -17,7 +17,6 @@ import de.mwvb.blockpuzzle.game.place.SpecialBlockBonusPlaceAction;
 import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
-import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -44,7 +43,7 @@ public class GameEngineBuilder {
 
         // Create data ----
         gs = createGameState();
-        definition = provideDefinition();
+        definition = gs.createGameDefinition();
 
         playingField = new PlayingField(blocks);
         playingField.setView(view.getPlayingFieldView());
@@ -52,7 +51,7 @@ public class GameEngineBuilder {
         holders = new Holders(view);
         gravitation = new GravitationData();
 
-        nextGamePiece = getNextGamePieceGenerator();
+        nextGamePiece = definition.createNextGamePieceGenerator(gs);
 
         // Create game engine ----
         GameEngineModel model = new GameEngineModel(blocks, blockTypes, view, gs, definition, playingField, holders, createPlaceActions(), gravitation, nextGamePiece);
@@ -75,12 +74,6 @@ public class GameEngineBuilder {
         return GameState.create();
     }
 
-    @NotNull
-    protected OldGameDefinition provideDefinition() {
-        // TODO Oder muss der GameState das hier bereitstellen??
-        return new OldGameDefinition();
-    }
-
     protected List<IPlaceAction> createPlaceActions() {
         List<IPlaceAction> ret = new ArrayList<>();
         ret.add(new SendPlacedEventAction());
@@ -96,10 +89,6 @@ public class GameEngineBuilder {
     @NotNull
     protected IPlaceAction getDetectOneColorAreaAction() {
         return new DetectOneColorAreaAction();
-    }
-
-    protected INextGamePiece getNextGamePieceGenerator() {
-        return new RandomGamePiece();
     }
 
     // create game engine ----

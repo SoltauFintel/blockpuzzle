@@ -9,8 +9,6 @@ import de.mwvb.blockpuzzle.game.GameEngineModel;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.stonewars.place.Check4VictoryPlaceAction;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
-import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
-import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
@@ -28,12 +26,6 @@ public class StoneWarsGameEngineBuilder extends GameEngineBuilder {
         return StoneWarsGameState.create();
     }
 
-    @NotNull
-    @Override
-    protected GameDefinition provideDefinition() {
-        return ((StoneWarsGameState) gs).getDefinition();
-    }
-
     @Override
     protected List<IPlaceAction> createPlaceActions() {
         List<IPlaceAction> list = super.createPlaceActions();
@@ -44,11 +36,6 @@ public class StoneWarsGameEngineBuilder extends GameEngineBuilder {
     @NotNull
     protected Check4VictoryPlaceAction getCheck4VictoryPlaceAction() {
         return new Check4VictoryPlaceAction();
-    }
-
-    @Override
-    protected INextGamePiece getNextGamePieceGenerator() {
-        return new NextGamePieceFromSet(((GameDefinition) definition).getGamePieceSetNumber(), gs);
     }
 
     @Override
