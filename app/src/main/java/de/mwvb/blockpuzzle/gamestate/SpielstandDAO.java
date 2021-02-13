@@ -24,21 +24,28 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
     }
 
     /**
-     * @param planet              -
+     * @param spaceObject -
      * @param gameDefinitionIndex 0 based
      * @return game state
      */
     @NonNull
-    public Spielstand load(IPlanet planet, int gameDefinitionIndex) {
-        if (gameDefinitionIndex < 0) {
-            throw new RuntimeException("Tried to load Spielstand with illegal game definition index: " + gameDefinitionIndex);
-            // TODO besser eine Methode für Index Aufbau machen und dort alle Args prüfen und dann thrown.
-        }
-        return load(planet.getId() + "_" + gameDefinitionIndex);
+    public Spielstand load(ISpaceObject spaceObject, int gameDefinitionIndex) {
+        return load(buildId(spaceObject, gameDefinitionIndex));
     }
 
-    public void save(ISpaceObject spaceObject, int index, Spielstand ss) {
-        save(spaceObject.getId() + "_" + index, ss);
+    public void save(ISpaceObject spaceObject, int gameDefinitionIndex, Spielstand ss) {
+        save(buildId(spaceObject, gameDefinitionIndex), ss);
+    }
+
+    public void delete(ISpaceObject spaceObject, int gameDefinitionIndex) {
+        delete(buildId(spaceObject, gameDefinitionIndex));
+    }
+
+    private String buildId(ISpaceObject planet, int gameDefinitionIndex) {
+        if (gameDefinitionIndex < 0) {
+            throw new RuntimeException("Tried to access Spielstand with illegal game definition index: " + gameDefinitionIndex);
+        }
+        return planet.getId() + "_" + gameDefinitionIndex;
     }
 
     @NonNull
@@ -48,10 +55,6 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
 
     public void saveOldGame(Spielstand ss) {
         save(OLD_GAME_ID, ss);
-    }
-
-    public void delete(ISpaceObject spaceObject, int gameDefinitionIndex) {
-        delete(spaceObject.getId() + "_" + gameDefinitionIndex);
     }
 
     public void deleteOldGame() {
