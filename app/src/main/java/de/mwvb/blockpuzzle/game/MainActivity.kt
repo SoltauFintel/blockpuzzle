@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
@@ -18,6 +19,7 @@ import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gamestate.GamePlayState
 import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
 import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.BridgeActivity
 import de.mwvb.blockpuzzle.global.GlobalData
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-// TODO Baustelle       newGame.setOnClickListener(onNewGame())          rebuild feature könnte man hier nutzen
+        initNewGameButton()
     }
 
     // Activity reactivated
@@ -197,6 +199,25 @@ class MainActivity : AppCompatActivity(), IGameView {
         return QPosition(x.toInt(), y.toInt())
     }
 
+    private fun initNewGameButton() {
+        newGame.setOnClickListener {
+            if (gameEngine.isLostGame || gameEngine.lessScore()) {
+                startNewGame()
+            } else {
+                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                dialog.setTitle(resources.getString(R.string.startNewGame))
+                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
+                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+                dialog.show()
+            }
+        }
+    }
+
+    private fun startNewGame() {
+        SpielstandDAO().deleteOldGame()
+        initGameEngine()
+    }
+
     override fun getSpecialAction(specialState: Int): Action {
         if (specialState == 2) { // Death Star destroyed
             return Action {
@@ -209,22 +230,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         }
         return Action {}
     }
-
-// TODO Baustelle
-//    /** Start new game */
-//    private fun onNewGame(): (View) -> Unit {
-//        return {
-//            if (gameEngine.isLostGame || gameEngine.lessScore()) {
-//                gameEngine.newGame()
-//            } else {
-//                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-//                dialog.setTitle(resources.getString(R.string.startNewGame))
-//                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> gameEngine.newGame() }
-//                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-//                dialog.show()
-//            }
-//        }
-//    }
 
     // TODO Das ist eher Fachlogik. inkl. getScoreText() | R.string.moves|score2 wird auch woanders genutzt. (Bubble infoText)
     override fun showScoreAndMoves(ss: Spielstand) {
