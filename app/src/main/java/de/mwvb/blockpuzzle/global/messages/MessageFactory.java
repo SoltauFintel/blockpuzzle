@@ -24,6 +24,15 @@ public class MessageFactory {
     private final MessageObject putData_success = new MessageObject(this, R.string.putData_success);
     private final MessageObject nothingToInsert = new MessageObject(this, R.string.nothingToInsert);
 
+    private final MessageObject move = new MessageObject(this, R.string.move);
+    private final MessageObject moves = new MessageObject(this, R.string.moves);
+    private final MessageObject score1 = new MessageObject(this, R.string.score1);
+    private final MessageObject score2 = new MessageObject(this, R.string.score2);
+    private final MessageObject winScore1 = new MessageObject(this, R.string.winScore1);
+    private final MessageObject winScore2 = new MessageObject(this, R.string.winScore2);
+    private final MessageObject gameOverScore1 = new MessageObject(this, R.string.gameOverScore1);
+    private final MessageObject gameOverScore2 = new MessageObject(this, R.string.gameOverScore2);
+
     // game logic decides whether it's WON or LOST game ----
     private final MessageObject noMoreGamePieces = new MessageObject(this, R.string.noMoreGamePieces);
 
@@ -50,6 +59,10 @@ public class MessageFactory {
      */
     public void show(int id) {
         Toast.makeText(activity, activity.getResources().getString(id), Toast.LENGTH_LONG).show();
+    }
+
+    public String getText(int id) {
+        return activity.getResources().getString(id);
     }
 
     public MessageObjectWithGameState getNoMessage() {
@@ -94,6 +107,38 @@ public class MessageFactory {
 
     public MessageObject getNoMoreGamePieces() {
         return noMoreGamePieces;
+    }
+
+    public MessageObject getMove() {
+        return move;
+    }
+
+    public MessageObject getMoves() {
+        return moves;
+    }
+
+    public MessageObject getScore1() {
+        return score1;
+    }
+
+    public MessageObject getScore2() {
+        return score2;
+    }
+
+    public MessageObject getWinScore1() {
+        return winScore1;
+    }
+
+    public MessageObject getWinScore2() {
+        return winScore2;
+    }
+
+    public MessageObject getGameOverScore1() {
+        return gameOverScore1;
+    }
+
+    public MessageObject getGameOverScore2() {
+        return gameOverScore2;
     }
 
     public MessageObjectWithGameState getTerritoryLiberated() {

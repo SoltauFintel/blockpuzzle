@@ -1,5 +1,7 @@
 package de.mwvb.blockpuzzle.game;
 
+import java.text.DecimalFormat;
+
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
@@ -8,6 +10,8 @@ import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.global.messages.MessageFactory;
+import de.mwvb.blockpuzzle.global.messages.MessageObject;
 import de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
@@ -96,7 +100,7 @@ public class GameEngine implements GameEngineInterface {
 
         // Display and save ----
         ss.setDelta(ss.getScore() - scoreBefore);
-        model.getView().showScoreAndMoves(ss);
+        showScoreAndMoves();
         gs.save();
         return true;
     }
@@ -195,7 +199,7 @@ public class GameEngine implements GameEngineInterface {
         gs.updateHighScore();
         ss.setDelta(0);
         gs.save();
-        model.getView().showScoreAndMoves(ss); // display game over text
+        showScoreAndMoves(); // display game over text
         playingField.gameOver();    // if park() has been the last action
         if (oldState != ss.getState()) { // play only if state has changed
             model.getView().playSound(4);
@@ -212,6 +216,46 @@ public class GameEngine implements GameEngineInterface {
     @Override
     public void save() {
         model.save();
+    }
+
+    // Show game state ----
+
+    public void showScoreAndMoves() {
+        Spielstand ss = gs.get();
+        MessageFactory m = model.getView().getMessages();
+
+        String text = getScoreText(ss, m);
+        if (ss.getDelta() > 0) {
+            text += " (" + new DecimalFormat("+#,##0").format(ss.getDelta()) + ")";
+        }
+        model.getView().showScore(text); //         info.text = text;
+
+        switch (ss.getMoves()) {
+            case 0:
+                text = "";
+                break;
+            case 1:
+                text = new DecimalFormat("#,##0").format(ss.getMoves()) + " " + m.getMove().toString();
+                break;
+            default:
+                text = new DecimalFormat("#,##0").format(ss.getMoves()) + " " + m.getMoves().toString();
+        }
+        model.getView().showMoves(text);
+    }
+
+    private String getScoreText(Spielstand ss, MessageFactory m) {
+        MessageObject ret;
+        if (ss.getState() == GamePlayState.LOST_GAME) {
+            if (ss.getScore() == 1) ret = m.getGameOverScore1();
+            else ret = m.getGameOverScore2();
+        } else if (ss.getState() == GamePlayState.WON_GAME) {
+            if (ss.getScore() == 1) ret = m.getWinScore1();
+            else ret = m.getWinScore2();
+        } else { // PLAYING
+            if (ss.getScore() == 1) ret = m.getScore1();
+            else ret = m.getScore2();
+        }
+        return ret.toString().replace("XX", new DecimalFormat("#,##0").format(ss.getScore()));
     }
 
     // Properties ----

@@ -112,7 +112,7 @@ public class GameEngineBuilder {
         initNextGamePieceForNewGame();
 
         initPlayingField(playingField);
-        view.showScoreAndMoves(gs.get());
+        gameEngine.showScoreAndMoves();
         holders.clearParking();
 
         gs.save();
@@ -129,10 +129,10 @@ public class GameEngineBuilder {
     // load game ----
 
     protected void loadGame() {
-        Spielstand ss = gs.get();
-        view.showScoreAndMoves(ss);
+        gameEngine.showScoreAndMoves();
 
         nextGamePiece.load();
+        Spielstand ss = gs.get();
         gravitation.load(ss);
         playingField.load(ss);
         holders.load(ss);

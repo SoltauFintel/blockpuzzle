@@ -19,4 +19,9 @@ public class MessageObject {
     public void show() {
         factory.show(id);
     }
+
+    @Override
+    public String toString() {
+        return factory.getText(id);
+    }
 }

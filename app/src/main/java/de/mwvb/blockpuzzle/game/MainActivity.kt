@@ -17,8 +17,6 @@ import de.mwvb.blockpuzzle.R
 import de.mwvb.blockpuzzle.gamepiece.GamePiece
 import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
-import de.mwvb.blockpuzzle.gamestate.GamePlayState
-import de.mwvb.blockpuzzle.gamestate.Spielstand
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
 import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.BridgeActivity
@@ -31,7 +29,6 @@ import de.mwvb.blockpuzzle.playingfield.PlayingFieldView
 import de.mwvb.blockpuzzle.playingfield.QPosition
 import de.mwvb.blockpuzzle.playingfield.gravitation.ShakeService
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.DecimalFormat
 
 /**
  * GameActivity
@@ -231,28 +228,18 @@ class MainActivity : AppCompatActivity(), IGameView {
         return Action {}
     }
 
-    // TODO Das ist eher Fachlogik. inkl. getScoreText() | R.string.moves|score2 wird auch woanders genutzt. (Bubble infoText)
-    override fun showScoreAndMoves(ss: Spielstand) {
-        var text = getScoreText(ss)
-        if (ss.delta > 0) {
-            text += " (" + DecimalFormat("+#,##0").format(ss.delta) + ")"
-        }
+    override fun showScore(text: String) {
         info.text = text
-
-        infoDisplay.text = when (ss.moves) {
-            0    -> ""
-            1    -> DecimalFormat("#,##0").format(ss.moves) + " " + resources.getString(R.string.move)
-            else -> DecimalFormat("#,##0").format(ss.moves) + " " + resources.getString(R.string.moves)
-        }
     }
 
-    private fun getScoreText(ss: Spielstand): String {
-        val ret = when (ss.state) {
-            GamePlayState.LOST_GAME -> if (ss.score == 1) R.string.gameOverScore1 else R.string.gameOverScore2
-            GamePlayState.WON_GAME  -> if (ss.score == 1) R.string.winScore1 else R.string.winScore2
-            else/*PLAYING*/         -> if (ss.score == 1) R.string.score1 else R.string.score2
-        }
-        return resources.getString(ret).replace("XX", DecimalFormat("#,##0").format(ss.score))
+    override fun showMoves(text: String) {
+        infoDisplay.text = text
+    }
+
+    override fun showTerritoryName(resId: Int) {
+        val text = resources.getText(resId).trim()
+        territoryName.text = text
+        territoryName.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE // hide label to save space
     }
 
     override fun getPlayingFieldView(): IPlayingFieldView {
@@ -277,12 +264,6 @@ class MainActivity : AppCompatActivity(), IGameView {
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun showTerritoryName(resId: Int) {
-        val text = resources.getText(resId).trim()
-        territoryName.text = text
-        territoryName.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE // hide label to save space
     }
 
     override fun shake() {
