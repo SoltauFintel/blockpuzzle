@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), IGameView {
     private fun initGameEngine() {
         gameEngine = GameEngineFactory().create(this)
 
-        shakeService = ShakeService(gameEngine) // TODO Diese 3 Zeilen zsf.
+        shakeService = ShakeService(gameEngine)
         shakeService.setActive(true)
         shakeService.initShakeDetection(this)
 
