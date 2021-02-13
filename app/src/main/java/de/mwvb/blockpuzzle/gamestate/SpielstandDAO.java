@@ -55,7 +55,7 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
     }
 
     public void deleteOldGame() {
-        delete("");
+        delete(OLD_GAME_ID);
     }
 
     @Override
