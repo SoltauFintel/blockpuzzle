@@ -9,7 +9,6 @@ import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.playingfield.FilledRows;
 import de.mwvb.blockpuzzle.playingfield.QPosition;
 
-// TODO überlegen, ob ich die Daten nicht im Spielstand halten kann
 public class GravitationData {
     /** filled rows: y values */
     private final List<Integer> rows = new ArrayList<>();
