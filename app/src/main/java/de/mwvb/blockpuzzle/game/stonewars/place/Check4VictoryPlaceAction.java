@@ -3,7 +3,7 @@ package de.mwvb.blockpuzzle.game.stonewars.place;
 import de.mwvb.blockpuzzle.game.GameEngineInterface;
 import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
-import de.mwvb.blockpuzzle.game.place.PlaceInfo;
+import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
@@ -20,7 +20,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
     // TODO Prüfen, ob ich Code von hier in die XXXGameDefinition verschieben kann. Classic/Cleaner-spezifisches soll hier ja nicht stehen.
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         // check4Victory: // Spielsiegprüfung (showScore erst danach)
         StoneWarsGameState swgs = (StoneWarsGameState) info.getGs();
         final GamePlayState oldState = swgs.get().getState();
@@ -56,19 +56,19 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
         if (ss.getState() == GamePlayState.WON_GAME && gs.getPlanet().getGameDefinitions().size() == 1) {
             // Player has liberated planet.
             gs.setOwnerToMe();
-            new Check4VictoryPlaceAction().check4Liberation(gameEngineInterface, (StoneWarsGameState) gs);
+            check4Liberation(gameEngineInterface, (StoneWarsGameState) gs);
         } // TODO Muss der else Zweig behandelt werden? also gewonnen bei MultiTerritoriumPlanet?
     }
 
-    private void check4Liberation(GameEngineInterface gei, StoneWarsGameState gs) {
-        gei.save();
+    protected void check4Liberation(GameEngineInterface game, StoneWarsGameState gs) {
+        game.save();
         IPlanet planet = gs.getPlanet();
         if (new GameInfoService().isPlanetFullyLiberated(planet)) {
             new GameInfoService().executeLiberationFeature(planet);
         }
     }
 
-    private void gameOverOnEmptyPlayingField(PlaceInfo info) {
+    private void gameOverOnEmptyPlayingField(PlaceActionModel info) {
         StoneWarsGameState swgs = (StoneWarsGameState) info.getGs();
         info.getGameEngineInterface().clearAllHolders();
         swgs.get().setState(GamePlayState.WON_GAME);

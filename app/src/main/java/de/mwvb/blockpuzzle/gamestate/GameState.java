@@ -1,9 +1,12 @@
 package de.mwvb.blockpuzzle.gamestate;
 
+import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
+import de.mwvb.blockpuzzle.gamepiece.INextRound;
+
 /**
  * GameState classes are immutable Spielstand wrapper. If something would change a new object would be created.
  */
-public class GameState {
+public class GameState implements INextRound {
     private final Spielstand ss;
 
     protected GameState(Spielstand ss) {
@@ -12,6 +15,10 @@ public class GameState {
 
     public static GameState create() {
         return new GameState(new SpielstandDAO().loadOldGame());
+    }
+
+    public OldGameDefinition createGameDefinition() {
+        return new OldGameDefinition();
     }
 
     public Spielstand get() {
@@ -47,5 +54,28 @@ public class GameState {
 
     public void incMoves() {
         ss.setMoves(ss.getMoves() + 1);
+    }
+
+    // TO-DO überdenken. Macht vermutlich nur für das "old game" Sinn.
+    public void updateHighScore() {
+        if (ss.getScore() > ss.getHighscore() || ss.getHighscore() <= 0) {
+            ss.setHighscore(ss.getScore());
+            ss.setHighscoreMoves(ss.getMoves());
+            save();
+        } else if (ss.getScore() == ss.getHighscore() && (ss.getMoves() < ss.getHighscoreMoves() || ss.getHighscoreMoves() <= 0)) {
+            ss.setHighscoreMoves(ss.getMoves());
+            save();
+        }
+    }
+
+    @Override
+    public void saveNextRound(int nextRound) {
+        get().setNextRound(nextRound);
+        save();
+    }
+
+    @Override
+    public int getNextRound() {
+        return get().getNextRound();
     }
 }

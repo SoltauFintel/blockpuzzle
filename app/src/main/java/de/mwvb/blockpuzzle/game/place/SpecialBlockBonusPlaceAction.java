@@ -12,7 +12,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 public class SpecialBlockBonusPlaceAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         int bonus = 0;
         List<ISpecialBlock> specialBlocks = info.getBlockTypes().getSpecialBlockTypes();
         FilledRows f = info.getFilledRows();

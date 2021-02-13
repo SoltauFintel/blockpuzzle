@@ -11,7 +11,7 @@ import de.mwvb.blockpuzzle.block.BlockDrawParameters;
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.block.ColorBlockDrawer;
 import de.mwvb.blockpuzzle.block.IBlockDrawer;
-import de.mwvb.blockpuzzle.game.GameEngine;
+import de.mwvb.blockpuzzle.game.GameEngineBuilder;
 import de.mwvb.blockpuzzle.playingfield.PlayingFieldView;
 
 /**
@@ -81,7 +81,7 @@ public class GamePieceView extends View implements IGamePieceView {
         p.setDragMode(dragMode);
         final float f = getResources().getDisplayMetrics().density;
         p.setF(f);
-        int br = PlayingFieldView.w / GameEngine.blocks; // 60px, auf Handy groß = 36
+        int br = PlayingFieldView.w / GameEngineBuilder.blocks; // 60px, auf Handy groß = 36
         if (!dragMode) {
             br /= 2;
         }

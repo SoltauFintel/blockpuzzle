@@ -1,6 +1,6 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
-import de.mwvb.blockpuzzle.game.GameEngine
+import de.mwvb.blockpuzzle.game.GameEngineBuilder
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
 import de.mwvb.blockpuzzle.gamestate.Spielstand
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
@@ -89,7 +89,7 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     private fun isPlayingFieldEmpty(planet: IPlanet, index: Int): Boolean {
         val ss = SpielstandDAO().load(planet, index)
-        val pf = PlayingField(GameEngine.blocks)
+        val pf = PlayingField(GameEngineBuilder.blocks)
         pf.doLoad(ss)
         return pf.filled == 0
     }

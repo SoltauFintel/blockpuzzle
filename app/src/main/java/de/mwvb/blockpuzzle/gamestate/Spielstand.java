@@ -12,7 +12,7 @@ public class Spielstand {
     private int moves = 0;
     private int delta;
     private GamePlayState state = GamePlayState.PLAYING;
-    private int nextRound;
+    private int nextRound = 0;
     private boolean emptyScreenBonusActive;
     private int highscore;
     private int highscoreMoves;

@@ -1,15 +1,16 @@
 package de.mwvb.blockpuzzle.game
 
-import android.app.AlertDialog
 import android.content.ClipDescription
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.mwvb.blockpuzzle.R
@@ -18,6 +19,7 @@ import de.mwvb.blockpuzzle.gamepiece.GamePieceTouchListener
 import de.mwvb.blockpuzzle.gamepiece.GamePieceView
 import de.mwvb.blockpuzzle.gamestate.GamePlayState
 import de.mwvb.blockpuzzle.gamestate.Spielstand
+import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
 import de.mwvb.blockpuzzle.global.AbstractDAO
 import de.mwvb.blockpuzzle.global.BridgeActivity
 import de.mwvb.blockpuzzle.global.GlobalData
@@ -39,17 +41,14 @@ import java.text.DecimalFormat
  */
 class MainActivity : AppCompatActivity(), IGameView {
     private lateinit var gameEngine: GameEngine
-    private lateinit var messages: MessageFactory
     private lateinit var shakeService : ShakeService
+    private var messages: MessageFactory? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // INIT PHASE
         if (Build.VERSION.SDK_INT >= 21) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.navigationBackground)
         }
-        messages = MessageFactory(this)
-        gameEngine = GameEngineFactory().create(this)
-        shakeService = ShakeService(gameEngine)
 
         // SUPER PHASE
         super.onCreate(savedInstanceState)
@@ -68,23 +67,30 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
-            true -> View.VISIBLE
-            false -> View.INVISIBLE
-        }
-        newGame.setOnClickListener(onNewGame())
-        shakeService.initShakeDetection(this)
+        initNewGameButton()
     }
 
     // Activity reactivated
     override fun onResume() {
         super.onResume()
         try {
-            shakeService.setActive(true)
-            gameEngine.initGame()
+            initGameEngine()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun initGameEngine() {
+        gameEngine = GameEngineFactory().create(this)
+
+        shakeService = ShakeService(gameEngine)
+        shakeService.setActive(true)
+        shakeService.initShakeDetection(this)
+
+        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
+            true  -> View.VISIBLE
+            false -> View.INVISIBLE
         }
     }
 
@@ -106,7 +112,7 @@ class MainActivity : AppCompatActivity(), IGameView {
             }
 
             override fun isDragAllowed(): Boolean {
-                return !gameEngine.isGameOver && gameEngine.isDragAllowed
+                return !gameEngine.isLostGame && gameEngine.isDragAllowed
             }
         })
     }
@@ -164,7 +170,14 @@ class MainActivity : AppCompatActivity(), IGameView {
                 // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
                 xy = calculatePlayingFieldCoordinates(event, gamePiece)
             }
-            gameEngine.dispatch(targetIsParking, index, gamePiece, xy)
+            gameEngine.dispatch(targetIsParking, DropActionModel(index, gamePiece, xy))
+
+            if (gameEngine.rebuild) {
+                gameEngine.rebuild = false;
+                gameEngine.isDragAllowed = false // will be set to true in GameEngine construction
+                @Suppress("DEPRECATION")
+                Handler().postDelayed({ initGameEngine() }, 1200)
+            }
         } catch (e: DoesNotWorkException) {
             playingField.soundService.doesNotWork()
             Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
@@ -180,10 +193,29 @@ class MainActivity : AppCompatActivity(), IGameView {
         var x = event.x / f // px -> dp
         var y = event.y / f
         // jetzt in Spielfeld Koordinaten umrechnen
-        val br = PlayingFieldView.w / GameEngine.blocks
+        val br = PlayingFieldView.w / gameEngine.blocks
         x /= br
         y = y / br - 2 - (gamePiece.maxY - gamePiece.minY)
         return QPosition(x.toInt(), y.toInt())
+    }
+
+    private fun initNewGameButton() {
+        newGame.setOnClickListener {
+            if (gameEngine.isLostGame || gameEngine.lessScore()) {
+                startNewGame()
+            } else {
+                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                dialog.setTitle(resources.getString(R.string.startNewGame))
+                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
+                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+                dialog.show()
+            }
+        }
+    }
+
+    private fun startNewGame() {
+        SpielstandDAO().deleteOldGame()
+        initGameEngine()
     }
 
     override fun getSpecialAction(specialState: Int): Action {
@@ -199,22 +231,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         return Action {}
     }
 
-    /** Start new game */
-    private fun onNewGame(): (View) -> Unit {
-        return {
-            if (gameEngine.isGameOver || gameEngine.lessScore()) {
-                gameEngine.newGame()
-            } else {
-                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                dialog.setTitle(resources.getString(R.string.startNewGame))
-                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> gameEngine.newGame() }
-                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-                dialog.show()
-            }
-        }
-    }
-
-    // TODO Das ist eher Fachlogik. inkl. getScoreText()
+    // TODO Das ist eher Fachlogik. inkl. getScoreText() | R.string.moves|score2 wird auch woanders genutzt. (Bubble infoText)
     override fun showScoreAndMoves(ss: Spielstand) {
         var text = getScoreText(ss)
         if (ss.delta > 0) {
@@ -277,6 +294,9 @@ class MainActivity : AppCompatActivity(), IGameView {
     }
 
     override fun getMessages(): MessageFactory {
-        return messages
+        if (messages == null) {
+            messages = MessageFactory(this)
+        }
+        return messages!!
     }
 }

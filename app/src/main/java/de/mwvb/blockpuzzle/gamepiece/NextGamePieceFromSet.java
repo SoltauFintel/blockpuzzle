@@ -7,23 +7,22 @@ import java.util.Locale;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.sets.AllGamePieceSets;
-import de.mwvb.blockpuzzle.gamestate.GameState;
 
 public class NextGamePieceFromSet implements INextGamePiece {
     private final List<GamePiece> allGamePieces = GamePiecesDefinition.INSTANCE.get();
     private final BlockTypes blockTypes = new BlockTypes(null);
     private final int number;
-    private final GameState gs;
+    private final INextRound persistence;
     private final String[] set;
     private int nextRound = 0;
     private int nextGamePieceInRound = 0;
 
-    public NextGamePieceFromSet(int number, GameState gs) {
-        if (number <= 0 || number > 9999 || gs == null) {
+    public NextGamePieceFromSet(int number, INextRound persistence) {
+        if (number <= 0 || number > 9999 || persistence == null) {
             throw new IllegalArgumentException();
         }
         this.number = number;
-        this.gs = gs;
+        this.persistence = persistence;
         final String a = get4DigitNumber(number);
         for (IGamePieceSet set : AllGamePieceSets.sets) {
             if (set.getClass().getSimpleName().endsWith(a)) {
@@ -49,8 +48,7 @@ public class NextGamePieceFromSet implements INextGamePiece {
         if (nextGamePieceInRound == 3) {
             nextGamePieceInRound = 0;
             nextRound++;
-            gs.get().setNextRound(nextRound);
-            gs.save();
+            persistence.saveNextRound(nextRound);
         }
         return ret;
     }
@@ -127,14 +125,13 @@ public class NextGamePieceFromSet implements INextGamePiece {
     @Override
     public void reset() {
         nextRound = 0;
-        gs.get().setNextRound(0);
-        gs.save();
+        persistence.saveNextRound(0);
         nextGamePieceInRound = 0;
     }
 
     @Override
     public void load() {
-        nextRound = gs.get().getNextRound();
+        nextRound = persistence.getNextRound();
         nextGamePieceInRound = 0;
     }
 }

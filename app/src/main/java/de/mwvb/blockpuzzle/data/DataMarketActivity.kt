@@ -42,7 +42,7 @@ class DataMarketActivity : AppCompatActivity() {
         super.onResume()
         try {
             // Data exchange not possible in Death Star mode
-            val enabled = SpaceNebulaRoute.isNoDeathStarMode()
+            val enabled = SpaceNebulaRoute.isNoDeathStarMode
             pasteBtn.isEnabled = enabled
             copyBtn.isEnabled = enabled && GlobalData.get().isPlayernameEntered
 

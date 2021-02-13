@@ -8,7 +8,7 @@ import de.mwvb.blockpuzzle.playingfield.QPosition;
 public class DetectOneColorAreaAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         List<QPosition> r = new OneColorAreaDetector(info.getPlayingField(), 20).getOneColorArea();
         if (r == null) {
             return;

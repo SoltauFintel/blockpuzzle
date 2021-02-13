@@ -20,13 +20,19 @@ public class StoneWarsGameState extends GameState {
         super(ss);
         this.planet = planet;
         this.index = index;
-        this.definition = planet.getSelectedGame();
+        this.definition = planet.getGameDefinitions().get(index);
     }
 
     public static StoneWarsGameState create() {
         IPlanet planet = new GameEngineFactory().getPlanet();
-        Spielstand ss = new SpielstandDAO().load(planet);
-        return new StoneWarsGameState(planet, planet.getGameDefinitions().indexOf(planet.getSelectedGame()), ss);
+        int index = planet.getCurrentGameDefinitionIndex(); // important: ensure that selectedGame is set
+        Spielstand ss = new SpielstandDAO().load(planet, index);
+        return new StoneWarsGameState(planet, index, ss);
+    }
+
+    @Override
+    public GameDefinition createGameDefinition() {
+        return getDefinition();
     }
 
     public IPlanet getPlanet() {

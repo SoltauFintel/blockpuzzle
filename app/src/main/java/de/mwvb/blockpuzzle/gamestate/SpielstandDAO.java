@@ -14,6 +14,7 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
 
     /**
      * Returns game state for selected game
+     *
      * @param planet -
      * @return game state
      */
@@ -23,7 +24,7 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
     }
 
     /**
-     * @param planet -
+     * @param planet              -
      * @param gameDefinitionIndex 0 based
      * @return game state
      */
@@ -54,7 +55,7 @@ public final class SpielstandDAO extends AbstractDAO<Spielstand> {
     }
 
     public void deleteOldGame() {
-        delete("");
+        delete(OLD_GAME_ID);
     }
 
     @Override

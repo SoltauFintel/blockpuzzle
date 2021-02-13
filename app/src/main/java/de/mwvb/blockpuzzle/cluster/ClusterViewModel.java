@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.mwvb.blockpuzzle.R;
 import de.mwvb.blockpuzzle.game.stonewars.deathstar.SpaceNebulaRoute;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
@@ -44,7 +45,7 @@ public class ClusterViewModel {
 
                 String infoText1 = resources.getString(p.getName()) + " #" + p.getNumber();
                 String infoText2 = createInfoText2(p);
-                String infoText3 = createInfoText3(p, dao.load(p));
+                String infoText3 = createInfoText3(p, dao.load(p), resources);
                 infos.put(p, new SpaceObjectInfo(infoText1, infoText2, infoText3));
             }
         }
@@ -59,22 +60,27 @@ public class ClusterViewModel {
     }
 
     @NotNull
-    private String createInfoText3(AbstractPlanet p, Spielstand ss) {
-        // TODO NLS
+    private String createInfoText3(AbstractPlanet p, Spielstand ss, Resources resources) {
         String ret = "";
         int n = p.getGameDefinitions().size();
         if (n == 1 && getFirstGameDefinition(p).showMoves()) {
-            if (ss.getMoves() > 0) {
-                ret = "Moves: " + ss.getMoves();
-            }
+            int moves = ss.getMoves();
+            String add = "";
             if (ss.getOwnerMoves() > 0) {
-                ret = "Moves: " + ss.getOwnerMoves() + " " + ss.getOwnerName();
+                moves = ss.getOwnerMoves();
+                add = " " + ss.getOwnerName();
+            }
+            if (moves > 0) {
+                ret = resources.getString(R.string.moves) + ": " + moves + add;
             }
         } else if (ss.getScore() > 0) {
-            ret = "Score: " + formatScore(ss.getScore());
+            int score = ss.getScore();
+            String add = "";
             if (ss.getOwnerScore() > 0) {
-                ret = "Score: " + formatScore(ss.getOwnerScore()) + " " + ss.getOwnerName();
+                score = ss.getOwnerScore();
+                add = " " + ss.getOwnerName();
             }
+            ret = resources.getString(R.string.score2).replace("XX", formatScore(score)) + add;
         }
         return ret;
     }

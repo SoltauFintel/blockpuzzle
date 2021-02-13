@@ -39,6 +39,17 @@ class StartScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
+//            if (Features.developerMode) { // This is for Death Star testing.
+//                val gd = GlobalData.get()
+//                if (gd.todesstern == 1) {
+//                    gd.todesstern = 0
+//                    gd.currentPlanet = 35
+//                    gd.save()
+//                } else {
+//                    gd.currentPlanet = 35
+//                    gd.save()
+//                }
+//            }
             if (GlobalData.get().gameType == GameType.STONE_WARS) {
                 startActivity(Intent(this, BridgeActivity::class.java))
             }

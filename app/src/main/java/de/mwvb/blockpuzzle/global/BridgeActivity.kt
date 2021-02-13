@@ -44,6 +44,7 @@ class BridgeActivity : AppCompatActivity() {
         try {
             update()
         } catch (e: Exception) {
+            e.printStackTrace()
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
     }
@@ -53,7 +54,7 @@ class BridgeActivity : AppCompatActivity() {
 
     private fun update() {
         val planet = getPlanet()
-        navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode()
+        navigation.isEnabled = SpaceNebulaRoute.isNoDeathStarMode
         positionView.text = planet.getInfo(resources) // all lines under Navigation button
         play.isEnabled = isGameBtnEnabled(planet)
         newGame.setText(planet.newLiberationAttemptButtonTextResId)

@@ -1,5 +1,9 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
+import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
+import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
+import de.mwvb.blockpuzzle.gamestate.GameState;
+
 /**
  * Game definition for old game
  */
@@ -23,5 +27,9 @@ public class OldGameDefinition {
 
     public boolean gameGoesOnAfterWonGame() {
         return true;
+    }
+
+    public INextGamePiece createNextGamePieceGenerator(GameState gs) {
+        return new RandomGamePiece();
     }
 }

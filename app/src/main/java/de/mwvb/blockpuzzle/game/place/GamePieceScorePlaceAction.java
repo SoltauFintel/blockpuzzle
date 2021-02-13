@@ -6,7 +6,7 @@ package de.mwvb.blockpuzzle.game.place;
 public class GamePieceScorePlaceAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         info.getGs().addScore(info.getGamePiece().getScore() * info.getDefinition().getGamePieceBlocksScoreFactor());
     }
 }

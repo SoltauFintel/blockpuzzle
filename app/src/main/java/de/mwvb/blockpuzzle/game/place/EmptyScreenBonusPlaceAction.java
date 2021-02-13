@@ -7,13 +7,13 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 public class EmptyScreenBonusPlaceAction implements IPlaceAction {
 
     @Override
-    public void perform(PlaceInfo info) {
+    public void perform(PlaceActionModel info) {
         GameState gs = info.getGs();
         checkEmptyScreenBonusUnlocked(info, gs);
         checkEmptyScreenOccurred(info, gs);
     }
 
-    private void checkEmptyScreenBonusUnlocked(PlaceInfo info, GameState gs) {
+    private void checkEmptyScreenBonusUnlocked(PlaceActionModel info, GameState gs) {
         Spielstand ss = gs.get();
         PlayingField playingField = info.getPlayingField();
 
@@ -24,7 +24,7 @@ public class EmptyScreenBonusPlaceAction implements IPlaceAction {
         }
     }
 
-    private void checkEmptyScreenOccurred(PlaceInfo info, GameState gs) {
+    private void checkEmptyScreenOccurred(PlaceActionModel info, GameState gs) {
         if (info.getFilledRows().getHits() > 0 && gs.get().isEmptyScreenBonusActive()) {
             // Es gibt einen Bonus, wenn nach dem Abräumen von Rows nur noch wenige Spielsteine auf dem Spielfeld sind.
             int bonus = 0;

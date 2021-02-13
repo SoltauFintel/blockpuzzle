@@ -4,6 +4,11 @@ import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 
+import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.FITS;
+import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.FITS_ROTATED;
+import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.NO_GAME_PIECE;
+import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.NO_SPACE;
+
 public class PlayingField {
     // Stammdaten
     private final int blocks;
@@ -55,12 +60,43 @@ public class PlayingField {
         }
     }
 
+    /**
+     * @param gamePiece game piece to check if it fits into playing field at any position with any rotation
+     * @return detailed result
+     */
+    public GamePieceMatchResult match(GamePiece gamePiece) {
+        if (gamePiece == null) {
+            return NO_GAME_PIECE;
+        }
+        for (int ro = 1; ro <= 4; ro++) { // try all 4 rotations
+            for (int x = 0; x < blocks; x++) {
+                for (int y = 0; y < blocks; y++) {
+                    if (match(gamePiece, x, y)) {
+                        // GamePiece fits into playing field.
+                        // original rotation (ro=1): not grey
+                        // rotated (ro>1): grey, because with original rotation it doesn't fit
+                        // and therefore I want to inform the player that he must rotate until
+                        // it's not grey (or it's game over but there's a game over sound
+                        // and he cannot rotate any more).
+                        return ro > 1 ? FITS_ROTATED : FITS; // Spielstein passt rein
+                    }
+                }
+            }
+            gamePiece = gamePiece.copy().rotateToRight();
+        }
+        return NO_SPACE;
+    }
+
     public boolean match(GamePiece teil, QPosition pos) {
+        return match(teil, pos.getX(), pos.getY());
+    }
+
+    private boolean match(GamePiece teil, int posX, int posY) {
         for (int x = teil.getMinX(); x <= teil.getMaxX(); x++) {
             for (int y = teil.getMinY(); y <= teil.getMaxY(); y++) {
                 if (teil.filled(x, y)) {
-                    int ax = pos.getX() + x - teil.getMinX();
-                    int ay = pos.getY() + y - teil.getMinY();
+                    int ax = posX + x - teil.getMinX();
+                    int ay = posY + y - teil.getMinY();
                     if (ax < 0 || ax >= blocks || ay < 0 || ay >= blocks) {
                         return false;
                     }
@@ -88,7 +124,7 @@ public class PlayingField {
         view.draw();
     }
 
-    public FilledRows getFilledRows() {
+    public FilledRows createFilledRows() {
         FilledRows ret = new FilledRows();
         for (int y = 0; y < blocks; y++) {
             if (x_filled(y)) {
