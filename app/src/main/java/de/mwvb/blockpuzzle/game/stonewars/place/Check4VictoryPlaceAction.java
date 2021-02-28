@@ -4,7 +4,6 @@ import de.mwvb.blockpuzzle.game.GameEngineInterface;
 import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
-import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
@@ -30,34 +29,22 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
         MessageObjectWithGameState msg = swgs.getDefinition().scoreChanged(scInfo);
         if (oldState == GamePlayState.PLAYING) {
             msg.show();
-            if (msg.isWonGame()) {
-                info.getGs().get().setState(GamePlayState.WON_GAME);
+            boolean stopGame = true;
+            if (msg.isWonGame()) { // z.B. wenn Mindestscore erreicht
                 check4Liberation(info.getGameEngineInterface(), swgs);
-                info.playSound(3); // ggf. einmalig beim Statuswechsel einen Sound abspielen
-            } else if (msg.isLostGame()) {
-                info.getGameEngineInterface().onLostGame();
-                info.playSound(4); // ggf. einmalig beim Statuswechsel einen Sound abspielen
+                stopGame = !swgs.getDefinition().gameGoesOnAfterWonGame();
+                info.getGameEngineInterface().onEndGame(true, stopGame);
+                if (stopGame) return;
+            } else if (msg.isLostGame()) { // z.B. wenn zu viele Moves
+                info.getGameEngineInterface().onEndGame(false, true);
                 return;
             }
         }
 
         // 2nd verification ----
-        if (info.getPlayingField().getFilled() == 0 && swgs.getDefinition().onEmptyPlayingField()) {
+        if (info.getPlayingField().getFilled() == 0 && swgs.getDefinition().wonGameIfPlayingFieldIsEmpty()) {
             gameOverOnEmptyPlayingField(info);
         }
-    }
-
-    public void handleNoGamePieces(StoneWarsGameState gs, GameEngineInterface gameEngineInterface) {
-        Spielstand ss = gs.get();
-        GameDefinition definition = gs.getDefinition();
-        if (definition.isWonAfterNoGamePieces(ss)) { // TODO Das testen, und zwar im Zusammenhang mit gameGoesOnAfterWonGame=true
-            ss.setState(GamePlayState.WON_GAME);
-        }
-        if (ss.getState() == GamePlayState.WON_GAME && gs.getPlanet().getGameDefinitions().size() == 1) {
-            // Player has liberated planet.
-            gs.setOwnerToMe();
-            check4Liberation(gameEngineInterface, (StoneWarsGameState) gs);
-        } // TODO Muss der else Zweig behandelt werden? also gewonnen bei MultiTerritoriumPlanet?
     }
 
     protected void check4Liberation(GameEngineInterface game, StoneWarsGameState gs) {
@@ -81,7 +68,7 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
             swgs.setOwnerToMe();
             check4Liberation(info.getGameEngineInterface(), swgs);
         }
-        info.playSound(3);
+        info.getGameEngineInterface().onEndGame(true, true);
         info.getMessages().getPlanetLiberated().show();
     }
 }

@@ -20,7 +20,7 @@ public class EmptyScreenBonusPlaceAction implements IPlaceAction {
         if (!ss.isEmptyScreenBonusActive() && playingField.getFilled() > (info.getBlocks() * info.getBlocks() * 0.40f)) { // More than 40% filled: fewGamePiecesOnThePlayingField bonus is active
             ss.setEmptyScreenBonusActive(true);
             gs.save();
-            info.playSound(1); // play sound "more than 40%"
+            info.playMoreThan40PercentSound();
         }
     }
 
@@ -40,7 +40,7 @@ public class EmptyScreenBonusPlaceAction implements IPlaceAction {
                 gs.addScore(bonus);
                 gs.get().setEmptyScreenBonusActive(false);
                 gs.save();
-                info.playSound(2); // play sound "empty screen bonus"
+                info.playEmptyScreenBonusSound();
             }
         }
     }

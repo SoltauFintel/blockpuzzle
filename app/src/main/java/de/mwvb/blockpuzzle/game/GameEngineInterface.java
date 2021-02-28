@@ -8,6 +8,9 @@ package de.mwvb.blockpuzzle.game;
  */
 public interface GameEngineInterface {
 
+    /**
+     * Save game state
+     */
     void save();
 
     /**
@@ -16,7 +19,15 @@ public interface GameEngineInterface {
      */
     boolean checkIfNoMoveIsPossible();
 
-    void onLostGame();
+    /**
+     * Event: game ends with success or lost game. Game could possibly goes on.
+     * @param wonGame true: won game, false: lost game
+     * @param stopGame true: display game over, false: game play goes on
+     */
+    void onEndGame(boolean wonGame, boolean stopGame);
 
+    /**
+     * Clear all four game pieces below playing field
+     */
     void clearAllHolders();
 }

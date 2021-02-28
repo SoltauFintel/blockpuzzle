@@ -129,23 +129,12 @@ public class GameEngine implements GameEngineInterface {
 
     /** 3 neue zufällige Spielsteine anzeigen */
     public void offer(boolean newGameMode) { // old German method name: vorschlag
-        if (offerAllowed(newGameMode)) {
-            for (int i = 1; i <= 3; i++) {
-                model.getHolders().get(i).setGamePiece(model.getNextGamePiece().next(model.getBlockTypes()));
-            }
+        if (!offerAllowed(newGameMode)) {
+            return;
+        }
 
-            if (!gs.isLostGame() && model.getHolders().is123Empty()) {
-                // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
-                // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
-                // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
-                // Unvorteilhaft weil man mit dem letzten Stein noch ein Spielfeld-voll-Game-over erzielen könnte.
-                model.getHolders().clearParking();
-
-                // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
-                model.getView().getMessages().getNoMoreGamePieces().show();
-                handleNoGamePieces();
-                onLostGame();
-            }
+        for (int i = 1; i <= 3; i++) {
+            model.getHolders().get(i).setGamePiece(model.getNextGamePiece().next(model.getBlockTypes()));
         }
     }
 
@@ -155,17 +144,85 @@ public class GameEngine implements GameEngineInterface {
                 || (state == GamePlayState.WON_GAME && getDefinition().gameGoesOnAfterWonGame()));
     }
 
-    protected void handleNoGamePieces() { // Template method
-        // Keine Spielsteine mehr, kann hier nicht passieren, da die Spielsteine endlos per Zufall generiert werden.
-    }
-
     // Game state checks ----
 
     /** Check game: player lost game if no game piece can be moved into the playing field */
     public void checkGame() {
-        if (checkIfNoMoveIsPossible()) {
-            onLostGame();
+        if (model.getHolders().is123Empty()) { // can't happen in Old Game
+            // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
+            // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
+            // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
+            // Unvorteilhaft weil man mit dem letzten Stein noch ein Spielfeld-voll-Game-over erzielen könnte.
+            model.getHolders().clearParking();
+
+            // Wenn alle Spielsteine aufgebraucht sind, ist Spielende.
+            handleNoGamePieces();
+
+        } else if (checkIfNoMoveIsPossible()) { // no game piece fits into playing field
+            playingField.gameOver();
+            Spielstand ss = gs.get();
+            if (ss.getState() != GamePlayState.LOST_GAME) {
+                ss.setState(GamePlayState.LOST_GAME);
+                model.getView().playSound(4);
+            }
+            ss.setState(GamePlayState.LOST_GAME);
+            gs.updateHighScore();
+            ss.setDelta(0);
+            gs.save();
+            showScoreAndMoves(); // display game over text
         }
+    }
+
+    protected void handleNoGamePieces() {
+        // Show message to player that there are no game pieces left.
+        model.getView().getMessages().getNoMoreGamePieces().show();
+
+        playingField.gameOver();
+
+        Spielstand ss = gs.get();
+        if (model.getDefinition().isWonAfterNoGamePieces(ss)) {
+            if (ss.getState() != GamePlayState.WON_GAME) {
+                ss.setState(GamePlayState.WON_GAME);
+                model.getView().playSound(3);
+            }
+        } else {
+            if (ss.getState() != GamePlayState.LOST_GAME) {
+                ss.setState(GamePlayState.LOST_GAME);
+                model.getView().playSound(4);
+            }
+        }
+        gs.updateHighScore();
+        ss.setDelta(0);
+        gs.save();
+        showScoreAndMoves(); // display game over text
+    }
+
+    @Override
+    public void onEndGame(boolean wonGame, boolean stopGame) {
+        if (stopGame || !wonGame) {
+            playingField.gameOver();
+        }
+
+        Spielstand ss = gs.get();
+        if (wonGame) {
+            if (ss.getState() != GamePlayState.WON_GAME) {
+                ss.setState(GamePlayState.WON_GAME);
+                model.getView().playSound(3);
+                gs.updateHighScore();
+                ss.setDelta(0);
+                gs.save();
+            }
+        } else {
+            if (ss.getState() != GamePlayState.LOST_GAME) {
+                ss.setState(GamePlayState.LOST_GAME);
+                model.getView().playSound(4);
+                gs.updateHighScore();
+                ss.setDelta(0);
+                gs.save();
+            }
+        }
+
+        showScoreAndMoves(); // display game over text
     }
 
     @Override
@@ -188,22 +245,6 @@ public class GameEngine implements GameEngineInterface {
         boolean impossible = (result == NO_SPACE);
         model.getHolders().get(index).grey(impossible || (result == FITS_ROTATED));
         return impossible;
-    }
-
-    /** lost game, game over */
-    @Override
-    public void onLostGame() {
-        Spielstand ss = gs.get();
-        final GamePlayState oldState = ss.getState();
-        ss.setState(GamePlayState.LOST_GAME); // old code: gameOver = true;
-        gs.updateHighScore();
-        ss.setDelta(0);
-        gs.save();
-        showScoreAndMoves(); // display game over text
-        playingField.gameOver();    // if park() has been the last action
-        if (oldState != ss.getState()) { // play only if state has changed
-            model.getView().playSound(4);
-        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package de.mwvb.blockpuzzle.game.stonewars;
 
 import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.GameEngineModel;
-import de.mwvb.blockpuzzle.game.stonewars.place.Check4VictoryPlaceAction;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 
 /**
@@ -19,15 +18,11 @@ public class StoneWarsGameEngine extends GameEngine {
         return false;
     }
 
-    // keine Spielsteine mehr
     @Override
-    protected void handleNoGamePieces() {
-        new Check4VictoryPlaceAction().handleNoGamePieces((StoneWarsGameState) gs, this);
-    }
-
-    @Override
-    public void onLostGame() {
-        super.onLostGame();
-        ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
+    public void onEndGame(boolean wonGame, boolean stopGame) {
+        super.onEndGame(wonGame, stopGame);
+        if (!wonGame) { // lost game
+            ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
+        }
     }
 }

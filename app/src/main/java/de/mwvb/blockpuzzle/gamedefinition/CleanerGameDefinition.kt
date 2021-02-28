@@ -36,7 +36,7 @@ class CleanerGameDefinition @JvmOverloads constructor(
         return "CleanerGame(GPSN=$gamePieceSetNumber,L=$level,XLM=$maximumLiberationMoves)"
     }
 
-    override fun onEmptyPlayingField(): Boolean {
+    override fun wonGameIfPlayingFieldIsEmpty(): Boolean {
         return true // Sieg
     }
 

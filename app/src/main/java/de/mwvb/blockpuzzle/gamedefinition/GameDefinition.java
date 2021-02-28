@@ -46,7 +46,7 @@ public abstract class GameDefinition extends OldGameDefinition {
     /**
      * @return true: Sieg, false: nicht relevant oder kein Sieg
      */
-    public boolean onEmptyPlayingField() { // TODO bescheuerter Name
+    public boolean wonGameIfPlayingFieldIsEmpty() {
         return false;
     }
 

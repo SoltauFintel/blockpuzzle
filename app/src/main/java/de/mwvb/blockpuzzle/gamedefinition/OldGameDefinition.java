@@ -3,6 +3,7 @@ package de.mwvb.blockpuzzle.gamedefinition;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GameState;
+import de.mwvb.blockpuzzle.gamestate.Spielstand;
 
 /**
  * Game definition for old game
@@ -31,5 +32,9 @@ public class OldGameDefinition {
 
     public INextGamePiece createNextGamePieceGenerator(GameState gs) {
         return new RandomGamePiece();
+    }
+
+    public boolean isWonAfterNoGamePieces(Spielstand ss) {
+        return true;
     }
 }
