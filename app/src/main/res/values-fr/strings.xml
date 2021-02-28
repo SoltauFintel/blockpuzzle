@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="startScreenTitle">Version 5.0 de SoltauFintel</string>
-    <string name="version">5.0</string>
+    <string name="startScreenTitle">Version 6.0 de SoltauFintel</string>
+    <string name="version">6.0</string>
     <string name="neuesSpiel">Nouveau jeu</string>
     <string name="gehtNicht">Ça ne marche pas</string>
     <string name="startNewGame">Commencer une nouvelle partie?</string>
