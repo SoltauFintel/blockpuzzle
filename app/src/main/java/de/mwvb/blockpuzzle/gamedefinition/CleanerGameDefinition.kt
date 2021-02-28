@@ -1,12 +1,9 @@
 package de.mwvb.blockpuzzle.gamedefinition
 
-import de.mwvb.blockpuzzle.game.GameEngineBuilder
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo
 import de.mwvb.blockpuzzle.gamestate.Spielstand
-import de.mwvb.blockpuzzle.gamestate.SpielstandDAO
 import de.mwvb.blockpuzzle.global.Features
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState
-import de.mwvb.blockpuzzle.planet.IPlanet
 import de.mwvb.blockpuzzle.playingfield.PlayingField
 
 /**
@@ -72,26 +69,16 @@ class CleanerGameDefinition @JvmOverloads constructor(
 
     // QUESTIONS AND EVENTS ----
 
-    /**
-     * @param playerIsPlayer1 true if player 1 is the playing player or it is sure that the playing field is empty
-     */
-    override fun isLiberated(player1Score: Int, player1Moves: Int, player2Score: Int, player2Moves: Int, playerIsPlayer1: Boolean, planet: IPlanet, index: Int): Boolean {
-        val ret = player1Moves > 0 &&
-                (maximumLiberationMoves <= 0 || player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX
-                (player2Moves <= 0 || // entweder kein Gegner
-                        player1Moves < player2Moves || // oder ich bin besser (d.h. weniger Moves)
-                        (player1Moves == player2Moves && player1Score > player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
-        if (ret && playerIsPlayer1) {
-            return isPlayingFieldEmpty(planet, index)
+    override fun isLiberated(info: ILiberatedInfo): Boolean {
+        val ret = info.player1Moves > 0 &&
+                (maximumLiberationMoves <= 0 || info.player1Moves <= maximumLiberationMoves) && // entweder kein MAX oder ich bin nicht über MAX
+                (info.player2Moves <= 0 || // entweder kein Gegner
+                        info.player1Moves < info.player2Moves || // oder ich bin besser (d.h. weniger Moves)
+                        (info.player1Moves == info.player2Moves && info.player1Score > info.player2Score)) // oder ich habe eine höhere Score bei gleicher Movesanzahl.
+        if (ret && info.isPlayerIsPlayer1) {
+            return info.isPlayingFieldEmpty
         }
         return ret
-    }
-
-    private fun isPlayingFieldEmpty(planet: IPlanet, index: Int): Boolean {
-        val ss = SpielstandDAO().load(planet, index)
-        val pf = PlayingField(GameEngineBuilder.blocks)
-        pf.doLoad(ss)
-        return pf.filled == 0
     }
 
     override fun scoreChanged(info: ScoreChangeInfo): MessageObjectWithGameState {

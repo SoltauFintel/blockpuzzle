@@ -1,6 +1,7 @@
 package de.mwvb.blockpuzzle.playingfield;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
+import de.mwvb.blockpuzzle.game.GameEngineBuilder;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 
@@ -26,6 +27,12 @@ public class PlayingField {
     public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
+    }
+
+    public static boolean isEmpty(Spielstand ss) {
+        PlayingField pf = new PlayingField(GameEngineBuilder.blocks);
+        pf.doLoad(ss);
+        return pf.getFilled() == 0;
     }
 
     public void setView(IPlayingFieldView view) {

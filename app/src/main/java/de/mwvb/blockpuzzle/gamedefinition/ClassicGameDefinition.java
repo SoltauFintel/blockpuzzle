@@ -10,7 +10,6 @@ import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.global.messages.MessageFactory;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
-import de.mwvb.blockpuzzle.planet.IPlanet;
 
 /**
  * Spielende:
@@ -63,9 +62,9 @@ public class ClassicGameDefinition extends GameDefinition {
     // QUESTIONS AND EVENTS ----
 
     @Override
-    public boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, boolean playerIsPlayer1, IPlanet planet, int index) {
-        return player1Score > 0 && player1Score >= getMinimumLiberationScore() &&
-                (player1Score > player2Score || (player1Score == player2Score && player1Moves < player2Moves));
+    public boolean isLiberated(ILiberatedInfo info) {
+        return info.getPlayer1Score() > 0 && info.getPlayer1Score() >= getMinimumLiberationScore() &&
+                (info.getPlayer1Score() > info.getPlayer2Score() || (info.getPlayer1Score() == info.getPlayer2Score() && info.getPlayer1Moves() < info.getPlayer2Moves()));
     }
 
     @NonNull

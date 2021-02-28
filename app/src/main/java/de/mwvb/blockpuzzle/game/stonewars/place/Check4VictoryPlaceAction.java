@@ -4,9 +4,9 @@ import de.mwvb.blockpuzzle.game.GameEngineInterface;
 import de.mwvb.blockpuzzle.game.GameInfoService;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
+import de.mwvb.blockpuzzle.gamedefinition.SSLiberatedInfo;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
-import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
 import de.mwvb.blockpuzzle.planet.IPlanet;
@@ -60,15 +60,23 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
         info.getGameEngineInterface().clearAllHolders();
         swgs.get().setState(GamePlayState.WON_GAME);
         info.getPlayingField().gameOver();
-        Spielstand ss = info.getGs().get();
-        if (swgs.getDefinition().isLiberated(ss.getScore(), ss.getMoves(), ss.getOwnerScore(), ss.getOwnerMoves(),
-                false/*playing field is really empty*/, swgs.getPlanet(), swgs.getIndex())) {
-            // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber auch nur bei 1-Game-Planets angeboten.
-            // Daher passt das.
+        if (isLiberated(swgs)) {
+            // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber
+            // auch nur bei 1-Game-Planets angeboten. Daher passt das.
             swgs.setOwnerToMe();
             check4Liberation(info.getGameEngineInterface(), swgs);
         }
         info.getGameEngineInterface().onEndGame(true, true);
         info.getMessages().getPlanetLiberated().show();
+    }
+
+    private boolean isLiberated(StoneWarsGameState swgs) {
+        SSLiberatedInfo libInfo = new SSLiberatedInfo(swgs.get()) {
+            @Override
+            public boolean isPlayingFieldEmpty() {
+                return true; // playing field is really empty
+            }
+        };
+        return swgs.getDefinition().isLiberated(libInfo);
     }
 }

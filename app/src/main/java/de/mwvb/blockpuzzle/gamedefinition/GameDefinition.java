@@ -8,7 +8,6 @@ import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
-import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 /**
@@ -79,12 +78,10 @@ public abstract class GameDefinition extends OldGameDefinition {
 
     // QUESTIONS AND EVENTS ----
 
-    // TODO Diese Methode ist zu überdenken! (Parameterübergabe vs. Daten laden)
-    //      Statt die Werte zu übergeben, könnte man Supplier (Provider?) übergeben, die just-in-time liefern - und zwar dann entweder statisch oder die Daten laden.
     /**
      * @return true if planet or territory was liberated by player 1
      */
-    public abstract boolean isLiberated(int player1Score, int player1Moves, int player2Score, int player2Moves, boolean playerIsPlayer1, IPlanet planet, int gameDefinitionIndex);
+    public abstract boolean isLiberated(ILiberatedInfo info);
 
     /**
      * @param info data and services

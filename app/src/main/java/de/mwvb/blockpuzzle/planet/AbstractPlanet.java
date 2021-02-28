@@ -13,6 +13,7 @@ import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.cluster.ClusterView;
 import de.mwvb.blockpuzzle.cluster.SpaceObjectStates;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
+import de.mwvb.blockpuzzle.gamedefinition.SSLiberatedInfo;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
@@ -110,8 +111,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
             }
 
             // Liberated?
-            if (ss.getState() != GamePlayState.LOST_GAME
-                    && s.isLiberated(score, moves, otherScore, otherMoves, true, this, gi)) {
+            if (ss.getState() != GamePlayState.LOST_GAME && s.isLiberated(new SSLiberatedInfo(ss))) {
                 if (userMustSelectTerritory()) {
                     info += "\n" + resources.getString(R.string.liberatedTerritoryByYou);
                 } else {

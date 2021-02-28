@@ -8,6 +8,7 @@ import java.util.zip.CRC32;
 import de.mwvb.blockpuzzle.cluster.Cluster;
 import de.mwvb.blockpuzzle.game.GameEngineFactory;
 import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
+import de.mwvb.blockpuzzle.gamedefinition.ILiberatedInfo;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.gamestate.SpielstandDAO;
@@ -151,7 +152,7 @@ public class DataService {
                 int meineScore = ss.getScore();
                 int meineMoves = ss.getMoves();
                 GameDefinition gd = p.getGameDefinitions().get(gi);
-                if (gd.isLiberated(otherScore, otherMoves, meineScore, meineMoves, false, p, gi)) {
+                if (gd.isLiberated(new MyLiberatedInfo(otherScore, otherMoves, meineScore, meineMoves))) {
                     System.out.println("NEW OWNER for planet #" + p.getNumber() + "/" + gi + ": " + name + " with score: " + otherScore + ", moves: " + otherMoves);
                     if (ss.getState() == GamePlayState.WON_GAME) {
                         if (gd.gameGoesOnAfterWonGame()) {
@@ -178,6 +179,50 @@ public class DataService {
         }
         // PLanet nicht gefunden
         return 0;
+    }
+
+    private static class MyLiberatedInfo implements ILiberatedInfo {
+        private final int player1Score;
+        private final int player1Moves;
+        private final int player2Score;
+        private final int player2Moves;
+
+        public MyLiberatedInfo(int player1Score, int player1Moves, int player2Score, int player2Moves) {
+            this.player1Score = player1Score;
+            this.player1Moves = player1Moves;
+            this.player2Score = player2Score;
+            this.player2Moves = player2Moves;
+        }
+
+        @Override
+        public int getPlayer1Score() {
+            return player1Score;
+        }
+
+        @Override
+        public int getPlayer1Moves() {
+            return player1Moves;
+        }
+
+        @Override
+        public int getPlayer2Score() {
+            return player2Score;
+        }
+
+        @Override
+        public int getPlayer2Moves() {
+            return player2Moves;
+        }
+
+        @Override
+        public boolean isPlayerIsPlayer1() {
+            return false;
+        }
+
+        @Override
+        public boolean isPlayingFieldEmpty() {
+            return false;
+        }
     }
 
     public static String code6(String str) {
