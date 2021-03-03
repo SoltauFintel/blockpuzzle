@@ -174,6 +174,10 @@ public class GameEngine implements GameEngineInterface {
     }
 
     protected void handleNoGamePieces() {
+        if (gs.get().getState() != GamePlayState.PLAYING) {
+            return;
+        }
+
         // Show message to player that there are no game pieces left.
         model.getView().getMessages().getNoMoreGamePieces().show();
 

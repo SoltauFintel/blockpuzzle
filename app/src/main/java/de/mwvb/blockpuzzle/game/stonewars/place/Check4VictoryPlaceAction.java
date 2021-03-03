@@ -58,7 +58,6 @@ public class Check4VictoryPlaceAction implements IPlaceAction {
     private void gameOverOnEmptyPlayingField(PlaceActionModel info) {
         StoneWarsGameState swgs = (StoneWarsGameState) info.getGs();
         info.getGameEngineInterface().clearAllHolders();
-        swgs.get().setState(GamePlayState.WON_GAME);
         info.getPlayingField().gameOver();
         if (isLiberated(swgs)) {
             // Folgende Aktionen dürfen nur bei einem 1-Game-Planet gemacht werden! Ein Cleaner Game wird aber
