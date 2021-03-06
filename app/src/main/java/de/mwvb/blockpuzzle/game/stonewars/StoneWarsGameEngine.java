@@ -19,6 +19,11 @@ public class StoneWarsGameEngine extends GameEngine {
     }
 
     @Override
+    protected boolean isHandleNoGamePiecesAllowed() {
+        return true;
+    }
+
+    @Override
     public void onEndGame(boolean wonGame, boolean stopGame) {
         super.onEndGame(wonGame, stopGame);
         if (!wonGame) { // lost game

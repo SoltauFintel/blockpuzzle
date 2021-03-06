@@ -19,6 +19,12 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
     }
 
     @Override
+    protected boolean isHandleNoGamePiecesAllowed() {
+        // Klappt mit true nicht. Eigentlich müsste ich genauer schauen, warum das nicht klappt.
+        return false;
+    }
+
+    @Override
     protected boolean offerAllowed(boolean newGameMode) {
         return (newGameMode || nextGame()) && super.offerAllowed(newGameMode);
     }

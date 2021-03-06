@@ -148,7 +148,7 @@ public class GameEngine implements GameEngineInterface {
 
     /** Check game: player lost game if no game piece can be moved into the playing field */
     public void checkGame() {
-        if (model.getHolders().is123Empty()) { // can't happen in Old Game
+        if (isHandleNoGamePiecesAllowed() && model.getHolders().is123Empty()) { // can't happen in Old Game
             // Ein etwaiger letzter geparkter Stein wird aus dem Spiel genommen, da dieser zur Vereinfachung keine Rolle mehr spielen soll.
             // Mag vorteilhaft oder unvorteilhaft sein, aber ich definier die Spielregeln einfach so!
             // Vorteilhaft weil man mit dem letzten Stein noch mehr Punkte als der Gegner bekommen könnte.
@@ -171,6 +171,10 @@ public class GameEngine implements GameEngineInterface {
             gs.save();
             showScoreAndMoves(); // display game over text
         }
+    }
+
+    protected boolean isHandleNoGamePiecesAllowed() {
+        return false;
     }
 
     protected void handleNoGamePieces() {
