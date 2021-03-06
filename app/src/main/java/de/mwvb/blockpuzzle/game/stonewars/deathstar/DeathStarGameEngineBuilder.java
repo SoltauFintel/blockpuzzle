@@ -44,6 +44,12 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
     // new game ----
 
     @Override
+    protected void doNewGame() {
+        super.doNewGame();
+        gravitation.setFirstGravitationPlayed(true);
+    }
+
+    @Override
     protected void initNextGamePieceForNewGame() {
         nextGamePiece.load();
     }
