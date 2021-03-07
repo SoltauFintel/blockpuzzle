@@ -45,7 +45,7 @@ class DailyClassicGameDefinition(private val day: Int) : ClassicGameDefinition(1
 
         // Save won game state
         val today = DailyPlanet.getToday()
-        info.saveDailyDate(day - 1, today + DailyPlanet.WON_GAME)
+        info.saveDailyDate(today + DailyPlanet.WON_GAME)
 
         // Set and save planet owner marker
         info.saveOwner(true)

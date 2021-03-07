@@ -11,17 +11,12 @@ import de.mwvb.blockpuzzle.planet.SpaceObjectStateService;
 public class ScoreChangeInfo {
     private final StoneWarsGameState gs;
     private final MessageFactory messages;
-    private boolean won;
+    private final boolean won;
 
     public ScoreChangeInfo(StoneWarsGameState gs, MessageFactory messages) {
         this.gs = gs;
         this.messages = messages;
         won = gs.get().getState() == GamePlayState.WON_GAME;
-    }
-
-    public ScoreChangeInfo forceCalculation() {
-        won = false;
-        return this;
     }
 
     // READ-ONLY DATA ACCESS ----
@@ -72,11 +67,8 @@ public class ScoreChangeInfo {
         gs.save();
     }
 
-    public void saveDailyDate(int gameDefinitionIndex, String date) {
-        SpielstandDAO dao = new SpielstandDAO();
-        IPlanet planet = getPlanet();
-        Spielstand ss = dao.load(planet, gameDefinitionIndex);
-        ss.setDailyDate(date);
-        dao.save(planet, gameDefinitionIndex, ss);
+    public void saveDailyDate(String date) {
+        gs.get().setDailyDate(date);
+        gs.save();
     }
 }
