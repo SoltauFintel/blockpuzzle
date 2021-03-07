@@ -10,5 +10,7 @@ public interface Features {
 
     boolean developerMode = false;
 
-    boolean deathStar = false;
+    boolean deathstarDeveloperMode = false;
+
+    boolean deathStar = true;
 }

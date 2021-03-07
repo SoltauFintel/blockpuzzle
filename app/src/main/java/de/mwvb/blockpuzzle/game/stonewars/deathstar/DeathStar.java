@@ -28,8 +28,8 @@ public class DeathStar implements IPlanet {
     private void init() {
         int gpsn = 23;  // TODO speziellen Spielsteinsatz machen, direkt mit allen Spielsteinen, Ich brauch den Generatorcode wieder
         int mls = 2000;
-        if (Features.developerMode) {
-            mls = 50;
+        if (Features.deathstarDeveloperMode) {
+            mls = 15;
         }
         gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame1));
         gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame2));

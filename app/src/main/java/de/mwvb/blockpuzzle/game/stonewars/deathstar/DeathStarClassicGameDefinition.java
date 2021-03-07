@@ -98,7 +98,7 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     public void fillStartPlayingField(PlayingField p) {
         Random random = new Random();
         int max = 20;
-        if (Features.developerMode) {
+        if (Features.deathstarDeveloperMode) {
             max = 3;
         }
         for (int i = 0; i < max; i++) {
