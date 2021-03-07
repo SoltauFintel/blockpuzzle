@@ -59,9 +59,9 @@ class DailyClassicGameDefinition(private val day: Int) : ClassicGameDefinition(1
             val dao = TrophiesDAO()
             val trophies = dao.load(info.planet.clusterNumber)
             when (day) {
-                3 -> trophies.bronze++
-                5 -> trophies.silver++
-                7 -> trophies.golden++
+                3 -> trophies.incBronze()
+                5 -> trophies.incSilver()
+                7 -> trophies.incGolden()
             }
             withTrophy = (day == 3 || day == 5 || day == 7)
             dao.save(info.planet.clusterNumber, trophies)

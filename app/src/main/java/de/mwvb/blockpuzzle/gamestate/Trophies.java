@@ -33,4 +33,24 @@ public class Trophies {
     public void setGolden(int golden) {
         this.golden = golden;
     }
+
+    public void incBronze() {
+        bronze++;
+    }
+
+    /** bronze medal becomes silver trophy */
+    public void incSilver() {
+        silver++;
+        if (bronze > 0) {
+            bronze--;
+        }
+    }
+
+    /** silver trophy becomes golden trophy */
+    public void incGolden() {
+        golden++;
+        if (silver > 0) {
+            silver--;
+        }
+    }
 }
