@@ -62,5 +62,10 @@ public class DeathStarGameEngineBuilder extends StoneWarsGameEngineBuilder {
         if (holders.is123Empty()) {
             gameEngine.offer(true/*hier ausnahmsweise true!*/);
         }
+        gameEngine.checkGame(); // checkGame must be after offer
+    }
+
+    @Override
+    protected void checkGameAfterLoad() { //
     }
 }

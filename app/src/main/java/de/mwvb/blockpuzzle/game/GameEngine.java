@@ -69,7 +69,9 @@ public class GameEngine implements GameEngineInterface {
         if (model.getHolders().is123Empty()) {
             offer(false);
         }
-        checkGame();
+        if (!rebuild) {  // Das ist für Todesstern. Eigentlich müsste ich gucken, dass ich beim Reaktorwechsel offer erlaube, damit das hier nicht notwendig ist.
+            checkGame();
+        }
         save();
     }
 
@@ -244,7 +246,7 @@ public class GameEngine implements GameEngineInterface {
         return a && b && c && d && !model.getHolders().isParkingFree();
     }
 
-    private boolean moveImpossible(int index) {
+    protected final boolean moveImpossible(int index) {
         GamePiece gamePiece = model.getHolders().get(index).getGamePiece();
         GamePieceMatchResult result = playingField.match(gamePiece);
         if (result == NO_GAME_PIECE) {

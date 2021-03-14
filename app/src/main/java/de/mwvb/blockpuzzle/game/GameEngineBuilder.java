@@ -137,6 +137,10 @@ public class GameEngineBuilder {
         playingField.load(ss);
         holders.load(ss);
 
+        checkGameAfterLoad();
+    }
+
+    protected void checkGameAfterLoad() {
         gameEngine.checkGame();
     }
 }

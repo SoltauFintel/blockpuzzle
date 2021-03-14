@@ -97,7 +97,7 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     @Override
     public void fillStartPlayingField(PlayingField p) {
         Random random = new Random();
-        int max = 20;
+        int max = 70; // war 20, aber 70 ist schön schwer
         if (Features.deathstarDeveloperMode) {
             max = 3;
         }
