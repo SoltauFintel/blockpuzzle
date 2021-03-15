@@ -62,6 +62,7 @@ public class MessageFactory {
     }
 
     public String getText(int id) {
+        if (activity == null) return "#" + id;
         return activity.getResources().getString(id);
     }
 

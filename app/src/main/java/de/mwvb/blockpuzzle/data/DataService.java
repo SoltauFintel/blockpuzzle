@@ -33,7 +33,7 @@ public class DataService {
     private String quadrant;
 
     public String get() {
-        IPlanet planet = new GameEngineFactory().getPlanet();
+        IPlanet planet = getPlanet();
         return get(planet.getClusterNumber(), planet.getCluster().getSpaceObjects(), planet);
     }
 
@@ -60,12 +60,15 @@ public class DataService {
         sb.append("/");
         sb.append(code6(sb.toString()));
         sb.append("//");
-        String pn = GlobalData.get().getPlayername();
-        if (pn == null) {
-            pn = "";
-        }
+        String pn = getPlayerName();
         sb.append(pn.replace(" ", "_"));
         return splitLines(sb);
+    }
+
+    @NotNull
+    protected String getPlayerName() {
+        String pn = GlobalData.get().getPlayername();
+        return pn == null ? "" : pn;
     }
 
     private boolean ok(ISpaceObject so) {
@@ -95,7 +98,7 @@ public class DataService {
     }
 
     public MessageObject put(String data, MessageFactory messages) {
-        IPlanet planet = new GameEngineFactory().getPlanet();
+        IPlanet planet = getPlanet();
         return put(data, planet.getClusterNumber(), planet.getCluster().getSpaceObjects(), planet, messages);
     }
 
@@ -125,7 +128,11 @@ public class DataService {
         if (!Features.developerMode && !code6(data).equals(code)) {
             return messages.getPutData_checksumMismatch();
         }
-        data = data.substring(headLength);
+        if (headLength > data.length()) { // no planets
+            return messages.getPutData_okay();
+        } else {
+            data = data.substring(headLength);
+        }
         String[] w = data.split("/");
         if (w.length % 4 != 0) {
             return messages.getPutData_wrongPlanetData();
@@ -179,6 +186,11 @@ public class DataService {
         }
         // PLanet nicht gefunden
         return 0;
+    }
+
+    @NotNull
+    protected IPlanet getPlanet() {
+        return new GameEngineFactory().getPlanet();
     }
 
     private static class MyLiberatedInfo implements ILiberatedInfo {
