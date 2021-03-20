@@ -1,6 +1,1 @@
-- INTERN
-  - Persistenz umgestellt
-  - Resource bundle access umgestellt
-  - PlaceActions neu
-  - Packages aufgeräumt, etc.
-- Spiel verloren/gewonnen Sound kommt nur noch einmal.
+- intere Änderungen
