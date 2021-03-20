@@ -12,5 +12,5 @@ data class DropActionModel(
     /** the game piece to move */
     val gamePiece: GamePiece,
     /** target position in playing field, null if targetIsParking is true */
-    val xy: QPosition?
+    val xy: QPosition
 )

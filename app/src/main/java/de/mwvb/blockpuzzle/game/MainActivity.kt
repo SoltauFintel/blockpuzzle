@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity(), IGameView {
             val item = event.clipData.getItemAt(0)
             val index: Int = item.text.toString().toInt()
             val gamePiece = getGamePieceView(index).gamePiece
-            var xy : QPosition? = null
+            var xy : QPosition = QPosition(-1, -1)
 
             if (!targetIsParking) {
                 // geg.: px, ges.: SpielfeldView Koordinaten (0 - 9)
