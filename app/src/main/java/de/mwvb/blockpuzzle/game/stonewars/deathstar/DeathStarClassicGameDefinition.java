@@ -52,7 +52,7 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
             public GamePiece next(BlockTypes blockTypes) {
                 GamePiece gp = super.next(blockTypes);
                 gp.color(getColor());
-                return gp;
+                return edit(gp);
             }
 
             private int getColor() {
@@ -65,6 +65,34 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
                         if (Features.developerMode) return 3; // red
                         return  5; // pink for last reactor
                 }
+            }
+
+            private GamePiece edit(GamePiece gp) {
+                // Es soll keine 1er geben! Ersetze alle 1er durch (Todesstern-)Kreuze.
+                boolean einser = true;
+                for (int x = 0; x < GamePiece.max; x++) {
+                    for (int y = 0; y < GamePiece.max; y++) {
+                        int value = gp.getBlockType(x, y);
+                        if (x == 2 && y == 2) {
+                            if (value == 0) {
+                                einser = false;
+                            }
+                        } else {
+                            if (value != 0) {
+                                einser = false;
+                            }
+                        }
+                    }
+                }
+                if (einser) {
+                    System.out.println("ist einser!");
+                    gp.setBlockType(2 - 1, 2, 6);
+                    gp.setBlockType(2, 2 - 1, 6);
+                    gp.setBlockType(2, 2 + 1, 6);
+                    gp.setBlockType(2 + 1, 2, 6);
+                    gp.setName("Todessternkreuz");
+                }
+                return gp;
             }
         };
     }
@@ -97,7 +125,7 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     @Override
     public void fillStartPlayingField(PlayingField p) {
         Random random = new Random();
-        int max = 70; // war 20, aber 70 ist schön schwer
+        int max = 20;
         if (Features.deathstarDeveloperMode) {
             max = 3;
         }
