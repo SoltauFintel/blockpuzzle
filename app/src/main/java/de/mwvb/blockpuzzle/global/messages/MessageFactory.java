@@ -41,6 +41,7 @@ public class MessageFactory {
     private final MessageObjectWithGameState planetLiberated = new MessageObjectWithGameState(this, R.string.planetLiberated, GamePlayState.WON_GAME);
     private final MessageObjectWithGameState receivedTrophy = new MessageObjectWithGameState(this, R.string.receivedTrophy, GamePlayState.WON_GAME);
     private final MessageObjectWithGameState defeatedEnemy = new MessageObjectWithGameState(this, R.string.defeatedEnemy, GamePlayState.WON_GAME);
+    private final MessageObjectWithGameState defeatedEnemyAndPlanetLiberated = new MessageObjectWithGameState(this, R.string.defeatedEnemyAndPlanetLiberated, GamePlayState.WON_GAME);
     private final MessageObjectWithGameState reactorDestroyed = new MessageObjectWithGameState(this, R.string.reactorDestroyed, GamePlayState.WON_GAME);
     private final MessageObjectWithGameState deathStarDestroyed = new MessageObjectWithGameState(this, R.string.deathStarDestroyed, GamePlayState.WON_GAME);
 
@@ -156,6 +157,10 @@ public class MessageFactory {
 
     public MessageObjectWithGameState getDefeatedEnemy() {
         return defeatedEnemy;
+    }
+
+    public MessageObjectWithGameState getDefeatedEnemyAndPlanetLiberated() {
+        return defeatedEnemyAndPlanetLiberated;
     }
 
     public MessageObjectWithGameState getReactorDestroyed() {

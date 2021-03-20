@@ -79,7 +79,11 @@ public class ClassicGameDefinition extends GameDefinition {
         if (ownerScore > 0 && score > ownerScore) { // Planet war von Gegner besetzt
             info.clearOwner(); // Gegner geschlagen!
             info.saveOwner(true); // Spiel gewonnen! Territorium befreit!
-            return info.getMessages().getDefeatedEnemy();
+            if (info.getPlanet().userMustSelectTerritory()) {
+                return info.getMessages().getDefeatedEnemy(); // territory liberated
+            } else {
+                return info.getMessages().getDefeatedEnemyAndPlanetLiberated();
+            }
 
         } else if (ownerScore <= 0) { // Planet war von Orange Union besetzt
 

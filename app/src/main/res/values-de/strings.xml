@@ -99,4 +99,5 @@
     <string name="backFromDeathStar">Roter Alarm! Captain, alle Reaktoren zerstört. Die Explosion des Todessterns hat uns jedoch wieder in die Y Galaxie katapultiert. Immerhin haben wir die Erde gerettet. Weiter geht\'s mit der Befreiung der Planeten von der Orange Union.</string>
     <string name="giveUpDeathStarGame">Aufgeben</string>
     <string name="giveUpDeathStarGameQuestion">Todessternzerstörung aufgeben und zurück in die Y Galaxie?</string>
+    <string name="defeatedEnemyAndPlanetLiberated">Gegner geschlagen! Planet befreit!</string>
 </resources>

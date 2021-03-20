@@ -98,4 +98,5 @@
     <string name="backFromDeathStar">Red alert! Captain, all reactors destroyed. However, the explosion of the Death Star catapulted us back into the Upsilon galaxy. After all, we saved the Earth. Let\'s continue with the liberation of the planets from the Orange Union.</string>
     <string name="giveUpDeathStarGame">Give up</string>
     <string name="giveUpDeathStarGameQuestion">Give up Death Star destruction and go back to the Y galaxy?</string>
+    <string name="defeatedEnemyAndPlanetLiberated">Enemy defeated! Planet liberated!</string>
 </resources>

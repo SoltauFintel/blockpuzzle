@@ -98,4 +98,5 @@
     <string name="backFromDeathStar">Allarme rosso! Capitano, tutti i reattori distrutti. Tuttavia, l\'esplosione della Morte Nera ci ha catapultati di nuovo nella galassia Y. Dopo tutto, abbiamo salvato la Terra. Continua con la liberazione dei pianeti dall\'Unione Orange.</string>
     <string name="giveUpDeathStarGame">Arrendersi</string>
     <string name="giveUpDeathStarGameQuestion">Rinunciare alla distruzione della Morte Nera e tornare nella galassia Y?</string>
+    <string name="defeatedEnemyAndPlanetLiberated">Nemico sconfitto! Pianeta liberato!</string>
 </resources>

@@ -98,4 +98,5 @@
     <string name="backFromDeathStar">Alerte rouge! Capitaine, tous les réacteurs détruits. Cependant, l\'explosion de l\'Étoile de la Mort nous a catapultés dans la galaxie Y. Après tout, nous avons sauvé la Terre. Il se poursuit avec la libération des planètes de l\'Union Orange.</string>
     <string name="giveUpDeathStarGame">Abandonner</string>
     <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>
+    <string name="defeatedEnemyAndPlanetLiberated">Ennemi défait! Planète libérée!</string>
 </resources>
