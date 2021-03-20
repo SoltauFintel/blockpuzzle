@@ -31,6 +31,7 @@ public class GameEngine implements GameEngineInterface {
 
     private boolean dragAllowed = true;
     public boolean rebuild = false;
+    private boolean rowsWillBeCleared = false;
 
     public GameEngine(GameEngineModel model) {
         this.model = model;
@@ -96,6 +97,7 @@ public class GameEngine implements GameEngineInterface {
 
         // Actions ----
         PlaceActionModel info = new PlaceActionModel(this, model, dropActionModel, playingField.createFilledRows());
+        rowsWillBeCleared = info.getFilledRows().getHits() > 0;
         for (IPlaceAction action : model.getPlaceActions()) {
             action.perform(info);
         }
@@ -161,6 +163,10 @@ public class GameEngine implements GameEngineInterface {
             handleNoGamePieces();
 
         } else if (checkIfNoMoveIsPossible()) { // no game piece fits into playing field
+            if (rowsWillBeCleared) {
+                rowsWillBeCleared = false;
+                return;
+            }
             playingField.gameOver();
             Spielstand ss = gs.get();
             if (ss.getState() != GamePlayState.LOST_GAME) {
