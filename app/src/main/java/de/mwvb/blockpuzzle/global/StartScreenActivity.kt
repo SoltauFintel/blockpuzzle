@@ -50,6 +50,7 @@ class StartScreenActivity : AppCompatActivity() {
 //                    gd.save()
 //                }
 //            }
+
             if (GlobalData.get().gameType == GameType.STONE_WARS) {
                 startActivity(Intent(this, BridgeActivity::class.java))
             }

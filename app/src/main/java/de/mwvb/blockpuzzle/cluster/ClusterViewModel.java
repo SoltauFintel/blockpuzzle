@@ -73,13 +73,14 @@ public class ClusterViewModel {
             if (moves > 0) {
                 ret = resources.getString(R.string.moves) + ": " + moves + add;
             }
-        } else if (ss.getScore() > 0) {
+        } else if (ss.getScore() > 0) { // TODO  || ss.getOwnerScore() > 0
             int score = ss.getScore();
             String add = "";
             if (ss.getOwnerScore() > 0) {
                 score = ss.getOwnerScore();
                 add = " " + ss.getOwnerName();
             }
+            // TODO **** jux **** Das ist nicht okay hier.   Ticket t/t066bk/7c638a8b008349a2ab66f3f88d724661
             ret = resources.getString(R.string.score2).replace("XX", formatScore(score)) + add;
         }
         return ret;
