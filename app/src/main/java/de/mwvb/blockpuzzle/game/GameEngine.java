@@ -142,6 +142,7 @@ public class GameEngine implements GameEngineInterface {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean offerAllowed(boolean newGameMode) {
         GamePlayState state = gs.get().getState();
         return (state == GamePlayState.PLAYING
