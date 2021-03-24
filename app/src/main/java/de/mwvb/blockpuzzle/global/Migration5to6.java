@@ -50,7 +50,7 @@ public class Migration5to6 {
     private static final String PLAYINGFIELD = "playingField";
     private static final String GRAVITATION_ROWS = "gravitationRows";
     private static final String GRAVITATION_EXCLUSIONS = "gravitationExclusions";
-    private static final String GRAVITATION_PLAYED_SOUND = "gravitationPlayedSound";
+    private static final String GRAVITATION_PLAYED_SOUND = "gravitationPlayedSound"; // real boolean
     private static final String OWNER_NAME = "owner_name";
     private static final String OWNER_SCORE = "owner_score";
     private static final String OWNER_MOVES = "owner_moves";
@@ -166,7 +166,11 @@ public class Migration5to6 {
         if (rows != null && rows.contains("/")) rows = ""; // alten bug fixen
         ss.setGravitationRows(rows);
         ss.setGravitationExclusions(getString(GRAVITATION_EXCLUSIONS));
-        ss.setGravitationPlayedSound(getBoolean(GRAVITATION_PLAYED_SOUND));
+
+        String n = name(GRAVITATION_PLAYED_SOUND);
+        boolean gps = pref.getBoolean(n, false);
+        ss.setGravitationPlayedSound(gps);
+
         ss.setOwnerName(getString(OWNER_NAME));
         ss.setOwnerScore(getInt(OWNER_SCORE));
         ss.setOwnerMoves(getInt(OWNER_MOVES));
@@ -185,10 +189,12 @@ public class Migration5to6 {
         return pref.getInt(name(name), pDefault);
     }
 
+    // boolean saved as int (0, 1)
     private boolean getBoolean(String name) {
         return getBoolean(name, false);
     }
 
+    // boolean saved as int (0, 1)
     private boolean getBoolean(String name, boolean pDefault) {
         return getInt(name, pDefault ? 1 : 0) == 1;
     }
