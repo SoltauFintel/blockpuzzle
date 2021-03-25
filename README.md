@@ -10,7 +10,7 @@ Official download: [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.p
 
 Download of latest master version for manual installation:
 [blockpuzzle.apk](http://mwvb.de/store/blockpuzzle.apk) (You may have to activate the option
-"Installation of apps of unknown origin" in the smartphone.) | Download V6-alpha test release with different app id: [app-release.apk](http://mwvb.de/store/alpha/app-release.apk)
+"Installation of apps of unknown origin" in the smartphone.)
 
 The app doesn't need any rights.
 
