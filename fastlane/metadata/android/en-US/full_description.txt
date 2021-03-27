@@ -4,13 +4,15 @@ Different game pieces are to be inserted in a 10 x 10 large playing field. Horiz
 
 Parking: A game piece can be parked in the gray field. But be careful! As soon as no more pieces can be inserted in the playing field or in the parking area, the game is over! So play the parked game piece as quickly as possible!
 
+Rotate the game piece by tapping it.
+
 Gravitation: If horizontal rows are cleared in the lower playing field, the upper part slides down.
 
 Points system:
  - Insert: number of blocks on the piece
  - Clear row: 10 points
  - clear away several rows at once: bonus points
- - The playing field only has a few blocks left or is empty: extra bonus!
+ - The playing field has only 1 block left or is empty: extra bonus! After that the playing field must be filled 40%.
  - 20 connected pieces of one color result in a further extra bonus.
  - Star block gives 200 bonus points!
 
