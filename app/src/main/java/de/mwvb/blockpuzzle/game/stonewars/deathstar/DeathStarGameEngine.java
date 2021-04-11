@@ -54,6 +54,7 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
 
     private void deathStarIsDestroyed() {
         gs.get().setState(GamePlayState.WON_GAME); // old code: load(ds), state=WON_GAME
+        undo = null;
         //noinspection Convert2Lambda
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -85,9 +85,8 @@ class MainActivity : AppCompatActivity(), IGameView {
         shakeService.setActive(true)
         shakeService.initShakeDetection(this)
 
-        newGame.visibility = when (gameEngine.isNewGameButtonVisible) {
-            true  -> View.VISIBLE
-            false -> View.INVISIBLE
+        if (!gameEngine.isTopButtonForNewGame) {
+            newGame.setText(R.string.undo)
         }
     }
 
@@ -198,14 +197,23 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     private fun initNewGameButton() {
         newGame.setOnClickListener {
-            if (gameEngine.isLostGame || gameEngine.lessScore()) {
-                startNewGame()
+            if (gameEngine.isTopButtonForNewGame) {
+                if (gameEngine.isLostGame || gameEngine.lessScore()) {
+                    startNewGame()
+                } else {
+                    val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                    dialog.setTitle(resources.getString(R.string.startNewGame))
+                    dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
+                    dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+                    dialog.show()
+                }
             } else {
-                val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                dialog.setTitle(resources.getString(R.string.startNewGame))
-                dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
-                dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-                dialog.show()
+                try {
+                    gameEngine.undo()
+                } catch (e: DoesNotWorkException) {
+                    playingField.soundService.doesNotWork()
+                    Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

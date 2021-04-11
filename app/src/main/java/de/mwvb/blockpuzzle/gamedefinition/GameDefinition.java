@@ -105,4 +105,9 @@ public abstract class GameDefinition extends OldGameDefinition {
     public boolean isWonAfterNoGamePieces(Spielstand ss) {
         return false;
     }
+
+    @Override
+    public boolean isTopButtonForNewGame() {
+        return false; // Undo
+    }
 }

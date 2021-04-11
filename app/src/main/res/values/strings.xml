@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">6.0</string>
-    <string name="startScreenTitle">Version 6.0 by SoltauFintel</string>
+    <string name="version">7.0</string>
+    <string name="startScreenTitle">Version 7.0 by SoltauFintel</string>
     <string name="neuesSpiel">New Game</string>
     <string name="gehtNicht">Does not fit!</string>
     <string name="startNewGame">Start new game?</string>
@@ -99,4 +99,5 @@
     <string name="giveUpDeathStarGame">Give up</string>
     <string name="giveUpDeathStarGameQuestion">Give up Death Star destruction and go back to the Y galaxy?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Enemy defeated! Planet liberated!</string>
+    <string name="undo">Undo</string>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="startScreenTitle">Version 6.0 de SoltauFintel</string>
-    <string name="version">6.0</string>
+    <string name="startScreenTitle">Version 7.0 de SoltauFintel</string>
+    <string name="version">7.0</string>
     <string name="neuesSpiel">Nouveau jeu</string>
     <string name="gehtNicht">Ça ne marche pas</string>
     <string name="startNewGame">Commencer une nouvelle partie?</string>
@@ -99,4 +99,5 @@
     <string name="giveUpDeathStarGame">Abandonner</string>
     <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Ennemi défait! Planète libérée!</string>
+    <string name="undo">Annuler</string>
 </resources>

@@ -29,6 +29,29 @@ public class Spielstand {
     private String gravitationExclusions;
     private boolean gravitationPlayedSound;
 
+    public void transfer(Spielstand to) {
+        to.score = score;
+        to.moves = moves;
+        to.delta = delta;
+        to.state = state;
+        to.nextRound = nextRound;
+        to.emptyScreenBonusActive = emptyScreenBonusActive;
+        to.highscore = highscore;
+        to.highscoreMoves = highscoreMoves;
+        to.playingField = playingField;
+        to.gamePieceView1 = gamePieceView1;
+        to.gamePieceView2 = gamePieceView2;
+        to.gamePieceView3 = gamePieceView3;
+        to.gamePieceViewP = gamePieceViewP;
+        to.ownerScore = ownerScore;
+        to.ownerMoves = ownerMoves;
+        to.ownerName = ownerName;
+        to.dailyDate = dailyDate;
+        to.gravitationRows = gravitationRows;
+        to.gravitationExclusions = gravitationExclusions;
+        to.gravitationPlayedSound = gravitationPlayedSound;
+    }
+
     public int getScore() {
         return score;
     }

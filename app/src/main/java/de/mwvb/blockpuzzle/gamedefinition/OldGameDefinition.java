@@ -37,4 +37,8 @@ public class OldGameDefinition {
     public boolean isWonAfterNoGamePieces(Spielstand ss) {
         return true;
     }
+
+    public boolean isTopButtonForNewGame() {
+        return true;
+    }
 }

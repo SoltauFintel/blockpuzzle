@@ -32,6 +32,7 @@ public class GameEngine implements GameEngineInterface {
     private boolean dragAllowed = true;
     public boolean rebuild = false;
     private boolean rowsWillBeCleared = false;
+    protected Spielstand undo = null;
 
     public GameEngine(GameEngineModel model) {
         this.model = model;
@@ -50,10 +51,15 @@ public class GameEngine implements GameEngineInterface {
      * @throws DoesNotWorkException if game piece can not be placed
      */
     public void dispatch(boolean targetIsParking, DropActionModel dropActionModel) {
+        boolean ret;
         if (gs.isLostGame()) {
             return;
         }
-        boolean ret;
+
+        Spielstand nextUndo = new Spielstand();
+        playingField.save(gs.get()); // anscheinend wird nach clear-row der gs.get.playingField nicht aktualisiert
+        gs.get().transfer(nextUndo);
+
         if (targetIsParking) {
             ret = model.getHolders().park(dropActionModel.getIndex()); // Drop action for parking area
         } else {
@@ -64,6 +70,8 @@ public class GameEngine implements GameEngineInterface {
         } else {
             throw new DoesNotWorkException();
         }
+
+        undo = nextUndo;
     }
 
     protected void postDispatch() {
@@ -171,10 +179,10 @@ public class GameEngine implements GameEngineInterface {
             playingField.gameOver();
             Spielstand ss = gs.get();
             if (ss.getState() != GamePlayState.LOST_GAME) {
-                ss.setState(GamePlayState.LOST_GAME);
                 model.getView().playSound(4);
             }
             ss.setState(GamePlayState.LOST_GAME);
+            undo = null;
             gs.updateHighScore();
             ss.setDelta(0);
             gs.save();
@@ -201,11 +209,13 @@ public class GameEngine implements GameEngineInterface {
             if (ss.getState() != GamePlayState.WON_GAME) {
                 ss.setState(GamePlayState.WON_GAME);
                 model.getView().playSound(3);
+                undo = null;
             }
         } else {
             if (ss.getState() != GamePlayState.LOST_GAME) {
                 ss.setState(GamePlayState.LOST_GAME);
                 model.getView().playSound(4);
+                undo = null;
             }
         }
         gs.updateHighScore();
@@ -225,6 +235,7 @@ public class GameEngine implements GameEngineInterface {
             if (ss.getState() != GamePlayState.WON_GAME) {
                 ss.setState(GamePlayState.WON_GAME);
                 model.getView().playSound(3);
+                undo = null;
                 gs.updateHighScore();
                 ss.setDelta(0);
                 gs.save();
@@ -233,6 +244,7 @@ public class GameEngine implements GameEngineInterface {
             if (ss.getState() != GamePlayState.LOST_GAME) {
                 ss.setState(GamePlayState.LOST_GAME);
                 model.getView().playSound(4);
+                undo = null;
                 gs.updateHighScore();
                 ss.setDelta(0);
                 gs.save();
@@ -344,5 +356,30 @@ public class GameEngine implements GameEngineInterface {
 
     public void setDragAllowed(boolean dragAllowed) {
         this.dragAllowed = dragAllowed;
+    }
+
+    /**
+     * @return true: new game, false: undo
+     */
+    public boolean isTopButtonForNewGame() {
+        return model.getDefinition().isTopButtonForNewGame();
+    }
+
+    public void undo() {
+        if (undo == null) {
+            throw new DoesNotWorkException();
+        }
+
+        // Undo previous move
+        Spielstand ss = gs.get();
+        undo.transfer(ss);
+        undo = null; // consumed
+
+        // Refresh GUI
+        showScoreAndMoves();
+        model.getNextGamePiece().load();
+        model.getGravitation().clear(); //.load(ss);  // ???
+        playingField.load(ss);
+        model.getHolders().load(ss);
     }
 }
