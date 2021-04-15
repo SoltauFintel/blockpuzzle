@@ -1,3 +1,4 @@
-- Undo game piece
-- fixed data exchange
-- fixed daily planet display
+- Annulla il pezzo di gioco
+- scambio di dati fisso
+- visualizzazione giornaliera fissa del pianeta
+- gravitazione fissa

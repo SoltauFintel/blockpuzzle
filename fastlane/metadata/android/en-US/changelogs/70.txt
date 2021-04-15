@@ -1,3 +1,4 @@
 - Undo game piece
 - fixed data exchange
 - fixed daily planet display
+- fixed gravitation
