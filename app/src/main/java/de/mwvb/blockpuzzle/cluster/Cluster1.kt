@@ -39,7 +39,7 @@ object Cluster1 : Cluster(1) {
         add(Moon(26, 16, 22, 0, OneColorGameDefinition(22, 1000)))
         add(Planet(28, 14, 27, 6, CleanerGameDefinition(23, 5, 70))) // 49 Moves
         add(getGiantPlanet2())
-        add(Planet(31, 6, 35, ClassicGameDefinition(4, 40000))) // TODO find ich sehr schwer
+        add(Planet(31, 6, 35, 7, ClassicGameDefinition(4, 40000)))
         add(Planet(32, 16, 32, 3, ClassicGameDefinition(5, 16000)))
         add(Moon(30, 3, 32, CleanerGameDefinition(14, 8)))  // reference planet for alpha quadrant
         add(Moon(41, 7, 27, 0, CleanerGameDefinition(15, 7, 130))) // 105 Moves
