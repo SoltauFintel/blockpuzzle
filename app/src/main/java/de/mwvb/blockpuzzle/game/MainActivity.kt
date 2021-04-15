@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), IGameView {
         initTouchListener(-1)
         playingField.setOnDragListener(createDragListener(false)) // Drop Event für Spielfeld
         parking.setOnDragListener(createDragListener(true)) // Drop Event fürs Parking
-        initNewGameButton()
+        initNewGameButton() // also Undo button
     }
 
     // Activity reactivated
@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity(), IGameView {
 
         if (!gameEngine.isTopButtonForNewGame) {
             newGame.setText(R.string.undo)
+            newGame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGrey))
         }
     }
 
