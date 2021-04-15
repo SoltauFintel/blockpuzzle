@@ -57,8 +57,9 @@ public class DataService {
                 }
             }
         }
+        String code = code6(sb.toString());
         sb.append("/");
-        sb.append(code6(sb.toString()));
+        sb.append(code);
         sb.append("//");
         String pn = getPlayerName();
         sb.append(pn.replace(" ", "_"));
@@ -103,6 +104,7 @@ public class DataService {
     }
 
     private MessageObject put(String data, int clusterNumber, List<ISpaceObject> spaceObjects, IPlanet currentPlanet, MessageFactory messages) {
+        final String origData = data; // just for debugging
         if (data != null && data.equals(get(clusterNumber, spaceObjects, currentPlanet))) {
             return messages.getPutData_makesNoSense();
         } else if (data == null || !data.startsWith("BP")) {
@@ -125,8 +127,11 @@ public class DataService {
         int lo = data.lastIndexOf("/");
         String code = data.substring(lo + 1);
         data = data.substring(0, lo);
-        if (!Features.developerMode && !code6(data).equals(code)) {
-            return messages.getPutData_checksumMismatch();
+        if (!Features.developerMode) {
+            String c6 = code6(data);
+            if (!c6.equals(code)) {
+                return messages.getPutData_checksumMismatch();
+            }
         }
         if (headLength > data.length()) { // no planets
             return messages.getPutData_okay();
