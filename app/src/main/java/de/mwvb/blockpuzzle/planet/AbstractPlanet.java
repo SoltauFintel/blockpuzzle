@@ -72,6 +72,9 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
             info += "  X=" + getX() + "  Y=" + getY();
         }
 
+        // Game Info schon etwas früher besorgen, damit die richtige GameDefinition gezogen wird und somit der Daily-Planet-Territory-Name korrekt ist.
+        String gameInfo = getGameInfo(resources, -1);
+
         // Planet
         info += "\n" + resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
         if (getGameDefinitions().size() > 1) {
@@ -79,7 +82,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
         }
 
         // Plus game info
-        return info + "\n" + getGameInfo(resources, -1);
+        return info + "\n" + gameInfo;
     }
 
     @Override
