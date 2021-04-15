@@ -37,7 +37,9 @@ public class DailyPlanet extends Planet {
         return false;
     }
 
-    /** Rückgabewert 0 bis 6. Im Zweifelsfall 0. */
+    /**
+     * Rückgabewert 0 bis 6. Im Zweifelsfall 0.
+     */
     @Override
     public int getCurrentGameDefinitionIndex() {
         // Gibt es für heute ein Spiel?
@@ -101,7 +103,9 @@ public class DailyPlanet extends Planet {
         }
     }
 
-    /** Neues Game anlegen (inkl. Spielstand reseten) */
+    /**
+     * Neues Game anlegen (inkl. Spielstand reseten)
+     */
     private void createNewGame(int ret, String today) {
         SpielstandDAO dao = new SpielstandDAO();
 
