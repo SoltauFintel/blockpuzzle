@@ -1,0 +1,3 @@
+- Spielstein rückgängig
+- Datenaustausch korrigiert
+- Daily Planet Anzeige korrigiert
