@@ -61,7 +61,7 @@ public class ClearRowsPlaceAction implements IPlaceAction {
     protected void executeClearingOfRows(PlaceActionModel info) {
         info.getGravitation().set(info.getFilledRows());
         GravitationAction gravitationAction = new GravitationAction(info.getGravitation(), info.getGameEngineInterface(), info.getPlayingField(),
-                info.getDefinition().getGravitationStartRow());
+                info.getGravitationStartRow());
         info.getPlayingField().clearRows(info.getFilledRows(), gravitationAction);
         // Action wird erst wenige Millisekunden später fertig!
     }
