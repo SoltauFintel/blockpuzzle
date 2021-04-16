@@ -101,4 +101,5 @@
     <string name="giveUpDeathStarGameQuestion">Todessternzerstörung aufgeben und zurück in die Y Galaxie?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Gegner geschlagen! Planet befreit!</string>
     <string name="undo">Rückgängig</string>
+    <string name="planetNo">Planet %1$d</string>
 </resources>

@@ -100,4 +100,5 @@
     <string name="giveUpDeathStarGameQuestion">Abandonner la destruction de l\'Étoile de la Mort et retourner dans la galaxie Y?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Ennemi défait! Planète libérée!</string>
     <string name="undo">Annuler</string>
+    <string name="planetNo">Planète %1$d</string>
 </resources>

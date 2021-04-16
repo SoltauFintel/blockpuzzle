@@ -8,6 +8,7 @@ import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.ScoreChangeInfo;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 import de.mwvb.blockpuzzle.global.messages.MessageObjectWithGameState;
+import de.mwvb.blockpuzzle.planet.IPlanet;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 
 /**
@@ -16,14 +17,28 @@ import de.mwvb.blockpuzzle.playingfield.PlayingField;
 public abstract class GameDefinition extends OldGameDefinition {
     private final int gamePieceSetNumber;
     /** R.string constant */
-    private int territoryName;
+    private Integer territoryName;
     private LiberatedFeature libf = null;
+    private IPlanet planet;
 
     public GameDefinition(int gamePieceSetNumber) {
         this.gamePieceSetNumber = gamePieceSetNumber;
     }
 
+    public void setPlanet(IPlanet planet) {
+        this.planet = planet;
+    }
+
+    public IPlanet getPlanet() {
+        return planet;
+    }
+
     // GAME DEFINITION ----
+
+    @Override
+    public int getGravitationStartRow() {
+        return getPlanet().getGravitation();
+    }
 
     @Override
     public INextGamePiece createNextGamePieceGenerator(GameState gs) {
@@ -34,11 +49,11 @@ public abstract class GameDefinition extends OldGameDefinition {
         return gamePieceSetNumber;
     }
 
-    public int getTerritoryName() {
+    public Integer getTerritoryName() {
         return territoryName;
     }
 
-    public void setTerritoryName(int territoryName) {
+    public void setTerritoryName(Integer territoryName) {
         this.territoryName = territoryName;
     }
 

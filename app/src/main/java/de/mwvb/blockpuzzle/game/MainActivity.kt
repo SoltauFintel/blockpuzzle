@@ -245,6 +245,11 @@ class MainActivity : AppCompatActivity(), IGameView {
         infoDisplay.text = text
     }
 
+    override fun showPlanetNumber(number: Int) {
+        territoryName.text = resources.getString(R.string.planetNo, number)
+        territoryName.visibility = View.VISIBLE
+    }
+
     override fun showTerritoryName(resId: Int) {
         val text = resources.getText(resId).trim()
         territoryName.text = text

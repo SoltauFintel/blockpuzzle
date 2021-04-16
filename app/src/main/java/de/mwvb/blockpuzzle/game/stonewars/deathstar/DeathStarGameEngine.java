@@ -14,8 +14,6 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
 
     public DeathStarGameEngine(GameEngineModel model) {
         super(model);
-        DeathStarClassicGameDefinition definition = (DeathStarClassicGameDefinition) model.getDefinition();
-        model.getView().showTerritoryName(definition.getTerritoryName());
     }
 
     @Override

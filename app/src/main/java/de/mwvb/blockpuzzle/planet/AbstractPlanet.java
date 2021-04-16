@@ -34,7 +34,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
     public AbstractPlanet(int number, int x, int y, int gravitation, GameDefinition gameDefinition) {
         this(number, x, y, gravitation);
-        gameDefinitions.add(gameDefinition);
+        add(gameDefinition);
     }
 
     @Override
@@ -77,7 +77,7 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
         // Planet
         info += "\n" + resources.getString(getName()) + " #" + getNumber() + ", " + resources.getString(R.string.gravitation) + " " + getGravitation();
-        if (getGameDefinitions().size() > 1) {
+        if (getSelectedGame().getTerritoryName() != null) {
             info += "\n" + resources.getString(getSelectedGame().getTerritoryName());
         }
 
@@ -157,6 +157,13 @@ public abstract class AbstractPlanet extends AbstractSpaceObject implements IPla
 
     public List<GameDefinition> getGameDefinitions() {
         return gameDefinitions;
+    }
+
+    public void add(GameDefinition definition) {
+        if (definition != null) {
+            gameDefinitions.add(definition);
+            definition.setPlanet(this);
+        }
     }
 
     @Override

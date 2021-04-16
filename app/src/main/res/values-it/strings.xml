@@ -100,4 +100,5 @@
     <string name="giveUpDeathStarGameQuestion">Rinunciare alla distruzione della Morte Nera e tornare nella galassia Y?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Nemico sconfitto! Pianeta liberato!</string>
     <string name="undo">Disfare</string>
+    <string name="planetNo">Pianeta %1$d</string>
 </resources>

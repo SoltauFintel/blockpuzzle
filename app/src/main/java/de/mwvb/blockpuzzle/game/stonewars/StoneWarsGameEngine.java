@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.game.stonewars;
 
 import de.mwvb.blockpuzzle.game.GameEngine;
 import de.mwvb.blockpuzzle.game.GameEngineModel;
+import de.mwvb.blockpuzzle.gamedefinition.GameDefinition;
 import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState;
 
 /**
@@ -11,6 +12,12 @@ public class StoneWarsGameEngine extends GameEngine {
 
     public StoneWarsGameEngine(GameEngineModel model) {
         super(model);
+        GameDefinition definition = (GameDefinition) model.getDefinition();
+        if (definition.getTerritoryName() == null) {
+            model.getView().showPlanetNumber(myGS().getPlanet().getNumber());
+        } else {
+            model.getView().showTerritoryName(definition.getTerritoryName());
+        }
     }
 
     @Override
@@ -27,7 +34,11 @@ public class StoneWarsGameEngine extends GameEngine {
     public void onEndGame(boolean wonGame, boolean stopGame) {
         super.onEndGame(wonGame, stopGame);
         if (!wonGame) { // lost game
-            ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
+            myGS().saveOwner(false); // owner is Orange Union or enemy
         }
+    }
+
+    private StoneWarsGameState myGS() {
+        return (StoneWarsGameState) model.getGs();
     }
 }

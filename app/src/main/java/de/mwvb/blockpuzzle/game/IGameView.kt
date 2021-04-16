@@ -20,6 +20,8 @@ interface IGameView {
 
     fun showMoves(text: String)
 
+    fun showPlanetNumber(number: Int)
+
     fun showTerritoryName(resId: Int)
 
     fun shake()

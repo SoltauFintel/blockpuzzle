@@ -100,4 +100,5 @@
     <string name="giveUpDeathStarGameQuestion">Give up Death Star destruction and go back to the Y galaxy?</string>
     <string name="defeatedEnemyAndPlanetLiberated">Enemy defeated! Planet liberated!</string>
     <string name="undo">Undo</string>
+    <string name="planetNo">Planet %1$d</string>
 </resources>

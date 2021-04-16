@@ -134,7 +134,7 @@ object Cluster1 : Cluster(1) {
     private fun getDailyPlanet(): Planet {
         val p = DailyPlanet(42, 34, 14, 6)
         for (day in 1..7) {
-            p.gameDefinitions.add(DailyClassicGameDefinition(day))
+            p.add(DailyClassicGameDefinition(day))
         }
         p.gameDefinitions[0].territoryName = R.string.daily1
         p.gameDefinitions[1].territoryName = R.string.daily2
