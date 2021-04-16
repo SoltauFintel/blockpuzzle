@@ -5,6 +5,6 @@ package de.mwvb.blockpuzzle.game;
  */
 public enum TopButtonMode {
     NEW_GAME,
-    UNDO,
+    UNDO, // TODO bei Game over könnte man den Button ausblenden
     NO_BUTTON
 }
