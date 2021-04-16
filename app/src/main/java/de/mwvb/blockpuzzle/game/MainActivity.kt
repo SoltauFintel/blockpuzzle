@@ -85,9 +85,14 @@ class MainActivity : AppCompatActivity(), IGameView {
         shakeService.setActive(true)
         shakeService.initShakeDetection(this)
 
-        if (!gameEngine.isTopButtonForNewGame) {
-            newGame.setText(R.string.undo)
-            newGame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGrey))
+        when (gameEngine.topButtonMode) {
+            TopButtonMode.UNDO -> {
+                newGame.visibility = View.VISIBLE
+                newGame.setText(R.string.undo)
+                newGame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGrey))
+            }
+            TopButtonMode.NO_BUTTON -> newGame.visibility = View.INVISIBLE
+            else -> newGame.visibility = View.VISIBLE
         }
     }
 
@@ -198,30 +203,38 @@ class MainActivity : AppCompatActivity(), IGameView {
 
     private fun initNewGameButton() {
         newGame.setOnClickListener {
-            if (gameEngine.isTopButtonForNewGame) {
-                if (gameEngine.isLostGame || gameEngine.lessScore()) {
-                    startNewGame()
-                } else {
-                    val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                    dialog.setTitle(resources.getString(R.string.startNewGame))
-                    dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
-                    dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
-                    dialog.show()
-                }
-            } else {
-                try {
-                    gameEngine.undo()
-                } catch (e: DoesNotWorkException) {
-                    playingField.soundService.doesNotWork()
-                    Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
-                }
+            when (gameEngine.topButtonMode) {
+                TopButtonMode.NEW_GAME -> startNewGameDispatch()
+                TopButtonMode.UNDO     -> undo()
+                else                   -> {}
             }
+        }
+    }
+
+    private fun startNewGameDispatch() {
+        if (gameEngine.isLostGame || gameEngine.lessScore()) {
+            startNewGame()
+        } else {
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            dialog.setTitle(resources.getString(R.string.startNewGame))
+            dialog.setPositiveButton(resources.getString(android.R.string.ok)) { _, _ -> startNewGame() }
+            dialog.setNegativeButton(resources.getString(android.R.string.cancel), null)
+            dialog.show()
         }
     }
 
     private fun startNewGame() {
         SpielstandDAO().deleteOldGame()
         initGameEngine()
+    }
+
+    private fun undo() {
+        try {
+            gameEngine.undo()
+        } catch (e: DoesNotWorkException) {
+            playingField.soundService.doesNotWork()
+            Toast.makeText(this, R.string.gehtNicht, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getSpecialAction(specialState: Int): Action {

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.game.GameEngineBuilder;
+import de.mwvb.blockpuzzle.game.TopButtonMode;
 import de.mwvb.blockpuzzle.gamedefinition.ClassicGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
@@ -27,6 +28,12 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
     public DeathStarClassicGameDefinition(int gamePieceSetNumber, int minimumLiberationScore, int name) {
         super(gamePieceSetNumber, minimumLiberationScore);
         setTerritoryName(name);
+    }
+
+    @Override
+    public TopButtonMode getTopButtonMode() {
+        // Wegen dem Reaktorwechsel ist eine Undo-Funktion schwierig.
+        return TopButtonMode.NO_BUTTON;
     }
 
     @Override

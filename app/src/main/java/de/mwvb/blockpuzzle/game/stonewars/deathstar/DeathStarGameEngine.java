@@ -70,4 +70,8 @@ public class DeathStarGameEngine extends StoneWarsGameEngine {
     private DeathStar getDeathStar() {
         return MilkyWayCluster.INSTANCE.get();
     }
+
+    @Override
+    public void undo() { //
+    }
 }

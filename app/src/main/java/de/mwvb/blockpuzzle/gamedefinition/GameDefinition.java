@@ -2,6 +2,7 @@ package de.mwvb.blockpuzzle.gamedefinition;
 
 import androidx.annotation.NonNull;
 
+import de.mwvb.blockpuzzle.game.TopButtonMode;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.NextGamePieceFromSet;
 import de.mwvb.blockpuzzle.gamestate.GameState;
@@ -122,7 +123,7 @@ public abstract class GameDefinition extends OldGameDefinition {
     }
 
     @Override
-    public boolean isTopButtonForNewGame() {
-        return false; // Undo
+    public TopButtonMode getTopButtonMode() {
+        return TopButtonMode.UNDO;
     }
 }

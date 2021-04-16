@@ -1,5 +1,6 @@
 package de.mwvb.blockpuzzle.gamedefinition;
 
+import de.mwvb.blockpuzzle.game.TopButtonMode;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamepiece.RandomGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GameState;
@@ -38,7 +39,7 @@ public class OldGameDefinition {
         return true;
     }
 
-    public boolean isTopButtonForNewGame() {
-        return true;
+    public TopButtonMode getTopButtonMode() {
+        return TopButtonMode.NEW_GAME;
     }
 }

@@ -31,10 +31,17 @@ public class DeathStar implements IPlanet {
         if (Features.deathstarDeveloperMode) {
             mls = 15;
         }
-        gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame1));
-        gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame2));
-        gameDefinitions.add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame3));
+        add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame1));
+        add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame2));
+        add(new DeathStarClassicGameDefinition(gpsn, mls, R.string.deathStarGame3));
         index = 0;
+    }
+
+    private void add(GameDefinition definition) {
+        if (definition != null) {
+            gameDefinitions.add(definition);
+            definition.setPlanet(this);
+        }
     }
 
     @Override

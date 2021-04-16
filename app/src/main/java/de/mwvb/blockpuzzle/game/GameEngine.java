@@ -358,15 +358,12 @@ public class GameEngine implements GameEngineInterface {
         this.dragAllowed = dragAllowed;
     }
 
-    /**
-     * @return true: new game, false: undo
-     */
-    public boolean isTopButtonForNewGame() {
-        return model.getDefinition().isTopButtonForNewGame();
+    public TopButtonMode getTopButtonMode() {
+        return model.getDefinition().getTopButtonMode();
     }
 
     public void undo() {
-        if (undo == null) {
+        if (undo == null || isLostGame()) {
             throw new DoesNotWorkException();
         }
 
