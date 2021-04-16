@@ -30,9 +30,4 @@ public class StoneWarsGameEngine extends GameEngine {
             ((StoneWarsGameState) gs).saveOwner(false); // owner is Orange Union or enemy
         }
     }
-
-    @Override
-    protected int getGravitationStartRow() {
-        return ((StoneWarsGameState) model.getGs()).getPlanet().getGravitation();
-    }
 }

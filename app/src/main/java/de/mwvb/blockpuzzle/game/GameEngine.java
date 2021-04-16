@@ -129,16 +129,12 @@ public class GameEngine implements GameEngineInterface {
         for (IPlaceAction action : model.getPlaceActions()) {
             if (action instanceof ClearRowsPlaceAction) {
                 ((ClearRowsPlaceAction) action).executeGravitation(model.getGravitation(),
-                        this, playingField, getGravitationStartRow());
+                        this, playingField, getDefinition().getGravitationStartRow());
                 model.getView().shake();
                 return;
             }
         }
         throw new RuntimeException("Missing ClearRowsPlaceAction");
-    }
-
-    protected int getGravitationStartRow() {
-        return getDefinition().getGravitationStartRow();
     }
 
     // Show new game pieces ----

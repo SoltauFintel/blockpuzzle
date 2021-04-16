@@ -3,7 +3,6 @@ package de.mwvb.blockpuzzle.game.place
 import de.mwvb.blockpuzzle.game.DropActionModel
 import de.mwvb.blockpuzzle.game.GameEngineInterface
 import de.mwvb.blockpuzzle.game.GameEngineModel
-import de.mwvb.blockpuzzle.gamestate.StoneWarsGameState
 import de.mwvb.blockpuzzle.playingfield.FilledRows
 
 /**
@@ -26,13 +25,6 @@ data class PlaceActionModel(
     fun getDefinition() = model.definition
     fun getPlayingField() = model.playingField
     fun getGravitation() = model.gravitation
-    fun getGravitationStartRow(): Int {
-        return if (model.gs is StoneWarsGameState) {
-            model.gs.planet.gravitation
-        } else {
-            model.definition.gravitationStartRow
-        }
-    }
     fun getFilledRows(): FilledRows = filledRows
     fun getGamePiece() = dropActionModel.gamePiece
     fun getPosition() = dropActionModel.xy
