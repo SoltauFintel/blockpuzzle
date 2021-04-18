@@ -114,7 +114,21 @@ class CleanerGameDefinition @JvmOverloads constructor(
     }
 
     private fun getLevel1(): String {
-        return """
+        if (Features.developerMode) {
+            return """
+_5______56
+__________
+__________
+__________
+__________
+_3________
+_2_3______
+111111111_
+1_113111__ 
+2___22____
+        """
+        } else {
+            return """
 _5______5_
 __________
 __________
@@ -124,8 +138,9 @@ __________
 __________
 __________
 __________
-Soooooooo_ 
+Soooooooo_
         """
+        }
     }
 
     private fun getLevel2(): String {

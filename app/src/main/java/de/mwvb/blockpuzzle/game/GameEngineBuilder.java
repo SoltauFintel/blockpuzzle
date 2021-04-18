@@ -19,6 +19,7 @@ import de.mwvb.blockpuzzle.gamepiece.Holders;
 import de.mwvb.blockpuzzle.gamepiece.INextGamePiece;
 import de.mwvb.blockpuzzle.gamestate.GameState;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
+import de.mwvb.blockpuzzle.global.Features;
 import de.mwvb.blockpuzzle.playingfield.PlayingField;
 import de.mwvb.blockpuzzle.playingfield.gravitation.GravitationData;
 
@@ -56,6 +57,11 @@ public class GameEngineBuilder {
         // Create game engine ----
         GameEngineModel model = new GameEngineModel(blocks, blockTypes, view, gs, definition, playingField, holders, createPlaceActions(), gravitation, nextGamePiece);
         gameEngine = createGameEngine(model);
+
+        // Crushed
+        if (definition.isCrushAllowed() || Features.developerMode) {
+            playingField.setCrushed(gameEngine);
+        }
 
         // init game ----
         // Gibt es einen Spielstand?

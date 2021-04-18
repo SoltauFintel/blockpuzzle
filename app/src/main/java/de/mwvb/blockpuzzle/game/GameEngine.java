@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import de.mwvb.blockpuzzle.game.place.ClearRowsPlaceAction;
 import de.mwvb.blockpuzzle.game.place.IPlaceAction;
 import de.mwvb.blockpuzzle.game.place.PlaceActionModel;
+import de.mwvb.blockpuzzle.gamedefinition.ICrushed;
 import de.mwvb.blockpuzzle.gamedefinition.OldGameDefinition;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.GamePlayState;
@@ -24,7 +25,7 @@ import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.NO_SPACE;
  *
  * This is the old game and the base class for the Stone Wars game.
  */
-public class GameEngine implements GameEngineInterface {
+public class GameEngine implements GameEngineInterface, ICrushed {
     protected final GameEngineModel model;
     protected final GameState gs; // for convenience
     protected final PlayingField playingField; // for convenience
@@ -378,5 +379,13 @@ public class GameEngine implements GameEngineInterface {
         model.getGravitation().clear(); //.load(ss);  // ???
         playingField.load(ss);
         model.getHolders().load(ss);
+    }
+
+    @Override
+    public void crushed(int areaSize) {
+        int bonus = areaSize * 10;
+        gs.get().setDelta(bonus);
+        gs.addScore(bonus);
+        showScoreAndMoves();
     }
 }

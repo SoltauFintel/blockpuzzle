@@ -127,4 +127,9 @@ public class ClassicGameDefinition extends GameDefinition {
         }
         return false;
     }
+
+    @Override
+    public boolean isCrushAllowed() {
+        return getPlanet().getGravitation() > 5;
+    }
 }

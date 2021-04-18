@@ -2,6 +2,8 @@ package de.mwvb.blockpuzzle.playingfield;
 
 import de.mwvb.blockpuzzle.block.BlockTypes;
 import de.mwvb.blockpuzzle.game.GameEngineBuilder;
+import de.mwvb.blockpuzzle.gamedefinition.Crush;
+import de.mwvb.blockpuzzle.gamedefinition.ICrushed;
 import de.mwvb.blockpuzzle.gamepiece.GamePiece;
 import de.mwvb.blockpuzzle.gamestate.Spielstand;
 
@@ -13,6 +15,8 @@ import static de.mwvb.blockpuzzle.playingfield.GamePieceMatchResult.NO_SPACE;
 public class PlayingField {
     // Stammdaten
     private final int blocks;
+    /** null: crush not allowed */
+    private ICrushed crushed;
 
     // Zustand
     /** 1: x (nach rechts), 2: y (nach unten) */
@@ -27,6 +31,10 @@ public class PlayingField {
     public PlayingField(int blocks) {
         this.blocks = blocks;
         matrix = new int[blocks][blocks];
+    }
+
+    public void setCrushed(ICrushed crushed) {
+        this.crushed = crushed;
     }
 
     public static boolean isEmpty(Spielstand ss) {
@@ -262,5 +270,12 @@ public class PlayingField {
             }
         }
         view.oneColor();
+    }
+
+    public void onTouch(int x, int y) {
+        if (crushed != null && new Crush(this, crushed).crush(x, y)) {
+            draw();
+            view.oneColor();
+        }
     }
 }

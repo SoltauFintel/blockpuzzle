@@ -42,4 +42,8 @@ public class OldGameDefinition {
     public TopButtonMode getTopButtonMode() {
         return TopButtonMode.NEW_GAME;
     }
+
+    public boolean isCrushAllowed() {
+        return false;
+    }
 }

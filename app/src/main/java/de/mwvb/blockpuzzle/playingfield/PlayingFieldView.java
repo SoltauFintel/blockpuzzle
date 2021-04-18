@@ -1,10 +1,12 @@
 package de.mwvb.blockpuzzle.playingfield;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ import de.mwvb.blockpuzzle.sound.SoundService;
  */
 public class PlayingFieldView extends View implements IPlayingFieldView {
     public static final int w = 300; // dp
+    private PlayingField playingField;
     private final Paint rectborder = new Paint();
     private final Paint rectline = new Paint();
     private final Paint mark = new Paint();
@@ -42,7 +45,6 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
     private IBlockDrawer bd31;
     private IBlockDrawer bd32;
     private final BlockTypes blockTypes = new BlockTypes(this);
-    private PlayingField playingField;
     private final BlockDrawParameters p = new BlockDrawParameters();
 
     public PlayingFieldView(Context context) {
@@ -84,6 +86,34 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
         mark.setColor(Color.GRAY);
         mark.setStrokeWidth(3);
         mark.setStyle(Paint.Style.STROKE);
+
+        initOnTouch();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initOnTouch() {
+        final int blocks = getBlocks();
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_UP) {
+                    // ähnlicher Code zu MainActivity
+                    float f = getResources().getDisplayMetrics().density;
+                    float fx = ev.getX() / f; // px -> dp
+                    float fy = ev.getY() / f;
+                    // jetzt in Spielfeld Koordinaten umrechnen
+                    float br = w / blocks;
+                    fx /= br;
+                    fy /= br;
+                    int x = (int) fx;
+                    int y = (int) fy;
+                    if (y <= 9) {
+                        playingField.onTouch(x, y);
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     @Override

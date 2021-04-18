@@ -143,4 +143,9 @@ public class DeathStarClassicGameDefinition extends ClassicGameDefinition {
             p.set(x, y, c);
         }
     }
+
+    @Override
+    public boolean isCrushAllowed() {
+        return false;
+    }
 }

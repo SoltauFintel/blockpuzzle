@@ -7,10 +7,7 @@ import de.mwvb.blockpuzzle.gamedefinition.CleanerGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.DailyClassicGameDefinition
 import de.mwvb.blockpuzzle.gamedefinition.OneColorGameDefinition
 import de.mwvb.blockpuzzle.global.Features
-import de.mwvb.blockpuzzle.planet.DailyPlanet
-import de.mwvb.blockpuzzle.planet.GiantPlanet
-import de.mwvb.blockpuzzle.planet.Moon
-import de.mwvb.blockpuzzle.planet.Planet
+import de.mwvb.blockpuzzle.planet.*
 
 /**
  * Star cluster 1 of unknown Upsilon galaxy
@@ -45,12 +42,12 @@ object Cluster1 : Cluster(1) {
         add(Moon(41, 7, 27, 0, CleanerGameDefinition(15, 7, 130))) // 105 Moves
 
         // DELTA QUADRANT
-        add(Planet(5, 23, 6, ClassicGameDefinition(16, 10000))) // reference planet for delta quadrant
-        add(Planet(6, 28, 3, ClassicGameDefinition(24, 12000)))
+        add(Planet(5, 23, 6, 6, ClassicGameDefinition(16, 10000))) // reference planet for delta quadrant
+        add(Planet(6, 28, 3, 6, ClassicGameDefinition(24, 12000)))
         add(Planet(7, 34, 4, 4, ClassicGameDefinition(25, 7000)))
         add(Planet(8, 31, 6, ClassicGameDefinition(1, 16000)))
         add(Moon(9, 26, 9, 0, CleanerGameDefinition(26, 6)))
-        add(Planet(10, 26, 11, ClassicGameDefinition(26, 20000)))
+        add(Planet(10, 26, 11, 7, ClassicGameDefinition(26, 20000)))
         add(Moon(11, 27, 13, CleanerGameDefinition(26, 9)))
         add(Planet(21, 34, 12, CleanerGameDefinition(27, 5, 150))) // 114 Moves
         add(getGiantPlanet3())
@@ -69,6 +66,12 @@ object Cluster1 : Cluster(1) {
         add(Planet(38, 25, 36, CleanerGameDefinition(34, 8, 200)))
         if (Features.deathStar) {
             add(SpaceNebula(90, 27, 28))
+        }
+
+        spaceObjects.forEach { i ->
+            if (i is IPlanet && i.gameDefinitions[0] is ClassicGameDefinition && i.gravitation>5) {
+                println("planet "+i.number + ", gravitation: " + i.gravitation + ", Quadrant: " + Cluster.getQuadrant(i) + "      "+i.javaClass)
+            }
         }
 
         // AUFDECKUNGEN
