@@ -40,6 +40,7 @@ class PlayerNameActivity : AppCompatActivity() {
             val gd = GlobalData.get()
             playername.setText(gd.playername?:"")
             gameSounds.isChecked = gd.isGameSounds
+            sunMode.isChecked = gd.isSunMode
         } catch (e: Exception) {
             Toast.makeText(this, e.javaClass.toString() + ": " + e.message + "\n" + e.stackTrace[0].toString(), Toast.LENGTH_LONG).show()
         }
@@ -49,6 +50,7 @@ class PlayerNameActivity : AppCompatActivity() {
         super.onPause()
         val gd = GlobalData.get()
         gd.isGameSounds = gameSounds.isChecked
+        gd.isSunMode = sunMode.isChecked
         gd.save()
     }
 

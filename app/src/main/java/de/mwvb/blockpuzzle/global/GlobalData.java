@@ -5,6 +5,7 @@ public class GlobalData {
     private String playername = null;
     private boolean playernameEntered = false;
     private boolean gameSounds = true;
+    private boolean sunMode = false;
     private int currentPlanet = 1;
     // Trophies
     private int platinumTrophies = 0;
@@ -45,6 +46,14 @@ public class GlobalData {
 
     public void setGameSounds(boolean gameSounds) {
         this.gameSounds = gameSounds;
+    }
+
+    public boolean isSunMode() {
+        return sunMode;
+    }
+
+    public void setSunMode(boolean sunMode) {
+        this.sunMode = sunMode;
     }
 
     public int getCurrentPlanet() {
