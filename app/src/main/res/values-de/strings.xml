@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">7.0</string>
+    <string name="version">8.0</string>
     <string name="startScreenTitle">Version 7.0 von SoltauFintel</string>
     <string name="neuesSpiel">Neues Spiel</string>
     <string name="gehtNicht">Geht nicht!</string>
@@ -102,4 +102,7 @@
     <string name="defeatedEnemyAndPlanetLiberated">Gegner geschlagen! Planet befreit!</string>
     <string name="undo">Rückgängig</string>
     <string name="planetNo">Planet %1$d</string>
+    <string name="classic">Classic</string>
+    <string name="cleaner">Cleaner</string>
+    <string name="oneColor">One Color</string>
 </resources>

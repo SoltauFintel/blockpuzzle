@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
-    <string name="version">7.0</string>
+    <string name="version">8.0</string>
     <string name="startScreenTitle">версия 7.0 от SoltauFintel</string>
     <string name="neuesSpiel">Новая игра</string>
     <string name="gehtNicht">запрещено</string>
@@ -102,4 +102,7 @@
     <string name="defeatedEnemyAndPlanetLiberated">Противник побежден! Планета освобождена!</string>
     <string name="undo">Отменить</string>
     <string name="planetNo">планета %1$d</string>
+    <string name="classic">Classic</string>
+    <string name="cleaner">Cleaner</string>
+    <string name="oneColor">Один цвет</string>
 </resources>
