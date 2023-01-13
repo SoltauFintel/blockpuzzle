@@ -26,7 +26,7 @@ import de.mwvb.blockpuzzle.sound.SoundService;
  * Im Spielfeld werden die Spielsteine abgelegt.
  * Ein Kästchen hat die Belegung 0=leer, 1=Block. Angedacht sind weitere Belegungen für Boni.
  * Werte ab 30 haben eine Sonderrolle für die Darstellung.
- *
+ * <p>
  * Das Spielfeld ist 300dp groß. Nach unten ist es 2 Reihen (60dp) größer, damit Drag&Drop
  * funktioniert.
  */
@@ -169,10 +169,14 @@ public class PlayingFieldView extends View implements IPlayingFieldView {
             return (x, y) -> {
                 if (!filledRows.getExclusions().contains(new QPosition(x, y)) && (filledRows.containsX(x) || filledRows.containsY(y))) {
                     switch (mode) {
-                        case 30: return bd30;
-                        case 31: return bd31;
-                        case 32: return bd32;
-                        default: return empty;
+                        case 30:
+                            return bd30;
+                        case 31:
+                            return bd31;
+                        case 32:
+                            return bd32;
+                        default:
+                            return empty;
                     }
                 } else {
                     return std.get(x, y);
