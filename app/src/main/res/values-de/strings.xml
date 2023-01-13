@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name"><font size="18"><b>Block Puzzle</b></font></string>
     <string name="version">8.0</string>
-    <string name="startScreenTitle">Version 7.0 von SoltauFintel</string>
+    <string name="startScreenTitle">Version 8.0 von SoltauFintel</string>
     <string name="neuesSpiel">Neues Spiel</string>
     <string name="gehtNicht">Geht nicht!</string>
     <string name="startNewGame">Neues Spiel starten?</string>
