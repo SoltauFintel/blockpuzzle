@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "de.mwvb.blockpuzzle"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
 
         versionCode 80
         versionName "8.0"
